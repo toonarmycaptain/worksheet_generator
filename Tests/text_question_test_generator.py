@@ -21,8 +21,8 @@ def test_format_1(num):
     """
     Generates test questions to write to a text file.
     Questions are as strings, answers in a list.
-    Returns long string in the format:
 
+    Returns long string in the format:
 
     'Question 1: This is the 1st question.'
     ['Answer 1a','Answer 1b','Answer 1c','Answer 1d',]
@@ -30,7 +30,7 @@ def test_format_1(num):
     ['Answer 2a','Answer 2b','Answer 2c','Answer 2d',]
 
     :num: int
-    :return: strings
+    :return: str
     """
     return_string =''
     for i in range(1, n+1):
