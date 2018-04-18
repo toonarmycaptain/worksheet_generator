@@ -24,21 +24,20 @@ def test_format_1(num):
 
     Returns long string in the format:
 
-    'Question 1: This is the 1st question.'
-    ['Answer 1a','Answer 1b','Answer 1c','Answer 1d',]
-    'Question 2: This is the 2nd question.'
-    ['Answer 2a','Answer 2b','Answer 2c','Answer 2d',]
+    Question 1: This is the 1st question.///Answer 1a///Answer 1b///Answer 1c///Answer 1d
+    Question 2: This is the 2nd question.///Answer 2a///Answer 2b///Answer 2c///Answer 2d
+
 
     :num: int
     :return: str
     """
     return_string =''
     for i in range(1, n+1):
-        return_string += f"'Question {i}: This is the {i}{ordinal(i)} question.'\n"
-        return_string += '['
+        return_string += f'Question {i}: This is the {i}{ordinal(i)} question.'
+        return_string += ''
         for j in ['a', 'b', 'c', 'd']:
-            return_string += (f"'Answer {i}{j}',")
-        return_string += ']\n'
+            return_string += (f'///Answer {i}{j}')
+        return_string += '\n'
 
     return return_string
 
