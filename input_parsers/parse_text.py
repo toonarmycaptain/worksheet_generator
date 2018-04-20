@@ -1,11 +1,11 @@
 """
 Parse text file in line format:
-Question 1///Answer 1a///Answer 1b///Answer 1c///Answer 1d
-    into tuples: question, list_of_answers
+Question 1///Answer 1a///Answer 1b///Answer 1c///Answer 1d***Answer1***Answer2***
+    into tuples: question, set_of_answer_choices, set_of_correct_answers
 
 Tuples can then be passed into a formatting or storage format:
 
-for question_text, answers in parse_text_file(text_file_name):
+for question_text, question_answers in parse_text_file(text_file_name):
     # do whatever
         ->store in dict {question_text: list_of_answers}
             -dict form could use iteration through keys to output
@@ -26,17 +26,25 @@ def parse_text_file(question_filename):
                 line = line[:-1]
             if line == '':
                 continue
-            if line == '':
-                print("line was ''")
+
+
+            if '***' in line:
+                answer_sep = line.split('***')
+                answers = set([x.strip() for x in answer_sep[1:] if x != ''])
+            else:
+                answers = None
+
             q_and_a = line.split('///')
-
-            yield q_and_a[0], [x for x in q_and_a[1:] if x != '']
-
+            # q_and_a[0] is question, q_and_a[-1] is answers
+            question = q_and_a[0].strip(' ')
+            answer_choices = set([x.strip() for x in q_and_a[1:-1] if x != ''])
+#            yield q_and_a[0], [x for x in q_and_a[1:] if x != '']
+            yield question, answer_choices, answers
 
 
 if __name__ == '__main__':
     import os
     os.chdir('C:\\Users\\david\\OneDrive\\Programming\\PycharmProjects\\worksheet_generator\\input_parsers')
     text_file_name = input('Path_to_text_file\\filename: ')
-    for question_text, answers in parse_text_file(text_file_name):
-        print(f'Question: {question_text}, Answers: {answers}')
+    for question_text, answer_choices, answers in parse_text_file(text_file_name):
+        print(f'Question: {question_text}\nAnswer choices: {answer_choices}\nCorrect answer/s: {answers}')
