@@ -5,6 +5,14 @@ Question classes
 
 
 class Question:
+    """
+    Base Question class
+
+    Attributes:
+        question: The question.
+        answers: Possible answers to choose from.
+        solution: The correct answer/s to the question.
+    """
     pass
 
 
@@ -16,17 +24,20 @@ class TextQ(Question):
                  question_text: str,
                  answers: tuple,
                  solution: tuple=None):
-        question_text = question_text
-        answers = answers
-        num_answers = len(answers) + 1  # for use with 'in range(num_answers)
+        self.question_text = question_text
+        self.answers = answers
+        self.num_answers = len(answers) + 1  # for use with 'in range(num_answers)
         # for more than one answer, use tuple, or slice? This will output a list
         # eg answers = [1, 2, 3, 4] => correct = [1:4:2] => correct >>> [2, 4]
-        solution = solution
+        self.solution = solution
 
         # assert all solutions  are in the answer choices
         if solution is not None:
             assert set(solution) & set(answers) == set(solution),\
                 "Answer not in answer choices."
+
+# These methods should be inherited or extend methods from base class.
+# They may need to be decorated to enable correction/modification via GUI
 
 
 # test cases
