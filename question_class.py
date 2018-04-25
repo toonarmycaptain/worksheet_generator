@@ -41,6 +41,7 @@ class TextQ(Question):
             assert set(solution) & set(answers) == set(solution),\
                 "Answer not in answer choices."
 
+
 # These methods should be inherited or extend methods from base class.
 # They may need to be decorated to enable correction/modification via GUI
 
@@ -49,6 +50,9 @@ class TextQ(Question):
 # test cases
 # test_q1 = TextQ('Hope this works', ('1', '2', 3), (3, '1'))
 # test_q2 = TextQ('Hope this works to throw an error', (1, 2, 3), (3, 7))
-test_q3 = TextQ('Testing assertion', None, (1, 2, 3))
-test_q4 = TextQ('Testing assertion', (1, 2, 3), None)
-test_q5 = TextQ('Testing assertion', None, None)
+# test_q3 = TextQ('Testing assertion', None, (1, 2, 3))
+# test_q4 = TextQ('Testing assertion', (1, 2, 3), None)
+# test_q5 = TextQ('Testing assertion', None, None)
+#
+# print(test_q3.solution)
+# print(test_q4.solution)
