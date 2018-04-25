@@ -4,10 +4,10 @@ Parse text file formatted with question, answer choices, solutions, one line per
 Question 1|||Answer 1a///Answer 1b///Answer 1c///Answer 1d***Answer1///Answer2///
     ie question ||| answer choices *** solutions
     ie multiple answers, solutions split by ///
-Parser returns question string, tuple_of_answer_choices, tuple_of_solutions,
+Parser returns question string, list_of_answer_choices, list_of_solutions,
     or None in place if no answer choices, solutions are supplied.
 
-Tuples can then be passed into a formatting or storage format:
+Lists can then be passed into a formatting or storage format:
 
 for question_text, question_answers in parse_text_file(text_file_name):
     # do whatever
@@ -35,34 +35,34 @@ def extract_question(line: str):
 
 def extract_answers(line: str):
     """
-    Takes question string (line from file), tuple of answer choices. or None
-    if no answers are provided.
+    Takes question string (line from file), returns list of answer choices. or
+    None     if no answers are provided.
 
     :param line: str
-    :return: tuple: answer_choices or None
+    :return: list: answer_choices or None
     """
     if '|||' not in line:
         return None
     answers_sep = line.split('|||')[1].split('***')[0]
     answers = answers_sep.split('///')
     if answers != ['']:
-        return tuple([x.strip() for x in answers if x != ''])
+        return [x.strip() for x in answers if x != '']
     return None
 
 
 def extract_solution(line: str):
     """
-    Takes question string (line from file), returns solution/s as tuple
+    Takes question string (line from file), returns solution/s as list
     Returns None if no solutions are available.
 
     :param line: str
-    :return: tuple: solutions or None
+    :return: list: solutions or None
     """
     if '***' in line:
         solution_sep = line.split('***')[1]
         solutions = solution_sep.split('///')
         if solutions != ['']:
-            return tuple([x.strip() for x in solutions if x != ''])
+            return [x.strip() for x in solutions if x != '']
     return None
 
 
@@ -70,11 +70,11 @@ def parse_question(line: str):
     """
     Takes line of a text file with the form:
 Question 1|||Answer 1a///Answer 1b///Answer 1c///Answer 1d***Answer1///Answer2///
-    and returns question string, tuples of answers and solutions, or None if
-    no answers/tuples are provided.
+    and returns question string, lists of answers and solutions, or None if
+    no answers/lists are provided.
 
     :param line: line of text file containing question text
-    :return: str, tuple, tuple: question, tuple_answers or None, tuple_solutions or None
+    :return: str, list, list: question, list or None, list or None
     """
     question = extract_question(line)
     answer_choices = extract_answers(line)
@@ -87,10 +87,10 @@ def parse_text_file(question_filename):
     """
     Takes questions from none-empty lines of a text file with the form:
     Question 1///Answer 1a///Answer 1b///Answer 1c***correct***ans***etc
-        and yields question string, tuples of answers and solution
+        and yields question string, lists of answers and solution
 
     :param question_filename: filepath/filename of text file
-    :yield: str, tuple, tuple question, tuple_of_answers, tuple_of_solutions
+    :yield: str, list or None, list or NOne: question, answers, solutions
     """
     with open(question_filename) as f:
         for line in f.readlines():
