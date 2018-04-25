@@ -19,19 +19,23 @@ class Question:
 class TextQ(Question):
     """
     Question class with question and answers solely composed of text.
+
+
+    # for more than one answer, use tuple, or slice? This will output a list
+    # eg answers = [1, 2, 3, 4] => correct = [1:4:2] => correct >>> [2, 4]
+
+
     """
     def __init__(self,
                  question_text: str,
-                 answers: tuple,
+                 answers: tuple=None,
                  solution: tuple=None):
         self.question_text = question_text
         self.answers = answers
-        if answers:
-            self.num_answers = len(answers) + 1  # for use with 'in range(num_answers)
-        # for more than one answer, use tuple, or slice? This will output a list
-        # eg answers = [1, 2, 3, 4] => correct = [1:4:2] => correct >>> [2, 4]
         self.solution = solution
-
+        # for use with 'in range(num_answers) or in range(num_solutions
+        self.num_answers = None if not answers else len(answers) + 1
+        self.num_solutions = None if not solution else len(solution) + 1
         # assert all solutions  are in the answer choices
         if solution and answers:
             assert set(solution) & set(answers) == set(solution),\
