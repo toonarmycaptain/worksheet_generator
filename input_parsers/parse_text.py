@@ -30,8 +30,7 @@ def extract_question(line: str):
     """
     if '|||' in line:
         return line.split('|||')[0].strip()
-    else:
-        return line.strip()
+    return line.strip()
 
 
 def extract_answers(line: str):
@@ -48,8 +47,7 @@ def extract_answers(line: str):
     answers = answers_sep.split('///')
     if answers != ['']:
         return tuple([x.strip() for x in answers if x != ''])
-    else:
-        return None
+    return None
 
 
 def extract_solution(line: str):
@@ -65,8 +63,7 @@ def extract_solution(line: str):
         solutions = solution_sep.split('///')
         if solutions != ['']:
             return tuple([x.strip() for x in solutions if x != ''])
-    else:
-        return None
+    return None
 
 
 def parse_question(line: str):
