@@ -10,6 +10,10 @@ for question_text, question_answers in parse_text_file(text_file_name):
         ->store in dict {question_text: list_of_answers}
             -dict form could use iteration through keys to output
         ->store in database or object
+
+TODO: Do testing for more than one Question/answer delimiter ('|||','***') eg if line.count('|||') > 1: throw error
+NB Raise error in extract_ functions, log, pass to caller, caller provides feedback to user.
+
 """
 
 
