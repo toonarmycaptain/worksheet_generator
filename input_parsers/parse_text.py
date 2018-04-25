@@ -1,9 +1,11 @@
 """
-Parse text file in line format:
+Parse text file formatted with question, answer choices, solutions, one line per
+ question, with question/line format:
 Question 1|||Answer 1a///Answer 1b///Answer 1c///Answer 1d***Answer1///Answer2///
-    ie question ||| possible answers ||| solutions
+    ie question ||| answer choices *** solutions
     ie multiple answers, solutions split by ///
-    into tuples: question, tuple_of_answer_choices, tuple_of_solutions
+Parser returns question string, tuple_of_answer_choices, tuple_of_solutions,
+    or None in place if no answer choices, solutions are supplied.
 
 Tuples can then be passed into a formatting or storage format:
 
