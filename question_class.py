@@ -26,13 +26,14 @@ class TextQ(Question):
                  solution: tuple=None):
         self.question_text = question_text
         self.answers = answers
-        self.num_answers = len(answers) + 1  # for use with 'in range(num_answers)
+        if answers:
+            self.num_answers = len(answers) + 1  # for use with 'in range(num_answers)
         # for more than one answer, use tuple, or slice? This will output a list
         # eg answers = [1, 2, 3, 4] => correct = [1:4:2] => correct >>> [2, 4]
         self.solution = solution
 
         # assert all solutions  are in the answer choices
-        if solution is not None:
+        if solution and answers:
             assert set(solution) & set(answers) == set(solution),\
                 "Answer not in answer choices."
 
@@ -44,3 +45,6 @@ class TextQ(Question):
 # test cases
 # test_q1 = TextQ('Hope this works', ('1', '2', 3), (3, '1'))
 # test_q2 = TextQ('Hope this works to throw an error', (1, 2, 3), (3, 7))
+test_q3 = TextQ('Testing assertion', None, (1, 2, 3))
+test_q4 = TextQ('Testing assertion', (1, 2, 3), None)
+test_q5 = TextQ('Testing assertion', None, None)
