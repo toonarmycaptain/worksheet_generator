@@ -39,6 +39,7 @@ class TextQ(Question):
 # These methods should be inherited or extend methods from base class.
 # They may need to be decorated to enable correction/modification via GUI
 
+# Need method for answers/solutions that can return "No answers/solutions provided." if answers == None
 
 # test cases
 # test_q1 = TextQ('Hope this works', ('1', '2', 3), (3, '1'))
