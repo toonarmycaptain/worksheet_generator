@@ -32,7 +32,7 @@ def test_format_1(num):
     :return: str
     """
     return_string =''
-    for i in range(1, n+1):
+    for i in range(1, num+1):
         return_string += f'Question {i}: This is the {i}{ordinal(i)} question.'
         return_string += ''
         for j in ['a', 'b', 'c', 'd']:
