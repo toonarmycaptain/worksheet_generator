@@ -46,7 +46,7 @@ def extract_answers(line: str):
     answers_sep = line.split('|||')[1].split('***')[0]
     answers = answers_sep.split('///')
     if answers != ['']:
-        return [x.strip() for x in answers if x != '']
+        return [x.strip() for x in answers if x != '' and x.strip() != '']
     return None
 
 
@@ -62,7 +62,7 @@ def extract_solution(line: str):
         solution_sep = line.split('***')[1]
         solutions = solution_sep.split('///')
         if solutions != ['']:
-            return [x.strip() for x in solutions if x != '']
+            return [x.strip() for x in solutions if x != '' and x.strip() != '']
     return None
 
 
