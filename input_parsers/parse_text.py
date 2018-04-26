@@ -35,8 +35,7 @@ def extract_question(line: str):
 
 def extract_answers(line: str):
     """
-    Takes question string (line from file), returns list of answer choices. or
-    None     if no answers are provided.
+    Takes question string (line from file), returns list of answer choices, or None if no answers are provided.
 
     :param line: str
     :return: list: answer_choices or None
@@ -100,10 +99,12 @@ def parse_text_file(question_filename):
                 continue
             question, answer_choices, solution = parse_question(line)
             yield question, answer_choices, solution
-
+#TODO: add some error checking to give feedback to the user if solution isn't contained in answers'
 
 if __name__ == '__main__':
 
     text_file_name = input('Path_to_text_file\\filename: ')
     for question_text, answer_choices, solution in parse_text_file(text_file_name):
-        print(f'Question: {question_text}\nAnswer choices: {answer_choices}\n Solution: {solution}\n')
+        print(
+		f'Question: {question_text}\nAnswer choices: {answer_choices}\n Solution: {solution}\n'
+		)
