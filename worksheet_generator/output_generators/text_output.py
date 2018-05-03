@@ -10,3 +10,30 @@ answers
 2 blank lines
 """
 
+from worksheet_generator.input_parsers import parse_text
+
+
+
+
+if __name__ == '__main__':
+
+    rel_path = '..generated_worksheets\\'
+
+    input_filename = input('Please input path of text file to parse: ')
+
+    output_filename = input('Please select output filename: ')
+
+#    output_path = f'{rel_path}{output_filename}.txt' TODO: work out how to do relative path to geerated_worksheets folder
+    output_path = output_filename
+
+    output_questions = [x for x in parse_text.generate_questions(input_filename)]
+
+    with open(output_path, 'w') as output_file:
+
+        for question in output_questions:
+            output_file.write(f'Question {output_questions.index(question) + 1}: {question.question_text}')
+            output_file.write('\n')
+            if question.answers:
+                for answer in question.answers:
+                    output_file.write(f'Answer {question.answers.index(answer) + 1}: {answer}')
+            output_file.write('\n\n')
