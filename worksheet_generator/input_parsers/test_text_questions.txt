@@ -1,9 +1,9 @@
-Question 1: This is the 1st question: 4 possible answers, 1 solution.|||Answer 1a///Answer 1b///Answer 1c///Answer 1d***Answer***
+Question 1: This is the 1st question: 4 possible answers, 1 solution.|||Answer 1a///Answer 1b///Answer 1c///Answer 1d***Answer 1a///
 Question 2: This is the 2nd question: 4 possible answers, no solution.|||   Answer 2a///Answer 2b///Answer 2c///Answer 2d
-Question 3: This is the 3rd question: 4 possible answers, 2 solutions.   |||   Answer 3a   ///Answer 3b///Answer 3c///Answer 3d***Answer 1///Answer 2
+Question 3: This is the 3rd question: 4 possible answers, 2 solutions.   |||   Answer 3a   ///Answer 3b///Answer 3c///Answer 3d***Answer 3a///Answer 3b
 Question 4: This is the 4th question: no possible answers no solution.
 Question 5: This is the 5th question: 4 possible answers: no solution.|||Answer 5a///Answer 5b///Answer 5c///Answer 5d
 Question 6: This is the 6th question: no possible answers no solution.|||
 Question 7: This is the 7th question: no possible answers no solution.|||***
 Question 8: This is the 8th question: no possible answers 3 solutions.|||***Solution 8a///Solution 8b///Solution 8c
-Question 9: This is the 9rd question: 4 possible answers, 2 solutions   ||| ///  Answer 3a   ///Answer 3b///Answer 3c///Answer 3d///***  ///Answer 1///Answer 2///
+Question 9: This is the 9rd question: 4 possible answers, 2 solutions   ||| ///  Answer 9a   ///Answer 9b///Answer 9c///Answer 9d///***  ///Answer 9c///Answer 9a///
