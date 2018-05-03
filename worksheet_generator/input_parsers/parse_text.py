@@ -20,6 +20,8 @@ NB Raise error in extract_ functions, log, pass to caller, caller provides feedb
 
 """
 
+from worksheet_generator.question_class import TextQ
+
 
 def extract_question(line: str):
     """
@@ -101,6 +103,17 @@ def parse_text_file(question_filename):
             yield question, answer_choices, solution
 #TODO: add some error checking to give feedback to the user if solution isn't contained in answers'
 
+
+def generate_questions(question_filename):
+    """
+    Take question data and generate TextQ object
+
+    :param question_filename: filepath/filename of text file
+    :yield: class TextQ
+    """
+    for question_text, answer_choices, solution in parse_text_file(question_filename):
+        yield TextQ(question_text, answer_choices, solution)
+
 if __name__ == '__main__':
 
     text_file_name = input('Path_to_text_file\\filename: ')
@@ -108,3 +121,6 @@ if __name__ == '__main__':
         print(
 		f'Question: {question_text}\nAnswer choices: {answer_choices}\n Solution: {solution}\n'
 		)
+    print('Here are the question objects')
+    for question in generate_questions(text_file_name):
+        print(question)
