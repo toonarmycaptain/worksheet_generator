@@ -89,7 +89,7 @@ def parse_text_file(question_filename):
         and yields question string, lists of answers and solution
 
     :param question_filename: filepath/filename of text file
-    :yield: str, list or None, list or NOne: question, answers, solutions
+    :yield: str, list or None, list or None: question, answers, solutions
     """
     with open(question_filename) as f:
         for line in f.readlines():
