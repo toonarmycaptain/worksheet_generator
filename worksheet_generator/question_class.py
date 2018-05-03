@@ -42,6 +42,8 @@ class TextQ(Question):
                 set(solution) & set(answers) == set(solution)
             ), "Answer not in answer choices."
 
+        # TODO: implement __repr__ or/and __str__
+
 if __name__ == '__main__':
 
     # They may need to be decorated to enable correction/modification via GUI
