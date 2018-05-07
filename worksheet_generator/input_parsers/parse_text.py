@@ -100,8 +100,22 @@ def parse_text_file(question_filename):
             if line == '':
                 continue
             question, answer_choices, solution = parse_question(line)
-            yield question, answer_choices, solution
-#TODO: add some error checking to give feedback to the user if solution isn't contained in answers'
+
+            if solution and answer_choices:
+                if set(solution) & set(answer_choices) != set(solution):
+                    solution_not_in_answers(question, answer_choices, solution)  # Raise error
+            else:
+                yield question, answer_choices, solution
+
+
+# TODO: add some error checking to give feedback to the user if solution isn't contained in answers
+
+
+def solution_not_in_answers(question_text, answers, solution):
+    # error handling now
+    # TODO: error handling/logging
+    # TODO: test if this is triggered
+    pass
 
 
 def generate_questions(question_filename):
@@ -114,13 +128,14 @@ def generate_questions(question_filename):
     for question_text, answer_choices, solution in parse_text_file(question_filename):
         yield TextQ(question_text, answer_choices, solution)
 
+
 if __name__ == '__main__':
 
     text_file_name = input('Path_to_text_file\\filename: ')
     for question_text, answer_choices, solution in parse_text_file(text_file_name):
         print(
-		f'Question: {question_text}\nAnswer choices: {answer_choices}\n Solution: {solution}\n'
-		)
+            f'Question: {question_text}\nAnswer choices: {answer_choices}\n Solution: {solution}\n'
+        )
     print('Here are the question objects')
     for question in generate_questions(text_file_name):
         print(question)
