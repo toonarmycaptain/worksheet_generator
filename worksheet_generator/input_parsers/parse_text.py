@@ -102,10 +102,10 @@ def parse_text_file(question_filename):
             question, answer_choices, solution = parse_question(line)
 
             if solution and answer_choices:
-                if set(solution) & set(answer_choices) != set(solution):
+                if set(solution) & set(answer_choices) != set(solution):  #check for unanswerable question
                     solution_not_in_answers(question, answer_choices, solution)  # Raise error
-            else:
-                yield question, answer_choices, solution
+                    continue
+            yield question, answer_choices, solution
 
 # TODO: add some error checking to give feedback to the user if solution isn't contained in answers
 
