@@ -111,7 +111,15 @@ def parse_text_file(question_filename):
 
 
 def solution_not_in_answers(question_text, answers, solution):
-    # error handling now
+    """
+    Error handling for case where solution is not in provided answers.
+    Prints data and message to console.
+
+    :param question_text: str
+    :param answers: list or None
+    :param solution: list or None
+    :return: None
+    """
     # TODO: error handling/logging
     # TODO test if this is triggered - Done
     print(f'ERROR - BAD INPUT:\nQuestion: {question_text}\nAnswers: {answers}\nSolution (not in answers): {solution}\n')
