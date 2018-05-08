@@ -7,3 +7,5 @@ Question 6: This is the 6th question: no possible answers no solution.|||
 Question 7: This is the 7th question: no possible answers no solution.|||***
 Question 8: This is the 8th question: no possible answers 3 solutions.|||***Solution 8a///Solution 8b///Solution 8c
 Question 9: This is the 9rd question: 4 possible answers, 2 solutions   ||| ///  Answer 9a   ///Answer 9b///Answer 9c///Answer 9d///***  ///Answer 9c///Answer 9a///
+Question 10: This is the 10th question and it is bad: 4 possible answers, 1 solution, solution not in answers|||Answer 10a///Answer 10b///Answer 10c///Answer 10d***Solution 10a
+Question 11: This is the 11th question and it is bad: 4 possible answers, 2 solutions, 1 solution not in answers|||Answer 11a///Answer 11b///Answer 11c///Answer 11d***Answer 11a///Solution 11b
