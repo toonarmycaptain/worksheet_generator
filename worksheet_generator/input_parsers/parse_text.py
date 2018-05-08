@@ -107,15 +107,14 @@ def parse_text_file(question_filename):
             else:
                 yield question, answer_choices, solution
 
-
 # TODO: add some error checking to give feedback to the user if solution isn't contained in answers
 
 
 def solution_not_in_answers(question_text, answers, solution):
     # error handling now
     # TODO: error handling/logging
-    # TODO: test if this is triggered
-    pass
+    # TODO test if this is triggered - Done
+    print(f'ERROR - BAD INPUT:\nQuestion: {question_text}\nAnswers: {answers}\nSolution (not in answers): {solution}\n')
 
 
 def generate_questions(question_filename):
