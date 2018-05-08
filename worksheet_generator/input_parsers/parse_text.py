@@ -147,17 +147,3 @@ if __name__ == '__main__':
     for question in generate_questions(text_file_name):
         print(question)
 
-    # def testfunc():
-    #     filename = r'C:\Users\david\OneDrive\Programming\PycharmProjects\worksheet_generator\worksheet_generator\tests\test_text_questions.txt'
-    #
-    #     for question_text, answer_choices, solution in parse_text_file(filename):
-    #         print(
-    #             f'Question: {question_text}\nAnswer choices: {answer_choices}\n Solution: {solution}\n'
-    #         )
-    #     print('Here are the question objects')
-    #     for question in generate_questions(filename):
-    #         print(question)
-    # import timeit
-    #
-    # time=timeit.timeit(testfunc, number=10000)
-    # print(f'each: {time/10000}s, total for 10000: {time}s')
