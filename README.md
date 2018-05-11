@@ -1,4 +1,7 @@
 # worksheet_generator
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/01dcb13985324b0885b2826dabe60530)](https://app.codacy.com/app/toonarmycaptain/worksheet_generator?utm_source=github.com&utm_medium=referral&utm_content=toonarmycaptain/worksheet_generator&utm_campaign=badger)
+
 Worksheet generator application
 
 Application is designed to take input in various forms, and generate worksheets/assignments, tests.
