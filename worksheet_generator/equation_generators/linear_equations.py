@@ -28,8 +28,8 @@ def test_linear_eq(a: int, b: int, c: int, max_value, max_denominator: int):
     :param max_denominator: int
     :return: bool
     """
-    # if a == 0 and b == 0:
-    #     return False
+    if a == 0 and b == 0:
+        return False
     a, b, c = abs(a), abs(b), abs(c)
     if a > max_value or b > max_value or c > max_value:
     # if abs(a) >= max_value or abs(b) >= max_value > abs(c) >= max_value:
