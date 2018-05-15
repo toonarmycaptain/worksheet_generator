@@ -51,7 +51,7 @@ def test_linear_slope(b: int, max_denominator: int):
     :param max_denominator: int
     :return: bool
     """
-    if b > max_denominator:  # implementation to change with test conditions
+    if b > max_denominator:
         return False
     # else:
     return True
@@ -66,7 +66,7 @@ def test_linear_y_int(b: int, max_denominator: int):
     :param max_denominator: int
     :return: bool
     """
-    if b > max_denominator:  # implementation to change with test conditions
+    if b > max_denominator:
         return False
     # if c/b > max_value:  # Not currently necessary because
     #     return False     # if max(a, b, c) < max_value, c/a is < max_value
@@ -83,7 +83,7 @@ def test_linear_x_int(a: int, max_denominator: int):
     :param max_denominator: int
     :return: bool
     """
-    if a > max_denominator:  # implementation to change with test conditions
+    if a > max_denominator:
         return False
     # else:
     return True
