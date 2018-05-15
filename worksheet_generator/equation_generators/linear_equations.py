@@ -53,6 +53,8 @@ def test_linear_slope(b: int, max_denominator: int):
     """
     if b > max_denominator:
         return False
+    # if a/b > max_value:  # Not currently necessary because
+    #     return False     # if max(a, b, c) < max_value, c/a is < max_value
     # else:
     return True
 
@@ -85,6 +87,8 @@ def test_linear_x_int(a: int, max_denominator: int):
     """
     if a > max_denominator:
         return False
+    # if c/a > max_value:  # Not currently necessary because
+    #     return False     # if max(a, b, c) < max_value, c/a is < max_value
     # else:
     return True
 
