@@ -32,21 +32,21 @@ def test_linear_eq(a: int, b: int, c: int, max_value, max_denominator: int):
     if a >= max_value or b >= max_value or c >= max_value:
     # if abs(a) >= max_value or abs(b) >= max_value > abs(c) >= max_value:
         return False
-    if not test_linear_slope(a, b, max_denominator):
+    if not test_linear_slope(b, max_denominator):
         return False
-    if not test_linear_y_int(b, c, max_denominator):
+    if not test_linear_y_int(b, max_denominator):
         return False
-    if not test_linear_x_int(a, c, max_denominator):
+    if not test_linear_x_int(a, max_denominator):
         return False
 
     return True
 
 
-def test_linear_slope(a: int, b: int, max_denominator: int):
+def test_linear_slope(b: int, max_denominator: int):
     """
     Test that slope fraction isn't too complex.
     For ax + by = c => y = -(a/b)x + c/b: slope is -a/b
-    :param a: int
+
     :param b: int
     :param max_denominator: int
     :return: bool
@@ -57,27 +57,29 @@ def test_linear_slope(a: int, b: int, max_denominator: int):
     return True
 
 
-def test_linear_y_int(b: int, c: int, max_denominator: int):
+def test_linear_y_int(b: int, max_denominator: int):
     """
     Test that slope fraction isn't too complex.
     For ax + by = c => y = -(a/b)x + c/b: y-intercept is c/b
+
     :param b: int
-    :param c: int
     :param max_denominator: int
     :return: bool
     """
     if b > max_denominator:  # implementation to change with test conditions
         return False
+    # if c/b > max_value:  # Not currently necessary because
+    #     return False     # if max(a, b, c) < max_value, c/a is < max_value
     # else:
     return True
 
 
-def test_linear_x_int(a: int, c: int, max_denominator: int):
+def test_linear_x_int(a: int, max_denominator: int):
     """
     Test that slope fraction isn't too complex.
     For ax + by = c => y = -(a/b)x + c/b: x-intercept is c/a
+
     :param a: int
-    :param c: int
     :param max_denominator: int
     :return: bool
     """
