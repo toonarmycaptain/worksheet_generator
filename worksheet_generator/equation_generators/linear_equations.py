@@ -29,7 +29,7 @@ def test_linear_eq(a: int, b: int, c: int, max_value, max_denominator: int):
     :return: bool
     """
     a, b, c = abs(a), abs(b), abs(c)
-    if a >= max_value or b >= max_value or c >= max_value:
+    if a > max_value or b > max_value or c > max_value:
     # if abs(a) >= max_value or abs(b) >= max_value > abs(c) >= max_value:
         return False
     if not test_linear_slope(b, max_denominator):
