@@ -20,33 +20,27 @@ def format_linear_eq_to_print(a: int, b: int, c: int):
     :param c: int
     :return: str
     """
-    equation_string = ''
+    equation_str = ''
     if a == 0:  # y = c/b
         return zero_ab_format('x', b, c)
     if b == 0:  # x = c/a
         return zero_ab_format('y', a, c)
 
-    equation_string += 'y = '
+    equation_str += 'y = '
     if -a / b < 0:
-        equation_string += '-'
+        equation_str += '-'
     if abs(a / b) != 1:
         # put x in denominator of fraction
-        split_fraction = fraction_format_without_sign(a, b).split('/')
-        if split_fraction[0] == '1':
-            split_fraction[0] = 'x'
-        else:
-            split_fraction[0] += 'x'
-        fraction = ('/').join(split_fraction)
-        equation_string += fraction
+        equation_str += fraction_format_without_sign(a, b, num_var='x')
     else:  # |a/b| = 1
-        equation_string += 'x'
+        equation_str += 'x'
 
     if c / b > 0:
         equation_string += ' + '
     else:
-        equation_string += ' - '
-    equation_string += fraction_format_without_sign(c, b)
-    return equation_string
+        equation_str += ' - '
+    equation_str += fraction_format_without_sign(c, b)
+    return equation_str
 
 
 def zero_ab_format(xy_eq, coefficient, c):
@@ -58,13 +52,16 @@ def zero_ab_format(xy_eq, coefficient, c):
     :param c: int
     :return: str
     """
-    equation_string = f'{xy_eq} = '
+    equation_str = f'{xy_eq} = '
     if c == 0:
-        return equation_string + '0'
-    return equation_string + fraction_format_without_sign(c, coefficient)
+        return equation_str + '0'
+    elif c/coefficient <0 :
+        equation_str += '-'
+    return equation_str + fraction_format_without_sign(c, coefficient)
 
 
-def fraction_format_without_sign(numerator: int, denominator: int):
+def fraction_format_without_sign(numerator: int, denominator: int,
+                                 num_var=None, denom_var=None):
     """
     Format a fraction for printing, assuming neither numerator/denominator = 0,
     and that sign is handled outside of function.
@@ -81,10 +78,10 @@ def fraction_format_without_sign(numerator: int, denominator: int):
     if abs(numerator / denominator) == 1:
         return '1'
     else:
-        fraction_string = str(abs(numerator))
+        fraction_str = f"{abs(numerator)}{num_var if num_var else ''}"
         if denominator != 1:
-            return fraction_string + f'/{abs(denominator)}'
-        return fraction_string
+            return fraction_str + f"/{abs(denominator)}{denom_var if denom_var else ''}"
+        return fraction_str
 
 
 if __name__ == '__main__':
