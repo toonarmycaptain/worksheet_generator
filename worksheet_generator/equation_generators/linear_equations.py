@@ -99,46 +99,13 @@ def generate_linear_eqs(num_eqs, max_val, max_denominator):
     for i in range(num_eqs):
         yield generate_linear_equation(max_val, max_denominator)
 
-def format_linear_eq_to_print(a: int, b: int, c: int):
-    """
-    Format linear equation of form ax + bx = c into y = -(a/b)x + c/b
-    NB a, b cannot both be zero.
-
-    :param a: int
-    :param b: int
-    :param c: int
-    :return: str
-    """
-    equation_string = ''
-    if a == 0:  # y = c/b
-        return zero_ab_format('x', b, c)
-    if b == 0:  # x = c/a
-        return zero_ab_format('y', a, c)
-
-    return equation_string + 'this hit big return'
-
-def zero_ab_format(xy_eq, coefficient, c):
-    equation_string = f'{xy_eq} = '
-    if c == 0:
-        return equation_string + '0'
-    if c/coefficient < 0:
-        equation_string += '-'
-    if abs(c/coefficient) == 1:
-        return equation_string + '1'
-    else:
-        equation_string += str(abs(c))
-        if coefficient != 1:
-            return equation_string + f'/{abs(coefficient)}'
-        return equation_string
-
 
 if __name__ == '__main__':
+    from worksheet_generator.equation_formatters.linear_eq_format import format_linear_eq_to_print
+
     num_eqs = int(input('Enter number of equations to generate: '))
     max_val = int(input('Enter maximum value in equation: '))
     max_denominator = int(input('Enter maximum denominator: '))
 
     for a, b, c in generate_linear_eqs(num_eqs, max_val, max_denominator):
-        # print(f"y = {f'{-a}x' if abs(a) > 1 else '' if a == 0 else 'x' if a == -1 else 'x'}{f'/{b}' if b != 0 and a else ''} + {c if c != 0 else ''}")
-        print(f'a={a}, b={b}, c={c}')
-        print(format_linear_eq_to_print(a, b, c))
-
+        print(f'a={a}, b={b}, c={c} =>' + format_linear_eq_to_print(a, b, c))
