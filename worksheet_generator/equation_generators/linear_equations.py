@@ -1,3 +1,7 @@
+"""
+TODO: ensure uniqueness by adding generated eqs to list
+"""
+
 import random
 
 
@@ -5,15 +9,15 @@ def generate_linear_equation(max_value, max_denominator):
     """
     ax + by = c
 
-    :param max_val: int
+    :param max_vauel: int
     :param max_denominator: int
     :return: int, int, int
     """
     test_passing = False
     while not test_passing:
-        a = random.randint(-max_val, max_value)
-        b = random.randint(-max_val, max_value)
-        c = random.randint(-max_val, max_value)
+        a = random.randint(-max_value, max_value)
+        b = random.randint(-max_value, max_value)
+        c = random.randint(-max_value, max_value)
         test_passing = test_linear_eq(a, b, c, max_value, max_denominator)
     return a, b, c
 
@@ -95,17 +99,30 @@ def test_linear_x_int(a: int, max_denominator: int):
     return True
 
 
-def generate_linear_eqs(num_eqs, max_val, max_denominator):
-    for i in range(num_eqs):
-        yield generate_linear_equation(max_val, max_denominator)
-
+def generate_linear_eqs(num_eqs, max_val, max_denominator, unique=False):
+    if unique:
+        generated_equations = []
+        for i in range(num_eqs):
+            while True:
+                new_equation = generate_linear_equation(max_val, max_denominator)
+                if new_equation not in generated_equations:
+                    generated_equations.append(new_equation)
+                    break
+            yield new_equation
+    else:
+        for i in range(num_eqs):
+            yield generate_linear_equation(max_val, max_denominator)
 
 if __name__ == '__main__':
     from worksheet_generator.equation_formatters.linear_eq_format import format_linear_eq_to_print
 
     num_eqs = int(input('Enter number of equations to generate: '))
-    max_val = int(input('Enter maximum value in equation: '))
+    max_value = int(input('Enter maximum value in equation: '))
     max_denominator = int(input('Enter maximum denominator: '))
+    unique = input('Enter 1 for unique equations, 0 otherwise: ')
+    if unique == '1':
+        unique = True
+    else: unique = False
 
-    for a, b, c in generate_linear_eqs(num_eqs, max_val, max_denominator):
+    for a, b, c in generate_linear_eqs(num_eqs, max_value, max_denominator, unique):
         print(f'a={a}, b={b}, c={c} =>' + format_linear_eq_to_print(a, b, c))
