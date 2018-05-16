@@ -12,7 +12,7 @@ eg 9/27 -> 3/9 or simplify 9/27 to 3/9 or 1/3, but not 3/9 or 8/4...
 
 def format_linear_eq_to_print(a: int, b: int, c: int):
     """
-    Format linear equation of form ax + bx = c into y = -(a/b)x + c/b
+    Format linear equation of form ax + by = c into y = -(a/b)x + c/b
     NB a, b cannot both be zero.
 
     :param a: int
