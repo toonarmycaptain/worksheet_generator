@@ -1,4 +1,3 @@
-# much code can be improved by using a datastructe.
 
 def ordinal(num):
     """
