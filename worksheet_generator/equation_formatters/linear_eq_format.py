@@ -36,7 +36,9 @@ def format_linear_eq_to_print(a: int, b: int, c: int):
         equation_str += 'x'
 
     if c / b > 0:
-        equation_string += ' + '
+        equation_str += ' + '
+    elif c/b == 0:
+        return equation_str
     else:
         equation_str += ' - '
     equation_str += fraction_format_without_sign(c, b)
