@@ -22,9 +22,9 @@ def format_linear_eq_to_print(a: int, b: int, c: int):
     """
     equation_str = ''
     if a == 0:  # y = c/b
-        return zero_ab_format('x', b, c)
+        return zero_ab_format('y', b, c)
     if b == 0:  # x = c/a
-        return zero_ab_format('y', a, c)
+        return zero_ab_format('x', a, c)
 
     equation_str += 'y = '
     if -a / b < 0:
@@ -76,6 +76,8 @@ def fraction_format_without_sign(numerator: int, denominator: int,
     if numerator == 0:
         return '0'
     if abs(numerator / denominator) == 1:
+        if num_var or denom_var:
+            return f"{num_var if num_var else '1'}{f'/{denom_var}' if denom_var else ''}"
         return '1'
     else:
         fraction_str = f"{abs(numerator)}{num_var if num_var else ''}"
