@@ -1,5 +1,4 @@
 """
-TODO: ensure uniqueness by adding generated eqs to list
 """
 
 import random
@@ -9,7 +8,7 @@ def generate_linear_equation(max_value, max_denominator):
     """
     ax + by = c
 
-    :param max_vauel: int
+    :param max_value: int
     :param max_denominator: int
     :return: int, int, int
     """
@@ -122,7 +121,8 @@ if __name__ == '__main__':
     unique = input('Enter 1 for unique equations, 0 otherwise: ')
     if unique == '1':
         unique = True
-    else: unique = False
+    else:
+        unique = False
 
     for a, b, c in generate_linear_eqs(num_eqs, max_value, max_denominator, unique):
         print(f'a={a}, b={b}, c={c} =>' + format_linear_eq_to_print(a, b, c))
