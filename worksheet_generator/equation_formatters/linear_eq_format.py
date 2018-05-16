@@ -82,10 +82,17 @@ def fraction_format_without_sign(numerator: int, denominator: int,
             return f"{num_var if num_var else '1'}{f'/{denom_var}' if denom_var else ''}"
         return '1'
     else:
-        fraction_str = f"{abs(numerator)}{num_var if num_var else ''}"
+        # numerator
+        if num_var:
+            fraction_str = f"{abs(numerator) if abs(numerator) != 1 else ''}{num_var}"
+        else:
+            fraction_str = f"{abs(numerator)}"
+        # denominator
         if denominator != 1:
             return fraction_str + f"/{abs(denominator)}{denom_var if denom_var else ''}"
-        return fraction_str
+        elif denom_var:  # denominator coefficient = 1
+            return fraction_str + f"/{denom_var if denom_var else ''}"
+    return fraction_str
 
 
 if __name__ == '__main__':
