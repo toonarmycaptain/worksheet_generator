@@ -27,6 +27,8 @@ def format_linear_eq_to_print(a: int, b: int, c: int):
         return zero_ab_format('x', a, c)
 
     equation_str += 'y = '
+
+    # x var/fraction
     if -a / b < 0:
         equation_str += '-'
     if abs(a / b) != 1:
@@ -35,6 +37,7 @@ def format_linear_eq_to_print(a: int, b: int, c: int):
     else:  # |a/b| = 1
         equation_str += 'x'
 
+    # constant
     if c / b > 0:
         equation_str += ' + '
     elif c/b == 0:
@@ -57,7 +60,7 @@ def zero_ab_format(xy_eq, coefficient, c):
     equation_str = f'{xy_eq} = '
     if c == 0:
         return equation_str + '0'
-    elif c/coefficient <0 :
+    elif c/coefficient < 0:
         equation_str += '-'
     return equation_str + fraction_format_without_sign(c, coefficient)
 
@@ -67,7 +70,7 @@ def fraction_format_without_sign(numerator: int, denominator: int,
     """
     Format a fraction for printing, assuming neither numerator/denominator = 0,
     and that sign is handled outside of function.
-    NB Handled outside because -3/4 + 2 needs no space after sign: 2 - 3/4 does.
+    NB Sign handled outside because -3/4 + 2 needs no space: 2 - 3/4 does.
 
     :param numerator: int
     :param denominator: int
@@ -78,7 +81,7 @@ def fraction_format_without_sign(numerator: int, denominator: int,
     if numerator == 0:
         return '0'
     if abs(numerator / denominator) == 1:
-        if num_var or denom_var:
+        if num_var or denom_var:  # 1/x or x
             return f"{num_var if num_var else '1'}{f'/{denom_var}' if denom_var else ''}"
         return '1'
     else:
