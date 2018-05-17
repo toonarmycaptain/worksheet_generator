@@ -38,14 +38,13 @@ def test_linear_eq(equation: tuple, max_value, max_denominator: int):
     if a > max_value or b > max_value or c > max_value:
     # if abs(a) >= max_value or abs(b) >= max_value > abs(c) >= max_value:
         return False
-    if not test_linear_slope(b, max_denominator):
-        return False
-    if not test_linear_y_int(b, max_denominator):
-        return False
-    if not test_linear_x_int(a, max_denominator):
-        return False
-
-    return True
+    if (test_linear_slope(b, max_denominator)
+            and test_linear_y_int(b, max_denominator)
+            and test_linear_x_int(a, max_denominator)
+    ):
+        return True
+    # else:
+    return False
 
 
 def test_linear_slope(b: int, max_denominator: int):
