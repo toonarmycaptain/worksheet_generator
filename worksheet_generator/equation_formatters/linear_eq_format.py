@@ -40,7 +40,7 @@ def format_linear_eq_to_print(a: int, b: int, c: int):
     # constant
     if c / b > 0:
         equation_str += ' + '
-    elif c/b == 0:
+    elif c == 0:
         return equation_str
     else:
         equation_str += ' - '
