@@ -17,22 +17,23 @@ def generate_linear_equation(max_value, max_denominator):
         a = random.randint(-max_value, max_value)
         b = random.randint(-max_value, max_value)
         c = random.randint(-max_value, max_value)
-        test_passing = test_linear_eq(a, b, c, max_value, max_denominator)
+        test_passing = test_linear_eq((a, b, c), max_value, max_denominator)
     return a, b, c
 
-def test_linear_eq(a: int, b: int, c: int, max_value, max_denominator: int):
+def test_linear_eq(equation: tuple, max_value, max_denominator: int):
     """
     Test slope, intercepts for fraction_complexity.
 
-    :param a: int
-    :param b: int
-    :param c: int
+    :equation: tuple of ints (a, b, c) equation coefficients ax + by = c
     :param max_value: int
     :param max_denominator: int
     :return: bool
     """
+    a = equation[0]
+    b = equation[1]
     if a == 0 and b == 0:
         return False
+    c = equation[2]
     a, b, c = abs(a), abs(b), abs(c)
     if a > max_value or b > max_value or c > max_value:
     # if abs(a) >= max_value or abs(b) >= max_value > abs(c) >= max_value:
