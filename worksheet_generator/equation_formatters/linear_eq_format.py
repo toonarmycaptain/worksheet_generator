@@ -94,7 +94,8 @@ def fraction_format_without_sign(numerator: int, denominator: int,
         if denominator != 1:
             return fraction_str + f"/{abs(denominator)}{denom_var if denom_var else ''}"
         elif denom_var:  # denominator coefficient = 1
-            return fraction_str + f"/{denom_var if denom_var else ''}"
+            return fraction_str + f"/{denom_var}"
+
     return fraction_str
 
 
