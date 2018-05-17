@@ -78,8 +78,8 @@ def fraction_format_without_sign(numerator: int, denominator: int,
     """
     numerator, denominator = abs(numerator), abs(denominator)
 
-    if numerator == 0:
-        return '0'
+    # if numerator == 0:  # This should never be triggered.
+    #     return '0'
     if abs(numerator / denominator) == 1:
         if num_var or denom_var:  # 1/x or x
             return f"{num_var if num_var else '1'}{f'/{denom_var}' if denom_var else ''}"
