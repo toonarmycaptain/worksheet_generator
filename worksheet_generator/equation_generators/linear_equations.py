@@ -103,6 +103,26 @@ def test_linear_x_int(a: int, max_denominator: int):
 
 
 def generate_linear_eqs(num_eqs, max_val, max_denominator, unique=False):
+    """
+    Generate given number of linear equations in the form of coefficient ints:
+    a, b, c, with ax + by = c.
+
+    unique flag when set collects generated equations in a list, tests new
+    equations against list, to allow generation of unique ax +by = c equations.
+    NB:  0,  1,  1: 0x +  1y =>  1 --> y = 1
+     and 0, -1, -1: 0x + -1y => -1 --> y = 1
+    as well as:
+         3,  9, 27:  3x +  9y = 27 --> y = -3x/9 + 27/9  --> y = -x/3 + 3
+    and -1, -3, -9: -1x + -3y = -9 --> y =  x/-3 + -9/-3 --> y = -x/3 + 3
+    return as different even though they are algebraically equivalent, in the
+    current implementation.
+
+    :param num_eqs: int
+    :param max_val: int
+    :param max_denominator: int
+    :param unique: bool
+    :return: tuple (a: int, b: int, c: int)
+    """
     if unique:
         generated_equations = []
         for i in range(num_eqs):
