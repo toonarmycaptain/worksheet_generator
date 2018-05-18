@@ -118,11 +118,7 @@ if __name__ == '__main__':
     num_eqs = int(input('Enter number of equations to generate: '))
     max_value = int(input('Enter maximum value in equation: '))
     max_denominator = int(input('Enter maximum denominator: '))
-    unique = input('Enter 1 for unique equations, 0 otherwise: ')
-    if unique == '1':
-        unique = True
-    else:
-        unique = False
+    unique = int(input('Enter 1 for unique equations, 0 otherwise: '))
 
     for a, b, c in generate_linear_eqs(num_eqs, max_value, max_denominator, unique):
         print(f'a={a}, b={b}, c={c} =>' + format_linear_eq_to_print(a, b, c))
