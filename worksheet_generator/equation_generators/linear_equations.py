@@ -25,7 +25,7 @@ def test_linear_eq(equation: tuple, max_value, max_denominator: int):
     """
     Test slope, intercepts for fraction_complexity.
 
-    :equation: tuple of ints (a, b, c) equation coefficients ax + by = c
+    :param equation: tuple: (a: int, b: int, c: int) equation coefficients ax + by = c
     :param max_value: int
     :param max_denominator: int
     :return: bool
