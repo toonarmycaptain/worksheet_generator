@@ -1,4 +1,5 @@
 """
+Functions for generating linear equations.
 """
 
 import random
