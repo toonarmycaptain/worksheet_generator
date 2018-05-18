@@ -11,7 +11,7 @@ def generate_linear_equation(max_value, max_denominator):
 
     :param max_value: int
     :param max_denominator: int
-    :return: int, int, int
+    :return: tuple: (a: int, b: int, c: int)
     """
     test_passing = False
     while not test_passing:
