@@ -86,7 +86,8 @@ def fraction_format_without_sign(numerator: int, denominator: int,
         # else
         return '1'
     else:  # numerator/denominator != 1 ie is a fraction.
-        fraction_str = f'''{f"{abs(numerator) if abs(numerator) != 1 else ''}{num_var}" if num_var  else abs(numerator)}'''
+        fraction_str = f'''{f"{abs(numerator) if abs(numerator) != 1 else ''}{num_var}" if num_var  
+                            else abs(numerator)}'''
 
         # denominator
         if denominator != 1:
