@@ -1,0 +1,44 @@
+{# draft template for single column worksheet pdf #}
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+{% if student_name %}
+    < p style = "text-align:left;" >
+    Name: {{ student_name }}
+{% else %}
+    <p style="text-align:left;">
+    Student name: _____________________
+{% endif %}
+    <span style="float:right;">Date: _________ #give date and/or "Due date" option
+    </p>
+    <title>{{ title }}</title>
+</head>
+<body>
+
+{# find out how to do this, or if need to call a 'question template' using python #}
+{#for question in question_list:#    #list of randomly generated questions for each worksheet/test #}
+{#  f"{question_list.index(question)+1}) {question_text}" #}
+{#  f"{question answers formatted with a,b,c" #-> question answer lists will need to be random ordered... #}
+{#  {{question_list.index(question)+1}}) {{question}} # possible Jinja equivalent - use a Jinja question template? #}
+
+
+
+
+{% for question in question_list %}
+    <p>
+    {{ question_list.index(question)+1 }})  {{question.question_text}}     {# ')' used here - should have options/default #}
+        {% if question.answers %}
+            <br>
+            {% for answer in question.answers %}
+                {{ordinal_abc[question.answers.index(answer)]}}) {{answer}}<br>
+            {% endfor %}
+        {% else %}
+         &nbsp;&nbsp;&nbsp;&nbsp;______________________________ {# somehow variate underline length? #}
+        {% endif %}
+    </p>
+{% endfor %}
+
+</body>
+</html>
