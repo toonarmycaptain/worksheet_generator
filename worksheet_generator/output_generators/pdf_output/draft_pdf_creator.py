@@ -28,6 +28,7 @@ if __name__ == '__main__':
     html_out = template.render(template_vars)
 
 # render pdf from html
-
+    import os
+    print(os.getcwd())
     from weasyprint import HTML
-    HTML(string=html_out).write_pdf("test_text_worksheet1.pdf")
+    HTML(string=html_out).write_pdf("..//..//..//generated_worksheets/test_text_worksheet2.pdf")
