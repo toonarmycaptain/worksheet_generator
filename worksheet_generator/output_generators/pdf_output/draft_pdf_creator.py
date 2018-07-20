@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
     # read test_test_questions
     worksheet_q_list = []
-    text_file_name = 'test_text_questions.txt'   #add rel path, place source in other folder?
+    text_file_name = '..//..//..//worksheet_generator/input_parsers/test_text_questions.txt'   # rel path to any source, or copy user source into some project folder/section of database
     for question_text, answer_choices, solution in parse_text.parse_text_file(text_file_name):
         worksheet_q_list.append(question_class.TextQ(question_text, answer_choices, solution))
 
