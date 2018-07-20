@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
     # read test_test_questions
     worksheet_q_list = []
-    text_file_name = 'test_text_questions.txt'
+    text_file_name = 'test_text_questions.txt'   #add rel path, place source in other folder?
     for question_text, answer_choices, solution in parse_text.parse_text_file(text_file_name):
         worksheet_q_list.append(question_class.TextQ(question_text, answer_choices, solution))
 
@@ -28,7 +28,6 @@ if __name__ == '__main__':
     html_out = template.render(template_vars)
 
 # render pdf from html
-    import os
-    print(os.getcwd())
+
     from weasyprint import HTML
     HTML(string=html_out).write_pdf("..//..//..//generated_worksheets/test_text_worksheet2.pdf")
