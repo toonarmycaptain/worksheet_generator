@@ -84,13 +84,13 @@ Question 1|||Answer 1a///Answer 1b///Answer 1c///Answer 1d***Answer1///Answer2//
     return question, answer_choices, solution
 
 
-def parse_text_file(question_filename):
+def parse_text_file(question_filename: str):
     """
     Takes questions from none-empty lines of a text file with the form:
     Question 1///Answer 1a///Answer 1b///Answer 1c***correct***ans***etc
         and yields question string, lists of answers and solution
 
-    :param question_filename: filepath/filename of text file
+    :param question_filename: str filepath/filename of text file
     :yield: str, list or None, list or None: question, answers, solutions
     """
     with open(question_filename) as f:
