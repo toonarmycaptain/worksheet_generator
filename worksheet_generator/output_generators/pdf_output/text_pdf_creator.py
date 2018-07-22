@@ -1,3 +1,13 @@
+"""
+Create pdf from pure text questions.
+
+Currently draft state with limited functionality.
+
+Needs options around lines to write on, blank space between questions, etc.
+
+"""
+
+
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML
 
