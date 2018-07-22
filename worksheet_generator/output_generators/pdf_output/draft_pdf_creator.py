@@ -1,5 +1,4 @@
 from jinja2 import Environment, FileSystemLoader
-from abc_ord import a_to_z as ordinal_abc
 
 
 if __name__ == '__main__':
@@ -9,8 +8,8 @@ if __name__ == '__main__':
     import worksheet_generator.input_parsers.parse_text as parse_text
     from worksheet_generator.output_generators.pdf_output.abc_ord import a_to_z as ordinal_abc
     env = Environment(
-        loader=FileSystemLoader('./PDF_templates')
-    )
+        loader=FileSystemLoader('./PDF_templates'), autoescape=True
+        )
     template = env.get_template("draft_single_column_pdf.jinja2.template")
 
     # read test_test_questions
