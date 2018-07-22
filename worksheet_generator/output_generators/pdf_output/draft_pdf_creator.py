@@ -4,7 +4,7 @@ from weasyprint import HTML
 from worksheet_generator.output_generators.file_save_functions import check_add_file_extension
 
 
-def save_pdf(worksheet_html: str, filename: str, location: str='..//..//..//generated_worksheets'):
+def save_pdf(worksheet_html: str, filename: str, location: str = '..//..//..//generated_worksheets'):
     """
     Saves generated HTML to pdf in the specified location.
 
@@ -35,18 +35,18 @@ if __name__ == '__main__':
 
     env = Environment(
         loader=FileSystemLoader('./PDF_templates'), autoescape=True
-        )
+    )
 
     template = env.get_template("draft_single_column_pdf.jinja2.template")  # TODO: factor template fetch into function
 
-    # TODO: factor template dict into funct, possibly drawing needed data based on chosen template
+    # TODO: factor template dict into function, possibly drawing needed data based on chosen template
     template_vars = {"title": "Test worksheet",
                      "question_list": worksheet_q_list,
                      "ordinal_abc": ordinal_abc
                      }
 
-# render html of these questions
+    # render html of these questions
     html_out = template.render(template_vars)
 
-# render pdf from html
+    # render pdf from html
     save_pdf(html_out, 'test_text_worksheet3')
