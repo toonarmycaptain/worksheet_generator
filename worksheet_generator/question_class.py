@@ -43,7 +43,6 @@ class TextQ(Question):
             ), "Answer not in answer choices."
 
 
-
 # They may need to be decorated to enable correction/modification via GUI
 
 # ?Need method for answers/solutions that can return "No answers/solutions provided." if answers == None
