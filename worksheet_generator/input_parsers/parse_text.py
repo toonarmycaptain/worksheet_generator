@@ -20,6 +20,8 @@ NB Raise error in extract_ functions, log, pass to caller, caller provides feedb
 
 """
 
+from worksheet_generator.question_class import TextQ
+
 
 def extract_question(line: str):
     """
@@ -82,14 +84,14 @@ Question 1|||Answer 1a///Answer 1b///Answer 1c///Answer 1d***Answer1///Answer2//
     return question, answer_choices, solution
 
 
-def parse_text_file(question_filename):
+def parse_text_file(question_filename: str):
     """
     Takes questions from none-empty lines of a text file with the form:
     Question 1///Answer 1a///Answer 1b///Answer 1c***correct***ans***etc
         and yields question string, lists of answers and solution
 
-    :param question_filename: filepath/filename of text file
-    :yield: str, list or None, list or NOne: question, answers, solutions
+    :param question_filename: str filepath/filename of text file
+    :yield: str, list or None, list or None: question, answers, solutions
     """
     with open(question_filename) as f:
         for line in f.readlines():
@@ -98,13 +100,50 @@ def parse_text_file(question_filename):
             if line == '':
                 continue
             question, answer_choices, solution = parse_question(line)
+
+            if solution and answer_choices:
+                if set(solution) & set(answer_choices) != set(solution):  #check for unanswerable question
+                    solution_not_in_answers(question, answer_choices, solution)  # Raise error
+                    continue
             yield question, answer_choices, solution
-#TODO: add some error checking to give feedback to the user if solution isn't contained in answers'
+
+# TODO: add some error checking to give feedback to the user if solution isn't contained in answers
+
+
+def solution_not_in_answers(question_text, answers, solution):
+    """
+    Error handling for case where solution is not in provided answers.
+    Prints data and message to console.
+
+    :param question_text: str
+    :param answers: list or None
+    :param solution: list or None
+    :return: None
+    """
+    # TODO: error handling/logging
+    # TODO test if this is triggered - Done
+    print(f'ERROR - BAD INPUT:\nQuestion: {question_text}\nAnswers: {answers}\nSolution (not in answers): {solution}\n')
+
+
+def generate_questions(question_filename):
+    """
+    Take question data and generate TextQ object
+
+    :param question_filename: filepath/filename of text file
+    :yield: class TextQ
+    """
+    for question_text, answer_choices, solution in parse_text_file(question_filename):
+        yield TextQ(question_text, answer_choices, solution)
+
 
 if __name__ == '__main__':
 
     text_file_name = input('Path_to_text_file\\filename: ')
     for question_text, answer_choices, solution in parse_text_file(text_file_name):
         print(
-		f'Question: {question_text}\nAnswer choices: {answer_choices}\n Solution: {solution}\n'
-		)
+            f'Question: {question_text}\nAnswer choices: {answer_choices}\n Solution: {solution}\n'
+        )
+    print('Here are the question objects')
+    for question in generate_questions(text_file_name):
+        print(question)
+

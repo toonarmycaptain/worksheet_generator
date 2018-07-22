@@ -1,26 +1,41 @@
-a_to_z = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+"""
+Helper functions for producing letter sequences for questions/answers.
+"""
+
+
+a_to_z = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+          'w', 'x', 'y', 'z']
+
 
 def letter_seq(start: str, final: str, step=1):
     """
+    Returns a list of lowercase letters.
+    NB syntax different from general python syntax, as stop is nth term, rather
+    than n+1th term. ie letter_list'a', 'c') yields [a', 'b', 'c' rather than
+    'a', 'b'
 
+    :param start: str
+    :param final: str
+    :param step: int
     :return: Generator[str, float, str]
     """
-    for ordinal in range(ord(start.lower()), ord(final.lower())+1, step):
+    for ordinal in range(ord(start.lower()), ord(final.lower()) + 1, step):
         yield chr(ordinal)
 
 
 def letter_list(start: str, final: str, step=1):
     """
-    Yield a list of lowercase letters.
+    Returns a list of lowercase letters.
     NB syntax different from general python syntax, as stop is nth term, rather
     than n+1th term. ie letter_list('a', 'c') yields ['a', 'b', 'c'] rather than
     ['a', 'b']
+
     :param start: str
-    :param stop: str
+    :param final: str
     :param step: int
     :return: list
     """
-    return [letter for letter in letter_seq(start, final)]
+    return [letter for letter in letter_seq(start, final, step)]
 
 
 def ord_char(number: int):
@@ -31,7 +46,8 @@ def ord_char(number: int):
     :param number: int
     :return: str
     """
-    return a_to_z[number -1]
+    return a_to_z[number - 1]
+
 
 if __name__ == '__main__':
     for letter in letter_seq('a', 'c'):
