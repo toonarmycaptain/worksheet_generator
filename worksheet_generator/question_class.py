@@ -48,12 +48,14 @@ class TextQ(Question):
 
 # ?Need method for answers/solutions that can return "No answers/solutions provided." if answers == None
 
-# test cases
-test_q1 = TextQ('Hope this works', ['1', '2', 3], [3, '1'])
-test_q2 = TextQ('Hope this works to throw an error', [1, 2, 3], [3, 7])
-# test_q3 = TextQ('Testing assertion', None, [1, 2, 3])
-# test_q4 = TextQ('Testing assertion', [1, 2, 3], None)
-# test_q5 = TextQ('Testing assertion', None, None)
-#
-# print(test_q3.solution)
-# print(test_q4.solution)
+
+if __name__ == "__main__":
+    # test cases
+    test_q1 = TextQ('Hope this works', ['1', '2', 3], [3, '1'])
+    test_q2 = TextQ('Hope this works to throw an error', [1, 2, 3], [3, 7])
+    # test_q3 = TextQ('Testing assertion', None, [1, 2, 3])
+    # test_q4 = TextQ('Testing assertion', [1, 2, 3], None)
+    # test_q5 = TextQ('Testing assertion', None, None)
+    #
+    # print(test_q3.solution)
+    # print(test_q4.solution)
