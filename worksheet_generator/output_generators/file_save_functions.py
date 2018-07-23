@@ -17,7 +17,10 @@ def check_add_file_extension(filename: str, file_format: str='.pdf'):
 
 
 def check_file_path_name():
-    # check filepath and filename for existence/nonexistence.
+    """
+    check filepath and filename for existence/nonexistence.
+    :return:
+    """
     if check_filepath():
         if check_filename():
             return True
@@ -25,10 +28,10 @@ def check_file_path_name():
 
 
 def check_filepath():
-    # check file path for existence, create if doesn't exist?
-
+    """ check file path for existence, create if doesn't exist?
+    """
     pass
 
 def check_filename():
-    #check filename for existence
+    """check filename for existence"""
     return not filename_exists
