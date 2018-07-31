@@ -22,10 +22,11 @@ def generate_linear_equation(max_value, max_denominator):
     return a, b, c
 
 
-def test_linear_eq(equation: tuple, max_value, max_denominator: int):
+def test_linear_eq(equation: tuple, max_value: int, max_denominator: int):
     """
     Test slope, intercepts for fraction_complexity.
 
+    :type equation: tuple
     :param equation: tuple: (a: int, b: int, c: int) equation coefficients ax + by = c
     :param max_value: int
     :param max_denominator: int
