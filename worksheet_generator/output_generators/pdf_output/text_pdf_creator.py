@@ -7,14 +7,13 @@ Needs options around lines to write on, blank space between questions, etc.
 
 """
 
-
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML
 
-from worksheet_generator.output_generators.file_save_functions import check_add_file_extension
+from worksheet_generator.output_generators.file_save_functions import check_add_file_extension, make_full_path
 
 
-def save_pdf(worksheet_html: str, filename: str, location: str = '..//..//..//generated_worksheets'):
+def save_pdf(worksheet_html: str, filename: str, location: str = '../../../generated_worksheets'):
     """
     Saves generated HTML to pdf in the specified location.
 
@@ -24,7 +23,7 @@ def save_pdf(worksheet_html: str, filename: str, location: str = '..//..//..//ge
     :return: None
     """
     filename = check_add_file_extension(filename, file_format='.pdf')
-    write_target = location + '/' + filename
+    write_target = make_full_path(location, filename)
 
     HTML(string=worksheet_html).write_pdf(write_target)
 
@@ -36,10 +35,16 @@ if __name__ == '__main__':
     import worksheet_generator.input_parsers.parse_text as parse_text
     from worksheet_generator.output_generators.pdf_output.abc_ord import a_to_z as ordinal_abc
 
+    import os
+    import sys
+
+    os.chdir(os.path.dirname(sys.argv[0]))
+    print(os.getcwd())
+
     # read test_test_questions
     worksheet_q_list = []
 
-    text_file_name = '..//..//..//worksheet_generator/input_parsers/test_text_questions.txt'
+    text_file_name = make_full_path('../../../worksheet_generator/input_parsers', 'test_text_questions.txt')
     for question_text, answer_choices, solution in parse_text.parse_text_file(text_file_name):
         worksheet_q_list.append(question_class.TextQ(question_text, answer_choices, solution))
 
@@ -59,4 +64,4 @@ if __name__ == '__main__':
     html_out = template.render(template_vars)
 
     # render pdf from html
-    save_pdf(html_out, 'test_text_worksheet3')
+    save_pdf(html_out, 'test_text_worksheet3')  # TODO: check for folder existence and create if doesn't exist
