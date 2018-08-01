@@ -1,0 +1,46 @@
+worksheet_generator/
+        equation_formatters/
+            __init__.py
+            linear_eq_format.py
+
+        equation_generators/
+            __init__.py
+            linear_equations.py
+
+        input_parsers/
+            __init__.py
+            parse_excel.py
+            parse_text.py
+            parse_img_folder.py - parse a folder of images
+            test_text_questions.txt
+
+        output_generators/
+            pdf_output/
+                __init__.py
+            file_save_functions.py
+            pdf_output.py
+            word_output.py
+            text_output.py
+
+        tests/
+            __init__.py
+            test_text_questions.txt
+            test_travis_build.py
+            text_question_test_generator.py
+
+    __init__.py
+    worksheet_gen_gui
+    worksheet_generator.py
+    question_class.py
+
+worksheet_generator_env/
+
+.gitignore
+.travis.yml
+CODE_OF_CONDUCT.md
+dev_notes.txt
+README.md
+requirements.txt
+structure.txt
+
+
