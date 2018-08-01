@@ -138,12 +138,19 @@ def generate_questions(question_filename):
 
 if __name__ == '__main__':
 
-    text_file_name = input('Path_to_text_file\\filename: ')
-    for question_text, answer_choices, solution in parse_text_file(text_file_name):
+    # text_file_name = input('Path_to_text_file\\filename: ')
+
+    from pathlib import Path
+
+    data_folder = Path("../../worksheet_generator/input_parsers/")
+
+    text_file = data_folder / "test_text_questions.txt"
+
+    for question_text, answer_choices, solution in parse_text_file(text_file):
         print(
             f'Question: {question_text}\nAnswer choices: {answer_choices}\n Solution: {solution}\n'
         )
     print('Here are the question objects')
-    for question in generate_questions(text_file_name):
+    for question in generate_questions(text_file):
         print(question)
 
