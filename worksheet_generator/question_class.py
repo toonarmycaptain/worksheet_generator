@@ -21,7 +21,7 @@ class TextQ(Question):
     Question class with question and answers solely composed of text.
 
 
-    # for more than one answer, use tuple, or slice? This will output a list
+    # for more than one solution, use tuple, or slice? This will output a list
     # eg answers = [1, 2, 3, 4] => correct = [1:4:2] => correct >>> [2, 4]
 
 
@@ -34,8 +34,8 @@ class TextQ(Question):
         self.answers = answers
         self.solution = solution
         # for use with 'in range(num_answers) or in range(num_solutions
-        self.num_answers = None if not answers else len(answers) + 1
-        self.num_solutions = None if not solution else len(solution) + 1
+        self.num_answers = None if not answers else len(answers)
+        self.num_solutions = None if not solution else len(solution)
         # assert all solutions  are in the answer choices
         if solution and answers:
             assert (
@@ -50,7 +50,7 @@ class TextQ(Question):
 
 if __name__ == "__main__":
     # test cases
-    # test_q1 = TextQ('Hope this works', ['1', '2', 3], [3, '1'])
+    test_q1 = TextQ('Hope this works', ['1', '2', 3], [3, '1'])
     # test_q2 = TextQ('Hope this works to throw an error', [1, 2, 3], [3, 7])
     # test_q3 = TextQ('Testing assertion', None, [1, 2, 3])
     # test_q4 = TextQ('Testing assertion', [1, 2, 3], None)
