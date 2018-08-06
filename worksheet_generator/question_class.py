@@ -20,11 +20,6 @@ class TextQ(Question):
     """
     Question class with question and answers solely composed of text.
 
-
-    # for more than one solution, use tuple, or slice? This will output a list
-    # eg answers = [1, 2, 3, 4] => correct = [1:4:2] => correct >>> [2, 4]
-
-
     """
     def __init__(self,
                  question_text: str,
