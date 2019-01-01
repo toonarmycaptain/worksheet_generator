@@ -4,7 +4,7 @@ more-itertools==5.0.0
 pluggy==0.8.0
 py==1.7.0
 pytest==4.0.2
-six==1.11.0
+six==1.12.0
 jinja2==2.10
 weasyprint==0.42.3
 numpy==1.15.3
