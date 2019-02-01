@@ -1,7 +1,7 @@
 attrs==18.2.0
 colorama==0.4.1
 more-itertools==5.0.0
-pluggy==0.8.0
+pluggy==0.8.1
 py==1.7.0
 pytest==3.9.3
 six==1.11.0
