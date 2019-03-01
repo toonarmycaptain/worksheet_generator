@@ -7,4 +7,4 @@ pytest==4.3.0
 six==1.12.0
 jinja2==2.10
 weasyprint==45
-numpy==1.16.1
+numpy==1.16.2
