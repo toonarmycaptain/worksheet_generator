@@ -6,4 +6,4 @@ py==1.8.0
 six==1.12.0
 jinja2==2.10.3
 weasyprint==50
-numpy==1.17.2
+numpy==1.17.3
