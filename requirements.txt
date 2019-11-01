@@ -1,4 +1,4 @@
-attrs==19.2.0
+attrs==19.3.0
 colorama==0.4.1
 more-itertools==7.2.0
 pluggy==0.13.0
