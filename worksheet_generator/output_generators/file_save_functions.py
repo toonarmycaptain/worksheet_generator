@@ -2,22 +2,26 @@
 Helper functions for saving worksheets and files.
 """
 from pathlib import Path
+from typing import Union
 
 
-def check_add_file_extension(filename: str, file_format: str='.pdf'):
+def check_add_file_extension(filename: Union[str, Path], file_extension: str='.pdf'):
     """
-    Checks whether entered filename contains necessary extension, and adds
-    appropriate extension if needed.
+    Checks whether supplied filename has the supplied extension, and
+    adds or replaces with the supplied extension if necessary.
 
     :param filename: str
-    :param file_format: str
-    :return: str
+    :param file_extension: str
+    :return: Path
     """
-    if filename[:4].lower() is not file_format:  # check period? Probably unnecessary if file_format not user-input
-        return filename + file_format
+    filename_path = Path(filename)
+    if filename_path.suffix != file_extension:  # check period? Probably unnecessary if file_format not user-input
+        filename_path = filename_path.with_suffix(file_extension)
+
+    return filename_path
 
 
-def make_full_path(folder_path: str, filename: str = "test.txt"):
+def make_full_path(folder_path: str, filename: str):
     """
     Takes folder path and filename and concatenates into os agnostic full path.
 

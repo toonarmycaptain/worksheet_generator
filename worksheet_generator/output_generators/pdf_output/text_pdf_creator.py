@@ -22,7 +22,7 @@ def save_pdf(worksheet_html: str, filename: str, location: str = '../../../gener
     :param location: str
     :return: None
     """
-    filename = check_add_file_extension(filename, file_format='.pdf')
+    filename = check_add_file_extension(filename, file_extension='.pdf')
     write_target = make_full_path(location, filename)
 
     HTML(string=worksheet_html).write_pdf(write_target)
