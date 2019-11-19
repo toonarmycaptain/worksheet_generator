@@ -21,18 +21,6 @@ def check_add_file_extension(filename: Union[str, Path], file_extension: str='.p
     return filename_path
 
 
-def make_full_path(folder_path: str, filename: str):
-    """
-    Takes folder path and filename and concatenates into os agnostic full path.
-
-    :param folder_path: str - with forward slashes.
-    :param filename: str
-    :return: class 'pathlib.PosixPath'
-    """
-    folder = Path(folder_path)
-
-    return folder / filename
-
 
 def check_file_path_name():
     """

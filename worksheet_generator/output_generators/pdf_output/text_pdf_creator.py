@@ -6,11 +6,12 @@ Currently draft state with limited functionality.
 Needs options around lines to write on, blank space between questions, etc.
 
 """
+from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML
 
-from worksheet_generator.output_generators.file_save_functions import check_add_file_extension, make_full_path
+from worksheet_generator.output_generators.file_save_functions import check_add_file_extension
 
 
 def save_pdf(worksheet_html: str, filename: str, location: str = '../../../generated_worksheets'):
@@ -23,7 +24,7 @@ def save_pdf(worksheet_html: str, filename: str, location: str = '../../../gener
     :return: None
     """
     filename = check_add_file_extension(filename, file_extension='.pdf')
-    write_target = make_full_path(location, filename)
+    write_target = Path(location, filename)
 
     HTML(string=worksheet_html).write_pdf(write_target)
 
@@ -44,7 +45,7 @@ if __name__ == '__main__':
     # read test_test_questions
     worksheet_q_list = []
 
-    text_file_name = make_full_path('../../../worksheet_generator/input_parsers', 'test_text_questions.txt')
+    text_file_name = Path('../../../worksheet_generator/input_parsers', 'test_text_questions.txt')
     for question_text, answer_choices, solution in parse_text.parse_text_file(text_file_name):
         worksheet_q_list.append(question_class.TextQ(question_text, answer_choices, solution))
 
