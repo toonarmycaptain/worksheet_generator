@@ -55,7 +55,3 @@ def check_filename():
     """check filename for existence"""
     pass
     # return not filename_exists
-
-
-if __name__ == "__main__":
-    print(type(make_full_path(r"..\OddThinking\Documents\My_Source\Widget", "chicken.txt")))
