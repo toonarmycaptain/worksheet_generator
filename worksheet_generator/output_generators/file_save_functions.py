@@ -19,27 +19,3 @@ def check_add_file_extension(filename: Union[str, Path], file_extension: str='.p
         filename_path = filename_path.with_suffix(file_extension)
 
     return filename_path
-
-
-
-def check_file_path_name():
-    """
-    check filepath and filename for existence/nonexistence.
-    :return:
-    """
-    if check_filepath():
-        if check_filename():
-            return True
-    return False
-
-
-def check_filepath():
-    """ check file path for existence, create if doesn't exist?
-    """
-    pass
-
-
-def check_filename():
-    """check filename for existence"""
-    pass
-    # return not filename_exists
