@@ -18,11 +18,11 @@ def generate_linear_equation(max_value, max_denominator):
         a = random.randint(-max_value, max_value)
         b = random.randint(-max_value, max_value)
         c = random.randint(-max_value, max_value)
-        test_passing = test_linear_eq((a, b, c), max_value, max_denominator)
+        test_passing = check_linear_eq((a, b, c), max_value, max_denominator)
     return a, b, c
 
 
-def test_linear_eq(equation: tuple, max_value: int, max_denominator: int):
+def check_linear_eq(equation: tuple, max_value: int, max_denominator: int):
     """
     Test slope, intercepts for fraction_complexity.
 
@@ -43,16 +43,16 @@ def test_linear_eq(equation: tuple, max_value: int, max_denominator: int):
 
         return False
     if (
-            test_linear_slope(b, max_denominator)
-            and test_linear_y_int(b, max_denominator)
-            and test_linear_x_int(a, max_denominator)
+            check_linear_slope(b, max_denominator)
+            and check_linear_y_int(b, max_denominator)
+            and check_linear_x_int(a, max_denominator)
             ):
         return True
     # else:
     return False
 
 
-def test_linear_slope(b: int, max_denominator: int):
+def check_linear_slope(b: int, max_denominator: int):
     """
     Test that slope fraction isn't too complex.
     For ax + by = c => y = -(a/b)x + c/b: slope is -a/b
@@ -69,7 +69,7 @@ def test_linear_slope(b: int, max_denominator: int):
     return True
 
 
-def test_linear_y_int(b: int, max_denominator: int):
+def check_linear_y_int(b: int, max_denominator: int):
     """
     Test that slope fraction isn't too complex.
     For ax + by = c => y = -(a/b)x + c/b: y-intercept is c/b
@@ -86,7 +86,7 @@ def test_linear_y_int(b: int, max_denominator: int):
     return True
 
 
-def test_linear_x_int(a: int, max_denominator: int):
+def check_linear_x_int(a: int, max_denominator: int):
     """
     Test that slope fraction isn't too complex.
     For ax + by = c => y = -(a/b)x + c/b: x-intercept is c/a
