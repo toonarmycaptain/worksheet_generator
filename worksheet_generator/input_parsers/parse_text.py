@@ -19,6 +19,8 @@ TODO: Do testing for more than one Question/answer delimiter ('|||','***') eg if
 NB Raise error in extract_ functions, log, pass to caller, caller provides feedback to user.
 
 """
+from pathlib import Path
+from typing import Union
 
 from worksheet_generator.question_class import TextQ
 
@@ -84,7 +86,7 @@ Question 1|||Answer 1a///Answer 1b///Answer 1c///Answer 1d***Answer1///Answer2//
     return question, answer_choices, solution
 
 
-def parse_text_file(question_filename: str):
+def parse_text_file(question_filename: Union[Path, str]):
     """
     Takes questions from none-empty lines of a text file with the form:
     Question 1///Answer 1a///Answer 1b///Answer 1c***correct***ans***etc
