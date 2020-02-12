@@ -34,7 +34,7 @@ if __name__ == '__main__':
 
     import worksheet_generator.question_class as question_class
     import worksheet_generator.input_parsers.parse_text as parse_text
-    from worksheet_generator.output_generators.pdf_output.abc_ord import a_to_z as ordinal_abc
+    from worksheet_generator.output_generators.pdf.abc_ord import a_to_z as ordinal_abc
 
     import os
     import sys
