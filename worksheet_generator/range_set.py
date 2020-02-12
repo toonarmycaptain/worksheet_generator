@@ -42,14 +42,14 @@ class RangeSet:
     False
     >>> 12.5 in d
     False
-    
+
     # Examples
     # y = 1/x
     >>> domain_1_over_x = RangeSet(excluded=[lambda x: x == 0])
     >>> range_1_over_x = RangeSet(excluded=[lambda x: x == 0])
 
     # y = x^2 + 2
-    >>> domain_x_squared_add_two =  RangeSet()
+    >>> domain_x_squared_add_two =  RangeSet()  # No restriction on range for this function.
     >>> range_x_squared_add_two =  RangeSet(included=[lambda x: x >= 2])
 
     ...
