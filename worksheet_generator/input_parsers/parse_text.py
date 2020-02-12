@@ -104,10 +104,11 @@ def parse_text_file(question_filename: Union[Path, str]):
             question, answer_choices, solution = parse_question(line)
 
             if solution and answer_choices:
-                if set(solution) & set(answer_choices) != set(solution):  #check for unanswerable question
+                if set(solution) & set(answer_choices) != set(solution):  # Check for unanswerable question.
                     solution_not_in_answers(question, answer_choices, solution)  # Raise error
                     continue
             yield question, answer_choices, solution
+
 
 # TODO: add some error checking to give feedback to the user if solution isn't contained in answers
 
@@ -155,4 +156,3 @@ if __name__ == '__main__':
     print('Here are the question objects')
     for question in generate_questions(text_file):
         print(question)
-
