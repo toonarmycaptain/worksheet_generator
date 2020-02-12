@@ -1,0 +1,16 @@
+engines:
+    pylint:
+        enabled: true
+        python_version: 3.8
+exclude_paths:
+    - '**.md'
+    - '**.yml'
+    - '**.txt'
+    - 'tests/**'
+coverage:
+    enabled: true
+    exclude_paths:
+        - '**.md'
+        - '**.yml'
+        - '**.txt'
+        - 'tests/**'
