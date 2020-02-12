@@ -1,0 +1,10 @@
+[run]
+
+include = /home/travis/build/toonarmycaptain/worksheet_generator/*
+
+omit =
+     *.yml
+     *.md
+     tests/*
+     venv/*
+     *_env/*
