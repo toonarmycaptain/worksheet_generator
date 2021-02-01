@@ -3,6 +3,6 @@ codecov==2.1.11
 coverage==5.4
 coveralls==3.0.0
 mypy==0.800
-pytest-cov==2.10.1
+pytest-cov==2.11.1
 pytest-mypy==0.8.0
 
