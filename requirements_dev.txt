@@ -4,5 +4,5 @@ coverage==5.5
 coveralls==3.0.1
 mypy==0.812
 pytest-cov==2.11.1
-pytest-mypy==0.8.0
+pytest-mypy==0.8.1
 
