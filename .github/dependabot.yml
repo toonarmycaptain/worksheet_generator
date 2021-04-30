@@ -6,19 +6,3 @@ updates:
     interval: monthly
     time: "11:00"
   open-pull-requests-limit: 10
-  ignore:
-  - dependency-name: pytest-cov
-    versions:
-    - 2.11.1
-  - dependency-name: mypy
-    versions:
-    - "0.800"
-  - dependency-name: jinja2
-    versions:
-    - 2.11.3
-  - dependency-name: numpy
-    versions:
-    - 1.20.0
-  - dependency-name: coverage
-    versions:
-    - "5.4"
