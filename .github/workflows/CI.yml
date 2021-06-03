@@ -34,6 +34,7 @@ jobs:
         python -m pip install -r requirements_dev.txt
 
     - name: Test with pytest --cov=./ --mypy -vv
+      env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         pytest --cov=./ --mypy -vv
         coverage xml -i
