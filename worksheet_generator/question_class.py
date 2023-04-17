@@ -2,6 +2,7 @@
 Question classes
 
 """
+from typing import Optional
 
 
 class Question:
@@ -28,8 +29,8 @@ class TextQ(Question):
     """
     def __init__(self,
                  question_text: str,
-                 answers: list=None,
-                 solution: list=None):
+                 answers: Optional[list]=None,
+                 solution: Optional[list]=None):
         self.question_text = question_text
         self.answers = answers
         self.solution = solution
