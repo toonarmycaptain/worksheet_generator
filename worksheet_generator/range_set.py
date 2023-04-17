@@ -1,5 +1,5 @@
 """Class for domain/range set object."""
-from typing import Callable, List
+from typing import Optional, Callable, List
 
 
 class RangeSet:
@@ -62,8 +62,8 @@ class RangeSet:
     """
 
     def __init__(self, *,
-                 included: List[Callable] = None,
-                 excluded: List[Callable] = None):
+                 included: Optional[List[Callable]] = None,
+                 excluded: Optional[List[Callable]] = None):
         self._included: List[Callable] = []
         if included:
             self._included += included
