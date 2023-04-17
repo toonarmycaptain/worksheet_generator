@@ -49,8 +49,9 @@ jobs:
           coverage-reports: coverage.xml
 
     - name: Codecov  # upload
-      uses: codecov/codecov-action@v1.2.1
+      uses: codecov/codecov-action@v3
       with:
+        token: ${{ secrets.CODECOV_TOKEN }}
         files: ./coverage.xml
         name: codecov-umbrella # Optional.
         fail_ci_if_error: false # Allow codecov to signal fail rather than action failing.
