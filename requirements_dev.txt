@@ -3,3 +3,4 @@ coverage==7.16.2
 mypy==2.3.1
 pytest-cov==7.1.0
 pytest-mypy==1.0.1
+urllib3>=2.8.0 # not directly required, pinned by Snyk to avoid a vulnerability
