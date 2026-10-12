@@ -4,8 +4,8 @@ ax + bx = c
 
 Function formatting ax + bx = c to string form y = mx + n via y = -(a/b)x + c/b
 Function for formatting fractions from pairs of integers.
-TODO: Function simplifying fractions, with configurable degree of allowed complexity, "limited simplification"
-eg 9/27 -> 3/9 or simplify 9/27 to 3/9 or 1/3, but not 3/9 or 8/4...
+TODO: Function simplifying fractions, with configurable degree of allowed complexity,
+"limited simplification" eg 9/27 -> 3/9 or simplify 9/27 to 3/9 or 1/3, but not 3/9 or 8/4...
 
 """
 
@@ -20,30 +20,30 @@ def format_linear_eq_to_print(a: int, b: int, c: int):
     :param c: int
     :return: str
     """
-    equation_str = ''
+    equation_str = ""
     if a == 0:  # y = c/b
-        return zero_ab_format('y', b, c)
+        return zero_ab_format("y", b, c)
     if b == 0:  # x = c/a
-        return zero_ab_format('x', a, c)
+        return zero_ab_format("x", a, c)
 
-    equation_str += 'y = '
+    equation_str += "y = "
 
     # x var/fraction
     if -a / b < 0:
-        equation_str += '-'
+        equation_str += "-"
     if abs(a / b) != 1:
         # put x in denominator of fraction
-        equation_str += fraction_format_without_sign(a, b, num_var='x')
+        equation_str += fraction_format_without_sign(a, b, num_var="x")
     else:  # |a/b| = 1
-        equation_str += 'x'
+        equation_str += "x"
 
     # constant
     if c / b > 0:
-        equation_str += ' + '
+        equation_str += " + "
     elif c == 0:
         return equation_str
     else:
-        equation_str += ' - '
+        equation_str += " - "
     equation_str += fraction_format_without_sign(c, b)
     return equation_str
 
@@ -57,16 +57,15 @@ def zero_ab_format(xy_eq, coefficient, c):
     :param c: int
     :return: str
     """
-    equation_str = f'{xy_eq} = '
+    equation_str = f"{xy_eq} = "
     if c == 0:
-        return equation_str + '0'
-    elif c/coefficient < 0:
-        equation_str += '-'
+        return equation_str + "0"
+    elif c / coefficient < 0:
+        equation_str += "-"
     return equation_str + fraction_format_without_sign(c, coefficient)
 
 
-def fraction_format_without_sign(numerator: int, denominator: int,
-                                 num_var=None, denom_var=None):
+def fraction_format_without_sign(numerator: int, denominator: int, num_var=None, denom_var=None):
     """
     Format a fraction for printing, assuming neither numerator/denominator = 0,
     and that sign is handled outside of function.
@@ -84,10 +83,13 @@ def fraction_format_without_sign(numerator: int, denominator: int,
         if num_var or denom_var:  # 1/x or x
             return f"{num_var if num_var else '1'}{f'/{denom_var}' if denom_var else ''}"
         # else
-        return '1'
+        return "1"
     else:  # numerator/denominator != 1 ie is a fraction.
-        fraction_str = f'''{f"{abs(numerator) if abs(numerator) != 1 else ''}{num_var}" if num_var
-                            else abs(numerator)}'''
+        fraction_str = f"""{
+            f"{abs(numerator) if abs(numerator) != 1 else ''}{num_var}"
+            if num_var
+            else abs(numerator)
+        }"""
 
         # denominator
         if denominator != 1:
@@ -98,5 +100,5 @@ def fraction_format_without_sign(numerator: int, denominator: int,
     return fraction_str
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass

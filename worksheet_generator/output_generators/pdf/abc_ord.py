@@ -2,9 +2,34 @@
 Helper functions for producing letter sequences for questions/answers.
 """
 
-
-a_to_z = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
-          'w', 'x', 'y', 'z']
+a_to_z = [
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "p",
+    "q",
+    "r",
+    "s",
+    "t",
+    "u",
+    "v",
+    "w",
+    "x",
+    "y",
+    "z",
+]
 
 
 def letter_seq(start: str, final: str, step=1):
@@ -49,11 +74,11 @@ def ord_char(number: int):
     return a_to_z[number - 1]
 
 
-if __name__ == '__main__':
-    for letter in letter_seq('a', 'c'):
+if __name__ == "__main__":
+    for letter in letter_seq("a", "c"):
         print(letter)
 
-    for letter in letter_list('d', 'l'):
+    for letter in letter_list("d", "l"):
         print(letter)
 
-    print(f'The third letter is {ord_char(3)}')
+    print(f"The third letter is {ord_char(3)}")
