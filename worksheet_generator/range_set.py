@@ -2,6 +2,8 @@
 
 from collections.abc import Callable
 
+type Constraint = Callable[[float], bool]
+
 
 class RangeSet:
     """
@@ -56,26 +58,26 @@ class RangeSet:
     ...
     Attributes
     ----------
-    _included:  List[Callable]
+    _included:  list[Constraint]
        Constraints included in the defined range.
-    _excluded:  List[Callable]
+    _excluded:  list[Constraint]
        Constraints excluded from the defined range.
     """
 
     def __init__(
-        self, *, included: list[Callable] | None = None, excluded: list[Callable] | None = None
+        self, *, included: list[Constraint] | None = None, excluded: list[Constraint] | None = None
     ):
-        self._included: list[Callable] = []
+        self._included: list[Constraint] = []
         if included:
             self._included += included
         else:
             self._included += [lambda x: True]
 
-        self._excluded: list[Callable] = []
+        self._excluded: list[Constraint] = []
         if excluded:
             self._excluded += excluded
 
-    def __contains__(self, value) -> bool:
+    def __contains__(self, value: float) -> bool:
         """
         Checks if value in allowed values/ranges.
         :param value: Any, nominally int/float.

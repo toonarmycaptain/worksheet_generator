@@ -13,11 +13,14 @@ answers
 import os
 
 from worksheet_generator.input_parsers import parse_text
+from worksheet_generator.question_class import TextQ
 
 _output_repository = "..\\..\\generated_worksheets"
 
 
-def generate_text_worksheet(output_filename: str, questions: list, target_path=_output_repository):
+def generate_text_worksheet(
+    output_filename: str, questions: list[TextQ], target_path: str = _output_repository
+) -> str:
     """
     Take filename, question list, path to save file at, generate a text file at
     specified path.

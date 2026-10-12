@@ -21,12 +21,13 @@ NB Raise error in extract_ functions, log, pass to caller, caller provides feedb
 
 """
 
+from collections.abc import Generator
 from pathlib import Path
 
 from worksheet_generator.question_class import TextQ
 
 
-def extract_question(line: str):
+def extract_question(line: str) -> str:
     """
     Takes question string (line from file), returns question text as a string.
 
@@ -38,7 +39,7 @@ def extract_question(line: str):
     return line.strip()
 
 
-def extract_answers(line: str):
+def extract_answers(line: str) -> list[str] | None:
     """
     Takes question string (line from file), returns list of answer choices,
     or None if no answers are provided.
@@ -55,7 +56,7 @@ def extract_answers(line: str):
     return None
 
 
-def extract_solution(line: str):
+def extract_solution(line: str) -> list[str] | None:
     """
     Takes question string (line from file), returns solution/s as list
     Returns None if no solutions are available.
@@ -71,7 +72,7 @@ def extract_solution(line: str):
     return None
 
 
-def parse_question(line: str):
+def parse_question(line: str) -> tuple[str, list[str] | None, list[str] | None]:
     """
         Takes line of a text file with the form:
     Question 1|||Answer 1a///Answer 1b///Answer 1c///Answer 1d***Answer1///Answer2///
@@ -88,7 +89,9 @@ def parse_question(line: str):
     return question, answer_choices, solution
 
 
-def parse_text_file(question_filename: Path | str):
+def parse_text_file(
+    question_filename: Path | str,
+) -> Generator[tuple[str, list[str] | None, list[str] | None]]:
     """
     Takes questions from none-empty lines of a text file with the form:
     Question 1///Answer 1a///Answer 1b///Answer 1c***correct***ans***etc
@@ -115,7 +118,9 @@ def parse_text_file(question_filename: Path | str):
 # TODO: add some error checking to give feedback to the user if solution isn't contained in answers
 
 
-def solution_not_in_answers(question_text, answers, solution):
+def solution_not_in_answers(
+    question_text: str, answers: list[str] | None, solution: list[str] | None
+) -> None:
     """
     Error handling for case where solution is not in provided answers.
     Prints data and message to console.
@@ -135,7 +140,7 @@ def solution_not_in_answers(question_text, answers, solution):
     )
 
 
-def generate_questions(question_filename):
+def generate_questions(question_filename: Path | str) -> Generator[TextQ]:
     """
     Take question data and generate TextQ object
 

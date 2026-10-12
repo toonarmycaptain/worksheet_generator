@@ -29,7 +29,10 @@ class TextQ(Question):
     """
 
     def __init__(
-        self, question_text: str, answers: list | None = None, solution: list | None = None
+        self,
+        question_text: str,
+        answers: list[str] | None = None,
+        solution: list[str] | None = None,
     ):
         self.question_text = question_text
         self.answers = answers

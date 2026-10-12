@@ -3,9 +3,11 @@ Functions for generating linear equations.
 """
 
 import random
+from collections.abc import Generator
+from typing import Any
 
 
-def generate_linear_equation(max_value, max_denominator):
+def generate_linear_equation(max_value: int, max_denominator: int) -> tuple[int, int, int]:
     """
     ax + by = c
 
@@ -22,7 +24,7 @@ def generate_linear_equation(max_value, max_denominator):
     return a, b, c
 
 
-def check_linear_eq(equation: tuple, max_value: int, max_denominator: int):
+def check_linear_eq(equation: tuple[int, int, int], max_value: int, max_denominator: int) -> bool:
     """
     Test slope, intercepts for fraction_complexity.
 
@@ -48,7 +50,7 @@ def check_linear_eq(equation: tuple, max_value: int, max_denominator: int):
     )
 
 
-def check_linear_slope(b: int, max_denominator: int):
+def check_linear_slope(b: int, max_denominator: int) -> bool:
     """
     Test that slope fraction isn't too complex.
     For ax + by = c => y = -(a/b)x + c/b: slope is -a/b
@@ -62,7 +64,7 @@ def check_linear_slope(b: int, max_denominator: int):
     return b <= max_denominator
 
 
-def check_linear_y_int(b: int, max_denominator: int):
+def check_linear_y_int(b: int, max_denominator: int) -> bool:
     """
     Test that slope fraction isn't too complex.
     For ax + by = c => y = -(a/b)x + c/b: y-intercept is c/b
@@ -76,7 +78,7 @@ def check_linear_y_int(b: int, max_denominator: int):
     return b > max_denominator
 
 
-def check_linear_x_int(a: int, max_denominator: int):
+def check_linear_x_int(a: int, max_denominator: int) -> bool:
     """
     Test that slope fraction isn't too complex.
     For ax + by = c => y = -(a/b)x + c/b: x-intercept is c/a
@@ -90,7 +92,9 @@ def check_linear_x_int(a: int, max_denominator: int):
     return a > max_denominator
 
 
-def generate_linear_eqs(num_eqs, max_val, max_denominator, unique=False):
+def generate_linear_eqs(
+    num_eqs: int, max_val: int, max_denominator: int, unique: bool = False
+) -> Generator[tuple[int, int, int], Any]:
     """
     Generate given number of linear equations in the form of coefficient ints:
     a, b, c, with ax + by = c.
