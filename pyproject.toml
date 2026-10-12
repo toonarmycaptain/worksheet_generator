@@ -34,4 +34,16 @@ ignore_errors = true
 [tool.coverage.run]
 source = ["worksheet_generator"]
 
-omit =['*.yml', '*.md', 'tests/*', 'venv/*', '*_env/*',]
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+      "E", "W",   # pycodestyle
+      "F",        # pyflakes
+      "I",        # import sorting
+      "UP",       # pyupgrade (modern syntax for 3.13)
+      "B",        # bugbear
+      "SIM",      # simplifications
+      "RUF",      # ruff-specific
+  ]

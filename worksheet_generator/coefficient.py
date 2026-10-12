@@ -9,6 +9,7 @@ class Coefficient(int):
     >>> a*x**2 + b*x + c
     30
     """
+
     def __new__(cls, value):
         return int.__new__(cls, value)
 
@@ -17,7 +18,10 @@ class Coefficient(int):
             return self * arg
         return self
 
-# pytest currently throws an error when running doctests, but the doctests pass if this module is run directly:
+
+# pytest currently throws an error when running doctests,
+# but the doctests pass if this module is run directly:
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

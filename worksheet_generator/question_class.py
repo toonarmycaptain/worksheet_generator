@@ -2,7 +2,6 @@
 Question classes
 
 """
-from typing import Optional
 
 
 class Question:
@@ -14,6 +13,7 @@ class Question:
         answers: Possible answers to choose from.
         solution: The correct answer/s to the question.
     """
+
     pass
 
 
@@ -27,10 +27,10 @@ class TextQ(Question):
 
 
     """
-    def __init__(self,
-                 question_text: str,
-                 answers: Optional[list]=None,
-                 solution: Optional[list]=None):
+
+    def __init__(
+        self, question_text: str, answers: list | None = None, solution: list | None = None
+    ):
         self.question_text = question_text
         self.answers = answers
         self.solution = solution
@@ -39,14 +39,13 @@ class TextQ(Question):
         self.num_solutions = None if not solution else len(solution) + 1
         # assert all solutions  are in the answer choices
         if solution and answers:
-            assert (
-                set(solution) & set(answers) == set(solution)
-            ), "Answer not in answer choices."
+            assert set(solution) & set(answers) == set(solution), "Answer not in answer choices."
 
 
 # They may need to be decorated to enable correction/modification via GUI
 
-# ?Need method for answers/solutions that can return "No answers/solutions provided." if answers == None
+# ?Need method for answers/solutions that can return
+# "No answers/solutions provided." if answers == None
 
 
 if __name__ == "__main__":

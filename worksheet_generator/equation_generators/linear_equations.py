@@ -39,17 +39,13 @@ def check_linear_eq(equation: tuple, max_value: int, max_denominator: int):
     c = equation[2]
     a, b, c = abs(a), abs(b), abs(c)
     # if abs(a) >= max_value or abs(b) >= max_value > abs(c) >= max_value:
-    if a > max_value or b > max_value or c > max_value:
-
+    if max(a, b, c) > max_value:
         return False
-    if (
-            check_linear_slope(b, max_denominator)
-            and check_linear_y_int(b, max_denominator)
-            and check_linear_x_int(a, max_denominator)
-            ):
-        return True
-    # else:
-    return False
+    return (
+        check_linear_slope(b, max_denominator)
+        and check_linear_y_int(b, max_denominator)
+        and check_linear_x_int(a, max_denominator)
+    )
 
 
 def check_linear_slope(b: int, max_denominator: int):
@@ -61,12 +57,9 @@ def check_linear_slope(b: int, max_denominator: int):
     :param max_denominator: int
     :return: bool
     """
-    if b > max_denominator:
-        return False
-    # if a/b > max_value:  # Not currently necessary because
-    #     return False     # if max(a, b, c) < max_value, c/a is < max_value
-    # else:
-    return True
+    # a/b > max_value check not needed:
+    # check_linear_eq has already capped a, b and c at max_value, so a/b can't exceed it either.
+    return b <= max_denominator
 
 
 def check_linear_y_int(b: int, max_denominator: int):
@@ -78,12 +71,9 @@ def check_linear_y_int(b: int, max_denominator: int):
     :param max_denominator: int
     :return: bool
     """
-    if b > max_denominator:
-        return False
-    # if c/b > max_value:  # Not currently necessary because
-    #     return False     # if max(a, b, c) < max_value, c/a is < max_value
-    # else:
-    return True
+    # c/b > max_value check not needed:
+    # check_linear_eq has already capped a, b and c at max_value, so a/b can't exceed it either.
+    return b > max_denominator
 
 
 def check_linear_x_int(a: int, max_denominator: int):
@@ -95,12 +85,9 @@ def check_linear_x_int(a: int, max_denominator: int):
     :param max_denominator: int
     :return: bool
     """
-    if a > max_denominator:
-        return False
-    # if c/a > max_value:  # Not currently necessary because
-    #     return False     # if max(a, b, c) < max_value, c/a is < max_value
-    # else:
-    return True
+    # c/a > max_value check not needed:
+    # check_linear_eq has already capped a, b and c at max_value, so a/b can't exceed it either.
+    return a > max_denominator
 
 
 def generate_linear_eqs(num_eqs, max_val, max_denominator, unique=False):
@@ -126,7 +113,7 @@ def generate_linear_eqs(num_eqs, max_val, max_denominator, unique=False):
     """
     if unique:
         generated_equations = []
-        for i in range(num_eqs):
+        for _ in range(num_eqs):
             while True:
                 new_equation = generate_linear_equation(max_val, max_denominator)
                 if new_equation not in generated_equations:
@@ -134,16 +121,19 @@ def generate_linear_eqs(num_eqs, max_val, max_denominator, unique=False):
                     break
             yield new_equation
     else:
-        for i in range(num_eqs):
+        for _ in range(num_eqs):
             yield generate_linear_equation(max_val, max_denominator)
 
-if __name__ == '__main__':
-    from worksheet_generator.equation_formatters.linear_eq_format import format_linear_eq_to_print
 
-    num_eqs = int(input('Enter number of equations to generate: '))
-    max_value = int(input('Enter maximum value in equation: '))
-    max_denominator = int(input('Enter maximum denominator: '))
-    unique = bool(input('Enter 1 for unique equations, 0 otherwise: '))
+if __name__ == "__main__":
+    from worksheet_generator.equation_formatters.linear_eq_format import (
+        format_linear_eq_to_print,
+    )
+
+    num_eqs = int(input("Enter number of equations to generate: "))
+    max_value = int(input("Enter maximum value in equation: "))
+    max_denominator = int(input("Enter maximum denominator: "))
+    unique = bool(input("Enter 1 for unique equations, 0 otherwise: "))
 
     for a, b, c in generate_linear_eqs(num_eqs, max_value, max_denominator, unique):
-        print(f'a={a}, b={b}, c={c} =>' + format_linear_eq_to_print(a, b, c))
+        print(f"a={a}, b={b}, c={c} =>" + format_linear_eq_to_print(a, b, c))
