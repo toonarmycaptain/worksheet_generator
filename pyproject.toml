@@ -25,6 +25,11 @@ dev = [
 addopts = "--doctest-modules"
 
 [tool.mypy]
+strict = true
+files = ["worksheet_generator", "tests"]
+
+[[tool.mypy.overrides]]
+module = ["weasyprint.*"]
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
