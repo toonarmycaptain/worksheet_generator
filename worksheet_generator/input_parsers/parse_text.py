@@ -15,12 +15,13 @@ for question_text, question_answers in parse_text_file(text_file_name):
             -dict form could use iteration through keys to output
         ->store in database or object
 
-TODO: Do testing for more than one Question/answer delimiter ('|||','***') eg if line.count('|||') > 1: throw error
+TODO: Do testing for more than one Question/answer delimiter ('|||','***')
+eg if line.count('|||') > 1: throw error
 NB Raise error in extract_ functions, log, pass to caller, caller provides feedback to user.
 
 """
+
 from pathlib import Path
-from typing import Union
 
 from worksheet_generator.question_class import TextQ
 
@@ -32,24 +33,25 @@ def extract_question(line: str):
     :param line: str
     :return: str
     """
-    if '|||' in line:
-        return line.split('|||')[0].strip()
+    if "|||" in line:
+        return line.split("|||")[0].strip()
     return line.strip()
 
 
 def extract_answers(line: str):
     """
-    Takes question string (line from file), returns list of answer choices, or None if no answers are provided.
+    Takes question string (line from file), returns list of answer choices,
+    or None if no answers are provided.
 
     :param line: str
     :return: list: answer_choices or None
     """
-    if '|||' not in line:
+    if "|||" not in line:
         return None
-    answers_sep = line.split('|||')[1].split('***')[0]
-    answers = answers_sep.split('///')
-    if answers != ['']:
-        return [x.strip() for x in answers if x != '' and x.strip() != '']
+    answers_sep = line.split("|||")[1].split("***")[0]
+    answers = answers_sep.split("///")
+    if answers != [""]:
+        return [x.strip() for x in answers if x != "" and x.strip() != ""]
     return None
 
 
@@ -61,23 +63,23 @@ def extract_solution(line: str):
     :param line: str
     :return: list: solutions or None
     """
-    if '***' in line:
-        solution_sep = line.split('***')[1]
-        solutions = solution_sep.split('///')
-        if solutions != ['']:
-            return [x.strip() for x in solutions if x != '' and x.strip() != '']
+    if "***" in line:
+        solution_sep = line.split("***")[1]
+        solutions = solution_sep.split("///")
+        if solutions != [""]:
+            return [x.strip() for x in solutions if x != "" and x.strip() != ""]
     return None
 
 
 def parse_question(line: str):
     """
-    Takes line of a text file with the form:
-Question 1|||Answer 1a///Answer 1b///Answer 1c///Answer 1d***Answer1///Answer2///
-    and returns question string, lists of answers and solutions, or None if
-    no answers/lists are provided.
+        Takes line of a text file with the form:
+    Question 1|||Answer 1a///Answer 1b///Answer 1c///Answer 1d***Answer1///Answer2///
+        and returns question string, lists of answers and solutions, or None if
+        no answers/lists are provided.
 
-    :param line: line of text file containing question text
-    :return: str, list, list: question, list or None, list or None
+        :param line: line of text file containing question text
+        :return: str, list, list: question, list or None, list or None
     """
     question = extract_question(line)
     answer_choices = extract_answers(line)
@@ -86,7 +88,7 @@ Question 1|||Answer 1a///Answer 1b///Answer 1c///Answer 1d***Answer1///Answer2//
     return question, answer_choices, solution
 
 
-def parse_text_file(question_filename: Union[Path, str]):
+def parse_text_file(question_filename: Path | str):
     """
     Takes questions from none-empty lines of a text file with the form:
     Question 1///Answer 1a///Answer 1b///Answer 1c***correct***ans***etc
@@ -97,16 +99,16 @@ def parse_text_file(question_filename: Union[Path, str]):
     """
     with open(question_filename) as f:
         for line in f.readlines():
-            if line[-1:] == '\n':  # Strip newlines
+            if line[-1:] == "\n":  # Strip newlines
                 line = line[:-1]
-            if line == '':
+            if line == "":
                 continue
             question, answer_choices, solution = parse_question(line)
 
-            if solution and answer_choices:
-                if set(solution) & set(answer_choices) != set(solution):  # Check for unanswerable question.
-                    solution_not_in_answers(question, answer_choices, solution)  # Raise error
-                    continue
+            # Check for unanswerable question.
+            if solution and answer_choices and not set(solution).issubset(answer_choices):
+                solution_not_in_answers(question, answer_choices, solution)  # Raise error
+                continue
             yield question, answer_choices, solution
 
 
@@ -125,7 +127,12 @@ def solution_not_in_answers(question_text, answers, solution):
     """
     # TODO: error handling/logging
     # TODO test if this is triggered - Done
-    print(f'ERROR - BAD INPUT:\nQuestion: {question_text}\nAnswers: {answers}\nSolution (not in answers): {solution}\n')
+    print(
+        f"ERROR - BAD INPUT:\n"
+        f"Question: {question_text}\n"
+        f"Answers: {answers}\n"
+        f"Solution (not in answers): {solution}\n"
+    )
 
 
 def generate_questions(question_filename):
@@ -139,8 +146,7 @@ def generate_questions(question_filename):
         yield TextQ(question_text, answer_choices, solution)
 
 
-if __name__ == '__main__':
-
+if __name__ == "__main__":
     # text_file_name = input('Path_to_text_file\\filename: ')
 
     from pathlib import Path
@@ -151,8 +157,8 @@ if __name__ == '__main__':
 
     for question_text, answer_choices, solution in parse_text_file(text_file):
         print(
-            f'Question: {question_text}\nAnswer choices: {answer_choices}\n Solution: {solution}\n'
+            f"Question: {question_text}\nAnswer choices: {answer_choices}\n Solution: {solution}\n"
         )
-    print('Here are the question objects')
+    print("Here are the question objects")
     for question in generate_questions(text_file):
         print(question)

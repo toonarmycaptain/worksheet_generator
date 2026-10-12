@@ -1,5 +1,6 @@
 """Class for domain/range set object."""
-from typing import Optional, Callable, List
+
+from collections.abc import Callable
 
 
 class RangeSet:
@@ -61,16 +62,16 @@ class RangeSet:
        Constraints excluded from the defined range.
     """
 
-    def __init__(self, *,
-                 included: Optional[List[Callable]] = None,
-                 excluded: Optional[List[Callable]] = None):
-        self._included: List[Callable] = []
+    def __init__(
+        self, *, included: list[Callable] | None = None, excluded: list[Callable] | None = None
+    ):
+        self._included: list[Callable] = []
         if included:
             self._included += included
         else:
             self._included += [lambda x: True]
 
-        self._excluded: List[Callable] = []
+        self._excluded: list[Callable] = []
         if excluded:
             self._excluded += excluded
 
@@ -80,22 +81,22 @@ class RangeSet:
         :param value: Any, nominally int/float.
         :return: bool
         """
-        return (any(constraint(value) for constraint in self._included) and
-                not any(constraint(value) for constraint in self._excluded)
-                )
+        return any(constraint(value) for constraint in self._included) and not any(
+            constraint(value) for constraint in self._excluded
+        )
 
 
 """
 Add add/remove constraint machinery:
-    - if self._included was empty and given a default blanket lambda x: True, and an item is then added to 
-      self._included, it should remove/overwrite the blanket value. This could be accomplished in the __init__ using a
-      variable for the blanket value: 
+    - if self._included was empty and given a default blanket lambda x: True, and an item is then
+      added to self._included, it should remove/overwrite the blanket value. This could be
+      accomplished in the __init__ using a variable for the blanket value:
             self.___include_all_values = lambda x: True
                     if included:
             self._included += included
         else:
             self._included += [self.include_all_values]
-            
+
     def __add_constraint(constraint: Callable):
         if self.include_all_values in self._included:
             self.included = [constraint]  # Make sure blanket value is overridden if present.
@@ -105,5 +106,5 @@ Add add/remove constraint machinery:
 if __name__ == "__main__":
     import doctest
 
-    print('doctesting')
+    print("doctesting")
     doctest.testmod()

@@ -1,4 +1,3 @@
-
 def ordinal(num):
     """
     Take number and return the ordinal st, nd, th.
@@ -7,12 +6,12 @@ def ordinal(num):
     """
     num_str = str(num)
 
-    SUFFIXES = {1: 'st', 2: 'nd', 3: 'rd'}
+    SUFFIXES = {1: "st", 2: "nd", 3: "rd"}
     # Check for 11-14 because those are abnormal
     if int(num_str[-2:]) > 10 and int(num_str[-2:]) < 14:
-        return 'th'
+        return "th"
     else:
-        suffix = SUFFIXES.get(int(num_str[-1:]), 'th')
+        suffix = SUFFIXES.get(int(num_str[-1:]), "th")
     return suffix
 
 
@@ -30,16 +29,17 @@ def test_format_1(num):
     :num: int
     :return: str
     """
-    return_string =''
-    for i in range(1, num+1):
-        return_string += f'Question {i}: This is the {i}{ordinal(i)} question.'
-        return_string += ''
-        for j in ['a', 'b', 'c', 'd']:
-            return_string += (f'///Answer {i}{j}')
-        return_string += '\n'
+    return_string = ""
+    for i in range(1, num + 1):
+        return_string += f"Question {i}: This is the {i}{ordinal(i)} question."
+        return_string += ""
+        for j in ["a", "b", "c", "d"]:
+            return_string += f"///Answer {i}{j}"
+        return_string += "\n"
 
     return return_string
 
-if __name__ == '__main__':
-    n = int(input('Generate how many questions? '))
+
+if __name__ == "__main__":
+    n = int(input("Generate how many questions? "))
     print(test_format_1(n))
