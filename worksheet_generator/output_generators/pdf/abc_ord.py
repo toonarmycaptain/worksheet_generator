@@ -2,6 +2,9 @@
 Helper functions for producing letter sequences for questions/answers.
 """
 
+from collections.abc import Generator
+from typing import Any
+
 a_to_z = [
     "a",
     "b",
@@ -32,7 +35,7 @@ a_to_z = [
 ]
 
 
-def letter_seq(start: str, final: str, step=1):
+def letter_seq(start: str, final: str, step: int = 1) -> Generator[str, Any]:
     """
     Returns a list of lowercase letters.
     NB syntax different from general python syntax, as stop is nth term, rather
@@ -48,7 +51,7 @@ def letter_seq(start: str, final: str, step=1):
         yield chr(ordinal)
 
 
-def letter_list(start: str, final: str, step=1):
+def letter_list(start: str, final: str, step: int = 1) -> list[str]:
     """
     Returns a list of lowercase letters.
     NB syntax different from general python syntax, as stop is nth term, rather
@@ -63,7 +66,7 @@ def letter_list(start: str, final: str, step=1):
     return [letter for letter in letter_seq(start, final, step)]
 
 
-def ord_char(number: int):
+def ord_char(number: int) -> str:
     """
     Returns letter for nth letter of alphabet.
     number = 1, 3, 26 returns a, c, z respectively.

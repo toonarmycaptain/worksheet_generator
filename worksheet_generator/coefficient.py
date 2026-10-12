@@ -1,3 +1,6 @@
+from typing import Self
+
+
 class Coefficient(int):
     """
     >>> a = Coefficient(3)
@@ -10,10 +13,10 @@ class Coefficient(int):
     30
     """
 
-    def __new__(cls, value):
+    def __new__(cls, value: int) -> Self:
         return int.__new__(cls, value)
 
-    def __call__(self, arg=None):
+    def __call__(self, arg: int | None = None) -> int:
         if arg:
             return self * arg
         return self

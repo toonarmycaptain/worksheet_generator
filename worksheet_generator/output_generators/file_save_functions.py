@@ -5,7 +5,7 @@ Helper functions for saving worksheets and files.
 from pathlib import Path
 
 
-def check_add_file_extension(filename: str | Path, file_extension: str = ".pdf"):
+def check_add_file_extension(filename: str | Path, file_extension: str = ".pdf") -> Path:
     """
     Checks whether supplied filename has the supplied extension, and
     adds or replaces with the supplied extension if necessary.

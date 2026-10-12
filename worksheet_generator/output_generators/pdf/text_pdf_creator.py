@@ -17,7 +17,9 @@ from worksheet_generator.output_generators.file_save_functions import (
 )
 
 
-def save_pdf(worksheet_html: str, filename: str, location: str = "../../../generated_worksheets"):
+def save_pdf(
+    worksheet_html: str, filename: Path | str, location: str = "../../../generated_worksheets"
+) -> None:
     """
     Saves generated HTML to pdf in the specified location.
 

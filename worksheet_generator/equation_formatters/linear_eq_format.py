@@ -10,7 +10,7 @@ TODO: Function simplifying fractions, with configurable degree of allowed comple
 """
 
 
-def format_linear_eq_to_print(a: int, b: int, c: int):
+def format_linear_eq_to_print(a: int, b: int, c: int) -> str:
     """
     Format linear equation of form ax + by = c into y = -(a/b)x + c/b
     NB a, b cannot both be zero.
@@ -48,7 +48,7 @@ def format_linear_eq_to_print(a: int, b: int, c: int):
     return equation_str
 
 
-def zero_ab_format(xy_eq, coefficient, c):
+def zero_ab_format(xy_eq: str, coefficient: int, c: int) -> str:
     """
     Function to return xy_eq (ie 'y = ' or 'x = ') plus constant.
 
@@ -65,7 +65,9 @@ def zero_ab_format(xy_eq, coefficient, c):
     return equation_str + fraction_format_without_sign(c, coefficient)
 
 
-def fraction_format_without_sign(numerator: int, denominator: int, num_var=None, denom_var=None):
+def fraction_format_without_sign(
+    numerator: int, denominator: int, num_var: str | None = None, denom_var: str | None = None
+) -> str:
     """
     Format a fraction for printing, assuming neither numerator/denominator = 0,
     and that sign is handled outside of function.
@@ -73,6 +75,8 @@ def fraction_format_without_sign(numerator: int, denominator: int, num_var=None,
 
     :param numerator: int
     :param denominator: int
+    :param num_var: str | None
+    :param denom_var: str | None
     :return: str
     """
     numerator, denominator = abs(numerator), abs(denominator)
