@@ -7,6 +7,7 @@ dependencies = [
     "django-ninja>=1.7.1",
     "jinja2==3.1.6",
     "numpy==2.5.3",
+    "reportlab>=5.0.1",
     "weasyprint==70.0",
 ]
 
@@ -37,11 +38,17 @@ ignore_missing_imports = true
 module = "tests.*"
 ignore_errors = true
 
+[[tool.mypy.overrides]]
+module = "worksheet_generator._imported.*"
+ignore_errors = true
+
 [tool.coverage.run]
 source = ["worksheet_generator"]
 
 [tool.ruff]
 line-length = 100
+extend-exclude = ["worksheet_generator/_imported"]
+force-exclude = true
 
 [tool.ruff.lint]
 select = [
