@@ -11,6 +11,14 @@ dependencies = [
     "weasyprint==70.0",
 ]
 
+[build-system]
+requires = ["uv_build>=0.13.5,<0.14"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = ""
+
+
 [dependency-groups]
 dev = [
     "coverage==7.16.2",
