@@ -66,7 +66,7 @@ class StripOptions(Options):
     title: Title = "Word Problems — Strip Diagrams"
     label: Label = "Day 2 · Sheet A"
     problems: Problems = 4
-    answer_key: bool = False
+    answer_key: bool = Field(False, title="Add an answer key page")
 
 
 class NumberLineOptions(Options):
@@ -86,35 +86,35 @@ class MultiplicationMCOptions(Options):
     label: Label = "Sheet A"
     problems: Problems = 4
     # At least 3 and 6, so there is always a fact other than 2 x 2 to draw from.
-    max_factor: int = Field(12, ge=3, le=12)
-    max_product: int = Field(100, ge=6, le=100)
-    no_jump_labels: bool = False
+    max_factor: int = Field(12, ge=3, le=12, title="Largest factor")
+    max_product: int = Field(100, ge=6, le=100, title="Largest product")
+    no_jump_labels: bool = Field(False, title="Leave the number-line jumps unnumbered")
 
 
 class DataGraphOptions(Options):
     title: Title = "Data and Graphs — Read, Complete, Solve"
     label: Label = "Sheet A"
     problems: Problems = 4
-    list_style: ListStyle = "mix"
+    list_style: ListStyle = Field("mix", title="Show lists of numbers as")
 
 
 class DataGraphMCOptions(Options):
     title: Title = "Data and Graphs — Pick the Matching Graph"
     label: Label = "Sheet A"
     problems: Problems = 4
-    list_style: ListStyle = "mix"
+    list_style: ListStyle = Field("mix", title="Show lists of numbers as")
 
 
 class WorksheetOptions(Options):
     title: Title = "Base-Ten Blocks: 3-Digit Addition & Subtraction"
-    represent: int = Field(2, ge=0, le=MAX_PROBLEMS)
-    add: int = Field(2, ge=0, le=MAX_PROBLEMS)
-    sub: int = Field(2, ge=0, le=MAX_PROBLEMS)
+    represent: int = Field(2, ge=0, le=MAX_PROBLEMS, title="“Write the number” problems")
+    add: int = Field(2, ge=0, le=MAX_PROBLEMS, title="Addition problems")
+    sub: int = Field(2, ge=0, le=MAX_PROBLEMS, title="Subtraction problems")
     # Mirrors the legacy --no-regroup, which doesn't avoid regrouping despite its help
     # text: the default makes every problem regroup, and this flag gives a random mix.
     # Kept as-is; an always/mixed/never choice is planned for the shared core.
-    no_regroup: bool = False
-    bw: bool = False
+    no_regroup: bool = Field(False, title="Mix in problems without regrouping")
+    bw: bool = Field(False, title="Black and white (saves toner)")
 
     @model_validator(mode="after")
     def _has_problems(self) -> Self:
