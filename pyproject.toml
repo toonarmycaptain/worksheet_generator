@@ -22,10 +22,12 @@ module-root = ""
 [dependency-groups]
 dev = [
     "coverage==7.16.2",
+    "django-stubs>=6.1.2",
     "mypy==2.3.1",
     "pre-commit>=4.6.2",
     "pytest>=9.1.1",
     "pytest-cov==7.1.0",
+    "pytest-django>=4.14.0",
     "pytest-mypy==1.0.1",
     "ruff>=0.17.0",
 ]
@@ -33,10 +35,18 @@ dev = [
 
 [tool.pytest.ini_options]
 addopts = "--doctest-modules"
+DJANGO_SETTINGS_MODULE = "config.settings"
+pythonpath = ["web"]
+
+[tool.django-stubs]
+django_settings_module = "config.settings"
 
 [tool.mypy]
 strict = true
-files = ["worksheet_generator", "tests"]
+files = ["worksheet_generator", "tests", "web"]
+plugins = ["mypy_django_plugin.main"]
+mypy_path= "web"
+untyped_calls_exclude = ["worksheet_generator._imported"]
 
 [[tool.mypy.overrides]]
 module = ["weasyprint.*"]

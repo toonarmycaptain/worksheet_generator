@@ -4,8 +4,8 @@ Every imported ``generate_*`` script must produce byte-identical PDF output for 
 fixed seed, so later refactors can be shown not to change existing worksheets.
 
 reportlab is made deterministic with ``rl_config.invariant`` (a fixed timestamp and
-document id).  Each case drives the script's own ``main()`` through argv, so the
-snapshot is exactly what the command line produces.
+document id), set in ``conftest.py``.  Each case drives the script's own ``main()``
+through argv, so the snapshot is exactly what the command line produces.
 
 Regenerate the golden files after an intended change::
 
@@ -20,10 +20,6 @@ import sys
 from pathlib import Path
 
 import pytest
-import reportlab.rl_config
-
-# Fixed PDF timestamp and document id, so the same seed gives the same bytes.
-reportlab.rl_config.invariant = 1
 
 GOLDENS = Path(__file__).parent / "goldens"
 _PKG = "worksheet_generator._imported."
