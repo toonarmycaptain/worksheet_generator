@@ -107,8 +107,10 @@ def test_the_response(
 
     ``randint`` gives the operands and ``sample`` takes the top of the wrong answers, so the
     PDF also shows the operation's and ``max_number``'s limits. The whole response is compared,
-    status, content type, filename and drawn text, so a URL option that is dropped, ignored or
-    sent to the wrong place makes it differ.
+    status, content type, filename, cache header and drawn text, so a URL option that is dropped,
+    ignored or sent to the wrong place makes it differ. The cache header is ``no-store``: there
+    is no seed, so the same URL must make a new sheet, and Cloudflare caches ``.pdf`` URLs unless
+    told not to.
     """
     values = iter(drawn)
     monkeypatch.setattr(random, "randint", lambda low, high: next(values))
@@ -121,11 +123,13 @@ def test_the_response(
         response.status_code,
         response["Content-Type"],
         response["Content-Disposition"],
+        response["Cache-Control"],
         pdf_text(response.content),
     ) == (
         200,
         "application/pdf",
         f'inline; filename="{filename}"',
+        "no-store",
         pdf_text(render(build(cases), answer_key, title, label)),
     )
 
