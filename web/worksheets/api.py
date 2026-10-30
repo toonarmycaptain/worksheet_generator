@@ -64,7 +64,11 @@ def _add_legacy_endpoint(name: str, kind: Kind[Any]) -> None:
 
 def _add_core_endpoint(name: str, kind: CoreKind[Any]) -> None:
     def pdf(request: HttpRequest, options: Query[kind.options]) -> HttpResponse:  # type: ignore[name-defined]
-        return _pdf_response(kind.render(options), name, slugify(options.label))
+        response = _pdf_response(kind.render(options), name, slugify(options.label))
+        # No seed, so the same URL has to make a new sheet each time. Without this, Cloudflare
+        # caches the .pdf URL, and browsers keep it too, and every request returns the same sheet.
+        response["Cache-Control"] = "no-store"
+        return response
 
     _add_route(name, kind, pdf)
 
