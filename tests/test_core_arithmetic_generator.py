@@ -12,61 +12,271 @@ import pytest
 from core.arithmetic import ArithmeticQuestionData, Operation
 from core.arithmetic_generator import generate_arithmetic_questions
 
-# one question: (operands, answer, wrong answers, options)
-Made = tuple[tuple[int, int], int, tuple[int, ...], tuple[int, ...]]
+# one question: (data, wrong answers, options)
+Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
 
 
 @pytest.mark.parametrize(
     ("operation", "low", "high", "wrong_answer_count", "drawn", "expected"),
     [
         # operands are kept in the order drawn, and sample takes the top of the wrong answers
-        (Operation.ADD, 0, 10, 3, [3, 4], [((3, 4), 7, (18, 19, 20), (20, 19, 18, 7))]),
-        (Operation.ADD, 0, 10, 3, [4, 3], [((4, 3), 7, (18, 19, 20), (20, 19, 18, 7))]),
-        (Operation.ADD, 0, 10, 3, [0, 0], [((0, 0), 0, (18, 19, 20), (20, 19, 18, 0))]),
+        (
+            Operation.ADD,
+            0,
+            10,
+            3,
+            [3, 4],
+            [(ArithmeticQuestionData(Operation.ADD, (3, 4), 7), (18, 19, 20), (20, 19, 18, 7))],
+        ),
+        (
+            Operation.ADD,
+            0,
+            10,
+            3,
+            [4, 3],
+            [(ArithmeticQuestionData(Operation.ADD, (4, 3), 7), (18, 19, 20), (20, 19, 18, 7))],
+        ),
+        (
+            Operation.ADD,
+            0,
+            10,
+            3,
+            [0, 0],
+            [(ArithmeticQuestionData(Operation.ADD, (0, 0), 0), (18, 19, 20), (20, 19, 18, 0))],
+        ),
         # the correct answer 20 is left out of the wrong answers
-        (Operation.ADD, 0, 10, 3, [10, 10], [((10, 10), 20, (17, 18, 19), (19, 18, 17, 20))]),
-        (Operation.SUBTRACT, 0, 10, 3, [7, 3], [((7, 3), 4, (8, 9, 10), (10, 9, 8, 4))]),
+        (
+            Operation.ADD,
+            0,
+            10,
+            3,
+            [10, 10],
+            [(ArithmeticQuestionData(Operation.ADD, (10, 10), 20), (17, 18, 19), (19, 18, 17, 20))],
+        ),
+        (
+            Operation.SUBTRACT,
+            0,
+            10,
+            3,
+            [7, 3],
+            [(ArithmeticQuestionData(Operation.SUBTRACT, (7, 3), 4), (8, 9, 10), (10, 9, 8, 4))],
+        ),
         # drawn smaller first: swapped, so the answer is not negative
-        (Operation.SUBTRACT, 0, 10, 3, [3, 7], [((7, 3), 4, (8, 9, 10), (10, 9, 8, 4))]),
-        (Operation.SUBTRACT, 0, 10, 3, [5, 5], [((5, 5), 0, (8, 9, 10), (10, 9, 8, 0))]),
-        (Operation.SUBTRACT, 0, 10, 3, [0, 9], [((9, 0), 9, (7, 8, 10), (10, 8, 7, 9))]),
-        (Operation.SUBTRACT, 0, 10, 3, [9, 0], [((9, 0), 9, (7, 8, 10), (10, 8, 7, 9))]),
-        (Operation.MULTIPLY, 0, 10, 3, [6, 7], [((6, 7), 42, (98, 99, 100), (100, 99, 98, 42))]),
-        (Operation.MULTIPLY, 0, 10, 3, [7, 6], [((7, 6), 42, (98, 99, 100), (100, 99, 98, 42))]),
-        (Operation.MULTIPLY, 0, 10, 3, [0, 9], [((0, 9), 0, (98, 99, 100), (100, 99, 98, 0))]),
+        (
+            Operation.SUBTRACT,
+            0,
+            10,
+            3,
+            [3, 7],
+            [(ArithmeticQuestionData(Operation.SUBTRACT, (7, 3), 4), (8, 9, 10), (10, 9, 8, 4))],
+        ),
+        (
+            Operation.SUBTRACT,
+            0,
+            10,
+            3,
+            [5, 5],
+            [(ArithmeticQuestionData(Operation.SUBTRACT, (5, 5), 0), (8, 9, 10), (10, 9, 8, 0))],
+        ),
+        (
+            Operation.SUBTRACT,
+            0,
+            10,
+            3,
+            [0, 9],
+            [(ArithmeticQuestionData(Operation.SUBTRACT, (9, 0), 9), (7, 8, 10), (10, 8, 7, 9))],
+        ),
+        (
+            Operation.SUBTRACT,
+            0,
+            10,
+            3,
+            [9, 0],
+            [(ArithmeticQuestionData(Operation.SUBTRACT, (9, 0), 9), (7, 8, 10), (10, 8, 7, 9))],
+        ),
+        (
+            Operation.MULTIPLY,
+            0,
+            10,
+            3,
+            [6, 7],
+            [
+                (
+                    ArithmeticQuestionData(Operation.MULTIPLY, (6, 7), 42),
+                    (98, 99, 100),
+                    (100, 99, 98, 42),
+                ),
+            ],
+        ),
+        (
+            Operation.MULTIPLY,
+            0,
+            10,
+            3,
+            [7, 6],
+            [
+                (
+                    ArithmeticQuestionData(Operation.MULTIPLY, (7, 6), 42),
+                    (98, 99, 100),
+                    (100, 99, 98, 42),
+                ),
+            ],
+        ),
+        (
+            Operation.MULTIPLY,
+            0,
+            10,
+            3,
+            [0, 9],
+            [
+                (
+                    ArithmeticQuestionData(Operation.MULTIPLY, (0, 9), 0),
+                    (98, 99, 100),
+                    (100, 99, 98, 0),
+                ),
+            ],
+        ),
         (
             Operation.MULTIPLY,
             0,
             10,
             3,
             [10, 10],
-            [((10, 10), 100, (97, 98, 99), (99, 98, 97, 100))],
+            [
+                (
+                    ArithmeticQuestionData(Operation.MULTIPLY, (10, 10), 100),
+                    (97, 98, 99),
+                    (99, 98, 97, 100),
+                ),
+            ],
         ),
         # the number of wrong answers
-        (Operation.ADD, 0, 10, 1, [3, 4], [((3, 4), 7, (20,), (20, 7))]),
+        (
+            Operation.ADD,
+            0,
+            10,
+            1,
+            [3, 4],
+            [(ArithmeticQuestionData(Operation.ADD, (3, 4), 7), (20,), (20, 7))],
+        ),
         (
             Operation.ADD,
             0,
             10,
             5,
             [3, 4],
-            [((3, 4), 7, (16, 17, 18, 19, 20), (20, 19, 18, 17, 16, 7))],
+            [
+                (
+                    ArithmeticQuestionData(Operation.ADD, (3, 4), 7),
+                    (16, 17, 18, 19, 20),
+                    (20, 19, 18, 17, 16, 7),
+                ),
+            ],
         ),
         # low and high reach every draw, and the top of the wrong answers follows the operation:
         # twice high for sums, high for differences, high squared for products
-        (Operation.ADD, 2, 5, 3, [3, 4], [((3, 4), 7, (8, 9, 10), (10, 9, 8, 7))]),
-        (Operation.ADD, 7, 7, 3, [7, 7], [((7, 7), 14, (11, 12, 13), (13, 12, 11, 14))]),
-        (Operation.ADD, 1, 12, 3, [5, 8], [((5, 8), 13, (22, 23, 24), (24, 23, 22, 13))]),
-        (Operation.SUBTRACT, 2, 5, 3, [5, 3], [((5, 3), 2, (3, 4, 5), (5, 4, 3, 2))]),
-        (Operation.MULTIPLY, 2, 5, 3, [3, 4], [((3, 4), 12, (23, 24, 25), (25, 24, 23, 12))]),
-        (Operation.MULTIPLY, 0, 24, 3, [2, 3], [((2, 3), 6, (574, 575, 576), (576, 575, 574, 6))]),
+        (
+            Operation.ADD,
+            2,
+            5,
+            3,
+            [3, 4],
+            [(ArithmeticQuestionData(Operation.ADD, (3, 4), 7), (8, 9, 10), (10, 9, 8, 7))],
+        ),
+        (
+            Operation.ADD,
+            7,
+            7,
+            3,
+            [7, 7],
+            [(ArithmeticQuestionData(Operation.ADD, (7, 7), 14), (11, 12, 13), (13, 12, 11, 14))],
+        ),
+        (
+            Operation.ADD,
+            1,
+            12,
+            3,
+            [5, 8],
+            [(ArithmeticQuestionData(Operation.ADD, (5, 8), 13), (22, 23, 24), (24, 23, 22, 13))],
+        ),
+        (
+            Operation.SUBTRACT,
+            2,
+            5,
+            3,
+            [5, 3],
+            [(ArithmeticQuestionData(Operation.SUBTRACT, (5, 3), 2), (3, 4, 5), (5, 4, 3, 2))],
+        ),
+        (
+            Operation.MULTIPLY,
+            2,
+            5,
+            3,
+            [3, 4],
+            [
+                (
+                    ArithmeticQuestionData(Operation.MULTIPLY, (3, 4), 12),
+                    (23, 24, 25),
+                    (25, 24, 23, 12),
+                ),
+            ],
+        ),
+        (
+            Operation.MULTIPLY,
+            0,
+            24,
+            3,
+            [2, 3],
+            [
+                (
+                    ArithmeticQuestionData(Operation.MULTIPLY, (2, 3), 6),
+                    (574, 575, 576),
+                    (576, 575, 574, 6),
+                ),
+            ],
+        ),
         # tiny ranges: the top is raised to 3, the number of wrong answers, so there are enough
-        (Operation.ADD, 1, 1, 3, [1, 1], [((1, 1), 2, (0, 1, 3), (3, 1, 0, 2))]),
-        (Operation.ADD, 0, 0, 3, [0, 0], [((0, 0), 0, (1, 2, 3), (3, 2, 1, 0))]),
-        (Operation.SUBTRACT, 0, 0, 3, [0, 0], [((0, 0), 0, (1, 2, 3), (3, 2, 1, 0))]),
-        (Operation.MULTIPLY, 0, 0, 3, [0, 0], [((0, 0), 0, (1, 2, 3), (3, 2, 1, 0))]),
+        (
+            Operation.ADD,
+            1,
+            1,
+            3,
+            [1, 1],
+            [(ArithmeticQuestionData(Operation.ADD, (1, 1), 2), (0, 1, 3), (3, 1, 0, 2))],
+        ),
+        (
+            Operation.ADD,
+            0,
+            0,
+            3,
+            [0, 0],
+            [(ArithmeticQuestionData(Operation.ADD, (0, 0), 0), (1, 2, 3), (3, 2, 1, 0))],
+        ),
+        (
+            Operation.SUBTRACT,
+            0,
+            0,
+            3,
+            [0, 0],
+            [(ArithmeticQuestionData(Operation.SUBTRACT, (0, 0), 0), (1, 2, 3), (3, 2, 1, 0))],
+        ),
+        (
+            Operation.MULTIPLY,
+            0,
+            0,
+            3,
+            [0, 0],
+            [(ArithmeticQuestionData(Operation.MULTIPLY, (0, 0), 0), (1, 2, 3), (3, 2, 1, 0))],
+        ),
         # the answer 0 is not repeated as a wrong answer
-        (Operation.MULTIPLY, 0, 1, 3, [0, 1], [((0, 1), 0, (1, 2, 3), (3, 2, 1, 0))]),
+        (
+            Operation.MULTIPLY,
+            0,
+            1,
+            3,
+            [0, 1],
+            [(ArithmeticQuestionData(Operation.MULTIPLY, (0, 1), 0), (1, 2, 3), (3, 2, 1, 0))],
+        ),
         # a pair that was already used, in either order, is drawn again: 4 + 3 flips 3 + 4
         (
             Operation.ADD,
@@ -75,8 +285,8 @@ Made = tuple[tuple[int, int], int, tuple[int, ...], tuple[int, ...]]
             3,
             [3, 4, 4, 3, 5, 6],
             [
-                ((3, 4), 7, (18, 19, 20), (20, 19, 18, 7)),
-                ((5, 6), 11, (18, 19, 20), (20, 19, 18, 11)),
+                (ArithmeticQuestionData(Operation.ADD, (3, 4), 7), (18, 19, 20), (20, 19, 18, 7)),
+                (ArithmeticQuestionData(Operation.ADD, (5, 6), 11), (18, 19, 20), (20, 19, 18, 11)),
             ],
         ),
         # 3 - 7 is drawn the other way round but makes the same pair as 7 - 3
@@ -86,7 +296,10 @@ Made = tuple[tuple[int, int], int, tuple[int, ...], tuple[int, ...]]
             10,
             3,
             [7, 3, 3, 7, 9, 2],
-            [((7, 3), 4, (8, 9, 10), (10, 9, 8, 4)), ((9, 2), 7, (8, 9, 10), (10, 9, 8, 7))],
+            [
+                (ArithmeticQuestionData(Operation.SUBTRACT, (7, 3), 4), (8, 9, 10), (10, 9, 8, 4)),
+                (ArithmeticQuestionData(Operation.SUBTRACT, (9, 2), 7), (8, 9, 10), (10, 9, 8, 7)),
+            ],
         ),
         (
             Operation.MULTIPLY,
@@ -95,8 +308,16 @@ Made = tuple[tuple[int, int], int, tuple[int, ...], tuple[int, ...]]
             3,
             [6, 7, 7, 6, 6, 7, 2, 8],
             [
-                ((6, 7), 42, (98, 99, 100), (100, 99, 98, 42)),
-                ((2, 8), 16, (98, 99, 100), (100, 99, 98, 16)),
+                (
+                    ArithmeticQuestionData(Operation.MULTIPLY, (6, 7), 42),
+                    (98, 99, 100),
+                    (100, 99, 98, 42),
+                ),
+                (
+                    ArithmeticQuestionData(Operation.MULTIPLY, (2, 8), 16),
+                    (98, 99, 100),
+                    (100, 99, 98, 16),
+                ),
             ],
         ),
         # the same pair twice in a row
@@ -107,8 +328,8 @@ Made = tuple[tuple[int, int], int, tuple[int, ...], tuple[int, ...]]
             3,
             [5, 5, 5, 5, 1, 2],
             [
-                ((5, 5), 10, (18, 19, 20), (20, 19, 18, 10)),
-                ((1, 2), 3, (18, 19, 20), (20, 19, 18, 3)),
+                (ArithmeticQuestionData(Operation.ADD, (5, 5), 10), (18, 19, 20), (20, 19, 18, 10)),
+                (ArithmeticQuestionData(Operation.ADD, (1, 2), 3), (18, 19, 20), (20, 19, 18, 3)),
             ],
         ),
     ],
@@ -145,13 +366,8 @@ def test_questions_from_scripted_draws(
         len(expected), operation, low=low, high=high, wrong_answer_count=wrong_answer_count
     )
 
-    assert (bounds, [(q.data, q.wrong_answers, q.options) for q in questions]) == (
-        [(low, high)] * len(drawn),
-        [
-            (ArithmeticQuestionData(operation, operands, answer), wrong_answers, options)
-            for operands, answer, wrong_answers, options in expected
-        ],
-    )
+    assert bounds == [(low, high)] * len(drawn)
+    assert [(q.data, q.wrong_answers, q.options) for q in questions] == expected
 
 
 def test_the_default_operands_are_0_to_10(randint_ranges: list[tuple[int, int]]) -> None:
