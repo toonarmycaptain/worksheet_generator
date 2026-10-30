@@ -1,18 +1,30 @@
-"""The form page: one form per worksheet kind, each opening its PDF in a new tab.
+"""The pages: a home page, and one page of forms for each class of worksheet builder.
 
-The forms are built from each kind's options schema, so their defaults, limits and
-labels always match what the API accepts. Temporary, like the registry: the React
-front end replaces this page.
+Each form opens its PDF in a new tab. The forms are built from each kind's options
+schema, so their defaults, limits and labels always match what the API accepts.
+Temporary, like the registry: the React front end replaces these pages.
 """
 
+from collections.abc import Mapping
 from typing import Any
 
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
-from .registry import KINDS
+from .registry import CORE_KINDS, LEGACY_KINDS, CoreKind, Kind
+
+# What each home page entry says, and the page it opens (a url name).
+BUILDERS = [
+    {
+        "title": "Arithmetic",
+        "description": "Addition, subtraction and multiplication questions, as a printable "
+        "multiple-choice sheet.",
+        "url_name": "arithmetic",
+    },
+]
 
 HEADINGS = {
+    "arithmetic": "Addition, Subtraction and Multiplication",
     "block": "Addition & Subtraction Word Problems — Base-Ten Blocks",
     "word": "Addition & Subtraction Word Problems",
     "strip": "Addition & Subtraction Word Problems — Strip Diagrams",
@@ -41,9 +53,10 @@ def _field(name: str, schema: dict[str, Any]) -> dict[str, Any]:
     return field | {"input": "number" if schema["type"] == "integer" else "text", "attrs": attrs}
 
 
-def legacy(request: HttpRequest) -> HttpResponse:
+def _forms(kinds: Mapping[str, Kind[Any] | CoreKind[Any]]) -> list[dict[str, Any]]:
+    """One form for each kind, in the order given."""
     forms = []
-    for kind, spec in KINDS.items():
+    for kind, spec in kinds.items():
         properties = spec.options.model_json_schema()["properties"]
         forms.append(
             {
@@ -53,4 +66,28 @@ def legacy(request: HttpRequest) -> HttpResponse:
                 "fields": [_field(n, s) for n, s in properties.items() if n != "seed"],
             }
         )
-    return render(request, "worksheets/legacy.html", {"forms": forms})
+    return forms
+
+
+def home(request: HttpRequest) -> HttpResponse:
+    return render(request, "worksheets/home.html", {"builders": BUILDERS})
+
+
+def arithmetic(request: HttpRequest) -> HttpResponse:
+    context = {
+        "page_title": "Arithmetic",
+        "intro": "Pick the operation and the size of the numbers. The PDF opens in a new tab, "
+        "where you can print or save it. Every click makes a new sheet.",
+        "forms": _forms({"arithmetic": CORE_KINDS["arithmetic"]}),
+    }
+    return render(request, "worksheets/builder.html", context)
+
+
+def legacy(request: HttpRequest) -> HttpResponse:
+    context = {
+        "page_title": "Legacy PDF generators",
+        "intro": "Pick a worksheet and set its options. The PDF opens in a new tab, where you "
+        "can print or save it. Every click makes a new sheet.",
+        "forms": _forms(LEGACY_KINDS),
+    }
+    return render(request, "worksheets/builder.html", context)

@@ -20,6 +20,9 @@ from typing import Annotated, Any, BinaryIO, Literal, Self
 from ninja import Field, Schema
 from pydantic import model_validator
 
+from core.arithmetic import Operation
+from core.arithmetic_generator import generate_arithmetic_questions
+from render.pdf.arithmetic_worksheet import render_arithmetic_worksheet
 from worksheet_generator._imported import generate_block_word_problems as block
 from worksheet_generator._imported import generate_data_graph_mc_word_problems as data_graph_mc
 from worksheet_generator._imported import generate_data_graph_word_problems as data_graph
@@ -45,9 +48,28 @@ ListStyle = Literal["mix", "grid", "commas"]
 
 
 class Options(Schema):
-    """Options every kind takes. No seed means the endpoint picks a random one."""
+    """Options every legacy kind takes. No seed means the endpoint picks a random one."""
 
     seed: int | None = Field(None, ge=0, le=MAX_SEED)
+
+
+class ArithmeticOptions(Schema):
+    """Options of a kind built on the core. It takes no seed: every sheet is new."""
+
+    title: Title = "Arithmetic"
+    label: Label = "Sheet A"
+    problems: Problems = 8
+    operation: Literal["add", "subtract", "multiply"] = Field("add", title="Operation")
+    max_number: int = Field(10, ge=1, le=24, title="Largest number")
+    answer_key: bool = Field(False, title="Add an answer key page")
+
+    @model_validator(mode="after")
+    def _enough_different_questions(self) -> Self:
+        # Operands run from 0 to max_number and a flipped pair counts as a repeat.
+        values = self.max_number + 1
+        if self.problems > values * (values + 1) // 2:
+            raise ValueError("problems: too many for that largest number, which allows no repeats")
+        return self
 
 
 class BlockOptions(Options):
@@ -123,6 +145,11 @@ class WorksheetOptions(Options):
         return self
 
 
+def _arithmetic(o: ArithmeticOptions, out: BinaryIO) -> None:
+    questions = generate_arithmetic_questions(o.problems, Operation(o.operation), high=o.max_number)
+    render_arithmetic_worksheet(questions, out, o.title, o.label, o.answer_key)
+
+
 def _block(o: BlockOptions, seed: int, out: BinaryIO) -> None:
     problems = block.build_problems(random.Random(seed), o.problems)
     block.render(problems, out, o.title, o.label, "Texas TEKS 2.2(A), 3.4(A)", seed)
@@ -196,8 +223,23 @@ class Kind[O: Options]:
         return out.getvalue()
 
 
+@dataclass(frozen=True)
+class CoreKind[O: Schema]:
+    """A kind built on the core. Unlike ``Kind`` it has no seed."""
+
+    options: type[O]
+    draw: Callable[[O, BinaryIO], None]
+
+    def render(self, options: O) -> bytes:
+        """The PDF for these options, as bytes."""
+        out = BytesIO()
+        self.draw(options, out)
+        return out.getvalue()
+
+
+# The imported scripts, and the only kinds the /legacy page shows.
 # kind (used in the URL and the PDF filename) -> how to make it
-KINDS: dict[str, Kind[Any]] = {
+LEGACY_KINDS: dict[str, Kind[Any]] = {
     "block": Kind(BlockOptions, _block),
     "word": Kind(WordOptions, _word),
     "strip": Kind(StripOptions, _strip),
@@ -207,4 +249,9 @@ KINDS: dict[str, Kind[Any]] = {
     "data_graph": Kind(DataGraphOptions, _data_graph),
     "data_graph_mc": Kind(DataGraphMCOptions, _data_graph_mc),
     "worksheet": Kind(WorksheetOptions, _worksheet),
+}
+
+# The kinds built on the core.
+CORE_KINDS: dict[str, CoreKind[Any]] = {
+    "arithmetic": CoreKind(ArithmeticOptions, _arithmetic),
 }

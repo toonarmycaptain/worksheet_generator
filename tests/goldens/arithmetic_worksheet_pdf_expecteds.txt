@@ -1,0 +1,329 @@
+=== four_operations ===
+title: Arithmetic
+media boxes: 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Arithmetic) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (3 + 4 = ?) Tj T* ET
+BT 1 0 0 1 82 652 Tm (A\) 2) Tj T* ET
+BT 1 0 0 1 201 652 Tm (B\) 1) Tj T* ET
+BT 1 0 0 1 320 652 Tm (C\) 0) Tj T* ET
+BT 1 0 0 1 439 652 Tm (D\) 7) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 602 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 602 Tm (9 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 4 = ?) Tj T* ET
+BT 1 0 0 1 82 576 Tm (A\) 10) Tj T* ET
+BT 1 0 0 1 320 576 Tm (B\) 5) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 526 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 526 Tm (6 \327 7 = ?) Tj T* ET
+BT 1 0 0 1 82 500 Tm (A\) 13) Tj T* ET
+BT 1 0 0 1 240.6667 500 Tm (B\) 12) Tj T* ET
+BT 1 0 0 1 399.3333 500 Tm (C\) 42) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 450 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 450 Tm (8 \367 2 = ?) Tj T* ET
+BT 1 0 0 1 82 424 Tm (A\) 3) Tj T* ET
+BT 1 0 0 1 201 424 Tm (B\) 2) Tj T* ET
+BT 1 0 0 1 320 424 Tm (C\) 1) Tj T* ET
+BT 1 0 0 1 439 424 Tm (D\) 4) Tj T* ET
+
+=== four_operations_answer_key ===
+title: Arithmetic
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Arithmetic) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (3 + 4 = ?) Tj T* ET
+BT 1 0 0 1 82 652 Tm (A\) 2) Tj T* ET
+BT 1 0 0 1 201 652 Tm (B\) 1) Tj T* ET
+BT 1 0 0 1 320 652 Tm (C\) 0) Tj T* ET
+BT 1 0 0 1 439 652 Tm (D\) 7) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 602 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 602 Tm (9 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 4 = ?) Tj T* ET
+BT 1 0 0 1 82 576 Tm (A\) 10) Tj T* ET
+BT 1 0 0 1 320 576 Tm (B\) 5) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 526 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 526 Tm (6 \327 7 = ?) Tj T* ET
+BT 1 0 0 1 82 500 Tm (A\) 13) Tj T* ET
+BT 1 0 0 1 240.6667 500 Tm (B\) 12) Tj T* ET
+BT 1 0 0 1 399.3333 500 Tm (C\) 42) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 450 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 450 Tm (8 \367 2 = ?) Tj T* ET
+BT 1 0 0 1 82 424 Tm (A\) 3) Tj T* ET
+BT 1 0 0 1 201 424 Tm (B\) 2) Tj T* ET
+BT 1 0 0 1 320 424 Tm (C\) 1) Tj T* ET
+BT 1 0 0 1 439 424 Tm (D\) 4) Tj T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Arithmetic: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (3 + 4 = 7    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 658 Tm (9 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 4 = 5    \(B\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 638 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 638 Tm (6 \327 7 = 42    \(C\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 618 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 618 Tm (8 \367 2 = 4    \(D\)) Tj T* ET
+
+=== four_operations_other_title_and_label ===
+title: Times Tables
+media boxes: 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Times Tables) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Day 2) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (3 + 4 = ?) Tj T* ET
+BT 1 0 0 1 82 652 Tm (A\) 2) Tj T* ET
+BT 1 0 0 1 201 652 Tm (B\) 1) Tj T* ET
+BT 1 0 0 1 320 652 Tm (C\) 0) Tj T* ET
+BT 1 0 0 1 439 652 Tm (D\) 7) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 602 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 602 Tm (9 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 4 = ?) Tj T* ET
+BT 1 0 0 1 82 576 Tm (A\) 10) Tj T* ET
+BT 1 0 0 1 320 576 Tm (B\) 5) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 526 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 526 Tm (6 \327 7 = ?) Tj T* ET
+BT 1 0 0 1 82 500 Tm (A\) 13) Tj T* ET
+BT 1 0 0 1 240.6667 500 Tm (B\) 12) Tj T* ET
+BT 1 0 0 1 399.3333 500 Tm (C\) 42) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 450 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 450 Tm (8 \367 2 = ?) Tj T* ET
+BT 1 0 0 1 82 424 Tm (A\) 3) Tj T* ET
+BT 1 0 0 1 201 424 Tm (B\) 2) Tj T* ET
+BT 1 0 0 1 320 424 Tm (C\) 1) Tj T* ET
+BT 1 0 0 1 439 424 Tm (D\) 4) Tj T* ET
+
+=== word_problems_answer_key ===
+title: Arithmetic
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Arithmetic) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Bob has 4 friends and gives each friend 3 apples. How many apples does) Tj T* ET
+BT 1 0 0 1 82 658 Tm (Bob give away?) Tj T* ET
+BT 1 0 0 1 82 632 Tm (A\) 10) Tj T* ET
+BT 1 0 0 1 201 632 Tm (B\) 9) Tj T* ET
+BT 1 0 0 1 320 632 Tm (C\) 7) Tj T* ET
+BT 1 0 0 1 439 632 Tm (D\) 12) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 582 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 582 Tm (Maria collected 25 stickers on Monday and 17 more on Tuesday. How many) Tj T* ET
+BT 1 0 0 1 82 562 Tm (stickers does she have now?) Tj T* ET
+BT 1 0 0 1 82 536 Tm (A\) 41) Tj T* ET
+BT 1 0 0 1 201 536 Tm (B\) 52) Tj T* ET
+BT 1 0 0 1 320 536 Tm (C\) 32) Tj T* ET
+BT 1 0 0 1 439 536 Tm (D\) 42) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 486 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 486 Tm (A baker made 50 muffins for the school sale. By lunch time 18 of them had) Tj T* ET
+BT 1 0 0 1 82 466 Tm (been sold to students and teachers, and the baker wants to know how many) Tj T* ET
+BT 1 0 0 1 82 446 Tm (muffins are left to sell in the afternoon. How many muffins are left?) Tj T* ET
+BT 1 0 0 1 82 420 Tm (A\) 42) Tj T* ET
+BT 1 0 0 1 240.6667 420 Tm (B\) 68) Tj T* ET
+BT 1 0 0 1 399.3333 420 Tm (C\) 32) Tj T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Arithmetic: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (4 \327 3 = 12    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 658 Tm (25 + 17 = 42    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 638 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 638 Tm (50 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 18 = 32    \(C\)) Tj T* ET
+
+=== nine_questions_answer_key ===
+title: Arithmetic
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Arithmetic) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (1 + 1 = ?) Tj T* ET
+BT 1 0 0 1 82 652 Tm (A\) 102) Tj T* ET
+BT 1 0 0 1 201 652 Tm (B\) 101) Tj T* ET
+BT 1 0 0 1 320 652 Tm (C\) 100) Tj T* ET
+BT 1 0 0 1 439 652 Tm (D\) 2) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 602 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 602 Tm (2 + 2 = ?) Tj T* ET
+BT 1 0 0 1 82 576 Tm (A\) 102) Tj T* ET
+BT 1 0 0 1 201 576 Tm (B\) 101) Tj T* ET
+BT 1 0 0 1 320 576 Tm (C\) 100) Tj T* ET
+BT 1 0 0 1 439 576 Tm (D\) 4) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 526 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 526 Tm (3 + 3 = ?) Tj T* ET
+BT 1 0 0 1 82 500 Tm (A\) 102) Tj T* ET
+BT 1 0 0 1 201 500 Tm (B\) 101) Tj T* ET
+BT 1 0 0 1 320 500 Tm (C\) 100) Tj T* ET
+BT 1 0 0 1 439 500 Tm (D\) 6) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 450 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 450 Tm (4 + 4 = ?) Tj T* ET
+BT 1 0 0 1 82 424 Tm (A\) 102) Tj T* ET
+BT 1 0 0 1 201 424 Tm (B\) 101) Tj T* ET
+BT 1 0 0 1 320 424 Tm (C\) 100) Tj T* ET
+BT 1 0 0 1 439 424 Tm (D\) 8) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 374 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 374 Tm (5 + 5 = ?) Tj T* ET
+BT 1 0 0 1 82 348 Tm (A\) 102) Tj T* ET
+BT 1 0 0 1 201 348 Tm (B\) 101) Tj T* ET
+BT 1 0 0 1 320 348 Tm (C\) 100) Tj T* ET
+BT 1 0 0 1 439 348 Tm (D\) 10) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 298 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 298 Tm (6 + 6 = ?) Tj T* ET
+BT 1 0 0 1 82 272 Tm (A\) 102) Tj T* ET
+BT 1 0 0 1 201 272 Tm (B\) 101) Tj T* ET
+BT 1 0 0 1 320 272 Tm (C\) 100) Tj T* ET
+BT 1 0 0 1 439 272 Tm (D\) 12) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 222 Tm (7.) Tj T* ET
+BT 1 0 0 1 82 222 Tm (7 + 7 = ?) Tj T* ET
+BT 1 0 0 1 82 196 Tm (A\) 102) Tj T* ET
+BT 1 0 0 1 201 196 Tm (B\) 101) Tj T* ET
+BT 1 0 0 1 320 196 Tm (C\) 100) Tj T* ET
+BT 1 0 0 1 439 196 Tm (D\) 14) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 146 Tm (8.) Tj T* ET
+BT 1 0 0 1 82 146 Tm (8 + 8 = ?) Tj T* ET
+BT 1 0 0 1 82 120 Tm (A\) 102) Tj T* ET
+BT 1 0 0 1 201 120 Tm (B\) 101) Tj T* ET
+BT 1 0 0 1 320 120 Tm (C\) 100) Tj T* ET
+BT 1 0 0 1 439 120 Tm (D\) 16) Tj T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Arithmetic) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (9.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (9 + 9 = ?) Tj T* ET
+BT 1 0 0 1 82 652 Tm (A\) 102) Tj T* ET
+BT 1 0 0 1 201 652 Tm (B\) 101) Tj T* ET
+BT 1 0 0 1 320 652 Tm (C\) 100) Tj T* ET
+BT 1 0 0 1 439 652 Tm (D\) 18) Tj T* ET
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Arithmetic: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (1 + 1 = 2    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 658 Tm (2 + 2 = 4    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 638 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 638 Tm (3 + 3 = 6    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 618 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 618 Tm (4 + 4 = 8    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 598 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 598 Tm (5 + 5 = 10    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 578 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 578 Tm (6 + 6 = 12    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 558 Tm (7.) Tj T* ET
+BT 1 0 0 1 82 558 Tm (7 + 7 = 14    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 538 Tm (8.) Tj T* ET
+BT 1 0 0 1 82 538 Tm (8 + 8 = 16    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 518 Tm (9.) Tj T* ET
+BT 1 0 0 1 82 518 Tm (9 + 9 = 18    \(D\)) Tj T* ET
+

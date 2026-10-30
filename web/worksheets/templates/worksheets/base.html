@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Worksheet generator{% endblock %}</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 44rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.4; }
+    section { border: 1px solid #cbd5e0; border-radius: 6px; padding: 0.75rem 1rem; margin: 1rem 0; }
+    h2 { font-size: 1.1rem; margin: 0 0 0.5rem; }
+    label { display: block; margin: 0.4rem 0; }
+    input[type=text] { width: 100%; max-width: 28rem; }
+    input[type=number] { width: 5rem; }
+    button { margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+  {% block nav %}<p><a href="{% url 'home' %}">&larr; All worksheets</a></p>{% endblock %}
+  {% block content %}{% endblock %}
+</body>
+</html>
