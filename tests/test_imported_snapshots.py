@@ -15,7 +15,6 @@ Regenerate the golden files after an intended change::
 from __future__ import annotations
 
 import importlib
-import os
 import sys
 from pathlib import Path
 
@@ -62,12 +61,12 @@ def _render(case_id: str, out_dir: Path, monkeypatch: pytest.MonkeyPatch) -> byt
 def test_snapshot(case_id: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     actual = _render(case_id, tmp_path, monkeypatch)
     golden = GOLDENS / f"{case_id}.pdf"
-    if os.environ.get("REGEN_GOLDENS"):
-        GOLDENS.mkdir(exist_ok=True)
-        golden.write_bytes(actual)
-        return
-    assert golden.exists(), f"missing {golden.name}; create it with REGEN_GOLDENS=1"
+
+    # Uncomment to regenerate:
+    # GOLDENS.mkdir(exist_ok=True)
+    # golden.write_bytes(actual)
+
+    assert golden.exists(), f"missing {golden.name}"
     assert actual == golden.read_bytes(), (
-        f"{case_id} output changed ({len(actual)} bytes, golden {golden.stat().st_size}); "
-        "if intended, regenerate with REGEN_GOLDENS=1"
+        f"{case_id} output changed ({len(actual)} bytes, golden {golden.stat().st_size})"
     )

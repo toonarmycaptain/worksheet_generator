@@ -7,10 +7,8 @@ correct answer is always last.
 What each case draws is kept as text, decoded from the PDF, in one file with a section per
 case: ``goldens/arithmetic_worksheet_pdf_expecteds.txt``. The text holds every question's wording,
 the answer key's equations and letters, and the page breaks. A changed title or a moved line shows
-up as a changed line in ``git diff``. Regenerate sections after an intended change (``-k``
-picks cases)::
-
-    REGEN_GOLDENS=1 uv run pytest tests/test_arithmetic_worksheet_pdf.py
+up as a changed line in ``git diff``. To regenerate sections after an intended change, uncomment
+the regeneration block in ``test_pdf_draws_the_expected_text`` and run it (``-k`` picks cases).
 """
 
 import re
@@ -138,6 +136,4 @@ def test_pdf_draws_the_expected_text(
     #     )
     # )
 
-    if case_name not in sections:
-        pytest.fail(f"no expected text for {case_name}; create it with REGEN_GOLDENS=1")
-    assert actual == sections[case_name]
+    assert actual == sections.get(case_name)
