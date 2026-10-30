@@ -33,15 +33,17 @@ def test_arithmetic_page(client: Client) -> None:
     none for a seed, since every arithmetic sheet is new.
     """
     content = client.get("/arithmetic/").content
-    assert (
-        re.findall(rb'action="([^"]+)"', content),
-        re.findall(rb'<(?:input|select) [^>]*?name="([^"]+)"', content),
-        get_links(content),
-    ) == (
-        [b"/api/worksheets/arithmetic.pdf"],
-        [b"title", b"label", b"problems", b"operation", b"max_number", b"answer_key"],
-        ["/"],
-    )
+
+    assert re.findall(rb'action="([^"]+)"', content) == [b"/api/worksheets/arithmetic.pdf"]
+    assert re.findall(rb'<(?:input|select) [^>]*?name="([^"]+)"', content) == [
+        b"title",
+        b"label",
+        b"problems",
+        b"operation",
+        b"max_number",
+        b"answer_key",
+    ]
+    assert get_links(content) == ["/"]
 
 
 def test_legacy_page(client: Client) -> None:
@@ -51,17 +53,16 @@ def test_legacy_page(client: Client) -> None:
     arithmetic form appearing here, makes it differ.
     """
     content = client.get("/legacy/").content
-    assert (re.findall(rb'action="([^"]+)"', content), get_links(content)) == (
-        [
-            b"/api/worksheets/block.pdf",
-            b"/api/worksheets/word.pdf",
-            b"/api/worksheets/strip.pdf",
-            b"/api/worksheets/number_line.pdf",
-            b"/api/worksheets/number_line_mc.pdf",
-            b"/api/worksheets/multiplication_mc.pdf",
-            b"/api/worksheets/data_graph.pdf",
-            b"/api/worksheets/data_graph_mc.pdf",
-            b"/api/worksheets/worksheet.pdf",
-        ],
-        ["/"],
-    )
+
+    assert re.findall(rb'action="([^"]+)"', content) == [
+        b"/api/worksheets/block.pdf",
+        b"/api/worksheets/word.pdf",
+        b"/api/worksheets/strip.pdf",
+        b"/api/worksheets/number_line.pdf",
+        b"/api/worksheets/number_line_mc.pdf",
+        b"/api/worksheets/multiplication_mc.pdf",
+        b"/api/worksheets/data_graph.pdf",
+        b"/api/worksheets/data_graph_mc.pdf",
+        b"/api/worksheets/worksheet.pdf",
+    ]
+    assert get_links(content) == ["/"]
