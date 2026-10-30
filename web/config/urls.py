@@ -25,6 +25,8 @@ api = NinjaAPI(title="Worksheet generator", urls_namespace="api")
 api.add_router("/worksheets/", worksheets_router)
 
 urlpatterns = [
+    path("", views.home, name="home"),
+    path("arithmetic/", views.arithmetic, name="arithmetic"),
     path("legacy/", views.legacy, name="legacy"),
     path("admin/", admin.site.urls),
     path("api/", api.urls),
