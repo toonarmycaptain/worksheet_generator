@@ -6,8 +6,13 @@ case swaps the two rows, and the tile backs then make a picture. ``slot_of`` is 
 ``slot_of[n - 1]`` is the slot (0 for A, up to 11 for L) holding question n's answer. The bank
 and the pattern both follow from it. A sheet with fewer than 12 questions uses only the first
 tiles, and the slots nothing points to are blocked out, shown as ``None``.
+
+``slot_of`` comes from ``random_slot_of`` or from ``conventional_slot_of``. The second picks the
+slots so the tile backs make a conventional picture: three 2 by 2 blocks, one per color, in which
+no tile edge cuts a colored shape.
 """
 
+import itertools
 import random
 from collections.abc import Sequence
 
@@ -29,6 +34,49 @@ TILES: dict[int, tuple[str, str, str]] = {
     11: ("red", "left", "top"),
     12: ("blue", "right", "top"),
 }
+COLORS = ("yellow", "blue", "red")
+TILE_OF = {piece: tile for tile, piece in TILES.items()}  # (color, stem, flare) -> tile number
+
+# a piece is a tile's (stem side, flare side), color aside
+type Piece = tuple[str, str]
+PIECES: list[Piece] = sorted({(stem, flare) for _, stem, flare in TILES.values()})
+
+
+def edge(piece: Piece, side: str) -> str:
+    """How a piece's colored shape meets one edge of its tile: ``full``, ``empty`` or a half.
+
+    The stem's edge and the flare's edge are colored along their whole length. The edge opposite
+    the stem only touches the shape at a corner, so it is white. The edge opposite the flare is
+    colored for the half that the stem covers.
+    """
+    stem, flare = piece
+    if side in (stem, flare):
+        return "full"
+    if side in ("left", "right"):
+        return "empty"
+    return f"{stem} half"
+
+
+def fits_beside(left: Piece, right: Piece) -> bool:
+    """Whether two tiles side by side show no cut edge where they touch, color aside."""
+    return edge(left, "right") == edge(right, "left")
+
+
+def fits_above(top: Piece, bottom: Piece) -> bool:
+    """Whether two tiles one above the other show no cut edge where they touch, color aside."""
+    return edge(top, "bottom") == edge(bottom, "top")
+
+
+# every way to lay a color's four pieces in a 2 by 2 block, as (top left, top right, bottom left,
+# bottom right), so that the shape runs on across all four touching edges: 10 of the 24
+BLOCK_SHAPES: tuple[tuple[Piece, Piece, Piece, Piece], ...] = tuple(
+    (top_left, top_right, bottom_left, bottom_right)
+    for top_left, top_right, bottom_left, bottom_right in itertools.permutations(PIECES)
+    if fits_beside(top_left, top_right)
+    and fits_beside(bottom_left, bottom_right)
+    and fits_above(top_left, bottom_left)
+    and fits_above(top_right, bottom_right)
+)
 
 
 def random_slot_of(count: int) -> tuple[int, ...]:
@@ -36,6 +84,26 @@ def random_slot_of(count: int) -> tuple[int, ...]:
     slots = list(range(SLOTS))
     random.shuffle(slots)
     return tuple(slots[:count])
+
+
+def conventional_slot_of(count: int) -> tuple[int, ...]:
+    """The slots of ``count`` questions that make a conventional picture on the back.
+
+    The picture is a 2 by 2 block of each color side by side, in a random color order, and each
+    block takes a random one of the ``BLOCK_SHAPES``: 6 * 10 ** 3 pictures in all. Only the
+    first ``count`` tiles are placed, so a shorter sheet shows part of its picture.
+    """
+    top_row: list[int] = []
+    bottom_row: list[int] = []
+    for color in random.sample(COLORS, k=len(COLORS)):
+        top_left, top_right, bottom_left, bottom_right = (
+            TILE_OF[color, *piece] for piece in random.choice(BLOCK_SHAPES)
+        )
+        top_row += [top_left, top_right]
+        bottom_row += [bottom_left, bottom_right]
+    # the picture is seen from the back, where the rows are swapped: see ``pattern``
+    tile_in_slot = bottom_row + top_row
+    return tuple(tile_in_slot.index(tile) for tile in range(1, count + 1))
 
 
 def answer_bank(answers: Sequence[int], slot_of: Sequence[int]) -> tuple[int | None, ...]:
