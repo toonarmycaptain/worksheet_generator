@@ -11,6 +11,8 @@ from typing import Any
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
+from render.pdf.arithmetic_worksheet import OPERATION_NAMES
+
 from .registry import CORE_KINDS, LEGACY_KINDS, CoreKind, Kind
 
 # What each home page entry says, and the page it opens (a url name).
@@ -79,6 +81,7 @@ def arithmetic(request: HttpRequest) -> HttpResponse:
         "intro": "Pick the operation and the size of the numbers. The PDF opens in a new tab, "
         "where you can print or save it. Every click makes a new sheet.",
         "forms": _forms({"arithmetic": CORE_KINDS["arithmetic"]}),
+        "operation_titles": {op.value: name for op, name in OPERATION_NAMES.items()},
     }
     return render(request, "worksheets/builder.html", context)
 
