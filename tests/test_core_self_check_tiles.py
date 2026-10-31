@@ -6,10 +6,23 @@ tiles seen in the rows from the back after the flip.
 
 import pytest
 
-from core.self_check_tiles import TILES, answer_bank, pattern, random_slot_of, tile_outline
+from core.self_check_tiles import (
+    BLOCK_SHAPES,
+    TILES,
+    answer_bank,
+    conventional_slot_of,
+    fits_above,
+    fits_beside,
+    pattern,
+    random_slot_of,
+    tile_outline,
+)
 
 # the four piece types: which side the stem is on, and which side the flare is
-PIECE_TYPES = [("left", "bottom"), ("left", "top"), ("right", "bottom"), ("right", "top")]
+LB, LT, RB, RT = ("left", "bottom"), ("left", "top"), ("right", "bottom"), ("right", "top")
+PIECE_TYPES = [LB, LT, RB, RT]
+HEXAGON = (RB, LB, RT, LT)  # the shape of a clean block, as in the real case
+RING = (LT, RT, LB, RB)
 
 
 def test_the_tiles_are_numbered_1_to_12() -> None:
@@ -114,5 +127,95 @@ def test_random_slot_of_takes_the_first_of_the_shuffled_slots(
 @pytest.mark.parametrize("count", [1, 4, 12])
 def test_random_slot_of_uses_no_slot_twice(count: int) -> None:
     slots = random_slot_of(count)
+    assert len(set(slots)) == count
+    assert set(slots) <= set(range(12))
+
+
+@pytest.mark.parametrize(
+    ("left", "right", "fits"),
+    [
+        (RB, LB, True),  # the two stems meet, so the color runs on
+        (LB, RB, True),  # the two stems are on the outside, so the white runs on
+        (RB, LT, True),  # the flare sides make no difference
+        (RB, RB, False),  # a stem's edge against white
+        (LB, LB, False),  # white against a stem's edge
+    ],
+)
+def test_fits_beside(left: tuple[str, str], right: tuple[str, str], fits: bool) -> None:
+    assert fits_beside(left, right) is fits
+
+
+@pytest.mark.parametrize(
+    ("top", "bottom", "fits"),
+    [
+        (LB, LT, True),  # a flare's edge against a flare's edge: the color runs on
+        (LT, LB, True),  # two stem halves, on the same side, meet
+        (LT, RB, False),  # the stem halves are on opposite sides
+        (LB, RB, False),  # a flare's edge against a stem half
+        (LT, RT, False),  # a stem half against a flare's edge
+    ],
+)
+def test_fits_above(top: tuple[str, str], bottom: tuple[str, str], fits: bool) -> None:
+    assert fits_above(top, bottom) is fits
+
+
+def test_there_are_ten_block_shapes() -> None:
+    assert len(BLOCK_SHAPES) == 10
+
+
+def test_the_block_shapes() -> None:
+    """Top left, top right, bottom left and bottom right of each of the ten seamless blocks."""
+    assert set(BLOCK_SHAPES) == {
+        (LB, RB, LT, RT),  # white hourglass
+        (LB, RB, RT, LT),  # fork
+        (RB, LB, LT, RT),  # arch
+        (RB, LB, RT, LT),  # hexagon
+        (RB, LT, RT, LB),  # arrow pointing left
+        (LT, RT, LB, RB),  # ring
+        (RT, LB, RB, LT),  # arrow pointing right
+        (RT, LT, RB, LB),  # color hourglass
+        (LB, RT, LT, RB),  # zigzag
+        (LT, RB, LB, RT),  # its mirror image
+    }
+
+
+@pytest.mark.parametrize(
+    ("colors", "shape", "count", "slot_of"),
+    [
+        # yellow, blue, red clean blocks, as on a real case: tiles in A to F were 7 10 12 8 5 11
+        # and in G to L 4 1 6 2 3 9
+        (
+            ["yellow", "blue", "red"],
+            HEXAGON,
+            12,
+            (7, 9, 10, 6, 4, 8, 0, 3, 11, 1, 5, 2),
+        ),
+        (["yellow", "blue", "red"], HEXAGON, 4, (7, 9, 10, 6)),
+        (["yellow", "blue", "red"], HEXAGON, 1, (7,)),
+        # rings, red first: A to F hold 9 3 1 4 2 6 and G to L 11 5 10 7 8 12
+        (
+            ["red", "yellow", "blue"],
+            RING,
+            12,
+            (2, 4, 1, 3, 7, 5, 9, 10, 0, 8, 6, 11),
+        ),
+    ],
+)
+def test_conventional_slot_of_places_each_tile_by_its_color_and_piece(
+    colors: list[str],
+    shape: tuple[tuple[str, str], ...],
+    count: int,
+    slot_of: tuple[int, ...],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """With the colors in the given order and every block the same shape, the slots follow."""
+    monkeypatch.setattr("random.sample", lambda population, k: colors)
+    monkeypatch.setattr("random.choice", lambda options: shape)
+    assert conventional_slot_of(count) == slot_of
+
+
+@pytest.mark.parametrize("count", [1, 4, 12])
+def test_conventional_slot_of_uses_no_slot_twice(count: int) -> None:
+    slots = conventional_slot_of(count)
     assert len(set(slots)) == count
     assert set(slots) <= set(range(12))

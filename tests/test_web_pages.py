@@ -44,8 +44,19 @@ def test_arithmetic_page(client: Client) -> None:
         b"max_number",
         b"answer_key",
         b"self_check_tiles",
+        b"tile_pattern",  # a radio button for each pattern
+        b"tile_pattern",
     ]
     assert get_links(content) == ["/"]
+
+
+def test_the_tile_pattern_is_a_pair_of_radio_buttons_that_defaults_to_simple(
+    client: Client,
+) -> None:
+    content = client.get("/arithmetic/").content
+    assert re.findall(
+        rb'<input type="radio" name="tile_pattern" value="(\w+)"( checked)?>', content
+    ) == [(b"simple", b" checked"), (b"complex", b"")]
 
 
 @pytest.mark.parametrize(

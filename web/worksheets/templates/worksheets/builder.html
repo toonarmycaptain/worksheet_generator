@@ -13,6 +13,12 @@
       {% for field in form.fields %}
         {% if field.input == "checkbox" %}
         <label><input type="checkbox" name="{{ field.name }}"{% if field.value %} checked{% endif %}> {{ field.label }}</label>
+        {% elif field.input == "radio" %}
+        <div class="choices" role="radiogroup">{{ field.label }}:
+          {% for choice in field.choices %}
+          <label><input type="radio" name="{{ field.name }}" value="{{ choice }}"{% if choice == field.value %} checked{% endif %}> {{ choice }}</label>
+          {% endfor %}
+        </div>
         {% elif field.input == "select" %}
         <label>{{ field.label }}
           <select name="{{ field.name }}">

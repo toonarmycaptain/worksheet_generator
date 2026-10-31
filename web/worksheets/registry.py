@@ -22,7 +22,7 @@ from pydantic import model_validator
 
 from core.arithmetic import Operation
 from core.arithmetic_generator import generate_arithmetic_questions, possible_answers
-from core.self_check_tiles import SLOTS, random_slot_of
+from core.self_check_tiles import SLOTS, conventional_slot_of, random_slot_of
 from render.pdf.arithmetic_worksheet import OPERATION_NAMES, render_arithmetic_worksheet
 from render.pdf.self_check_tiles_worksheet import render_self_check_tiles_worksheet
 from worksheet_generator._imported import generate_block_word_problems as block
@@ -65,6 +65,10 @@ class ArithmeticOptions(Schema):
     max_number: int = Field(10, ge=1, le=24, title="Largest number")
     answer_key: bool = Field(False, title="Add an answer key page")
     self_check_tiles: bool = Field(False, title="Self-check tile answers")
+    # simple: the conventional pictures, complex: the tiles in any slots at all
+    tile_pattern: Literal["simple", "complex"] = Field(
+        "simple", title="Pattern", json_schema_extra={"input": "radio"}
+    )
 
     @model_validator(mode="after")
     def _title_follows_the_operation(self) -> Self:
@@ -177,9 +181,10 @@ def _arithmetic(o: ArithmeticOptions, out: BinaryIO) -> None:
         questions = generate_arithmetic_questions(
             o.problems, operation, high=o.max_number, wrong_answer_count=0, distinct_answers=True
         )
+        make_slots = conventional_slot_of if o.tile_pattern == "simple" else random_slot_of
         render_self_check_tiles_worksheet(
             [question.data for question in questions],
-            random_slot_of(o.problems),
+            make_slots(o.problems),
             out,
             o.title,
             o.label,

@@ -47,7 +47,8 @@ def _field(name: str, schema: dict[str, Any]) -> dict[str, Any]:
     """How to show one option, from its entry in the options' JSON schema."""
     field = {"name": name, "label": schema["title"], "value": schema["default"]}
     if "enum" in schema:
-        return field | {"input": "select", "choices": schema["enum"]}
+        # a choice from a few is a select, unless the option's schema asks for radio buttons
+        return field | {"input": schema.get("input", "select"), "choices": schema["enum"]}
     if schema["type"] == "boolean":
         return field | {"input": "checkbox"}
     attrs = {html: schema[limit] for limit, html in LIMITS.items() if limit in schema}
