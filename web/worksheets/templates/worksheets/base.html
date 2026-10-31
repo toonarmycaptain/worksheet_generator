@@ -9,9 +9,12 @@
     section { border: 1px solid #cbd5e0; border-radius: 6px; padding: 0.75rem 1rem; margin: 1rem 0; }
     h2 { font-size: 1.1rem; margin: 0 0 0.5rem; }
     label { display: block; margin: 0.4rem 0; }
+    label:has(+ .choices) { display: inline-block; }
+    .choices { display: inline-block; margin: 0.4rem 0 0.4rem 1.5rem; }
+    .choices label { display: inline-block; margin: 0 1rem 0 0; }
     input[type=text] { width: 100%; max-width: 28rem; }
     input[type=number] { width: 5rem; }
-    button { margin-top: 0.5rem; }
+    button { display: block; margin-top: 0.5rem; }
   </style>
 </head>
 <body>
