@@ -22,7 +22,7 @@ from pydantic import model_validator
 
 from core.arithmetic import Operation
 from core.arithmetic_generator import generate_arithmetic_questions
-from render.pdf.arithmetic_worksheet import render_arithmetic_worksheet
+from render.pdf.arithmetic_worksheet import OPERATION_NAMES, render_arithmetic_worksheet
 from worksheet_generator._imported import generate_block_word_problems as block
 from worksheet_generator._imported import generate_data_graph_mc_word_problems as data_graph_mc
 from worksheet_generator._imported import generate_data_graph_word_problems as data_graph
@@ -56,12 +56,20 @@ class Options(Schema):
 class ArithmeticOptions(Schema):
     """Options of a kind built on the core. It takes no seed: every sheet is new."""
 
-    title: Title = "Arithmetic"
+    title: Title = OPERATION_NAMES[Operation.ADD]  # the operation's name, whichever it is
     label: Label = "Sheet A"
     problems: Problems = 8
     operation: Literal["add", "subtract", "multiply"] = Field("add", title="Operation")
     max_number: int = Field(10, ge=1, le=24, title="Largest number")
     answer_key: bool = Field(False, title="Add an answer key page")
+
+    @model_validator(mode="after")
+    def _title_follows_the_operation(self) -> Self:
+        # The default is the name of the default operation. A request that names another
+        # operation and no title gets that operation's name.
+        if "title" not in self.model_fields_set:
+            self.title = OPERATION_NAMES[Operation(self.operation)]
+        return self
 
     @model_validator(mode="after")
     def _enough_different_questions(self) -> Self:

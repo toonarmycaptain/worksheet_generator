@@ -31,4 +31,18 @@
     </form>
   </section>
   {% endfor %}
+
+  {% if operation_titles %}
+  {{ operation_titles|json_script:"operation-titles" }}
+  <script>
+    // The title follows the operation, unless it has been changed to something else.
+    const titles = JSON.parse(document.getElementById("operation-titles").textContent);
+    const form = document.querySelector("select[name=operation]").form;
+    form.elements.operation.addEventListener("change", () => {
+      if (Object.values(titles).includes(form.elements.title.value)) {
+        form.elements.title.value = titles[form.elements.operation.value];
+      }
+    });
+  </script>
+  {% endif %}
 {% endblock %}
