@@ -30,6 +30,14 @@ SYMBOLS = {
     Operation.DIVIDE: "\N{DIVISION SIGN}",
 }
 
+# What a sheet of each operation is called, so its title unless one is given
+OPERATION_NAMES = {
+    Operation.ADD: "Addition",
+    Operation.SUBTRACT: "Subtraction",
+    Operation.MULTIPLY: "Multiplication",
+    Operation.DIVIDE: "Division",
+}
+
 
 def render_arithmetic_worksheet(
     questions: Sequence[Question],

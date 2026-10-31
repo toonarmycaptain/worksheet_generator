@@ -35,7 +35,7 @@ from tests.test_arithmetic_worksheet_pdf import build, render
                     (ArithmeticQuestionData(Operation.ADD, (3, 4), 7), (18, 19, 20)),
                     (ArithmeticQuestionData(Operation.ADD, (5, 6), 11), (18, 19, 20)),
                 ],
-                "title": "Arithmetic",
+                "title": "Addition",
                 "label": "Sheet A",
                 "answer_key": False,
             },
@@ -52,7 +52,7 @@ from tests.test_arithmetic_worksheet_pdf import build, render
                     (ArithmeticQuestionData(Operation.SUBTRACT, (7, 3), 4), (8, 9, 10)),
                     (ArithmeticQuestionData(Operation.SUBTRACT, (9, 2), 7), (8, 9, 10)),
                 ],
-                "title": "Arithmetic",
+                "title": "Subtraction",
                 "label": "Sheet A",
                 "answer_key": True,
             },
@@ -83,7 +83,7 @@ from tests.test_arithmetic_worksheet_pdf import build, render
             None,
             {
                 "cases": [(ArithmeticQuestionData(Operation.ADD, (3, 4), 7), (8, 9, 10))],
-                "title": "Arithmetic",
+                "title": "Addition",
                 "label": "Sheet A",
                 "answer_key": False,
             },
@@ -96,7 +96,7 @@ from tests.test_arithmetic_worksheet_pdf import build, render
             None,
             {
                 "cases": [(ArithmeticQuestionData(Operation.ADD, (3, 4), 7), (18, 19, 20))],
-                "title": "Arithmetic",
+                "title": "Addition",
                 "label": "",
                 "answer_key": False,
             },
@@ -115,7 +115,7 @@ from tests.test_arithmetic_worksheet_pdf import build, render
                     (ArithmeticQuestionData(Operation.ADD, (0, 1), 1), (0, 2, 3)),
                     (ArithmeticQuestionData(Operation.ADD, (1, 1), 2), (0, 1, 3)),
                 ],
-                "title": "Arithmetic",
+                "title": "Addition",
                 "label": "Sheet A",
                 "answer_key": False,
             },
@@ -175,6 +175,23 @@ from tests.test_arithmetic_worksheet_pdf import build, render
             None,
         ),
         (
+            "/api/worksheets/arithmetic.pdf?title=",
+            [],
+            422,
+            {
+                "detail": [
+                    {
+                        "type": "string_too_short",
+                        "loc": ["query", "title"],
+                        "msg": "String should have at least 1 character",
+                        "ctx": {"min_length": 1},
+                    },
+                ],
+            },
+            None,
+            None,
+        ),
+        (
             "/api/worksheets/arithmetic.pdf?max_number=0",
             [],
             422,
@@ -209,21 +226,18 @@ from tests.test_arithmetic_worksheet_pdf import build, render
             None,
         ),
         (
-            "/api/worksheets/arithmetic.pdf?title=",
-            [],
-            422,
+            # no title: the operation's name
+            "/api/worksheets/arithmetic.pdf?operation=multiply&problems=1&sheet=1ab2c3",
+            [6, 7],
+            200,
+            None,
             {
-                "detail": [
-                    {
-                        "type": "string_too_short",
-                        "loc": ["query", "title"],
-                        "msg": "String should have at least 1 character",
-                        "ctx": {"min_length": 1},
-                    },
-                ],
+                "cases": [(ArithmeticQuestionData(Operation.MULTIPLY, (6, 7), 42), (98, 99, 100))],
+                "title": "Multiplication",
+                "label": "Sheet A",
+                "answer_key": False,
             },
-            None,
-            None,
+            "arithmetic-sheet-a.pdf",
         ),
         (
             # 3 numbers make only 6 different pairs, so 7 problems cannot all be different
