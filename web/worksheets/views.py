@@ -11,6 +11,7 @@ from typing import Any
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
+from core.self_check_tiles import SLOTS
 from render.pdf.arithmetic_worksheet import OPERATION_NAMES
 
 from .registry import CORE_KINDS, LEGACY_KINDS, CoreKind, Kind
@@ -20,7 +21,7 @@ BUILDERS = [
     {
         "title": "Arithmetic",
         "description": "Addition, subtraction and multiplication questions, as a printable "
-        "multiple-choice sheet.",
+        "multiple-choice sheet, or an answer sheet for self-check tiles.",
         "url_name": "arithmetic",
     },
 ]
@@ -79,8 +80,12 @@ def arithmetic(request: HttpRequest) -> HttpResponse:
     context = {
         "page_title": "Arithmetic",
         "intro": "Pick the operation and the size of the numbers. The PDF opens in a new tab, "
-        "where you can print or save it. Every click makes a new sheet.",
+        "where you can print or save it. Every click makes a new sheet. Tick Self-check tile "
+        "answers to swap the choices for an answer bank and a picture to match against the "
+        f"flipped case. That sets the questions to {SLOTS}, one for each tile: ask for fewer, "
+        "such as 2 or 4, and the other tiles go unused.",
         "forms": _forms({"arithmetic": CORE_KINDS["arithmetic"]}),
+        "self_check_tiles_problems": SLOTS,
         "operation_titles": {op.value: name for op, name in OPERATION_NAMES.items()},
     }
     return render(request, "worksheets/builder.html", context)

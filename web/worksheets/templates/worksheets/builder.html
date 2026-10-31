@@ -32,6 +32,20 @@
   </section>
   {% endfor %}
 
+  {% if self_check_tiles_problems %}
+  <script>
+    // Ticking self-check tiles defaults to 12 questions (eg 1 per tile, max is 12).
+    // Unticking puts back the norma default and limit, leftover tiles left over go unused.
+    const selfCheckTiles = document.querySelector("input[name=self_check_tiles]");
+    const problems = selfCheckTiles.form.elements.problems;
+    const normalMax = problems.max;
+    selfCheckTiles.addEventListener("change", () => {
+      problems.value = selfCheckTiles.checked ? {{ self_check_tiles_problems }} : problems.defaultValue;
+      problems.max = selfCheckTiles.checked ? {{ self_check_tiles_problems }} : normalMax;
+    });
+  </script>
+  {% endif %}
+
   {% if operation_titles %}
   {{ operation_titles|json_script:"operation-titles" }}
   <script>
