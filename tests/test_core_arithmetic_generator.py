@@ -10,7 +10,7 @@ import random
 import pytest
 
 from core.arithmetic import ArithmeticQuestionData, Operation
-from core.arithmetic_generator import generate_arithmetic_questions
+from core.arithmetic_generator import generate_arithmetic_questions, possible_answers
 
 # one question: (data, wrong answers, options)
 Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
@@ -424,3 +424,132 @@ def test_asking_for_more_different_questions_than_exist_fails(
     """
     with pytest.raises(ValueError, match="only"):
         generate_arithmetic_questions(count, Operation.MULTIPLY, low=low, high=high)
+
+
+@pytest.mark.parametrize(
+    ("operation", "high", "drawn", "expected"),
+    [
+        # 2 + 5 is skipped: its answer 7 is already used by 3 + 4
+        (
+            Operation.ADD,
+            10,
+            [3, 4, 2, 5, 1, 2],
+            [
+                ArithmeticQuestionData(Operation.ADD, (3, 4), 7),
+                ArithmeticQuestionData(Operation.ADD, (1, 2), 3),
+            ],
+        ),
+        # 9 - 5 is skipped: its answer 4 is already used by 7 - 3
+        (
+            Operation.SUBTRACT,
+            10,
+            [7, 3, 9, 5, 8, 2],
+            [
+                ArithmeticQuestionData(Operation.SUBTRACT, (7, 3), 4),
+                ArithmeticQuestionData(Operation.SUBTRACT, (8, 2), 6),
+            ],
+        ),
+        # 3 x 4 is skipped: its answer 12 is already used by 2 x 6
+        (
+            Operation.MULTIPLY,
+            10,
+            [2, 6, 3, 4, 1, 5],
+            [
+                ArithmeticQuestionData(Operation.MULTIPLY, (2, 6), 12),
+                ArithmeticQuestionData(Operation.MULTIPLY, (1, 5), 5),
+            ],
+        ),
+        # a repeated pair is still skipped, even with a different answer order
+        (
+            Operation.ADD,
+            10,
+            [3, 4, 4, 3, 1, 2],
+            [
+                ArithmeticQuestionData(Operation.ADD, (3, 4), 7),
+                ArithmeticQuestionData(Operation.ADD, (1, 2), 3),
+            ],
+        ),
+    ],
+)
+def test_distinct_answers_from_scripted_draws(
+    operation: Operation,
+    high: int,
+    drawn: list[int],
+    expected: list[ArithmeticQuestionData],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """With ``distinct_answers`` a drawn pair whose answer is already used is drawn again.
+
+    There are no wrong answers asked for, so only the operands are drawn. Every scripted draw
+    must be made, from 0 to ``high``.
+    """
+    values = iter(drawn)
+    bounds: list[tuple[int, int]] = []
+
+    def randint(first: int, last: int) -> int:
+        bounds.append((first, last))
+        return next(values)
+
+    monkeypatch.setattr(random, "randint", randint)
+
+    questions = generate_arithmetic_questions(
+        len(expected), operation, high=high, wrong_answer_count=0, distinct_answers=True
+    )
+
+    assert bounds == [(0, high)] * len(drawn)
+    assert [question.data for question in questions] == expected
+
+
+@pytest.mark.parametrize(
+    ("operation", "count", "high"),
+    [
+        (Operation.ADD, 11, 5),  # the sums 0 to 10, each once
+        (Operation.SUBTRACT, 11, 10),  # the differences 0 to 10
+        (Operation.MULTIPLY, 15, 5),  # 0 1 2 3 4 5 6 8 9 10 12 15 16 20 25
+        (Operation.ADD, 12, 10),
+    ],
+)
+def test_random_questions_have_distinct_answers(
+    operation: Operation, count: int, high: int
+) -> None:
+    """A sheet is made even when it needs every possible answer, and no answer is repeated."""
+    questions = generate_arithmetic_questions(
+        count, operation, high=high, wrong_answer_count=0, distinct_answers=True
+    )
+    answers = [question.data.answer for question in questions]
+    assert len(answers) == count
+    assert len(set(answers)) == count
+
+
+@pytest.mark.parametrize(
+    ("operation", "count", "high"),
+    [
+        (Operation.ADD, 12, 5),  # 11 sums
+        (Operation.SUBTRACT, 12, 10),  # 11 differences
+        (Operation.MULTIPLY, 16, 5),  # 15 products
+        (Operation.MULTIPLY, 8, 3),  # 0 1 2 3 4 6 9
+    ],
+)
+def test_asking_for_more_different_answers_than_exist_fails(
+    operation: Operation, count: int, high: int
+) -> None:
+    """Asking for one more different answer than the range gives raises a ValueError."""
+    with pytest.raises(ValueError, match="different answers: only"):
+        generate_arithmetic_questions(
+            count, operation, high=high, wrong_answer_count=0, distinct_answers=True
+        )
+
+
+@pytest.mark.parametrize(
+    ("operation", "low", "high", "answers"),
+    [
+        (Operation.ADD, 0, 2, {0, 1, 2, 3, 4}),
+        (Operation.ADD, 3, 4, {6, 7, 8}),
+        (Operation.SUBTRACT, 0, 3, {0, 1, 2, 3}),
+        (Operation.SUBTRACT, 5, 7, {0, 1, 2}),
+        (Operation.MULTIPLY, 0, 3, {0, 1, 2, 3, 4, 6, 9}),
+        (Operation.MULTIPLY, 2, 3, {4, 6, 9}),
+    ],
+)
+def test_possible_answers(operation: Operation, low: int, high: int, answers: set[int]) -> None:
+    assert possible_answers(operation, low=low, high=high) == answers

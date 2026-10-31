@@ -1,0 +1,1590 @@
+=== in_order ===
+title: Arithmetic
+media boxes: 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Arithmetic) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (3 + 4 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 644 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 644 Tm (5 + 9 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 610 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 610 Tm (8 + 8 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 576 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 576 Tm (2 + 10 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 542 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 542 Tm (9 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 4 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 508 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 508 Tm (10 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 1 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 678 Tm (7.) Tj T* ET
+BT 1 0 0 1 334 678 Tm (8 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 8 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 644 Tm (8.) Tj T* ET
+BT 1 0 0 1 334 644 Tm (7 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 6 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 610 Tm (9.) Tj T* ET
+BT 1 0 0 1 334 610 Tm (6 \327 7 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 576 Tm (10.) Tj T* ET
+BT 1 0 0 1 334 576 Tm (5 \327 5 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 542 Tm (11.) Tj T* ET
+BT 1 0 0 1 334 542 Tm (9 \327 3 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 508 Tm (12.) Tj T* ET
+BT 1 0 0 1 334 508 Tm (4 \327 6 = ?) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 456 Tm (Answer bank) Tj T* ET
+BT /F1 11 Tf 13.2 TL ET
+BT 1 0 0 1 54 440 Tm (Put each numbered tile in the slot whose letter matches the answer to its question.) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 91.552 373 Tm (7) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.668 404 Tm (A) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 171.104 373 Tm (14) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 404 Tm (B) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 255.104 373 Tm (16) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 259.668 404 Tm (C) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 339.104 373 Tm (12) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 343.668 404 Tm (D) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 427.552 373 Tm (5) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.998 404 Tm (E) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 511.552 373 Tm (9) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 404 Tm (F) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 91.552 329 Tm (0) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.332 298 Tm (G) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 175.552 329 Tm (1) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 298 Tm (H) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 255.104 329 Tm (42) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 262.332 298 Tm (I) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 339.104 329 Tm (25) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 344.664 298 Tm (J) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 423.104 329 Tm (27) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.668 298 Tm (K) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 507.104 329 Tm (24) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 298 Tm (L) Tj T* ET
+q
+1 1 1 rg
+n 318 210 40 40 re f*
+.941176 .745098 0 rg
+n 358 210 m 338 210 l 338 230 l 318 250 l 358 250 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 358 210 40 40 re f*
+0 .235294 .784314 rg
+n 358 210 m 378 210 l 378 230 l 398 250 l 358 250 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 398 210 40 40 re f*
+.85098 .14902 .172549 rg
+n 398 250 m 418 250 l 418 230 l 438 210 l 398 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 438 210 40 40 re f*
+.941176 .745098 0 rg
+n 438 210 m 458 210 l 458 230 l 478 250 l 438 250 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 478 210 40 40 re f*
+.85098 .14902 .172549 rg
+n 478 210 m 498 210 l 498 230 l 518 250 l 478 250 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 518 210 40 40 re f*
+0 .235294 .784314 rg
+n 558 210 m 538 210 l 538 230 l 518 250 l 558 250 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 318 170 40 40 re f*
+.941176 .745098 0 rg
+n 318 210 m 338 210 l 338 190 l 358 170 l 318 170 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 170 40 40 re S
+Q
+q
+1 1 1 rg
+n 358 170 40 40 re f*
+0 .235294 .784314 rg
+n 358 210 m 378 210 l 378 190 l 398 170 l 358 170 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 170 40 40 re S
+Q
+q
+1 1 1 rg
+n 398 170 40 40 re f*
+.85098 .14902 .172549 rg
+n 438 210 m 418 210 l 418 190 l 398 170 l 438 170 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 170 40 40 re S
+Q
+q
+1 1 1 rg
+n 438 170 40 40 re f*
+.941176 .745098 0 rg
+n 478 210 m 458 210 l 458 190 l 438 170 l 478 170 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 170 40 40 re S
+Q
+q
+1 1 1 rg
+n 478 170 40 40 re f*
+.85098 .14902 .172549 rg
+n 518 170 m 498 170 l 498 190 l 478 210 l 518 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 170 40 40 re S
+Q
+q
+1 1 1 rg
+n 518 170 40 40 re f*
+0 .235294 .784314 rg
+n 558 210 m 538 210 l 538 190 l 518 170 l 558 170 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 170 40 40 re S
+Q
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 236 Tm (Close the case and flip it over. If every) Tj T* ET
+BT 1 0 0 1 54 221 Tm (answer is right, the back looks like this.) Tj T* ET
+
+=== real_case ===
+title: Arithmetic
+media boxes: 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Arithmetic) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (3 + 4 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 644 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 644 Tm (5 + 9 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 610 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 610 Tm (8 + 8 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 576 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 576 Tm (2 + 10 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 542 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 542 Tm (9 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 4 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 508 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 508 Tm (10 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 1 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 678 Tm (7.) Tj T* ET
+BT 1 0 0 1 334 678 Tm (8 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 8 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 644 Tm (8.) Tj T* ET
+BT 1 0 0 1 334 644 Tm (7 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 6 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 610 Tm (9.) Tj T* ET
+BT 1 0 0 1 334 610 Tm (6 \327 7 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 576 Tm (10.) Tj T* ET
+BT 1 0 0 1 334 576 Tm (5 \327 5 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 542 Tm (11.) Tj T* ET
+BT 1 0 0 1 334 542 Tm (9 \327 3 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 508 Tm (12.) Tj T* ET
+BT 1 0 0 1 334 508 Tm (4 \327 6 = ?) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 456 Tm (Answer bank) Tj T* ET
+BT /F1 11 Tf 13.2 TL ET
+BT 1 0 0 1 54 440 Tm (Put each numbered tile in the slot whose letter matches the answer to its question.) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 91.552 373 Tm (0) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.668 404 Tm (A) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 171.104 373 Tm (25) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 404 Tm (B) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 255.104 373 Tm (24) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 259.668 404 Tm (C) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 343.552 373 Tm (1) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 343.668 404 Tm (D) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 427.552 373 Tm (5) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.998 404 Tm (E) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 507.104 373 Tm (27) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 404 Tm (F) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 87.104 329 Tm (12) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.332 298 Tm (G) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 175.552 329 Tm (7) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 298 Tm (H) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 259.552 329 Tm (9) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 262.332 298 Tm (I) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 339.104 329 Tm (14) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 344.664 298 Tm (J) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 423.104 329 Tm (16) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.668 298 Tm (K) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 507.104 329 Tm (42) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 298 Tm (L) Tj T* ET
+q
+1 1 1 rg
+n 318 210 40 40 re f*
+.941176 .745098 0 rg
+n 358 250 m 338 250 l 338 230 l 318 210 l 358 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 358 210 40 40 re f*
+.941176 .745098 0 rg
+n 358 250 m 378 250 l 378 230 l 398 210 l 358 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 398 210 40 40 re f*
+0 .235294 .784314 rg
+n 438 250 m 418 250 l 418 230 l 398 210 l 438 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 438 210 40 40 re f*
+0 .235294 .784314 rg
+n 438 250 m 458 250 l 458 230 l 478 210 l 438 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 478 210 40 40 re f*
+.85098 .14902 .172549 rg
+n 518 250 m 498 250 l 498 230 l 478 210 l 518 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 518 210 40 40 re f*
+.85098 .14902 .172549 rg
+n 518 250 m 538 250 l 538 230 l 558 210 l 518 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 318 170 40 40 re f*
+.941176 .745098 0 rg
+n 358 170 m 338 170 l 338 190 l 318 210 l 358 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 170 40 40 re S
+Q
+q
+1 1 1 rg
+n 358 170 40 40 re f*
+.941176 .745098 0 rg
+n 358 170 m 378 170 l 378 190 l 398 210 l 358 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 170 40 40 re S
+Q
+q
+1 1 1 rg
+n 398 170 40 40 re f*
+0 .235294 .784314 rg
+n 438 170 m 418 170 l 418 190 l 398 210 l 438 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 170 40 40 re S
+Q
+q
+1 1 1 rg
+n 438 170 40 40 re f*
+0 .235294 .784314 rg
+n 438 170 m 458 170 l 458 190 l 478 210 l 438 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 170 40 40 re S
+Q
+q
+1 1 1 rg
+n 478 170 40 40 re f*
+.85098 .14902 .172549 rg
+n 518 170 m 498 170 l 498 190 l 478 210 l 518 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 170 40 40 re S
+Q
+q
+1 1 1 rg
+n 518 170 40 40 re f*
+.85098 .14902 .172549 rg
+n 518 170 m 538 170 l 538 190 l 558 210 l 518 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 170 40 40 re S
+Q
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 236 Tm (Close the case and flip it over. If every) Tj T* ET
+BT 1 0 0 1 54 221 Tm (answer is right, the back looks like this.) Tj T* ET
+
+=== real_case_answer_key ===
+title: Arithmetic
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Arithmetic) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (3 + 4 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 644 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 644 Tm (5 + 9 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 610 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 610 Tm (8 + 8 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 576 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 576 Tm (2 + 10 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 542 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 542 Tm (9 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 4 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 508 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 508 Tm (10 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 1 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 678 Tm (7.) Tj T* ET
+BT 1 0 0 1 334 678 Tm (8 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 8 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 644 Tm (8.) Tj T* ET
+BT 1 0 0 1 334 644 Tm (7 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 6 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 610 Tm (9.) Tj T* ET
+BT 1 0 0 1 334 610 Tm (6 \327 7 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 576 Tm (10.) Tj T* ET
+BT 1 0 0 1 334 576 Tm (5 \327 5 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 542 Tm (11.) Tj T* ET
+BT 1 0 0 1 334 542 Tm (9 \327 3 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 508 Tm (12.) Tj T* ET
+BT 1 0 0 1 334 508 Tm (4 \327 6 = ?) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 456 Tm (Answer bank) Tj T* ET
+BT /F1 11 Tf 13.2 TL ET
+BT 1 0 0 1 54 440 Tm (Put each numbered tile in the slot whose letter matches the answer to its question.) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 91.552 373 Tm (0) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.668 404 Tm (A) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 171.104 373 Tm (25) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 404 Tm (B) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 255.104 373 Tm (24) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 259.668 404 Tm (C) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 343.552 373 Tm (1) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 343.668 404 Tm (D) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 427.552 373 Tm (5) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.998 404 Tm (E) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 507.104 373 Tm (27) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 404 Tm (F) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 87.104 329 Tm (12) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.332 298 Tm (G) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 175.552 329 Tm (7) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 298 Tm (H) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 259.552 329 Tm (9) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 262.332 298 Tm (I) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 339.104 329 Tm (14) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 344.664 298 Tm (J) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 423.104 329 Tm (16) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.668 298 Tm (K) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 507.104 329 Tm (42) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 298 Tm (L) Tj T* ET
+q
+1 1 1 rg
+n 318 210 40 40 re f*
+.941176 .745098 0 rg
+n 358 250 m 338 250 l 338 230 l 318 210 l 358 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 358 210 40 40 re f*
+.941176 .745098 0 rg
+n 358 250 m 378 250 l 378 230 l 398 210 l 358 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 398 210 40 40 re f*
+0 .235294 .784314 rg
+n 438 250 m 418 250 l 418 230 l 398 210 l 438 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 438 210 40 40 re f*
+0 .235294 .784314 rg
+n 438 250 m 458 250 l 458 230 l 478 210 l 438 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 478 210 40 40 re f*
+.85098 .14902 .172549 rg
+n 518 250 m 498 250 l 498 230 l 478 210 l 518 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 518 210 40 40 re f*
+.85098 .14902 .172549 rg
+n 518 250 m 538 250 l 538 230 l 558 210 l 518 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 318 170 40 40 re f*
+.941176 .745098 0 rg
+n 358 170 m 338 170 l 338 190 l 318 210 l 358 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 170 40 40 re S
+Q
+q
+1 1 1 rg
+n 358 170 40 40 re f*
+.941176 .745098 0 rg
+n 358 170 m 378 170 l 378 190 l 398 210 l 358 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 170 40 40 re S
+Q
+q
+1 1 1 rg
+n 398 170 40 40 re f*
+0 .235294 .784314 rg
+n 438 170 m 418 170 l 418 190 l 398 210 l 438 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 170 40 40 re S
+Q
+q
+1 1 1 rg
+n 438 170 40 40 re f*
+0 .235294 .784314 rg
+n 438 170 m 458 170 l 458 190 l 478 210 l 438 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 170 40 40 re S
+Q
+q
+1 1 1 rg
+n 478 170 40 40 re f*
+.85098 .14902 .172549 rg
+n 518 170 m 498 170 l 498 190 l 478 210 l 518 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 170 40 40 re S
+Q
+q
+1 1 1 rg
+n 518 170 40 40 re f*
+.85098 .14902 .172549 rg
+n 518 170 m 538 170 l 538 190 l 558 210 l 518 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 170 40 40 re S
+Q
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 236 Tm (Close the case and flip it over. If every) Tj T* ET
+BT 1 0 0 1 54 221 Tm (answer is right, the back looks like this.) Tj T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Arithmetic: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (3 + 4 = 7    \(H\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 658 Tm (5 + 9 = 14    \(J\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 638 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 638 Tm (8 + 8 = 16    \(K\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 618 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 618 Tm (2 + 10 = 12    \(G\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 598 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 598 Tm (9 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 4 = 5    \(E\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 578 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 578 Tm (10 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 1 = 9    \(I\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 558 Tm (7.) Tj T* ET
+BT 1 0 0 1 82 558 Tm (8 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 8 = 0    \(A\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 538 Tm (8.) Tj T* ET
+BT 1 0 0 1 82 538 Tm (7 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 6 = 1    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 518 Tm (9.) Tj T* ET
+BT 1 0 0 1 82 518 Tm (6 \327 7 = 42    \(L\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 498 Tm (10.) Tj T* ET
+BT 1 0 0 1 82 498 Tm (5 \327 5 = 25    \(B\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 478 Tm (11.) Tj T* ET
+BT 1 0 0 1 82 478 Tm (9 \327 3 = 27    \(F\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 458 Tm (12.) Tj T* ET
+BT 1 0 0 1 82 458 Tm (4 \327 6 = 24    \(C\)) Tj T* ET
+
+=== in_order_other_title_and_label ===
+title: Number Facts
+media boxes: 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Number Facts) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Day 2) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (3 + 4 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 644 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 644 Tm (5 + 9 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 610 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 610 Tm (8 + 8 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 576 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 576 Tm (2 + 10 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 542 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 542 Tm (9 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 4 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 508 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 508 Tm (10 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 1 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 678 Tm (7.) Tj T* ET
+BT 1 0 0 1 334 678 Tm (8 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 8 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 644 Tm (8.) Tj T* ET
+BT 1 0 0 1 334 644 Tm (7 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 6 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 610 Tm (9.) Tj T* ET
+BT 1 0 0 1 334 610 Tm (6 \327 7 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 576 Tm (10.) Tj T* ET
+BT 1 0 0 1 334 576 Tm (5 \327 5 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 542 Tm (11.) Tj T* ET
+BT 1 0 0 1 334 542 Tm (9 \327 3 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 508 Tm (12.) Tj T* ET
+BT 1 0 0 1 334 508 Tm (4 \327 6 = ?) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 456 Tm (Answer bank) Tj T* ET
+BT /F1 11 Tf 13.2 TL ET
+BT 1 0 0 1 54 440 Tm (Put each numbered tile in the slot whose letter matches the answer to its question.) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 91.552 373 Tm (7) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.668 404 Tm (A) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 171.104 373 Tm (14) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 404 Tm (B) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 255.104 373 Tm (16) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 259.668 404 Tm (C) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 339.104 373 Tm (12) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 343.668 404 Tm (D) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 427.552 373 Tm (5) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.998 404 Tm (E) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 511.552 373 Tm (9) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 404 Tm (F) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 91.552 329 Tm (0) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.332 298 Tm (G) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 175.552 329 Tm (1) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 298 Tm (H) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 255.104 329 Tm (42) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 262.332 298 Tm (I) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 339.104 329 Tm (25) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 344.664 298 Tm (J) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 423.104 329 Tm (27) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.668 298 Tm (K) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 507.104 329 Tm (24) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 298 Tm (L) Tj T* ET
+q
+1 1 1 rg
+n 318 210 40 40 re f*
+.941176 .745098 0 rg
+n 358 210 m 338 210 l 338 230 l 318 250 l 358 250 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 358 210 40 40 re f*
+0 .235294 .784314 rg
+n 358 210 m 378 210 l 378 230 l 398 250 l 358 250 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 398 210 40 40 re f*
+.85098 .14902 .172549 rg
+n 398 250 m 418 250 l 418 230 l 438 210 l 398 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 438 210 40 40 re f*
+.941176 .745098 0 rg
+n 438 210 m 458 210 l 458 230 l 478 250 l 438 250 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 478 210 40 40 re f*
+.85098 .14902 .172549 rg
+n 478 210 m 498 210 l 498 230 l 518 250 l 478 250 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 518 210 40 40 re f*
+0 .235294 .784314 rg
+n 558 210 m 538 210 l 538 230 l 518 250 l 558 250 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 318 170 40 40 re f*
+.941176 .745098 0 rg
+n 318 210 m 338 210 l 338 190 l 358 170 l 318 170 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 170 40 40 re S
+Q
+q
+1 1 1 rg
+n 358 170 40 40 re f*
+0 .235294 .784314 rg
+n 358 210 m 378 210 l 378 190 l 398 170 l 358 170 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 170 40 40 re S
+Q
+q
+1 1 1 rg
+n 398 170 40 40 re f*
+.85098 .14902 .172549 rg
+n 438 210 m 418 210 l 418 190 l 398 170 l 438 170 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 170 40 40 re S
+Q
+q
+1 1 1 rg
+n 438 170 40 40 re f*
+.941176 .745098 0 rg
+n 478 210 m 458 210 l 458 190 l 438 170 l 478 170 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 170 40 40 re S
+Q
+q
+1 1 1 rg
+n 478 170 40 40 re f*
+.85098 .14902 .172549 rg
+n 518 170 m 498 170 l 498 190 l 478 210 l 518 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 170 40 40 re S
+Q
+q
+1 1 1 rg
+n 518 170 40 40 re f*
+0 .235294 .784314 rg
+n 558 210 m 538 210 l 538 190 l 518 170 l 558 170 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 170 40 40 re S
+Q
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 236 Tm (Close the case and flip it over. If every) Tj T* ET
+BT 1 0 0 1 54 221 Tm (answer is right, the back looks like this.) Tj T* ET
+
+=== four_questions ===
+title: Arithmetic
+media boxes: 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Arithmetic) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (3 + 4 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 644 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 644 Tm (5 + 9 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 610 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 610 Tm (8 + 8 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 576 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 576 Tm (2 + 10 = ?) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 456 Tm (Answer bank) Tj T* ET
+BT /F1 11 Tf 13.2 TL ET
+BT 1 0 0 1 54 440 Tm (Put each numbered tile in the slot whose letter matches the answer to its question. Shaded boxes are) Tj T* ET
+BT 1 0 0 1 54 427 Tm (not used.) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 87.104 373 Tm (14) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.668 404 Tm (A) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 356 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 404 Tm (B) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 356 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 259.668 404 Tm (C) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 356 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 343.668 404 Tm (D) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 356 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.998 404 Tm (E) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 511.552 373 Tm (7) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 404 Tm (F) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 87.104 329 Tm (12) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.332 298 Tm (G) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 312 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 298 Tm (H) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 312 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 262.332 298 Tm (I) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 312 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 344.664 298 Tm (J) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 312 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.668 298 Tm (K) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 507.104 329 Tm (16) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 298 Tm (L) Tj T* ET
+q
+1 1 1 rg
+n 318 210 40 40 re f*
+.941176 .745098 0 rg
+n 358 250 m 338 250 l 338 230 l 318 210 l 358 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 210 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 358 210 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 210 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 398 210 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 210 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 438 210 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 210 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 478 210 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 518 210 40 40 re f*
+.85098 .14902 .172549 rg
+n 558 250 m 538 250 l 538 230 l 518 210 l 558 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 318 170 40 40 re f*
+0 .235294 .784314 rg
+n 318 210 m 338 210 l 338 190 l 358 170 l 318 170 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 170 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 358 170 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 170 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 398 170 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 170 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 438 170 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 170 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 478 170 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 170 40 40 re S
+Q
+q
+1 1 1 rg
+n 518 170 40 40 re f*
+.941176 .745098 0 rg
+n 518 210 m 538 210 l 538 190 l 558 170 l 518 170 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 170 40 40 re S
+Q
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 236 Tm (Close the case and flip it over. If every) Tj T* ET
+BT 1 0 0 1 54 221 Tm (answer is right, the back looks like this.) Tj T* ET
+
+=== four_questions_answer_key ===
+title: Arithmetic
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Arithmetic) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (3 + 4 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 644 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 644 Tm (5 + 9 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 610 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 610 Tm (8 + 8 = ?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 576 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 576 Tm (2 + 10 = ?) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 456 Tm (Answer bank) Tj T* ET
+BT /F1 11 Tf 13.2 TL ET
+BT 1 0 0 1 54 440 Tm (Put each numbered tile in the slot whose letter matches the answer to its question. Shaded boxes are) Tj T* ET
+BT 1 0 0 1 54 427 Tm (not used.) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 87.104 373 Tm (14) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.668 404 Tm (A) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 356 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 404 Tm (B) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 356 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 259.668 404 Tm (C) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 356 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 343.668 404 Tm (D) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 356 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.998 404 Tm (E) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 356 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 511.552 373 Tm (7) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 404 Tm (F) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 87.104 329 Tm (12) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.332 298 Tm (G) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 312 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 298 Tm (H) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 312 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 262.332 298 Tm (I) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 312 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 344.664 298 Tm (J) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 312 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.668 298 Tm (K) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 312 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 507.104 329 Tm (16) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 298 Tm (L) Tj T* ET
+q
+1 1 1 rg
+n 318 210 40 40 re f*
+.941176 .745098 0 rg
+n 358 250 m 338 250 l 338 230 l 318 210 l 358 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 210 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 358 210 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 210 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 398 210 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 210 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 438 210 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 210 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 478 210 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 518 210 40 40 re f*
+.85098 .14902 .172549 rg
+n 558 250 m 538 250 l 538 230 l 518 210 l 558 210 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 210 40 40 re S
+Q
+q
+1 1 1 rg
+n 318 170 40 40 re f*
+0 .235294 .784314 rg
+n 318 210 m 338 210 l 338 190 l 358 170 l 318 170 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 170 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 358 170 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 170 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 398 170 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 170 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 438 170 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 170 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 478 170 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 170 40 40 re S
+Q
+q
+1 1 1 rg
+n 518 170 40 40 re f*
+.941176 .745098 0 rg
+n 518 210 m 538 210 l 538 190 l 558 170 l 518 170 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 170 40 40 re S
+Q
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 236 Tm (Close the case and flip it over. If every) Tj T* ET
+BT 1 0 0 1 54 221 Tm (answer is right, the back looks like this.) Tj T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Arithmetic: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (3 + 4 = 7    \(F\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 658 Tm (5 + 9 = 14    \(A\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 638 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 638 Tm (8 + 8 = 16    \(L\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 618 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 618 Tm (2 + 10 = 12    \(G\)) Tj T* ET
+

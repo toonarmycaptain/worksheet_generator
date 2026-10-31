@@ -2,6 +2,7 @@
 
 import re
 
+import pytest
 from django.test import Client
 
 
@@ -42,8 +43,32 @@ def test_arithmetic_page(client: Client) -> None:
         b"operation",
         b"max_number",
         b"answer_key",
+        b"self_check_tiles",
     ]
     assert get_links(content) == ["/"]
+
+
+@pytest.mark.parametrize(
+    ("url", "script"),
+    [
+        ("/arithmetic/", True),
+        ("/legacy/", False),
+    ],
+)
+def test_ticking_self_check_tiles_asks_for_12_questions(
+    client: Client, url: str, script: bool
+) -> None:
+    """The arithmetic page has the script that sets the problems to 12 when self-check tiles is
+    ticked.
+
+    The legacy page has no self-check tiles box, so it has no script. Whether the script works is
+    checked by hand in a browser.
+
+    The arithmetic page also has the operation names that its other script puts in the title.
+    """
+    content = client.get(url).content
+    assert (b"selfCheckTiles.checked ? 12 : problems.defaultValue" in content) is script
+    assert (b'id="operation-titles"' in content) is script
 
 
 def test_legacy_page(client: Client) -> None:

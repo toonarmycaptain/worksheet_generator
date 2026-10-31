@@ -21,8 +21,10 @@ from ninja import Field, Schema
 from pydantic import model_validator
 
 from core.arithmetic import Operation
-from core.arithmetic_generator import generate_arithmetic_questions
+from core.arithmetic_generator import generate_arithmetic_questions, possible_answers
+from core.self_check_tiles import SLOTS, random_slot_of
 from render.pdf.arithmetic_worksheet import OPERATION_NAMES, render_arithmetic_worksheet
+from render.pdf.self_check_tiles_worksheet import render_self_check_tiles_worksheet
 from worksheet_generator._imported import generate_block_word_problems as block
 from worksheet_generator._imported import generate_data_graph_mc_word_problems as data_graph_mc
 from worksheet_generator._imported import generate_data_graph_word_problems as data_graph
@@ -62,6 +64,7 @@ class ArithmeticOptions(Schema):
     operation: Literal["add", "subtract", "multiply"] = Field("add", title="Operation")
     max_number: int = Field(10, ge=1, le=24, title="Largest number")
     answer_key: bool = Field(False, title="Add an answer key page")
+    self_check_tiles: bool = Field(False, title="Self-check tile answers")
 
     @model_validator(mode="after")
     def _title_follows_the_operation(self) -> Self:
@@ -73,10 +76,24 @@ class ArithmeticOptions(Schema):
 
     @model_validator(mode="after")
     def _enough_different_questions(self) -> Self:
-        # Operands run from 0 to max_number and a flipped pair counts as a repeat.
-        values = self.max_number + 1
-        if self.problems > values * (values + 1) // 2:
-            raise ValueError("problems: too many for that largest number, which allows no repeats")
+        if self.self_check_tiles:
+            # Question n uses tile n, so there are at most 12, and each needs its own answer.
+            if self.problems > SLOTS:
+                raise ValueError(
+                    f"problems: self-check tiles has {SLOTS} tiles, so at most {SLOTS}"
+                )
+            answers = possible_answers(Operation(self.operation), high=self.max_number)
+            if self.problems > len(answers):
+                raise ValueError(
+                    "problems: too many for that largest number, which allows no repeated answers"
+                )
+        else:
+            # Operands run from 0 to max_number and a flipped pair counts as a repeat.
+            values = self.max_number + 1
+            if self.problems > values * (values + 1) // 2:
+                raise ValueError(
+                    "problems: too many for that largest number, which allows no repeats"
+                )
         return self
 
 
@@ -154,8 +171,23 @@ class WorksheetOptions(Options):
 
 
 def _arithmetic(o: ArithmeticOptions, out: BinaryIO) -> None:
-    questions = generate_arithmetic_questions(o.problems, Operation(o.operation), high=o.max_number)
-    render_arithmetic_worksheet(questions, out, o.title, o.label, o.answer_key)
+    operation = Operation(o.operation)
+    if o.self_check_tiles:
+        # The answer bank replaces the choices, so there are no wrong answers.
+        questions = generate_arithmetic_questions(
+            o.problems, operation, high=o.max_number, wrong_answer_count=0, distinct_answers=True
+        )
+        render_self_check_tiles_worksheet(
+            [question.data for question in questions],
+            random_slot_of(o.problems),
+            out,
+            o.title,
+            o.label,
+            o.answer_key,
+        )
+    else:
+        questions = generate_arithmetic_questions(o.problems, operation, high=o.max_number)
+        render_arithmetic_worksheet(questions, out, o.title, o.label, o.answer_key)
 
 
 def _block(o: BlockOptions, seed: int, out: BinaryIO) -> None:
