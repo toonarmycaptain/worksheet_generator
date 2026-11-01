@@ -16,6 +16,7 @@ from typing import Any
 
 import pytest
 from django.test import Client
+from worksheets.registry import MAXIMUM_ARITHMETIC_OPERAND
 
 from core.arithmetic import ArithmeticQuestionData, Operation
 from tests.pdf_text import pdf_text
@@ -209,7 +210,7 @@ from tests.test_arithmetic_worksheet_pdf import build, render
             None,
         ),
         (
-            "/api/worksheets/arithmetic.pdf?max_number=25",
+            f"/api/worksheets/arithmetic.pdf?max_number={MAXIMUM_ARITHMETIC_OPERAND + 1}",
             [],
             422,
             {
@@ -217,8 +218,10 @@ from tests.test_arithmetic_worksheet_pdf import build, render
                     {
                         "type": "less_than_equal",
                         "loc": ["query", "max_number"],
-                        "msg": "Input should be less than or equal to 24",
-                        "ctx": {"le": 24},
+                        "msg": (
+                            f"Input should be less than or equal to {MAXIMUM_ARITHMETIC_OPERAND}"
+                        ),
+                        "ctx": {"le": MAXIMUM_ARITHMETIC_OPERAND},
                     },
                 ],
             },
