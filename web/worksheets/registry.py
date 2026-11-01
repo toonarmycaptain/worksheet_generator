@@ -42,6 +42,7 @@ from worksheet_generator._imported import wp_common
 # Seeds are for development and tests; users get no promise that a seed remakes a sheet.
 MAX_SEED = 2**53 - 1
 MAX_PROBLEMS = 20
+MAXIMUM_ARITHMETIC_OPERAND = 999
 
 Title = Annotated[str, Field(min_length=1, max_length=80)]
 Label = Annotated[str, Field(max_length=40)]
@@ -62,7 +63,7 @@ class ArithmeticOptions(Schema):
     label: Label = "Sheet A"
     problems: Problems = 8
     operation: Literal["add", "subtract", "multiply"] = Field("add", title="Operation")
-    max_number: int = Field(10, ge=1, le=24, title="Largest number")
+    max_number: int = Field(10, ge=1, le=MAXIMUM_ARITHMETIC_OPERAND, title="Largest number")
     answer_key: bool = Field(False, title="Add an answer key page")
     self_check_tiles: bool = Field(False, title="Self-check tile answers")
     # simple: the conventional pictures, complex: the tiles in any slots at all
