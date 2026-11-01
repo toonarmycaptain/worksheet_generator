@@ -17,14 +17,32 @@ def random_wrong_answers(
     by default). With ``allow_negatives`` (off by default) the negative of each magnitude
     is also possible, so a correct answer of 4 can have -4 as a wrong answer.
     """
-    candidates = set(range(low, high + 1))
-    if allow_negatives:
-        candidates |= {-magnitude for magnitude in candidates}
-    candidates.discard(correct_answer)
+    # The pool of wrong answers, lowest first: the negatives if allowed (0 has none), then
+    # low to high. It is kept as ranges so no number in it is ever made, however wide it is.
+    # The correct answer splits whichever range holds it.
+    whole = [range(-high, -max(low, 1) + 1)] if allow_negatives else []
+    whole.append(range(low, high + 1))
+    pool: list[range] = []
+    for numbers in whole:
+        if correct_answer in numbers:
+            pool += [range(numbers.start, correct_answer), range(correct_answer + 1, numbers.stop)]
+        else:
+            pool.append(numbers)
+    size = sum(len(numbers) for numbers in pool)
 
-    if count > len(candidates):
+    if count > size:
         raise ValueError(
-            f"Cannot pick {count} wrong answers: only {len(candidates)} possible "
+            f"Cannot pick {count} wrong answers: only {size} possible "
             f"between {low} and {high} (allow_negatives={allow_negatives})."
         )
-    return tuple(random.sample(sorted(candidates), count))
+    # sample picks positions in the pool, drawing again on a repeat
+    return tuple(_number_at(pool, position) for position in random.sample(range(size), count))
+
+
+def _number_at(pool: list[range], position: int) -> int:
+    """The number at ``position`` in the pool's ranges laid end to end."""
+    for numbers in pool:
+        if position < len(numbers):
+            return numbers[position]
+        position -= len(numbers)
+    raise IndexError(position)
