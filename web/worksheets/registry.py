@@ -21,7 +21,7 @@ from ninja import Field, Schema
 from pydantic import model_validator
 
 from core.arithmetic import Operation
-from core.arithmetic_generator import generate_arithmetic_questions, possible_answers
+from core.arithmetic_generator import count_possible_answers, generate_arithmetic_questions
 from core.self_check_tiles import SLOTS, conventional_slot_of, random_slot_of
 from render.pdf.arithmetic_worksheet import OPERATION_NAMES, render_arithmetic_worksheet
 from render.pdf.self_check_tiles_worksheet import render_self_check_tiles_worksheet
@@ -87,8 +87,10 @@ class ArithmeticOptions(Schema):
                 raise ValueError(
                     f"problems: self-check tiles has {SLOTS} tiles, so at most {SLOTS}"
                 )
-            answers = possible_answers(Operation(self.operation), high=self.max_number)
-            if self.problems > len(answers):
+            answers = count_possible_answers(
+                Operation(self.operation), high=self.max_number, up_to=self.problems
+            )
+            if self.problems > answers:
                 raise ValueError(
                     "problems: too many for that largest number, which allows no repeated answers"
                 )

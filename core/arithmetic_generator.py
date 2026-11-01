@@ -46,16 +46,29 @@ def generate_arithmetic_question(
     return Question(data, wrong_answers)
 
 
-def possible_answers(operation: Operation, *, low: int = 0, high: int = 10) -> set[int]:
-    """Every answer a question can have, with operands from ``low`` to ``high``."""
-    pairs = [(first, second) for first in range(low, high + 1) for second in range(first, high + 1)]
+def count_possible_answers(
+    operation: Operation, *, low: int = 0, high: int = 10, up_to: int
+) -> int:
+    """How many different answers questions can have, with operands from ``low`` to ``high``.
+
+    The count goes no higher than ``up_to``: a result of ``up_to`` means at least that many.
+    """
     match operation:
         case Operation.ADD:
-            return {first + second for first, second in pairs}
+            return min(2 * (high - low) + 1, up_to)  # every sum from 2 * low to 2 * high
         case Operation.SUBTRACT:
-            return {second - first for first, second in pairs}
+            return min(high - low + 1, up_to)  # every difference from 0 to high - low
         case Operation.MULTIPLY:
-            return {first * second for first, second in pairs}
+            # No formula counts the different products, so collect them until there are enough.
+            # The largest first operand comes first: its products rarely repeat, where 0 times
+            # anything is 0 every time.
+            products: set[int] = set()
+            for first in range(high, low - 1, -1):
+                for second in range(first, high + 1):
+                    products.add(first * second)
+                    if len(products) >= up_to:
+                        return up_to
+            return len(products)
         case Operation.DIVIDE:
             raise NotImplementedError("Division questions are not built yet.")
         case _:
@@ -77,7 +90,7 @@ def generate_arithmetic_questions(
     2 + 5.
     """
     if distinct_answers:
-        possible = len(possible_answers(operation, low=low, high=high))
+        possible = count_possible_answers(operation, low=low, high=high, up_to=count)
         kind = "questions with different answers"
     else:
         values = high - low + 1

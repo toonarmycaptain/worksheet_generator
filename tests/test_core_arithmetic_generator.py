@@ -10,7 +10,7 @@ import random
 import pytest
 
 from core.arithmetic import ArithmeticQuestionData, Operation
-from core.arithmetic_generator import generate_arithmetic_questions, possible_answers
+from core.arithmetic_generator import count_possible_answers, generate_arithmetic_questions
 
 # one question: (data, wrong answers, options)
 Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
@@ -541,15 +541,25 @@ def test_asking_for_more_different_answers_than_exist_fails(
 
 
 @pytest.mark.parametrize(
-    ("operation", "low", "high", "answers"),
+    ("operation", "low", "high", "up_to", "count"),
     [
-        (Operation.ADD, 0, 2, {0, 1, 2, 3, 4}),
-        (Operation.ADD, 3, 4, {6, 7, 8}),
-        (Operation.SUBTRACT, 0, 3, {0, 1, 2, 3}),
-        (Operation.SUBTRACT, 5, 7, {0, 1, 2}),
-        (Operation.MULTIPLY, 0, 3, {0, 1, 2, 3, 4, 6, 9}),
-        (Operation.MULTIPLY, 2, 3, {4, 6, 9}),
+        (Operation.ADD, 0, 2, 100, 5),  # 0 1 2 3 4
+        (Operation.ADD, 3, 4, 100, 3),  # 6 7 8
+        (Operation.SUBTRACT, 0, 3, 100, 4),  # 0 1 2 3
+        (Operation.SUBTRACT, 5, 7, 100, 3),  # 0 1 2
+        (Operation.MULTIPLY, 0, 3, 100, 7),  # 0 1 2 3 4 6 9
+        (Operation.MULTIPLY, 2, 3, 100, 3),  # 4 6 9
+        (Operation.ADD, 0, 2, 5, 5),  # exactly up_to
+        (Operation.MULTIPLY, 0, 3, 7, 7),
+        (Operation.ADD, 0, 2, 3, 3),  # more than up_to stops at up_to
+        (Operation.SUBTRACT, 0, 3, 3, 3),
+        (Operation.MULTIPLY, 0, 3, 3, 3),
+        (Operation.ADD, 0, 999999, 12, 12),  # a huge range is quick: it stops at up_to
+        (Operation.SUBTRACT, 0, 999999, 12, 12),
+        (Operation.MULTIPLY, 0, 999999, 12, 12),
     ],
 )
-def test_possible_answers(operation: Operation, low: int, high: int, answers: set[int]) -> None:
-    assert possible_answers(operation, low=low, high=high) == answers
+def test_count_possible_answers(
+    operation: Operation, low: int, high: int, up_to: int, count: int
+) -> None:
+    assert count_possible_answers(operation, low=low, high=high, up_to=up_to) == count
