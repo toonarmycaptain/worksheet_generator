@@ -9,7 +9,7 @@ from reportlab.lib.pagesizes import letter  # type: ignore[import-untyped]
 from reportlab.lib.utils import simpleSplit  # type: ignore[import-untyped]
 from reportlab.pdfgen.canvas import Canvas  # type: ignore[import-untyped]
 
-from core.arithmetic import ArithmeticQuestionData
+from core.basic_operations.data import BasicOperationQuestionData
 from core.self_check_tiles import SLOTS_PER_ROW, TILES, answer_bank, pattern, tile_outline
 from render.pdf.arithmetic_worksheet import (
     BOLD_FONT,
@@ -41,7 +41,7 @@ BLOCKED = HexColor("#d9d9d9")  # a slot no question uses
 
 
 def render_self_check_tiles_worksheet(
-    questions: Sequence[ArithmeticQuestionData],
+    questions: Sequence[BasicOperationQuestionData],
     slot_of: Sequence[int],
     path: str | BinaryIO,
     title: str,

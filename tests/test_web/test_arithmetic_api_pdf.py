@@ -4,7 +4,7 @@ The questions are random, so ``test_arithmetic_pdf`` scripts ``random.randint`` 
 and makes ``random.sample`` take the top of the allowed range of wrong answers, which shows the
 operation's and ``max_number``'s limits in the PDF. The PDF must then draw what the renderer
 makes for those same questions. Options the endpoint does not allow get Ninja's JSON error.
-What the renderer draws is tested in ``test_arithmetic_worksheet_pdf``.
+What the renderer draws is tested in ``test_arithmetic_worksheet``.
 
 A request needs a ``sheet`` token to get the PDF. Without one it is redirected to a URL with a
 token (``test_a_request_without_a_sheet_is_redirected``).
@@ -18,9 +18,9 @@ import pytest
 from django.test import Client
 from worksheets.registry import MAXIMUM_ARITHMETIC_OPERAND
 
-from core.arithmetic import ArithmeticQuestionData, Operation
+from core.basic_operations.data import BasicOperationQuestionData, Operation
 from tests.pdf_text import pdf_text
-from tests.test_arithmetic_worksheet_pdf import build, render
+from tests.test_render.test_pdf.test_arithmetic_worksheet import build, render
 
 
 @pytest.mark.parametrize(
@@ -33,8 +33,8 @@ from tests.test_arithmetic_worksheet_pdf import build, render
             None,
             {
                 "cases": [
-                    (ArithmeticQuestionData(Operation.ADD, (3, 4), 7), (18, 19, 20)),
-                    (ArithmeticQuestionData(Operation.ADD, (5, 6), 11), (18, 19, 20)),
+                    (BasicOperationQuestionData(Operation.ADD, (3, 4), 7), (18, 19, 20)),
+                    (BasicOperationQuestionData(Operation.ADD, (5, 6), 11), (18, 19, 20)),
                 ],
                 "title": "Addition",
                 "label": "Sheet A",
@@ -50,8 +50,8 @@ from tests.test_arithmetic_worksheet_pdf import build, render
             None,
             {
                 "cases": [
-                    (ArithmeticQuestionData(Operation.SUBTRACT, (7, 3), 4), (8, 9, 10)),
-                    (ArithmeticQuestionData(Operation.SUBTRACT, (9, 2), 7), (8, 9, 10)),
+                    (BasicOperationQuestionData(Operation.SUBTRACT, (7, 3), 4), (8, 9, 10)),
+                    (BasicOperationQuestionData(Operation.SUBTRACT, (9, 2), 7), (8, 9, 10)),
                 ],
                 "title": "Subtraction",
                 "label": "Sheet A",
@@ -67,8 +67,8 @@ from tests.test_arithmetic_worksheet_pdf import build, render
             None,
             {
                 "cases": [
-                    (ArithmeticQuestionData(Operation.MULTIPLY, (6, 7), 42), (98, 99, 100)),
-                    (ArithmeticQuestionData(Operation.MULTIPLY, (2, 8), 16), (98, 99, 100)),
+                    (BasicOperationQuestionData(Operation.MULTIPLY, (6, 7), 42), (98, 99, 100)),
+                    (BasicOperationQuestionData(Operation.MULTIPLY, (2, 8), 16), (98, 99, 100)),
                 ],
                 "title": "Tables",
                 "label": "Day 2",
@@ -83,7 +83,7 @@ from tests.test_arithmetic_worksheet_pdf import build, render
             200,
             None,
             {
-                "cases": [(ArithmeticQuestionData(Operation.ADD, (3, 4), 7), (8, 9, 10))],
+                "cases": [(BasicOperationQuestionData(Operation.ADD, (3, 4), 7), (8, 9, 10))],
                 "title": "Addition",
                 "label": "Sheet A",
                 "answer_key": False,
@@ -96,7 +96,7 @@ from tests.test_arithmetic_worksheet_pdf import build, render
             200,
             None,
             {
-                "cases": [(ArithmeticQuestionData(Operation.ADD, (3, 4), 7), (18, 19, 20))],
+                "cases": [(BasicOperationQuestionData(Operation.ADD, (3, 4), 7), (18, 19, 20))],
                 "title": "Addition",
                 "label": "",
                 "answer_key": False,
@@ -112,9 +112,9 @@ from tests.test_arithmetic_worksheet_pdf import build, render
             None,
             {
                 "cases": [
-                    (ArithmeticQuestionData(Operation.ADD, (0, 0), 0), (1, 2, 3)),
-                    (ArithmeticQuestionData(Operation.ADD, (0, 1), 1), (0, 2, 3)),
-                    (ArithmeticQuestionData(Operation.ADD, (1, 1), 2), (0, 1, 3)),
+                    (BasicOperationQuestionData(Operation.ADD, (0, 0), 0), (1, 2, 3)),
+                    (BasicOperationQuestionData(Operation.ADD, (0, 1), 1), (0, 2, 3)),
+                    (BasicOperationQuestionData(Operation.ADD, (1, 1), 2), (0, 1, 3)),
                 ],
                 "title": "Addition",
                 "label": "Sheet A",
@@ -235,7 +235,9 @@ from tests.test_arithmetic_worksheet_pdf import build, render
             200,
             None,
             {
-                "cases": [(ArithmeticQuestionData(Operation.MULTIPLY, (6, 7), 42), (98, 99, 100))],
+                "cases": [
+                    (BasicOperationQuestionData(Operation.MULTIPLY, (6, 7), 42), (98, 99, 100))
+                ],
                 "title": "Multiplication",
                 "label": "Sheet A",
                 "answer_key": False,

@@ -17,7 +17,7 @@ from pathlib import Path
 
 import pytest
 
-from core.arithmetic import ArithmeticQuestionData, Operation
+from core.basic_operations.data import BasicOperationQuestionData, Operation
 from core.question import Question
 from render.pdf.arithmetic_worksheet import render_arithmetic_worksheet
 from tests.pdf_text import pdf_text
@@ -25,15 +25,15 @@ from tests.test_imported_snapshots import GOLDENS
 
 # (question data, its wrong answers)
 FOUR_OPERATIONS = [
-    (ArithmeticQuestionData(Operation.ADD, (3, 4), 7), (0, 1, 2)),
-    (ArithmeticQuestionData(Operation.SUBTRACT, (9, 4), 5), (10,)),
-    (ArithmeticQuestionData(Operation.MULTIPLY, (6, 7), 42), (12, 13)),
-    (ArithmeticQuestionData(Operation.DIVIDE, (8, 2), 4), (1, 2, 3)),
+    (BasicOperationQuestionData(Operation.ADD, (3, 4), 7), (0, 1, 2)),
+    (BasicOperationQuestionData(Operation.SUBTRACT, (9, 4), 5), (10,)),
+    (BasicOperationQuestionData(Operation.MULTIPLY, (6, 7), 42), (12, 13)),
+    (BasicOperationQuestionData(Operation.DIVIDE, (8, 2), 4), (1, 2, 3)),
 ]
 
 WORD_PROBLEMS = [
     (
-        ArithmeticQuestionData(
+        BasicOperationQuestionData(
             Operation.MULTIPLY,
             (4, 3),
             12,
@@ -42,7 +42,7 @@ WORD_PROBLEMS = [
         (7, 9, 10),
     ),
     (
-        ArithmeticQuestionData(
+        BasicOperationQuestionData(
             Operation.ADD,
             (25, 17),
             42,
@@ -52,7 +52,7 @@ WORD_PROBLEMS = [
         (32, 52, 41),
     ),
     (
-        ArithmeticQuestionData(
+        BasicOperationQuestionData(
             Operation.SUBTRACT,
             (50, 18),
             32,
@@ -65,12 +65,12 @@ WORD_PROBLEMS = [
 ]
 
 NINE_QUESTIONS = [
-    (ArithmeticQuestionData(Operation.ADD, (number, number), 2 * number), (100, 101, 102))
+    (BasicOperationQuestionData(Operation.ADD, (number, number), 2 * number), (100, 101, 102))
     for number in range(1, 10)
 ]
 
 
-def build(cases: list[tuple[ArithmeticQuestionData, tuple[int, ...]]]) -> list[Question]:
+def build(cases: list[tuple[BasicOperationQuestionData, tuple[int, ...]]]) -> list[Question]:
     return [Question(data, wrong_answers) for data, wrong_answers in cases]
 
 
@@ -112,7 +112,7 @@ def read_sections(path: Path) -> dict[str, str]:
 )
 def test_pdf_draws_the_expected_text(
     case_name: str,
-    cases: list[tuple[ArithmeticQuestionData, tuple[int, ...]]],
+    cases: list[tuple[BasicOperationQuestionData, tuple[int, ...]]],
     answer_key: bool,
     title: str,
     label: str,

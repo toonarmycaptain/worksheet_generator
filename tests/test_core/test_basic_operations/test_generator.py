@@ -9,11 +9,14 @@ import random
 
 import pytest
 
-from core.arithmetic import ArithmeticQuestionData, Operation
-from core.arithmetic_generator import count_possible_answers, generate_arithmetic_questions
+from core.basic_operations.data import BasicOperationQuestionData, Operation
+from core.basic_operations.generator import (
+    count_possible_answers,
+    generate_basic_operation_questions,
+)
 
 # one question: (data, wrong answers, options)
-Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
+Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
 
 
 @pytest.mark.parametrize(
@@ -26,7 +29,7 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             10,
             3,
             [3, 4],
-            [(ArithmeticQuestionData(Operation.ADD, (3, 4), 7), (18, 19, 20), (20, 19, 18, 7))],
+            [(BasicOperationQuestionData(Operation.ADD, (3, 4), 7), (18, 19, 20), (20, 19, 18, 7))],
         ),
         (
             Operation.ADD,
@@ -34,7 +37,7 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             10,
             3,
             [4, 3],
-            [(ArithmeticQuestionData(Operation.ADD, (4, 3), 7), (18, 19, 20), (20, 19, 18, 7))],
+            [(BasicOperationQuestionData(Operation.ADD, (4, 3), 7), (18, 19, 20), (20, 19, 18, 7))],
         ),
         (
             Operation.ADD,
@@ -42,7 +45,7 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             10,
             3,
             [0, 0],
-            [(ArithmeticQuestionData(Operation.ADD, (0, 0), 0), (18, 19, 20), (20, 19, 18, 0))],
+            [(BasicOperationQuestionData(Operation.ADD, (0, 0), 0), (18, 19, 20), (20, 19, 18, 0))],
         ),
         # the correct answer 20 is left out of the wrong answers
         (
@@ -51,7 +54,13 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             10,
             3,
             [10, 10],
-            [(ArithmeticQuestionData(Operation.ADD, (10, 10), 20), (17, 18, 19), (19, 18, 17, 20))],
+            [
+                (
+                    BasicOperationQuestionData(Operation.ADD, (10, 10), 20),
+                    (17, 18, 19),
+                    (19, 18, 17, 20),
+                )
+            ],
         ),
         (
             Operation.SUBTRACT,
@@ -59,7 +68,13 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             10,
             3,
             [7, 3],
-            [(ArithmeticQuestionData(Operation.SUBTRACT, (7, 3), 4), (8, 9, 10), (10, 9, 8, 4))],
+            [
+                (
+                    BasicOperationQuestionData(Operation.SUBTRACT, (7, 3), 4),
+                    (8, 9, 10),
+                    (10, 9, 8, 4),
+                )
+            ],
         ),
         # drawn smaller first: swapped, so the answer is not negative
         (
@@ -68,7 +83,13 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             10,
             3,
             [3, 7],
-            [(ArithmeticQuestionData(Operation.SUBTRACT, (7, 3), 4), (8, 9, 10), (10, 9, 8, 4))],
+            [
+                (
+                    BasicOperationQuestionData(Operation.SUBTRACT, (7, 3), 4),
+                    (8, 9, 10),
+                    (10, 9, 8, 4),
+                )
+            ],
         ),
         (
             Operation.SUBTRACT,
@@ -76,7 +97,13 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             10,
             3,
             [5, 5],
-            [(ArithmeticQuestionData(Operation.SUBTRACT, (5, 5), 0), (8, 9, 10), (10, 9, 8, 0))],
+            [
+                (
+                    BasicOperationQuestionData(Operation.SUBTRACT, (5, 5), 0),
+                    (8, 9, 10),
+                    (10, 9, 8, 0),
+                )
+            ],
         ),
         (
             Operation.SUBTRACT,
@@ -84,7 +111,13 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             10,
             3,
             [0, 9],
-            [(ArithmeticQuestionData(Operation.SUBTRACT, (9, 0), 9), (7, 8, 10), (10, 8, 7, 9))],
+            [
+                (
+                    BasicOperationQuestionData(Operation.SUBTRACT, (9, 0), 9),
+                    (7, 8, 10),
+                    (10, 8, 7, 9),
+                )
+            ],
         ),
         (
             Operation.SUBTRACT,
@@ -92,7 +125,13 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             10,
             3,
             [9, 0],
-            [(ArithmeticQuestionData(Operation.SUBTRACT, (9, 0), 9), (7, 8, 10), (10, 8, 7, 9))],
+            [
+                (
+                    BasicOperationQuestionData(Operation.SUBTRACT, (9, 0), 9),
+                    (7, 8, 10),
+                    (10, 8, 7, 9),
+                )
+            ],
         ),
         (
             Operation.MULTIPLY,
@@ -102,7 +141,7 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             [6, 7],
             [
                 (
-                    ArithmeticQuestionData(Operation.MULTIPLY, (6, 7), 42),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (6, 7), 42),
                     (98, 99, 100),
                     (100, 99, 98, 42),
                 ),
@@ -116,7 +155,7 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             [7, 6],
             [
                 (
-                    ArithmeticQuestionData(Operation.MULTIPLY, (7, 6), 42),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (7, 6), 42),
                     (98, 99, 100),
                     (100, 99, 98, 42),
                 ),
@@ -130,7 +169,7 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             [0, 9],
             [
                 (
-                    ArithmeticQuestionData(Operation.MULTIPLY, (0, 9), 0),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (0, 9), 0),
                     (98, 99, 100),
                     (100, 99, 98, 0),
                 ),
@@ -144,7 +183,7 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             [10, 10],
             [
                 (
-                    ArithmeticQuestionData(Operation.MULTIPLY, (10, 10), 100),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (10, 10), 100),
                     (97, 98, 99),
                     (99, 98, 97, 100),
                 ),
@@ -157,7 +196,7 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             10,
             1,
             [3, 4],
-            [(ArithmeticQuestionData(Operation.ADD, (3, 4), 7), (20,), (20, 7))],
+            [(BasicOperationQuestionData(Operation.ADD, (3, 4), 7), (20,), (20, 7))],
         ),
         (
             Operation.ADD,
@@ -167,7 +206,7 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             [3, 4],
             [
                 (
-                    ArithmeticQuestionData(Operation.ADD, (3, 4), 7),
+                    BasicOperationQuestionData(Operation.ADD, (3, 4), 7),
                     (16, 17, 18, 19, 20),
                     (20, 19, 18, 17, 16, 7),
                 ),
@@ -181,7 +220,7 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             5,
             3,
             [3, 4],
-            [(ArithmeticQuestionData(Operation.ADD, (3, 4), 7), (8, 9, 10), (10, 9, 8, 7))],
+            [(BasicOperationQuestionData(Operation.ADD, (3, 4), 7), (8, 9, 10), (10, 9, 8, 7))],
         ),
         (
             Operation.ADD,
@@ -189,7 +228,13 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             7,
             3,
             [7, 7],
-            [(ArithmeticQuestionData(Operation.ADD, (7, 7), 14), (11, 12, 13), (13, 12, 11, 14))],
+            [
+                (
+                    BasicOperationQuestionData(Operation.ADD, (7, 7), 14),
+                    (11, 12, 13),
+                    (13, 12, 11, 14),
+                )
+            ],
         ),
         (
             Operation.ADD,
@@ -197,7 +242,13 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             12,
             3,
             [5, 8],
-            [(ArithmeticQuestionData(Operation.ADD, (5, 8), 13), (22, 23, 24), (24, 23, 22, 13))],
+            [
+                (
+                    BasicOperationQuestionData(Operation.ADD, (5, 8), 13),
+                    (22, 23, 24),
+                    (24, 23, 22, 13),
+                )
+            ],
         ),
         (
             Operation.SUBTRACT,
@@ -205,7 +256,7 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             5,
             3,
             [5, 3],
-            [(ArithmeticQuestionData(Operation.SUBTRACT, (5, 3), 2), (3, 4, 5), (5, 4, 3, 2))],
+            [(BasicOperationQuestionData(Operation.SUBTRACT, (5, 3), 2), (3, 4, 5), (5, 4, 3, 2))],
         ),
         (
             Operation.MULTIPLY,
@@ -215,7 +266,7 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             [3, 4],
             [
                 (
-                    ArithmeticQuestionData(Operation.MULTIPLY, (3, 4), 12),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (3, 4), 12),
                     (23, 24, 25),
                     (25, 24, 23, 12),
                 ),
@@ -229,7 +280,7 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             [2, 3],
             [
                 (
-                    ArithmeticQuestionData(Operation.MULTIPLY, (2, 3), 6),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (2, 3), 6),
                     (574, 575, 576),
                     (576, 575, 574, 6),
                 ),
@@ -242,7 +293,7 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             1,
             3,
             [1, 1],
-            [(ArithmeticQuestionData(Operation.ADD, (1, 1), 2), (0, 1, 3), (3, 1, 0, 2))],
+            [(BasicOperationQuestionData(Operation.ADD, (1, 1), 2), (0, 1, 3), (3, 1, 0, 2))],
         ),
         (
             Operation.ADD,
@@ -250,7 +301,7 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             0,
             3,
             [0, 0],
-            [(ArithmeticQuestionData(Operation.ADD, (0, 0), 0), (1, 2, 3), (3, 2, 1, 0))],
+            [(BasicOperationQuestionData(Operation.ADD, (0, 0), 0), (1, 2, 3), (3, 2, 1, 0))],
         ),
         (
             Operation.SUBTRACT,
@@ -258,7 +309,7 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             0,
             3,
             [0, 0],
-            [(ArithmeticQuestionData(Operation.SUBTRACT, (0, 0), 0), (1, 2, 3), (3, 2, 1, 0))],
+            [(BasicOperationQuestionData(Operation.SUBTRACT, (0, 0), 0), (1, 2, 3), (3, 2, 1, 0))],
         ),
         (
             Operation.MULTIPLY,
@@ -266,7 +317,7 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             0,
             3,
             [0, 0],
-            [(ArithmeticQuestionData(Operation.MULTIPLY, (0, 0), 0), (1, 2, 3), (3, 2, 1, 0))],
+            [(BasicOperationQuestionData(Operation.MULTIPLY, (0, 0), 0), (1, 2, 3), (3, 2, 1, 0))],
         ),
         # the answer 0 is not repeated as a wrong answer
         (
@@ -275,7 +326,7 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             1,
             3,
             [0, 1],
-            [(ArithmeticQuestionData(Operation.MULTIPLY, (0, 1), 0), (1, 2, 3), (3, 2, 1, 0))],
+            [(BasicOperationQuestionData(Operation.MULTIPLY, (0, 1), 0), (1, 2, 3), (3, 2, 1, 0))],
         ),
         # a pair that was already used, in either order, is drawn again: 4 + 3 flips 3 + 4
         (
@@ -285,8 +336,16 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             3,
             [3, 4, 4, 3, 5, 6],
             [
-                (ArithmeticQuestionData(Operation.ADD, (3, 4), 7), (18, 19, 20), (20, 19, 18, 7)),
-                (ArithmeticQuestionData(Operation.ADD, (5, 6), 11), (18, 19, 20), (20, 19, 18, 11)),
+                (
+                    BasicOperationQuestionData(Operation.ADD, (3, 4), 7),
+                    (18, 19, 20),
+                    (20, 19, 18, 7),
+                ),
+                (
+                    BasicOperationQuestionData(Operation.ADD, (5, 6), 11),
+                    (18, 19, 20),
+                    (20, 19, 18, 11),
+                ),
             ],
         ),
         # 3 - 7 is drawn the other way round but makes the same pair as 7 - 3
@@ -297,8 +356,16 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             3,
             [7, 3, 3, 7, 9, 2],
             [
-                (ArithmeticQuestionData(Operation.SUBTRACT, (7, 3), 4), (8, 9, 10), (10, 9, 8, 4)),
-                (ArithmeticQuestionData(Operation.SUBTRACT, (9, 2), 7), (8, 9, 10), (10, 9, 8, 7)),
+                (
+                    BasicOperationQuestionData(Operation.SUBTRACT, (7, 3), 4),
+                    (8, 9, 10),
+                    (10, 9, 8, 4),
+                ),
+                (
+                    BasicOperationQuestionData(Operation.SUBTRACT, (9, 2), 7),
+                    (8, 9, 10),
+                    (10, 9, 8, 7),
+                ),
             ],
         ),
         (
@@ -309,12 +376,12 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             [6, 7, 7, 6, 6, 7, 2, 8],
             [
                 (
-                    ArithmeticQuestionData(Operation.MULTIPLY, (6, 7), 42),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (6, 7), 42),
                     (98, 99, 100),
                     (100, 99, 98, 42),
                 ),
                 (
-                    ArithmeticQuestionData(Operation.MULTIPLY, (2, 8), 16),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (2, 8), 16),
                     (98, 99, 100),
                     (100, 99, 98, 16),
                 ),
@@ -328,8 +395,16 @@ Made = tuple[ArithmeticQuestionData, tuple[int, ...], tuple[int, ...]]
             3,
             [5, 5, 5, 5, 1, 2],
             [
-                (ArithmeticQuestionData(Operation.ADD, (5, 5), 10), (18, 19, 20), (20, 19, 18, 10)),
-                (ArithmeticQuestionData(Operation.ADD, (1, 2), 3), (18, 19, 20), (20, 19, 18, 3)),
+                (
+                    BasicOperationQuestionData(Operation.ADD, (5, 5), 10),
+                    (18, 19, 20),
+                    (20, 19, 18, 10),
+                ),
+                (
+                    BasicOperationQuestionData(Operation.ADD, (1, 2), 3),
+                    (18, 19, 20),
+                    (20, 19, 18, 3),
+                ),
             ],
         ),
     ],
@@ -362,7 +437,7 @@ def test_questions_from_scripted_draws(
     monkeypatch.setattr(random, "sample", lambda population, k: list(population[-k:]))
     monkeypatch.setattr(random, "shuffle", lambda items: items.reverse())
 
-    questions = generate_arithmetic_questions(
+    questions = generate_basic_operation_questions(
         len(expected), operation, low=low, high=high, wrong_answer_count=wrong_answer_count
     )
 
@@ -376,7 +451,7 @@ def test_the_default_operands_are_0_to_10(randint_ranges: list[tuple[int, int]])
     ``randint_ranges`` records the bounds each draw is asked for. A call with no limits can't be
     a row of the test above, since its columns always pass them.
     """
-    generate_arithmetic_questions(1, Operation.ADD)
+    generate_basic_operation_questions(1, Operation.ADD)
     assert randint_ranges == [(0, 10), (0, 10)]
 
 
@@ -400,7 +475,7 @@ def test_random_questions_have_no_repeats_even_when_flipped(
     This uses real random draws, including sheets that need every possible pair, which can
     only be finished by drawing until the last unused pair turns up.
     """
-    questions = generate_arithmetic_questions(count, operation, low=low, high=high)
+    questions = generate_basic_operation_questions(count, operation, low=low, high=high)
     pairs = [tuple(sorted(question.data.operands)) for question in questions]
     assert len(questions) == count
     assert len(set(pairs)) == count
@@ -423,7 +498,7 @@ def test_asking_for_more_different_questions_than_exist_fails(
     cases ask for one more than the pairs available, or for two from a range with one pair.
     """
     with pytest.raises(ValueError, match="only"):
-        generate_arithmetic_questions(count, Operation.MULTIPLY, low=low, high=high)
+        generate_basic_operation_questions(count, Operation.MULTIPLY, low=low, high=high)
 
 
 @pytest.mark.parametrize(
@@ -435,8 +510,8 @@ def test_asking_for_more_different_questions_than_exist_fails(
             10,
             [3, 4, 2, 5, 1, 2],
             [
-                ArithmeticQuestionData(Operation.ADD, (3, 4), 7),
-                ArithmeticQuestionData(Operation.ADD, (1, 2), 3),
+                BasicOperationQuestionData(Operation.ADD, (3, 4), 7),
+                BasicOperationQuestionData(Operation.ADD, (1, 2), 3),
             ],
         ),
         # 9 - 5 is skipped: its answer 4 is already used by 7 - 3
@@ -445,8 +520,8 @@ def test_asking_for_more_different_questions_than_exist_fails(
             10,
             [7, 3, 9, 5, 8, 2],
             [
-                ArithmeticQuestionData(Operation.SUBTRACT, (7, 3), 4),
-                ArithmeticQuestionData(Operation.SUBTRACT, (8, 2), 6),
+                BasicOperationQuestionData(Operation.SUBTRACT, (7, 3), 4),
+                BasicOperationQuestionData(Operation.SUBTRACT, (8, 2), 6),
             ],
         ),
         # 3 x 4 is skipped: its answer 12 is already used by 2 x 6
@@ -455,8 +530,8 @@ def test_asking_for_more_different_questions_than_exist_fails(
             10,
             [2, 6, 3, 4, 1, 5],
             [
-                ArithmeticQuestionData(Operation.MULTIPLY, (2, 6), 12),
-                ArithmeticQuestionData(Operation.MULTIPLY, (1, 5), 5),
+                BasicOperationQuestionData(Operation.MULTIPLY, (2, 6), 12),
+                BasicOperationQuestionData(Operation.MULTIPLY, (1, 5), 5),
             ],
         ),
         # a repeated pair is still skipped, even with a different answer order
@@ -465,8 +540,8 @@ def test_asking_for_more_different_questions_than_exist_fails(
             10,
             [3, 4, 4, 3, 1, 2],
             [
-                ArithmeticQuestionData(Operation.ADD, (3, 4), 7),
-                ArithmeticQuestionData(Operation.ADD, (1, 2), 3),
+                BasicOperationQuestionData(Operation.ADD, (3, 4), 7),
+                BasicOperationQuestionData(Operation.ADD, (1, 2), 3),
             ],
         ),
     ],
@@ -475,7 +550,7 @@ def test_distinct_answers_from_scripted_draws(
     operation: Operation,
     high: int,
     drawn: list[int],
-    expected: list[ArithmeticQuestionData],
+    expected: list[BasicOperationQuestionData],
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """With ``distinct_answers`` a drawn pair whose answer is already used is drawn again.
@@ -492,7 +567,7 @@ def test_distinct_answers_from_scripted_draws(
 
     monkeypatch.setattr(random, "randint", randint)
 
-    questions = generate_arithmetic_questions(
+    questions = generate_basic_operation_questions(
         len(expected), operation, high=high, wrong_answer_count=0, distinct_answers=True
     )
 
@@ -513,7 +588,7 @@ def test_random_questions_have_distinct_answers(
     operation: Operation, count: int, high: int
 ) -> None:
     """A sheet is made even when it needs every possible answer, and no answer is repeated."""
-    questions = generate_arithmetic_questions(
+    questions = generate_basic_operation_questions(
         count, operation, high=high, wrong_answer_count=0, distinct_answers=True
     )
     answers = [question.data.answer for question in questions]
@@ -535,7 +610,7 @@ def test_asking_for_more_different_answers_than_exist_fails(
 ) -> None:
     """Asking for one more different answer than the range gives raises a ValueError."""
     with pytest.raises(ValueError, match="different answers: only"):
-        generate_arithmetic_questions(
+        generate_basic_operation_questions(
             count, operation, high=high, wrong_answer_count=0, distinct_answers=True
         )
 
