@@ -18,26 +18,26 @@ from io import BytesIO
 
 import pytest
 
-from core.arithmetic import ArithmeticQuestionData, Operation
+from core.basic_operations.data import BasicOperationQuestionData, Operation
 from render.pdf.self_check_tiles_worksheet import render_self_check_tiles_worksheet
 from tests.pdf_text import pdf_text
-from tests.test_arithmetic_worksheet_pdf import read_sections
 from tests.test_imported_snapshots import GOLDENS
+from tests.test_render.test_pdf.test_arithmetic_worksheet import read_sections
 
 # twelve questions with twelve different answers: 7 14 16 12 5 9 0 1 42 25 27 24
 TWELVE = [
-    ArithmeticQuestionData(Operation.ADD, (3, 4), 7),
-    ArithmeticQuestionData(Operation.ADD, (5, 9), 14),
-    ArithmeticQuestionData(Operation.ADD, (8, 8), 16),
-    ArithmeticQuestionData(Operation.ADD, (2, 10), 12),
-    ArithmeticQuestionData(Operation.SUBTRACT, (9, 4), 5),
-    ArithmeticQuestionData(Operation.SUBTRACT, (10, 1), 9),
-    ArithmeticQuestionData(Operation.SUBTRACT, (8, 8), 0),
-    ArithmeticQuestionData(Operation.SUBTRACT, (7, 6), 1),
-    ArithmeticQuestionData(Operation.MULTIPLY, (6, 7), 42),
-    ArithmeticQuestionData(Operation.MULTIPLY, (5, 5), 25),
-    ArithmeticQuestionData(Operation.MULTIPLY, (9, 3), 27),
-    ArithmeticQuestionData(Operation.MULTIPLY, (4, 6), 24),
+    BasicOperationQuestionData(Operation.ADD, (3, 4), 7),
+    BasicOperationQuestionData(Operation.ADD, (5, 9), 14),
+    BasicOperationQuestionData(Operation.ADD, (8, 8), 16),
+    BasicOperationQuestionData(Operation.ADD, (2, 10), 12),
+    BasicOperationQuestionData(Operation.SUBTRACT, (9, 4), 5),
+    BasicOperationQuestionData(Operation.SUBTRACT, (10, 1), 9),
+    BasicOperationQuestionData(Operation.SUBTRACT, (8, 8), 0),
+    BasicOperationQuestionData(Operation.SUBTRACT, (7, 6), 1),
+    BasicOperationQuestionData(Operation.MULTIPLY, (6, 7), 42),
+    BasicOperationQuestionData(Operation.MULTIPLY, (5, 5), 25),
+    BasicOperationQuestionData(Operation.MULTIPLY, (9, 3), 27),
+    BasicOperationQuestionData(Operation.MULTIPLY, (4, 6), 24),
 ]
 
 # each answer in the slot of its own number
