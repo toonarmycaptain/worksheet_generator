@@ -2,7 +2,7 @@
 
 import random
 
-from core.arithmetic import ArithmeticQuestionData
+from core.basic_operations.data import BasicOperationQuestionData
 
 
 class Question:
@@ -13,7 +13,7 @@ class Question:
     choice with ``options.index(data.answer)`` rather than storing it separately.
     """
 
-    def __init__(self, data: ArithmeticQuestionData, wrong_answers: tuple[int, ...]) -> None:
+    def __init__(self, data: BasicOperationQuestionData, wrong_answers: tuple[int, ...]) -> None:
         self.data = data
         self.wrong_answers = wrong_answers
         options = [data.answer, *wrong_answers]

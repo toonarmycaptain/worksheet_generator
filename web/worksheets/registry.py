@@ -20,8 +20,11 @@ from typing import Annotated, Any, BinaryIO, Literal, Self
 from ninja import Field, Schema
 from pydantic import model_validator
 
-from core.arithmetic import Operation
-from core.arithmetic_generator import count_possible_answers, generate_arithmetic_questions
+from core.basic_operations.data import Operation
+from core.basic_operations.generator import (
+    count_possible_answers,
+    generate_basic_operation_questions,
+)
 from core.self_check_tiles import SLOTS, conventional_slot_of, random_slot_of
 from render.pdf.arithmetic_worksheet import OPERATION_NAMES, render_arithmetic_worksheet
 from render.pdf.self_check_tiles_worksheet import render_self_check_tiles_worksheet
@@ -181,7 +184,7 @@ def _arithmetic(o: ArithmeticOptions, out: BinaryIO) -> None:
     operation = Operation(o.operation)
     if o.self_check_tiles:
         # The answer bank replaces the choices, so there are no wrong answers.
-        questions = generate_arithmetic_questions(
+        questions = generate_basic_operation_questions(
             o.problems, operation, high=o.max_number, wrong_answer_count=0, distinct_answers=True
         )
         make_slots = conventional_slot_of if o.tile_pattern == "simple" else random_slot_of
@@ -194,7 +197,7 @@ def _arithmetic(o: ArithmeticOptions, out: BinaryIO) -> None:
             o.answer_key,
         )
     else:
-        questions = generate_arithmetic_questions(o.problems, operation, high=o.max_number)
+        questions = generate_basic_operation_questions(o.problems, operation, high=o.max_number)
         render_arithmetic_worksheet(questions, out, o.title, o.label, o.answer_key)
 
 

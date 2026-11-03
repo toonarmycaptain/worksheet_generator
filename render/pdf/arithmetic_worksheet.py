@@ -9,7 +9,7 @@ from reportlab.lib.pagesizes import letter  # type: ignore[import-untyped]
 from reportlab.lib.utils import simpleSplit  # type: ignore[import-untyped]
 from reportlab.pdfgen.canvas import Canvas  # type: ignore[import-untyped]
 
-from core.arithmetic import ArithmeticQuestionData, Operation
+from core.basic_operations.data import BasicOperationQuestionData, Operation
 from core.question import Question
 
 PAGE_WIDTH, PAGE_HEIGHT = letter
@@ -76,12 +76,12 @@ def render_arithmetic_worksheet(
     pdf.save()
 
 
-def equation(data: ArithmeticQuestionData) -> str:
+def equation(data: BasicOperationQuestionData) -> str:
     first, second = data.operands
     return f"{first} {SYMBOLS[data.operation]} {second}"
 
 
-def stem(data: ArithmeticQuestionData) -> str:
+def stem(data: BasicOperationQuestionData) -> str:
     """What the student reads: the question's own wording, or its equation with a gap."""
     if data.question_text is not None:
         return data.question_text

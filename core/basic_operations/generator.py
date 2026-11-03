@@ -3,12 +3,12 @@
 import random
 from typing import assert_never
 
-from core.arithmetic import ArithmeticQuestionData, Operation
+from core.basic_operations.data import BasicOperationQuestionData, Operation
 from core.question import Question
 from core.wrong_answers import random_wrong_answers
 
 
-def generate_arithmetic_question(
+def generate_basic_operation_question(
     operation: Operation,
     *,
     low: int = 0,
@@ -39,7 +39,7 @@ def generate_arithmetic_question(
         case _:
             assert_never(operation)
 
-    data = ArithmeticQuestionData(operation, (first, second), answer)
+    data = BasicOperationQuestionData(operation, (first, second), answer)
     wrong_answers = random_wrong_answers(
         answer, count=wrong_answer_count, high=max(largest_answer, wrong_answer_count)
     )
@@ -75,7 +75,7 @@ def count_possible_answers(
             assert_never(operation)
 
 
-def generate_arithmetic_questions(
+def generate_basic_operation_questions(
     count: int,
     operation: Operation,
     *,
@@ -103,7 +103,7 @@ def generate_arithmetic_questions(
     seen_pairs: set[tuple[int, ...]] = set()
     seen_answers: set[int] = set()
     while len(questions) < count:
-        question = generate_arithmetic_question(
+        question = generate_basic_operation_question(
             operation, low=low, high=high, wrong_answer_count=wrong_answer_count
         )
         pair = tuple(sorted(question.data.operands))

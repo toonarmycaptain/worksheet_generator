@@ -5,7 +5,7 @@ choices.
 ``random.shuffle`` reverse its list, so the slot order is the reverse of the slots (question 1's
 answer in L). Its requests ask for the complex pattern, which is the one that shuffles every slot.
 The PDF must then draw what the self-check tiles renderer makes for those same
-questions and slots, which is tested in ``test_self_check_tiles_worksheet_pdf``.
+questions and slots, which is tested in ``test_self_check_tiles_worksheet``.
 ``test_the_tile_pattern_chooses_where_the_slots_come_from`` checks that simple, the default, takes
 its slots from ``conventional_slot_of`` instead. Options the
 endpoint does not allow get Ninja's JSON error. Everything else about the endpoint (the redirect
@@ -20,7 +20,7 @@ from typing import Any
 import pytest
 from django.test import Client
 
-from core.arithmetic import ArithmeticQuestionData, Operation
+from core.basic_operations.data import BasicOperationQuestionData, Operation
 from render.pdf.self_check_tiles_worksheet import render_self_check_tiles_worksheet
 from tests.pdf_text import pdf_text
 
@@ -28,7 +28,7 @@ REVERSED_SLOTS = (11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
 
 
 def render(
-    questions: list[ArithmeticQuestionData],
+    questions: list[BasicOperationQuestionData],
     answer_key: bool,
     title: str,
     label: str,
@@ -65,18 +65,18 @@ def refused(message: str) -> dict[str, Any]:
             None,
             {
                 "questions": [
-                    ArithmeticQuestionData(Operation.ADD, (0, 1), 1),
-                    ArithmeticQuestionData(Operation.ADD, (1, 1), 2),
-                    ArithmeticQuestionData(Operation.ADD, (1, 2), 3),
-                    ArithmeticQuestionData(Operation.ADD, (2, 2), 4),
-                    ArithmeticQuestionData(Operation.ADD, (2, 3), 5),
-                    ArithmeticQuestionData(Operation.ADD, (3, 3), 6),
-                    ArithmeticQuestionData(Operation.ADD, (3, 4), 7),
-                    ArithmeticQuestionData(Operation.ADD, (4, 4), 8),
-                    ArithmeticQuestionData(Operation.ADD, (4, 5), 9),
-                    ArithmeticQuestionData(Operation.ADD, (5, 5), 10),
-                    ArithmeticQuestionData(Operation.ADD, (5, 6), 11),
-                    ArithmeticQuestionData(Operation.ADD, (6, 6), 12),
+                    BasicOperationQuestionData(Operation.ADD, (0, 1), 1),
+                    BasicOperationQuestionData(Operation.ADD, (1, 1), 2),
+                    BasicOperationQuestionData(Operation.ADD, (1, 2), 3),
+                    BasicOperationQuestionData(Operation.ADD, (2, 2), 4),
+                    BasicOperationQuestionData(Operation.ADD, (2, 3), 5),
+                    BasicOperationQuestionData(Operation.ADD, (3, 3), 6),
+                    BasicOperationQuestionData(Operation.ADD, (3, 4), 7),
+                    BasicOperationQuestionData(Operation.ADD, (4, 4), 8),
+                    BasicOperationQuestionData(Operation.ADD, (4, 5), 9),
+                    BasicOperationQuestionData(Operation.ADD, (5, 5), 10),
+                    BasicOperationQuestionData(Operation.ADD, (5, 6), 11),
+                    BasicOperationQuestionData(Operation.ADD, (6, 6), 12),
                 ],
                 "title": "Addition",
                 "label": "Sheet A",
@@ -93,10 +93,10 @@ def refused(message: str) -> dict[str, Any]:
             None,
             {
                 "questions": [
-                    ArithmeticQuestionData(Operation.ADD, (0, 1), 1),
-                    ArithmeticQuestionData(Operation.ADD, (1, 1), 2),
-                    ArithmeticQuestionData(Operation.ADD, (1, 2), 3),
-                    ArithmeticQuestionData(Operation.ADD, (2, 2), 4),
+                    BasicOperationQuestionData(Operation.ADD, (0, 1), 1),
+                    BasicOperationQuestionData(Operation.ADD, (1, 1), 2),
+                    BasicOperationQuestionData(Operation.ADD, (1, 2), 3),
+                    BasicOperationQuestionData(Operation.ADD, (2, 2), 4),
                 ],
                 "title": "Addition",
                 "label": "Sheet A",
@@ -113,18 +113,18 @@ def refused(message: str) -> dict[str, Any]:
             None,
             {
                 "questions": [
-                    ArithmeticQuestionData(Operation.SUBTRACT, (0, 0), 0),
-                    ArithmeticQuestionData(Operation.SUBTRACT, (1, 0), 1),
-                    ArithmeticQuestionData(Operation.SUBTRACT, (2, 0), 2),
-                    ArithmeticQuestionData(Operation.SUBTRACT, (3, 0), 3),
-                    ArithmeticQuestionData(Operation.SUBTRACT, (4, 0), 4),
-                    ArithmeticQuestionData(Operation.SUBTRACT, (5, 0), 5),
-                    ArithmeticQuestionData(Operation.SUBTRACT, (6, 0), 6),
-                    ArithmeticQuestionData(Operation.SUBTRACT, (7, 0), 7),
-                    ArithmeticQuestionData(Operation.SUBTRACT, (8, 0), 8),
-                    ArithmeticQuestionData(Operation.SUBTRACT, (9, 0), 9),
-                    ArithmeticQuestionData(Operation.SUBTRACT, (10, 0), 10),
-                    ArithmeticQuestionData(Operation.SUBTRACT, (11, 0), 11),
+                    BasicOperationQuestionData(Operation.SUBTRACT, (0, 0), 0),
+                    BasicOperationQuestionData(Operation.SUBTRACT, (1, 0), 1),
+                    BasicOperationQuestionData(Operation.SUBTRACT, (2, 0), 2),
+                    BasicOperationQuestionData(Operation.SUBTRACT, (3, 0), 3),
+                    BasicOperationQuestionData(Operation.SUBTRACT, (4, 0), 4),
+                    BasicOperationQuestionData(Operation.SUBTRACT, (5, 0), 5),
+                    BasicOperationQuestionData(Operation.SUBTRACT, (6, 0), 6),
+                    BasicOperationQuestionData(Operation.SUBTRACT, (7, 0), 7),
+                    BasicOperationQuestionData(Operation.SUBTRACT, (8, 0), 8),
+                    BasicOperationQuestionData(Operation.SUBTRACT, (9, 0), 9),
+                    BasicOperationQuestionData(Operation.SUBTRACT, (10, 0), 10),
+                    BasicOperationQuestionData(Operation.SUBTRACT, (11, 0), 11),
                 ],
                 "title": "Subtraction",
                 "label": "Sheet A",
@@ -141,18 +141,18 @@ def refused(message: str) -> dict[str, Any]:
             None,
             {
                 "questions": [
-                    ArithmeticQuestionData(Operation.MULTIPLY, (0, 5), 0),
-                    ArithmeticQuestionData(Operation.MULTIPLY, (1, 1), 1),
-                    ArithmeticQuestionData(Operation.MULTIPLY, (1, 2), 2),
-                    ArithmeticQuestionData(Operation.MULTIPLY, (1, 3), 3),
-                    ArithmeticQuestionData(Operation.MULTIPLY, (1, 4), 4),
-                    ArithmeticQuestionData(Operation.MULTIPLY, (1, 5), 5),
-                    ArithmeticQuestionData(Operation.MULTIPLY, (2, 3), 6),
-                    ArithmeticQuestionData(Operation.MULTIPLY, (2, 4), 8),
-                    ArithmeticQuestionData(Operation.MULTIPLY, (3, 3), 9),
-                    ArithmeticQuestionData(Operation.MULTIPLY, (2, 5), 10),
-                    ArithmeticQuestionData(Operation.MULTIPLY, (3, 4), 12),
-                    ArithmeticQuestionData(Operation.MULTIPLY, (3, 5), 15),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (0, 5), 0),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (1, 1), 1),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (1, 2), 2),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (1, 3), 3),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (1, 4), 4),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (1, 5), 5),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (2, 3), 6),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (2, 4), 8),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (3, 3), 9),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (2, 5), 10),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (3, 4), 12),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (3, 5), 15),
                 ],
                 "title": "Tables",
                 "label": "Day 2",
@@ -266,10 +266,10 @@ def test_the_tile_pattern_chooses_where_the_slots_come_from(
         "worksheets.registry.conventional_slot_of", lambda count: CONVENTIONAL_SLOTS[:count]
     )
     questions = [
-        ArithmeticQuestionData(Operation.ADD, (0, 1), 1),
-        ArithmeticQuestionData(Operation.ADD, (1, 1), 2),
-        ArithmeticQuestionData(Operation.ADD, (1, 2), 3),
-        ArithmeticQuestionData(Operation.ADD, (2, 2), 4),
+        BasicOperationQuestionData(Operation.ADD, (0, 1), 1),
+        BasicOperationQuestionData(Operation.ADD, (1, 1), 2),
+        BasicOperationQuestionData(Operation.ADD, (1, 2), 3),
+        BasicOperationQuestionData(Operation.ADD, (2, 2), 4),
     ]
 
     response = client.get(

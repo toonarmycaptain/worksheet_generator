@@ -14,7 +14,7 @@ class Operation(StrEnum):
 
 
 @dataclass(frozen=True)
-class ArithmeticQuestionData:
+class BasicOperationQuestionData:
     """One arithmetic question: ``operands`` combined by ``operation`` give ``answer``.
 
     The answer is stored so sets of questions can be searched and filtered on it
