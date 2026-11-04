@@ -327,3 +327,363 @@ BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 518 Tm (9.) Tj T* ET
 BT 1 0 0 1 82 518 Tm (9 + 9 = 18    \(D\)) Tj T* ET
 
+=== missing_numbers ===
+title: Division
+media boxes: 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Division) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 666 Tm (1.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 82 666 Tm  T* ET
+n 82 655 36 36 re S
+BT 1 0 0 1 118 666 Tm ( \367 4 = 7) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 666 Tm (2.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 334 666 Tm (28 \367 ) Tj T* ET
+n 379.04 655 36 36 re S
+BT 1 0 0 1 415.04 666 Tm ( = 7) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 610 Tm (3.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 82 610 Tm  T* ET
+n 82 599 36 36 re S
+BT 1 0 0 1 118 610 Tm ( \367 9 = 111) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 610 Tm (4.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 334 610 Tm (999 \367 ) Tj T* ET
+n 390.16 599 36 36 re S
+BT 1 0 0 1 426.16 610 Tm ( = 3) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 554 Tm (5.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 82 554 Tm  T* ET
+n 82 543 36 36 re S
+BT 1 0 0 1 118 554 Tm ( \367 1 = 1) Tj T* ET
+
+=== missing_numbers_answer_key ===
+title: Division
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Division) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 666 Tm (1.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 82 666 Tm  T* ET
+n 82 655 36 36 re S
+BT 1 0 0 1 118 666 Tm ( \367 4 = 7) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 666 Tm (2.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 334 666 Tm (28 \367 ) Tj T* ET
+n 379.04 655 36 36 re S
+BT 1 0 0 1 415.04 666 Tm ( = 7) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 610 Tm (3.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 82 610 Tm  T* ET
+n 82 599 36 36 re S
+BT 1 0 0 1 118 610 Tm ( \367 9 = 111) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 610 Tm (4.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 334 610 Tm (999 \367 ) Tj T* ET
+n 390.16 599 36 36 re S
+BT 1 0 0 1 426.16 610 Tm ( = 3) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 554 Tm (5.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 82 554 Tm  T* ET
+n 82 543 36 36 re S
+BT 1 0 0 1 118 554 Tm ( \367 1 = 1) Tj T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Division: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (28    \(28 \367 4 = 7\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 658 Tm (4    \(28 \367 4 = 7\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 638 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 638 Tm (999    \(999 \367 9 = 111\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 618 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 618 Tm (333    \(999 \367 333 = 3\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 598 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 598 Tm (1    \(1 \367 1 = 1\)) Tj T* ET
+
+=== twenty_three_missing_numbers_answer_key ===
+title: Division
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Division) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 666 Tm (1.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 82 666 Tm  T* ET
+n 82 655 36 36 re S
+BT 1 0 0 1 118 666 Tm ( \367 1 = 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 666 Tm (2.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 334 666 Tm  T* ET
+n 334 655 36 36 re S
+BT 1 0 0 1 370 666 Tm ( \367 2 = 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 610 Tm (3.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 82 610 Tm  T* ET
+n 82 599 36 36 re S
+BT 1 0 0 1 118 610 Tm ( \367 3 = 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 610 Tm (4.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 334 610 Tm  T* ET
+n 334 599 36 36 re S
+BT 1 0 0 1 370 610 Tm ( \367 4 = 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 554 Tm (5.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 82 554 Tm  T* ET
+n 82 543 36 36 re S
+BT 1 0 0 1 118 554 Tm ( \367 5 = 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 554 Tm (6.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 334 554 Tm  T* ET
+n 334 543 36 36 re S
+BT 1 0 0 1 370 554 Tm ( \367 6 = 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 498 Tm (7.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 82 498 Tm  T* ET
+n 82 487 36 36 re S
+BT 1 0 0 1 118 498 Tm ( \367 7 = 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 498 Tm (8.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 334 498 Tm  T* ET
+n 334 487 36 36 re S
+BT 1 0 0 1 370 498 Tm ( \367 8 = 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 442 Tm (9.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 82 442 Tm  T* ET
+n 82 431 36 36 re S
+BT 1 0 0 1 118 442 Tm ( \367 9 = 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 442 Tm (10.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 334 442 Tm  T* ET
+n 334 431 36 36 re S
+BT 1 0 0 1 370 442 Tm ( \367 10 = 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 386 Tm (11.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 82 386 Tm  T* ET
+n 82 375 36 36 re S
+BT 1 0 0 1 118 386 Tm ( \367 11 = 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 386 Tm (12.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 334 386 Tm  T* ET
+n 334 375 36 36 re S
+BT 1 0 0 1 370 386 Tm ( \367 12 = 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 330 Tm (13.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 82 330 Tm  T* ET
+n 82 319 36 36 re S
+BT 1 0 0 1 118 330 Tm ( \367 13 = 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 330 Tm (14.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 334 330 Tm  T* ET
+n 334 319 36 36 re S
+BT 1 0 0 1 370 330 Tm ( \367 14 = 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 274 Tm (15.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 82 274 Tm  T* ET
+n 82 263 36 36 re S
+BT 1 0 0 1 118 274 Tm ( \367 15 = 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 274 Tm (16.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 334 274 Tm  T* ET
+n 334 263 36 36 re S
+BT 1 0 0 1 370 274 Tm ( \367 16 = 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 218 Tm (17.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 82 218 Tm  T* ET
+n 82 207 36 36 re S
+BT 1 0 0 1 118 218 Tm ( \367 17 = 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 218 Tm (18.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 334 218 Tm  T* ET
+n 334 207 36 36 re S
+BT 1 0 0 1 370 218 Tm ( \367 18 = 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 162 Tm (19.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 82 162 Tm  T* ET
+n 82 151 36 36 re S
+BT 1 0 0 1 118 162 Tm ( \367 19 = 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 162 Tm (20.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 334 162 Tm  T* ET
+n 334 151 36 36 re S
+BT 1 0 0 1 370 162 Tm ( \367 20 = 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 106 Tm (21.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 82 106 Tm  T* ET
+n 82 95 36 36 re S
+BT 1 0 0 1 118 106 Tm ( \367 21 = 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 306 106 Tm (22.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 334 106 Tm  T* ET
+n 334 95 36 36 re S
+BT 1 0 0 1 370 106 Tm ( \367 22 = 1) Tj T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Division) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 666 Tm (23.) Tj T* ET
+BT /F1 20 Tf 24 TL ET
+BT 1 0 0 1 82 666 Tm  T* ET
+n 82 655 36 36 re S
+BT 1 0 0 1 118 666 Tm ( \367 23 = 1) Tj T* ET
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Division: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (1    \(1 \367 1 = 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 658 Tm (2    \(2 \367 2 = 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 638 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 638 Tm (3    \(3 \367 3 = 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 618 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 618 Tm (4    \(4 \367 4 = 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 598 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 598 Tm (5    \(5 \367 5 = 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 578 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 578 Tm (6    \(6 \367 6 = 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 558 Tm (7.) Tj T* ET
+BT 1 0 0 1 82 558 Tm (7    \(7 \367 7 = 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 538 Tm (8.) Tj T* ET
+BT 1 0 0 1 82 538 Tm (8    \(8 \367 8 = 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 518 Tm (9.) Tj T* ET
+BT 1 0 0 1 82 518 Tm (9    \(9 \367 9 = 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 498 Tm (10.) Tj T* ET
+BT 1 0 0 1 82 498 Tm (10    \(10 \367 10 = 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 478 Tm (11.) Tj T* ET
+BT 1 0 0 1 82 478 Tm (11    \(11 \367 11 = 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 458 Tm (12.) Tj T* ET
+BT 1 0 0 1 82 458 Tm (12    \(12 \367 12 = 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 438 Tm (13.) Tj T* ET
+BT 1 0 0 1 82 438 Tm (13    \(13 \367 13 = 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 418 Tm (14.) Tj T* ET
+BT 1 0 0 1 82 418 Tm (14    \(14 \367 14 = 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 398 Tm (15.) Tj T* ET
+BT 1 0 0 1 82 398 Tm (15    \(15 \367 15 = 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 378 Tm (16.) Tj T* ET
+BT 1 0 0 1 82 378 Tm (16    \(16 \367 16 = 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 358 Tm (17.) Tj T* ET
+BT 1 0 0 1 82 358 Tm (17    \(17 \367 17 = 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 338 Tm (18.) Tj T* ET
+BT 1 0 0 1 82 338 Tm (18    \(18 \367 18 = 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 318 Tm (19.) Tj T* ET
+BT 1 0 0 1 82 318 Tm (19    \(19 \367 19 = 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 298 Tm (20.) Tj T* ET
+BT 1 0 0 1 82 298 Tm (20    \(20 \367 20 = 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 278 Tm (21.) Tj T* ET
+BT 1 0 0 1 82 278 Tm (21    \(21 \367 21 = 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 258 Tm (22.) Tj T* ET
+BT 1 0 0 1 82 258 Tm (22    \(22 \367 22 = 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 238 Tm (23.) Tj T* ET
+BT 1 0 0 1 82 238 Tm (23    \(23 \367 23 = 1\)) Tj T* ET
+

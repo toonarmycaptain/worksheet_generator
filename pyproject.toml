@@ -30,6 +30,7 @@ dev = [
     "pytest-django>=4.14.0",
     "pytest-mypy==1.0.1",
     "ruff>=0.17.0",
+    "types-reportlab>=5.0.0.20261008",
 ]
 
 
