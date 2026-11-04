@@ -9,27 +9,28 @@
   {% for form in forms %}
   <section>
     <h2>{{ form.heading }}</h2>
-    <form method="get" action="{% url form.url_name %}" target="_blank">
+    {# data-label names a field in the messages the check-first script shows #}
+    <form method="get" action="{% url form.url_name %}" target="_blank"{% if form.check_first %} data-check-first{% endif %}>
       {% for field in form.fields %}
         {% if field.input == "checkbox" %}
-        <label><input type="checkbox" name="{{ field.name }}"{% if field.value %} checked{% endif %}> {{ field.label }}</label>
+        <label><input type="checkbox" name="{{ field.name }}" data-label="{{ field.label }}"{% if field.value %} checked{% endif %}> {{ field.label }}</label>
         {% elif field.input == "radio" %}
         <div class="choices" role="radiogroup">{{ field.label }}:
-          {% for choice in field.choices %}
-          <label><input type="radio" name="{{ field.name }}" value="{{ choice }}"{% if choice == field.value %} checked{% endif %}> {{ choice }}</label>
+          {% for value, text in field.choices %}
+          <label><input type="radio" name="{{ field.name }}" value="{{ value }}"{% if value == field.value %} checked{% endif %}> {{ text }}</label>
           {% endfor %}
         </div>
         {% elif field.input == "select" %}
         <label>{{ field.label }}
-          <select name="{{ field.name }}">
-            {% for choice in field.choices %}
-            <option{% if choice == field.value %} selected{% endif %}>{{ choice }}</option>
+          <select name="{{ field.name }}" data-label="{{ field.label }}">
+            {% for value, text in field.choices %}
+            <option value="{{ value }}"{% if value == field.value %} selected{% endif %}>{{ text }}</option>
             {% endfor %}
           </select>
         </label>
         {% else %}
         <label>{{ field.label }}
-          <input type="{{ field.input }}" name="{{ field.name }}" value="{{ field.value }}"{% for attr, limit in field.attrs.items %} {{ attr }}="{{ limit }}"{% endfor %}>
+          <input type="{{ field.input }}" name="{{ field.name }}" data-label="{{ field.label }}" value="{{ field.value }}"{% for attr, limit in field.attrs.items %} {{ attr }}="{{ limit }}"{% endfor %}>
         </label>
         {% endif %}
       {% endfor %}
@@ -38,23 +39,54 @@
   </section>
   {% endfor %}
 
+  {# Each script is a module, so its names are its own: two can both have a const form. #}
   {% if self_check_tiles_problems %}
-  <script>
+  <script type="module">
     // Ticking self-check tiles defaults to 12 questions (eg 1 per tile, max is 12).
-    // Unticking puts back the norma default and limit, leftover tiles left over go unused.
+    // Unticking puts back the normal default and limit, and leftover tiles go unused.
     const selfCheckTiles = document.querySelector("input[name=self_check_tiles]");
     const problems = selfCheckTiles.form.elements.problems;
     const normalMax = problems.max;
+    function limitProblems() {
+      problems.max = selfCheckTiles.checked ? {{ self_check_tiles_problems }} : normalMax;
+    }
     selfCheckTiles.addEventListener("change", () => {
       problems.value = selfCheckTiles.checked ? {{ self_check_tiles_problems }} : problems.defaultValue;
-      problems.max = selfCheckTiles.checked ? {{ self_check_tiles_problems }} : normalMax;
+      limitProblems();
     });
+    // also when the browser restores the choices, going back to the page: only the limit, as
+    // the browser has put back the number of problems too
+    window.addEventListener("pageshow", limitProblems);
+  </script>
+  {% endif %}
+
+  {% if distinct_forms %}
+  <script type="module">
+    // From and To can't be the same form (mixed aside: it picks a different form for each
+    // question). Both can still be set to anything, so swapping them takes two picks, but
+    // while they are the same the button is greyed out, with a note saying why.
+    const given = document.querySelector("select[name=given]");
+    const asked = given.form.elements.asked;
+    const button = given.form.querySelector("button");
+    const note = document.createElement("span");
+    note.textContent = " From and To must be different forms.";
+    button.after(note);
+    function blockSameForms() {
+      const same = given.value === asked.value && given.value !== "mixed";
+      button.disabled = same;
+      note.hidden = !same;
+    }
+    given.addEventListener("change", blockSameForms);
+    asked.addEventListener("change", blockSameForms);
+    // also when the browser restores the choices, going back to the page
+    window.addEventListener("pageshow", blockSameForms);
+    blockSameForms();
   </script>
   {% endif %}
 
   {% if operation_titles %}
   {{ operation_titles|json_script:"operation-titles" }}
-  <script>
+  <script type="module">
     // The title follows the operation, unless it has been changed to something else.
     const titles = JSON.parse(document.getElementById("operation-titles").textContent);
     const form = document.querySelector("select[name=operation]").form;
@@ -63,6 +95,91 @@
         form.elements.title.value = titles[form.elements.operation.value];
       }
     });
+
+    // Division has its own fields, and the other operations use the largest number. Only the
+    // chosen operation's fields show, and the others are disabled, so they aren't sent.
+    const divisionFields = ["missing_number", "largest_dividend", "largest_divisor"];
+    function showOperationFields() {
+      const divide = form.elements.operation.value === "divide";
+      for (const name of [...divisionFields, "max_number"]) {
+        const unused = divisionFields.includes(name) !== divide;
+        form.elements[name].disabled = unused;
+        // the page's CSS shows labels as blocks, which would win over the hidden attribute
+        form.elements[name].closest("label").style.display = unused ? "none" : "";
+      }
+    }
+    form.elements.operation.addEventListener("change", showOperationFields);
+    // also when the browser restores the choices, going back to the page
+    window.addEventListener("pageshow", showOperationFields);
+    showOperationFields();
   </script>
   {% endif %}
+
+  <script type="module">
+    // On a form marked data-check-first, Make PDF asks the server whether the options work
+    // before opening a tab, so a refusal shows under the button rather than as JSON in a new
+    // tab. A request without a sheet token is checked and then redirected before anything is
+    // drawn, so the check costs no PDF. Without JavaScript the form opens its tab as before.
+    const RETRY = "Couldn't check the settings. Try again.";
+    for (const form of document.querySelectorAll("form[data-check-first]")) {
+      const status = document.createElement("div");
+      status.setAttribute("role", "status");
+      form.querySelector("button").after(status);
+      let checking = false;
+      // submit fires only once the browser's own checks (min, max, required) have passed
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (checking) return;  // a second click while the first is still being checked
+        checking = true;
+        status.replaceChildren();
+        status.className = "";
+        const url = `${form.action}?${new URLSearchParams(new FormData(form))}`;
+        try {
+          const response = await fetch(url, { redirect: "manual" });
+          if (response.type === "opaqueredirect") {
+            const tab = window.open(url, "_blank");
+            if (tab) {
+              tab.opener = null;
+            } else {
+              // The browser blocked the tab. A link opens on a click of its own.
+              const link = document.createElement("a");
+              link.href = url;
+              link.target = "_blank";
+              link.textContent = "Open it";
+              status.append("Your sheet is ready: ", link);
+            }
+          } else if (response.status === 422) {
+            const { detail } = await response.json();
+            warn(status, detail.map((error) => describe(form, error)).join(" "));
+          } else {
+            warn(status, RETRY);
+          }
+        } catch {
+          warn(status, RETRY);
+        } finally {
+          checking = false;
+        }
+      });
+    }
+
+    // Show text in the status area as a warning: red, in a tinted box (see base.html).
+    function warn(status, text) {
+      status.className = "warning";
+      status.textContent = text;
+    }
+
+    // One of Ninja's 422 errors, led by its field's label. A check on the options as a whole
+    // names its field first ("problems: at most 10 …"); a single field's error has the field
+    // as the last part of its loc.
+    function describe(form, error) {
+      let field = error.loc.at(-1);
+      let text = error.msg;
+      if (field === "options") {
+        const named = /^(\w+): (.*)$/s.exec(error.ctx?.error ?? "");
+        if (!named) return error.ctx?.error ?? error.msg;
+        [, field, text] = named;
+      }
+      return `${form.elements[field]?.dataset?.label ?? field}: ${text}`;
+    }
+  </script>
 {% endblock %}

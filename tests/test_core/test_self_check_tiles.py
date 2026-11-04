@@ -4,6 +4,8 @@ The pattern is checked against two arrangements read off a real case: each tile'
 tiles seen in the rows from the back after the flip.
 """
 
+from collections.abc import Callable
+
 import pytest
 
 from core.self_check_tiles import (
@@ -17,6 +19,7 @@ from core.self_check_tiles import (
     random_slot_of,
     tile_outline,
 )
+from tests.helpers import reverse_shuffle
 
 # the four piece types: which side the stem is on, and which side the flare is
 LB, LT, RB, RT = ("left", "bottom"), ("left", "top"), ("right", "bottom"), ("right", "top")
@@ -120,15 +123,8 @@ def test_random_slot_of_takes_the_first_of_the_shuffled_slots(
     count: int, slot_of: tuple[int, ...], monkeypatch: pytest.MonkeyPatch
 ) -> None:
     """With the shuffle reversing its list, each question gets the next slot down from L."""
-    monkeypatch.setattr("random.shuffle", lambda items: items.reverse())
+    reverse_shuffle(monkeypatch)
     assert random_slot_of(count) == slot_of
-
-
-@pytest.mark.parametrize("count", [1, 4, 12])
-def test_random_slot_of_uses_no_slot_twice(count: int) -> None:
-    slots = random_slot_of(count)
-    assert len(set(slots)) == count
-    assert set(slots) <= set(range(12))
 
 
 @pytest.mark.parametrize(
@@ -159,12 +155,13 @@ def test_fits_above(top: tuple[str, str], bottom: tuple[str, str], fits: bool) -
     assert fits_above(top, bottom) is fits
 
 
-def test_there_are_ten_block_shapes() -> None:
-    assert len(BLOCK_SHAPES) == 10
-
-
 def test_the_block_shapes() -> None:
-    """Top left, top right, bottom left and bottom right of each of the ten seamless blocks."""
+    """
+    Top left, top right, bottom left and bottom right of each of the ten seamless blocks.
+
+    The count shows that none is listed twice, which the set would hide.
+    """
+    assert len(BLOCK_SHAPES) == 10
     assert set(BLOCK_SHAPES) == {
         (LB, RB, LT, RT),  # white hourglass
         (LB, RB, RT, LT),  # fork
@@ -214,8 +211,20 @@ def test_conventional_slot_of_places_each_tile_by_its_color_and_piece(
     assert conventional_slot_of(count) == slot_of
 
 
-@pytest.mark.parametrize("count", [1, 4, 12])
-def test_conventional_slot_of_uses_no_slot_twice(count: int) -> None:
-    slots = conventional_slot_of(count)
+@pytest.mark.parametrize(
+    ("slot_of_function", "count"),
+    [
+        (random_slot_of, 1),
+        (random_slot_of, 4),
+        (random_slot_of, 12),
+        (conventional_slot_of, 1),
+        (conventional_slot_of, 4),
+        (conventional_slot_of, 12),
+    ],
+)
+def test_no_slot_is_used_twice(
+    slot_of_function: Callable[[int], tuple[int, ...]], count: int
+) -> None:
+    slots = slot_of_function(count)
     assert len(set(slots)) == count
     assert set(slots) <= set(range(12))

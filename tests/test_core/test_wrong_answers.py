@@ -3,9 +3,9 @@
 import pytest
 
 from core.wrong_answers import random_wrong_answers
+from tests.helpers import sample_first
 
 
-@pytest.mark.usefixtures("predictable_choices")
 @pytest.mark.parametrize(
     ("correct_answer", "count", "low", "high", "allow_negatives", "expected"),
     [
@@ -28,6 +28,7 @@ def test_picks_from_the_possible_answers(
     high: int,
     allow_negatives: bool,
     expected: tuple[int, ...],
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """The wrong answers come from a pool of every number in the range, minus the answer.
 
@@ -35,6 +36,7 @@ def test_picks_from_the_possible_answers(
     the pool: ``low`` to ``high`` without the correct answer, and with the negatives first when
     they are allowed.
     """
+    sample_first(monkeypatch)
     assert (
         random_wrong_answers(
             correct_answer, count=count, low=low, high=high, allow_negatives=allow_negatives
@@ -43,39 +45,71 @@ def test_picks_from_the_possible_answers(
     )
 
 
-@pytest.mark.usefixtures("predictable_choices")
-def test_defaults_are_0_to_100_without_negatives() -> None:
+def test_defaults_are_0_to_100_without_negatives(monkeypatch: pytest.MonkeyPatch) -> None:
     """With only the answer and a count, the pool starts at 0 and has no negatives.
 
     For an answer of 2 the first three candidates are 0, 1 and 3. Only the start of the pool is
     visible this way, so the top of the default range (100) is not checked here.
     """
+    sample_first(monkeypatch)
     assert random_wrong_answers(2, count=3) == (0, 1, 3)
 
 
 @pytest.mark.parametrize(
-    ("correct_answer", "count", "low", "high", "allow_negatives", "possible"),
+    ("correct_answer", "count", "low", "high", "allow_negatives", "message"),
     [
-        (2, 3, 1, 3, False, 2),
-        (0, 101, 0, 100, False, 100),
-        (4, 11, 0, 5, True, 10),  # 0 to 5 and -5 to -1, without the 4
-        (5, 1, 5, 5, False, 0),
+        (
+            2,
+            3,
+            1,
+            3,
+            False,
+            "Cannot pick 3 wrong answers: only 2 possible between 1 and 3 (allow_negatives=False).",
+        ),
+        (
+            0,
+            101,
+            0,
+            100,
+            False,
+            "Cannot pick 101 wrong answers: only 100 possible between 0 and 100 "
+            "(allow_negatives=False).",
+        ),
+        # 0 to 5 and -5 to -1, without the 4
+        (
+            4,
+            11,
+            0,
+            5,
+            True,
+            "Cannot pick 11 wrong answers: only 10 possible between 0 and 5 "
+            "(allow_negatives=True).",
+        ),
+        (
+            5,
+            1,
+            5,
+            5,
+            False,
+            "Cannot pick 1 wrong answer: only 0 possible between 5 and 5 (allow_negatives=False).",
+        ),
     ],
 )
-def test_asking_for_more_than_exist_fails(
+def test_wrong_answer_errors(
     correct_answer: int,
     count: int,
     low: int,
     high: int,
     allow_negatives: bool,
-    possible: int,
+    message: str,
 ) -> None:
     """Asking for more wrong answers than the pool holds raises a ValueError saying how many.
 
     The pool is the range without the correct answer, and with the negatives if they are
     allowed. The message counts those, where ``random.sample`` would fail without explanation.
     """
-    with pytest.raises(ValueError, match=f"only {possible} possible"):
+    with pytest.raises(ValueError) as error:
         random_wrong_answers(
             correct_answer, count=count, low=low, high=high, allow_negatives=allow_negatives
         )
+    assert str(error.value) == message
