@@ -7,7 +7,7 @@ Django test client, and the PDF must be byte-identical to that case's golden fil
 import pytest
 from django.test import Client
 
-from tests.test_imported_snapshots import GOLDENS
+from tests.helpers import GOLDENS
 
 
 @pytest.mark.parametrize(

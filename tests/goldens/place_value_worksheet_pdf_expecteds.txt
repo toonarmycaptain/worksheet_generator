@@ -1,0 +1,368 @@
+=== each_form_shown ===
+title: Place Value
+media boxes: 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Place Value) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Write in expanded form:) Tj T* ET
+BT 1 0 0 1 82 658 Tm (35,043) Tj T* ET
+n 82 624 m 558 624 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 600 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 600 Tm (Write in standard form:) Tj T* ET
+BT 1 0 0 1 82 580 Tm (50,000 + 4,000 + 300 + 20 + 1) Tj T* ET
+n 82 546 m 558 546 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 522 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 522 Tm (Write in word form:) Tj T* ET
+BT 1 0 0 1 82 502 Tm (5 ten thousands 4 hundreds 2 tens 1 one) Tj T* ET
+n 82 468 m 558 468 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 444 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 444 Tm (Write in unit form:) Tj T* ET
+BT 1 0 0 1 82 424 Tm (\(9 \327 100,000\) + \(9 \327 10,000\) + \(9 \327 1,000\) + \(9 \327 100\) + \(9 \327 10\) + \(9 \327 1\)) Tj T* ET
+n 82 390 m 558 390 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 366 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 366 Tm (Write in expanded notation:) Tj T* ET
+BT 1 0 0 1 82 346 Tm (forty thousand, fourteen) Tj T* ET
+n 82 312 m 558 312 l S
+
+=== each_form_asked_answer_key ===
+title: Place Value
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Place Value) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Write in standard form:) Tj T* ET
+BT 1 0 0 1 82 658 Tm (ten thousand) Tj T* ET
+n 82 624 m 558 624 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 600 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 600 Tm (Write in expanded form:) Tj T* ET
+BT 1 0 0 1 82 580 Tm (50,421) Tj T* ET
+n 82 546 m 558 546 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 522 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 522 Tm (Write in unit form:) Tj T* ET
+BT 1 0 0 1 82 502 Tm (11,111) Tj T* ET
+n 82 468 m 558 468 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 444 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 444 Tm (Write in expanded notation:) Tj T* ET
+BT 1 0 0 1 82 424 Tm (999,999) Tj T* ET
+n 82 390 m 558 390 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 366 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 366 Tm (Write in word form:) Tj T* ET
+BT 1 0 0 1 82 346 Tm (101,101) Tj T* ET
+n 82 312 m 558 312 l S
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Place Value: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (10,000) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 658 Tm (50,000 + 400 + 20 + 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 638 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 638 Tm (1 ten thousand 1 thousand 1 hundred 1 ten 1 one) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 618 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 618 Tm (\(9 \327 100,000\) + \(9 \327 10,000\) + \(9 \327 1,000\) + \(9 \327 100\) + \(9 \327 10\) + \(9 \327 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 598 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 598 Tm (one hundred one thousand, one hundred one) Tj T* ET
+
+=== nine_questions_answer_key ===
+title: Place Value
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Place Value) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Write in expanded form:) Tj T* ET
+BT 1 0 0 1 82 658 Tm (1,111) Tj T* ET
+n 82 624 m 558 624 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 600 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 600 Tm (Write in expanded form:) Tj T* ET
+BT 1 0 0 1 82 580 Tm (2,222) Tj T* ET
+n 82 546 m 558 546 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 522 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 522 Tm (Write in expanded form:) Tj T* ET
+BT 1 0 0 1 82 502 Tm (3,333) Tj T* ET
+n 82 468 m 558 468 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 444 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 444 Tm (Write in expanded form:) Tj T* ET
+BT 1 0 0 1 82 424 Tm (4,444) Tj T* ET
+n 82 390 m 558 390 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 366 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 366 Tm (Write in expanded form:) Tj T* ET
+BT 1 0 0 1 82 346 Tm (5,555) Tj T* ET
+n 82 312 m 558 312 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 288 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 288 Tm (Write in expanded form:) Tj T* ET
+BT 1 0 0 1 82 268 Tm (6,666) Tj T* ET
+n 82 234 m 558 234 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 210 Tm (7.) Tj T* ET
+BT 1 0 0 1 82 210 Tm (Write in expanded form:) Tj T* ET
+BT 1 0 0 1 82 190 Tm (7,777) Tj T* ET
+n 82 156 m 558 156 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 132 Tm (8.) Tj T* ET
+BT 1 0 0 1 82 132 Tm (Write in expanded form:) Tj T* ET
+BT 1 0 0 1 82 112 Tm (8,888) Tj T* ET
+n 82 78 m 558 78 l S
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Place Value) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (9.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Write in expanded form:) Tj T* ET
+BT 1 0 0 1 82 658 Tm (9,999) Tj T* ET
+n 82 624 m 558 624 l S
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Place Value: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (1,000 + 100 + 10 + 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 658 Tm (2,000 + 200 + 20 + 2) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 638 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 638 Tm (3,000 + 300 + 30 + 3) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 618 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 618 Tm (4,000 + 400 + 40 + 4) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 598 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 598 Tm (5,000 + 500 + 50 + 5) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 578 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 578 Tm (6,000 + 600 + 60 + 6) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 558 Tm (7.) Tj T* ET
+BT 1 0 0 1 82 558 Tm (7,000 + 700 + 70 + 7) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 538 Tm (8.) Tj T* ET
+BT 1 0 0 1 82 538 Tm (8,000 + 800 + 80 + 8) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 518 Tm (9.) Tj T* ET
+BT 1 0 0 1 82 518 Tm (9,000 + 900 + 90 + 9) Tj T* ET
+
+=== other_title_and_label ===
+title: Number Forms
+media boxes: 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Number Forms) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Day 2) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Write in expanded form:) Tj T* ET
+BT 1 0 0 1 82 658 Tm (35,043) Tj T* ET
+n 82 624 m 558 624 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 600 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 600 Tm (Write in standard form:) Tj T* ET
+BT 1 0 0 1 82 580 Tm (50,000 + 4,000 + 300 + 20 + 1) Tj T* ET
+n 82 546 m 558 546 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 522 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 522 Tm (Write in word form:) Tj T* ET
+BT 1 0 0 1 82 502 Tm (5 ten thousands 4 hundreds 2 tens 1 one) Tj T* ET
+n 82 468 m 558 468 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 444 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 444 Tm (Write in unit form:) Tj T* ET
+BT 1 0 0 1 82 424 Tm (\(9 \327 100,000\) + \(9 \327 10,000\) + \(9 \327 1,000\) + \(9 \327 100\) + \(9 \327 10\) + \(9 \327 1\)) Tj T* ET
+n 82 390 m 558 390 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 366 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 366 Tm (Write in expanded notation:) Tj T* ET
+BT 1 0 0 1 82 346 Tm (forty thousand, fourteen) Tj T* ET
+n 82 312 m 558 312 l S
+
+=== choice_of_each_form_answer_key ===
+title: Place Value
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Place Value) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Which is this number in standard form?) Tj T* ET
+BT 1 0 0 1 82 658 Tm (ten thousand) Tj T* ET
+BT 1 0 0 1 82 638 Tm (A\)) Tj T* ET
+BT 1 0 0 1 104 638 Tm (40,000) Tj T* ET
+BT 1 0 0 1 82 618 Tm (B\)) Tj T* ET
+BT 1 0 0 1 104 618 Tm (30,000) Tj T* ET
+BT 1 0 0 1 82 598 Tm (C\)) Tj T* ET
+BT 1 0 0 1 104 598 Tm (20,000) Tj T* ET
+BT 1 0 0 1 82 578 Tm (D\)) Tj T* ET
+BT 1 0 0 1 104 578 Tm (10,000) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 540 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 540 Tm (Which is this number in expanded form?) Tj T* ET
+BT 1 0 0 1 82 520 Tm (50,421) Tj T* ET
+BT 1 0 0 1 82 500 Tm (A\)) Tj T* ET
+BT 1 0 0 1 104 500 Tm (5,000 + 400 + 20 + 1) Tj T* ET
+BT 1 0 0 1 82 480 Tm (B\)) Tj T* ET
+BT 1 0 0 1 104 480 Tm (50,000 + 4,000 + 20 + 1) Tj T* ET
+BT 1 0 0 1 82 460 Tm (C\)) Tj T* ET
+BT 1 0 0 1 104 460 Tm (50,000 + 400 + 10 + 2) Tj T* ET
+BT 1 0 0 1 82 440 Tm (D\)) Tj T* ET
+BT 1 0 0 1 104 440 Tm (50,000 + 400 + 20 + 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 402 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 402 Tm (Which is this number in unit form?) Tj T* ET
+BT 1 0 0 1 82 382 Tm (11,111) Tj T* ET
+BT 1 0 0 1 82 362 Tm (A\)) Tj T* ET
+BT 1 0 0 1 104 362 Tm (1 thousand 1 hundred 1 ten 1 one) Tj T* ET
+BT 1 0 0 1 82 342 Tm (B\)) Tj T* ET
+BT 1 0 0 1 104 342 Tm (1 ten thousand 1 hundred 1 ten 1 one) Tj T* ET
+BT 1 0 0 1 82 322 Tm (C\)) Tj T* ET
+BT 1 0 0 1 104 322 Tm (1 ten thousand 1 thousand 1 hundred 1 ten) Tj T* ET
+BT 1 0 0 1 82 302 Tm (D\)) Tj T* ET
+BT 1 0 0 1 104 302 Tm (1 ten thousand 1 thousand 1 hundred 1 ten 1 one) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 264 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 264 Tm (Which is this number in expanded notation?) Tj T* ET
+BT 1 0 0 1 82 244 Tm (999,999) Tj T* ET
+BT 1 0 0 1 82 224 Tm (A\)) Tj T* ET
+BT 1 0 0 1 104 224 Tm (\(9 \327 100,000\) + \(9 \327 10,000\) + \(9 \327 1,000\) + \(9 \327 100\) + \(9 \327 10\)) Tj T* ET
+BT 1 0 0 1 82 204 Tm (B\)) Tj T* ET
+BT 1 0 0 1 104 204 Tm (\(9 \327 100,000\) + \(9 \327 1,000\) + \(9 \327 100\) + \(9 \327 10\) + \(9 \327 1\)) Tj T* ET
+BT 1 0 0 1 82 184 Tm (C\)) Tj T* ET
+BT 1 0 0 1 104 184 Tm (\(9 \327 10,000\) + \(9 \327 1,000\) + \(9 \327 100\) + \(9 \327 10\) + \(9 \327 1\)) Tj T* ET
+BT 1 0 0 1 82 164 Tm (D\)) Tj T* ET
+BT 1 0 0 1 104 164 Tm (\(9 \327 100,000\) + \(9 \327 10,000\) + \(9 \327 1,000\) + \(9 \327 100\) + \(9 \327 10\) + \(9 \327 1\)) Tj T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Place Value) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Which is this number in word form?) Tj T* ET
+BT 1 0 0 1 82 658 Tm (101,101) Tj T* ET
+BT 1 0 0 1 82 638 Tm (A\)) Tj T* ET
+BT 1 0 0 1 104 638 Tm (eleven thousand, one hundred one) Tj T* ET
+BT 1 0 0 1 82 618 Tm (B\)) Tj T* ET
+BT 1 0 0 1 104 618 Tm (one hundred one thousand, eleven) Tj T* ET
+BT 1 0 0 1 82 598 Tm (C\)) Tj T* ET
+BT 1 0 0 1 104 598 Tm (one hundred ten thousand, one hundred one) Tj T* ET
+BT 1 0 0 1 82 578 Tm (D\)) Tj T* ET
+BT 1 0 0 1 104 578 Tm (one hundred one thousand, one hundred one) Tj T* ET
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Place Value: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (D\) 10,000) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 658 Tm (D\) 50,000 + 400 + 20 + 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 638 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 638 Tm (D\) 1 ten thousand 1 thousand 1 hundred 1 ten 1 one) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 618 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 618 Tm (D\) \(9 \327 100,000\) + \(9 \327 10,000\) + \(9 \327 1,000\) + \(9 \327 100\) + \(9 \327 10\) + \(9 \327 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 598 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 598 Tm (D\) one hundred one thousand, one hundred one) Tj T* ET
+

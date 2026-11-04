@@ -1,26 +1,37 @@
-"""The arithmetic worksheet endpoint passes its options through to the core and the renderer.
+"""
+Tests for the arithmetic worksheet endpoint: its options reach the core and the renderer intact.
 
-The questions are random, so ``test_arithmetic_pdf`` scripts ``random.randint`` (the operands),
-and makes ``random.sample`` take the top of the allowed range of wrong answers, which shows the
-operation's and ``max_number``'s limits in the PDF. The PDF must then draw what the renderer
-makes for those same questions. Options the endpoint does not allow get Ninja's JSON error.
-What the renderer draws is tested in ``test_arithmetic_worksheet``.
+The questions are random, so ``test_arithmetic_pdf`` scripts ``random.randint`` (the operands)
+and makes ``random.sample`` take the top of the allowed wrong-answer range, which exposes the
+operation's and ``max_number``'s limits in the PDF. The PDF must then match what the renderer
+draws for the same questions. Disallowed options get Ninja's JSON error. The renderer's output
+is tested in ``test_basic_operations_worksheet``.
 
-A request needs a ``sheet`` token to get the PDF. Without one it is redirected to a URL with a
-token (``test_a_request_without_a_sheet_is_redirected``).
+A request needs a ``sheet`` token to receive the PDF; without one, it is redirected to a URL
+with a token, which ``test_sheet_redirect`` tests.
 """
 
-import random
-import secrets
 from typing import Any
 
 import pytest
 from django.test import Client
 from worksheets.registry import MAXIMUM_ARITHMETIC_OPERAND
 
-from core.basic_operations.data import BasicOperationQuestionData, Operation
-from tests.pdf_text import pdf_text
-from tests.test_render.test_pdf.test_arithmetic_worksheet import build, render
+from core.basic_operations.data import (
+    BasicOperationQuestionData,
+    MissingNumberQuestionData,
+    Operation,
+    Unknown,
+)
+from tests.helpers import (
+    pdf_text,
+    randint_returns,
+    refused,
+    render_basic_operations,
+    render_missing_numbers,
+    reverse_shuffle,
+    sample_last,
+)
 
 
 @pytest.mark.parametrize(
@@ -32,6 +43,7 @@ from tests.test_render.test_pdf.test_arithmetic_worksheet import build, render
             200,
             None,
             {
+                "render": render_basic_operations,
                 "cases": [
                     (BasicOperationQuestionData(Operation.ADD, (3, 4), 7), (18, 19, 20)),
                     (BasicOperationQuestionData(Operation.ADD, (5, 6), 11), (18, 19, 20)),
@@ -49,6 +61,7 @@ from tests.test_render.test_pdf.test_arithmetic_worksheet import build, render
             200,
             None,
             {
+                "render": render_basic_operations,
                 "cases": [
                     (BasicOperationQuestionData(Operation.SUBTRACT, (7, 3), 4), (8, 9, 10)),
                     (BasicOperationQuestionData(Operation.SUBTRACT, (9, 2), 7), (8, 9, 10)),
@@ -66,6 +79,7 @@ from tests.test_render.test_pdf.test_arithmetic_worksheet import build, render
             200,
             None,
             {
+                "render": render_basic_operations,
                 "cases": [
                     (BasicOperationQuestionData(Operation.MULTIPLY, (6, 7), 42), (98, 99, 100)),
                     (BasicOperationQuestionData(Operation.MULTIPLY, (2, 8), 16), (98, 99, 100)),
@@ -83,6 +97,7 @@ from tests.test_render.test_pdf.test_arithmetic_worksheet import build, render
             200,
             None,
             {
+                "render": render_basic_operations,
                 "cases": [(BasicOperationQuestionData(Operation.ADD, (3, 4), 7), (8, 9, 10))],
                 "title": "Addition",
                 "label": "Sheet A",
@@ -96,6 +111,7 @@ from tests.test_render.test_pdf.test_arithmetic_worksheet import build, render
             200,
             None,
             {
+                "render": render_basic_operations,
                 "cases": [(BasicOperationQuestionData(Operation.ADD, (3, 4), 7), (18, 19, 20))],
                 "title": "Addition",
                 "label": "",
@@ -111,6 +127,7 @@ from tests.test_render.test_pdf.test_arithmetic_worksheet import build, render
             200,
             None,
             {
+                "render": render_basic_operations,
                 "cases": [
                     (BasicOperationQuestionData(Operation.ADD, (0, 0), 0), (1, 2, 3)),
                     (BasicOperationQuestionData(Operation.ADD, (0, 1), 1), (0, 2, 3)),
@@ -125,7 +142,7 @@ from tests.test_render.test_pdf.test_arithmetic_worksheet import build, render
         # Options that are not allowed are refused before anything is drawn, and before the
         # redirect, so these URLs have no token.
         (
-            "/api/worksheets/arithmetic.pdf?operation=divide",  # not built yet
+            "/api/worksheets/arithmetic.pdf?operation=power",  # not an operation the sheet has
             [],
             422,
             {
@@ -133,8 +150,8 @@ from tests.test_render.test_pdf.test_arithmetic_worksheet import build, render
                     {
                         "type": "literal_error",
                         "loc": ["query", "operation"],
-                        "msg": "Input should be 'add', 'subtract' or 'multiply'",
-                        "ctx": {"expected": "'add', 'subtract' or 'multiply'"},
+                        "msg": "Input should be 'add', 'subtract', 'multiply' or 'divide'",
+                        "ctx": {"expected": "'add', 'subtract', 'multiply' or 'divide'"},
                     },
                 ],
             },
@@ -235,6 +252,7 @@ from tests.test_render.test_pdf.test_arithmetic_worksheet import build, render
             200,
             None,
             {
+                "render": render_basic_operations,
                 "cases": [
                     (BasicOperationQuestionData(Operation.MULTIPLY, (6, 7), 42), (98, 99, 100))
                 ],
@@ -255,13 +273,13 @@ from tests.test_render.test_pdf.test_arithmetic_worksheet import build, render
                         "type": "value_error",
                         "loc": ["query", "options"],
                         "msg": (
-                            "Value error, problems: too many for that largest number, "
-                            "which allows no repeats"
+                            "Value error, problems: at most 6 without repeats for that largest "
+                            "number. Lower problems to 6, or raise the largest number to 3."
                         ),
                         "ctx": {
                             "error": (
-                                "problems: too many for that largest number, "
-                                "which allows no repeats"
+                                "problems: at most 6 without repeats for that largest number. "
+                                "Lower problems to 6, or raise the largest number to 3."
                             )
                         },
                     },
@@ -269,6 +287,207 @@ from tests.test_render.test_pdf.test_arithmetic_worksheet import build, render
             },
             None,
             None,
+        ),
+        (
+            # division: a divisor, then a quotient, with the wrong answers up to the largest
+            # dividend, 100 by default
+            "/api/worksheets/arithmetic.pdf?operation=divide&problems=2&sheet=1ab2c3",
+            [4, 7, 3, 5],
+            200,
+            None,
+            {
+                "render": render_basic_operations,
+                "cases": [
+                    (BasicOperationQuestionData(Operation.DIVIDE, (28, 4), 7), (98, 99, 100)),
+                    (BasicOperationQuestionData(Operation.DIVIDE, (15, 3), 5), (98, 99, 100)),
+                ],
+                "title": "Division",
+                "label": "Sheet A",
+                "answer_key": False,
+            },
+            "arithmetic-sheet-a.pdf",
+        ),
+        (
+            # largest_dividend=20 lowers the top of the wrong answers to 20
+            "/api/worksheets/arithmetic.pdf?operation=divide&problems=1&largest_dividend=20"
+            "&largest_divisor=5&sheet=1ab2c3",
+            [4, 5],
+            200,
+            None,
+            {
+                "render": render_basic_operations,
+                "cases": [
+                    (BasicOperationQuestionData(Operation.DIVIDE, (20, 4), 5), (18, 19, 20)),
+                ],
+                "title": "Division",
+                "label": "Sheet A",
+                "answer_key": False,
+            },
+            "arithmetic-sheet-a.pdf",
+        ),
+        (
+            # division ignores the largest number
+            "/api/worksheets/arithmetic.pdf?operation=divide&problems=1&max_number=5&sheet=1ab2c3",
+            [4, 7],
+            200,
+            None,
+            {
+                "render": render_basic_operations,
+                "cases": [
+                    (BasicOperationQuestionData(Operation.DIVIDE, (28, 4), 7), (98, 99, 100)),
+                ],
+                "title": "Division",
+                "label": "Sheet A",
+                "answer_key": False,
+            },
+            "arithmetic-sheet-a.pdf",
+        ),
+        (
+            "/api/worksheets/arithmetic.pdf?operation=add&missing_number=dividend",
+            [],
+            422,
+            refused("missing_number: only division has a missing dividend or divisor"),
+            None,
+            None,
+        ),
+        (
+            # dividing by 1, 2 and 3 into dividends up to 3 makes only 8 different questions
+            "/api/worksheets/arithmetic.pdf?operation=divide&problems=20&largest_dividend=3"
+            "&largest_divisor=3",
+            [],
+            422,
+            refused(
+                "problems: at most 8 without repeats for that largest dividend and divisor. "
+                "Lower problems to 8, or raise the largest dividend to 10."
+            ),
+            None,
+            None,
+        ),
+        (
+            # dividends and divisors up to 10 make 15 fact families. Raising the largest divisor
+            # alone adds none, since no divisor can be larger than the dividend.
+            "/api/worksheets/arithmetic.pdf?operation=divide&missing_number=divisor&problems=20"
+            "&largest_dividend=10&largest_divisor=10",
+            [],
+            422,
+            refused(
+                "problems: at most 15 without repeats for that largest dividend and divisor. "
+                "Lower problems to 15, or raise the largest dividend to 13."
+            ),
+            None,
+            None,
+        ),
+        (
+            "/api/worksheets/arithmetic.pdf?operation=divide&largest_dividend=0",
+            [],
+            422,
+            {
+                "detail": [
+                    {
+                        "type": "greater_than_equal",
+                        "loc": ["query", "largest_dividend"],
+                        "msg": "Input should be greater than or equal to 1",
+                        "ctx": {"ge": 1},
+                    },
+                ],
+            },
+            None,
+            None,
+        ),
+        (
+            "/api/worksheets/arithmetic.pdf?operation=divide"
+            f"&largest_divisor={MAXIMUM_ARITHMETIC_OPERAND + 1}",
+            [],
+            422,
+            {
+                "detail": [
+                    {
+                        "type": "less_than_equal",
+                        "loc": ["query", "largest_divisor"],
+                        "msg": (
+                            f"Input should be less than or equal to {MAXIMUM_ARITHMETIC_OPERAND}"
+                        ),
+                        "ctx": {"le": MAXIMUM_ARITHMETIC_OPERAND},
+                    },
+                ],
+            },
+            None,
+            None,
+        ),
+        # a missing dividend or divisor: equations to fill in, drawn as a divisor then a quotient
+        (
+            "/api/worksheets/arithmetic.pdf?operation=divide&missing_number=dividend&problems=2"
+            "&sheet=1ab2c3",
+            [4, 7, 3, 5],
+            200,
+            None,
+            {
+                "render": render_missing_numbers,
+                "cases": [
+                    (MissingNumberQuestionData(Operation.DIVIDE, Unknown.FIRST, 3, 5, 15), ()),
+                    (MissingNumberQuestionData(Operation.DIVIDE, Unknown.FIRST, 4, 7, 28), ()),
+                ],
+                "title": "Division",
+                "label": "Sheet A",
+                "answer_key": False,
+            },
+            "arithmetic-sheet-a.pdf",
+        ),
+        (
+            "/api/worksheets/arithmetic.pdf?operation=divide&missing_number=divisor&problems=2"
+            "&answer_key=true&title=Find+the+Divisor&label=Day+2&sheet=1ab2c3",
+            [4, 7, 3, 5],
+            200,
+            None,
+            {
+                "render": render_missing_numbers,
+                "cases": [
+                    (MissingNumberQuestionData(Operation.DIVIDE, Unknown.SECOND, 15, 5, 3), ()),
+                    (MissingNumberQuestionData(Operation.DIVIDE, Unknown.SECOND, 28, 7, 4), ()),
+                ],
+                "title": "Find the Divisor",
+                "label": "Day 2",
+                "answer_key": True,
+            },
+            "arithmetic-day-2.pdf",
+        ),
+        (
+            # mixed: the missing divisor is made first, then the sheet is reversed
+            "/api/worksheets/arithmetic.pdf?operation=divide&missing_number=mixed&problems=2"
+            "&sheet=1ab2c3",
+            [4, 7, 3, 5],
+            200,
+            None,
+            {
+                "render": render_missing_numbers,
+                "cases": [
+                    (MissingNumberQuestionData(Operation.DIVIDE, Unknown.FIRST, 3, 5, 15), ()),
+                    (MissingNumberQuestionData(Operation.DIVIDE, Unknown.SECOND, 28, 7, 4), ()),
+                ],
+                "title": "Division",
+                "label": "Sheet A",
+                "answer_key": False,
+            },
+            "arithmetic-sheet-a.pdf",
+        ),
+        (
+            # limits above the defaults reach the generator: with the default largest divisor
+            # of 10, the divisor 20 could not be drawn
+            "/api/worksheets/arithmetic.pdf?operation=divide&missing_number=dividend&problems=1"
+            "&largest_dividend=500&largest_divisor=20&sheet=1ab2c3",
+            [20, 25],
+            200,
+            None,
+            {
+                "render": render_missing_numbers,
+                "cases": [
+                    (MissingNumberQuestionData(Operation.DIVIDE, Unknown.FIRST, 20, 25, 500), ()),
+                ],
+                "title": "Division",
+                "label": "Sheet A",
+                "answer_key": False,
+            },
+            "arithmetic-sheet-a.pdf",
         ),
     ],
 )
@@ -282,23 +501,25 @@ def test_arithmetic_pdf(
     client: Client,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """A request gets the PDF for its options, or the error that says which option is wrong.
+    """
+    A request receives the PDF for its options, or the error identifying the invalid option.
 
-    ``randint`` gives the operands and ``sample`` takes the top of the wrong answers, so the PDF
-    also shows the operation's and ``max_number``'s limits. A URL option that is dropped, ignored
-    or sent to the wrong place changes the drawn text.
+    ``randint`` supplies the operands, or a divisor then a quotient, and rejects any value outside
+    the requested range, as the real one never returns one. ``sample`` takes the top of the
+    wrong answers, and ``shuffle`` reverses the options, or a missing-number sheet's equations.
+    The PDF therefore also reflects the operation's and ``max_number``'s limits, and a URL option
+    that is dropped, ignored or misrouted changes the drawn text or fails a draw.
 
-    - A refused request is compared with Ninja's JSON error, and has no PDF headers.
+    - A rejected request is compared with Ninja's JSON error, and has no PDF headers.
     - A PDF is compared on its filename, its cache header (24 hours, for the edge cache and
-      browsers) and the text the renderer draws for ``pdf_data``: the questions with their wrong
-      answers, the title and label, and whether there is an answer key.
+      browsers) and the text that ``pdf_data["render"]`` draws for ``pdf_data``: the questions
+      with their wrong answers, the title and label, and whether there is an answer key.
 
     PDF URLs carry a ``sheet`` token, since without one the endpoint only redirects.
     """
-    values = iter(drawn)
-    monkeypatch.setattr(random, "randint", lambda low, high: next(values))
-    monkeypatch.setattr(random, "sample", lambda population, k: list(population[-k:]))
-    monkeypatch.setattr(random, "shuffle", lambda items: items.reverse())
+    randint_returns(monkeypatch, drawn)
+    sample_last(monkeypatch)
+    reverse_shuffle(monkeypatch)
 
     response = client.get(url)
 
@@ -312,47 +533,10 @@ def test_arithmetic_pdf(
         assert response.json() == expected_json
     else:
         assert pdf_text(response.content) == pdf_text(
-            render(
-                questions=build(pdf_data["cases"]),
+            pdf_data["render"](
+                cases=pdf_data["cases"],
                 answer_key=pdf_data["answer_key"],
                 title=pdf_data["title"],
                 label=pdf_data["label"],
             )
         )
-
-
-@pytest.mark.parametrize(
-    ("url", "location"),
-    [
-        ("/api/worksheets/arithmetic.pdf", "/api/worksheets/arithmetic.pdf?sheet=1ab2c3"),
-        (
-            "/api/worksheets/arithmetic.pdf?operation=multiply&problems=2",
-            "/api/worksheets/arithmetic.pdf?operation=multiply&problems=2&sheet=1ab2c3",
-        ),
-        (
-            "/api/worksheets/arithmetic.pdf?title=Times+Tables&label=Day+2",
-            "/api/worksheets/arithmetic.pdf?title=Times+Tables&label=Day+2&sheet=1ab2c3",
-        ),
-        # an empty token counts as none
-        (
-            "/api/worksheets/arithmetic.pdf?problems=3&sheet=",
-            "/api/worksheets/arithmetic.pdf?problems=3&sheet=1ab2c3",
-        ),
-    ],
-)
-def test_a_request_without_a_sheet_is_redirected(
-    url: str, location: str, client: Client, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """A request with no ``sheet`` token is sent to the same URL with a random token added.
-
-    ``token_hex`` is fixed so the new URL is known. The options keep their order and an empty
-    ``sheet`` is replaced. The redirect is ``no-store``: if it were cached, everyone who asked
-    for those options would be sent to the same token, and so to the same sheet.
-    """
-    monkeypatch.setattr(secrets, "token_hex", lambda nbytes: "1ab2c3")
-
-    response = client.get(url)
-
-    assert response.status_code == 302
-    assert response["Location"] == location
-    assert response["Cache-Control"] == "no-store"

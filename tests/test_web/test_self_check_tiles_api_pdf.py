@@ -1,57 +1,43 @@
-"""The arithmetic endpoint with the self-check tiles option: an answer bank, a pattern and no
-choices.
+"""
+Tests for the arithmetic endpoint's self-check tiles option: an answer bank and a pattern.
 
-``test_arithmetic_pdf_for_self_check_tiles`` scripts ``random.randint`` (the operands) and makes
-``random.shuffle`` reverse its list, so the slot order is the reverse of the slots (question 1's
-answer in L). Its requests ask for the complex pattern, which is the one that shuffles every slot.
-The PDF must then draw what the self-check tiles renderer makes for those same
-questions and slots, which is tested in ``test_self_check_tiles_worksheet``.
-``test_the_tile_pattern_chooses_where_the_slots_come_from`` checks that simple, the default, takes
-its slots from ``conventional_slot_of`` instead. Options the
-endpoint does not allow get Ninja's JSON error. Everything else about the endpoint (the redirect
-for a request without a ``sheet`` token, the other limits) is shared with the plain sheet and
-tested in ``test_arithmetic_api_pdf``.
+``test_arithmetic_pdf_for_self_check_tiles`` scripts ``random.randint`` (operands, or a divisor
+then a quotient) and makes ``random.shuffle`` reverse its list, so the complex pattern's slots
+are in reverse order (question 1's answer in L). ``conventional_slot_of`` is replaced to return
+the slots of a real case, so each PDF shows which pattern its slots came from. The PDF must then
+match what the self-check tiles renderer draws for the same questions and slots, which is
+tested in ``test_self_check_tiles_worksheet``. Disallowed options get Ninja's JSON error. The
+rest of the endpoint's behaviour, such as the other limits, is shared with the plain sheet and
+tested in ``test_arithmetic_api_pdf``; the redirect for a request without a ``sheet`` token is
+tested in ``test_sheet_redirect``.
 """
 
-import random
-from io import BytesIO
 from typing import Any
 
 import pytest
 from django.test import Client
 
-from core.basic_operations.data import BasicOperationQuestionData, Operation
-from render.pdf.self_check_tiles_worksheet import render_self_check_tiles_worksheet
-from tests.pdf_text import pdf_text
-
-REVERSED_SLOTS = (11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
-
-
-def render(
-    questions: list[BasicOperationQuestionData],
-    answer_key: bool,
-    title: str,
-    label: str,
-    all_slots: tuple[int, ...] = REVERSED_SLOTS,
-) -> bytes:
-    out = BytesIO()
-    slot_of = all_slots[: len(questions)]
-    render_self_check_tiles_worksheet(questions, slot_of, out, title, label, answer_key)
-    return out.getvalue()
-
-
-def refused(message: str) -> dict[str, Any]:
-    """Ninja's JSON error for an after-validator that raised ``ValueError(message)``."""
-    return {
-        "detail": [
-            {
-                "type": "value_error",
-                "loc": ["query", "options"],
-                "msg": f"Value error, {message}",
-                "ctx": {"error": message},
-            },
-        ],
-    }
+from core.basic_operations.data import (
+    BasicOperationQuestionData,
+    MissingNumberQuestionData,
+    Operation,
+    Unknown,
+)
+from core.basic_operations.representation import (
+    basic_operation_tile_question,
+    missing_number_tile_question,
+)
+from tests.data import REAL_CASE_SLOTS, REVERSED_SLOTS
+from tests.helpers import (
+    choose_last,
+    conventional_slot_of_returns,
+    pdf_text,
+    randint_returns,
+    refused,
+    render_tiles,
+    reverse_shuffle,
+    sample_first,
+)
 
 
 @pytest.mark.parametrize(
@@ -78,6 +64,8 @@ def refused(message: str) -> dict[str, Any]:
                     BasicOperationQuestionData(Operation.ADD, (5, 6), 11),
                     BasicOperationQuestionData(Operation.ADD, (6, 6), 12),
                 ],
+                "to_tile": basic_operation_tile_question,
+                "slot_of": REVERSED_SLOTS,
                 "title": "Addition",
                 "label": "Sheet A",
                 "answer_key": False,
@@ -98,6 +86,8 @@ def refused(message: str) -> dict[str, Any]:
                     BasicOperationQuestionData(Operation.ADD, (1, 2), 3),
                     BasicOperationQuestionData(Operation.ADD, (2, 2), 4),
                 ],
+                "to_tile": basic_operation_tile_question,
+                "slot_of": (11, 10, 9, 8),
                 "title": "Addition",
                 "label": "Sheet A",
                 "answer_key": False,
@@ -126,6 +116,8 @@ def refused(message: str) -> dict[str, Any]:
                     BasicOperationQuestionData(Operation.SUBTRACT, (10, 0), 10),
                     BasicOperationQuestionData(Operation.SUBTRACT, (11, 0), 11),
                 ],
+                "to_tile": basic_operation_tile_question,
+                "slot_of": REVERSED_SLOTS,
                 "title": "Subtraction",
                 "label": "Sheet A",
                 "answer_key": True,
@@ -154,11 +146,131 @@ def refused(message: str) -> dict[str, Any]:
                     BasicOperationQuestionData(Operation.MULTIPLY, (3, 4), 12),
                     BasicOperationQuestionData(Operation.MULTIPLY, (3, 5), 15),
                 ],
+                "to_tile": basic_operation_tile_question,
+                "slot_of": REVERSED_SLOTS,
                 "title": "Tables",
                 "label": "Day 2",
                 "answer_key": False,
             },
             "arithmetic-day-2.pdf",
+        ),
+        # The tile pattern chooses where the slots come from: simple, the default, from
+        # conventional_slot_of. The rows above use complex, whose slots come from random_slot_of.
+        (
+            "/api/worksheets/arithmetic.pdf?self_check_tiles=true&problems=4&sheet=1ab2c3",
+            [0, 1, 1, 1, 1, 2, 2, 2],
+            200,
+            None,
+            {
+                "questions": [
+                    BasicOperationQuestionData(Operation.ADD, (0, 1), 1),
+                    BasicOperationQuestionData(Operation.ADD, (1, 1), 2),
+                    BasicOperationQuestionData(Operation.ADD, (1, 2), 3),
+                    BasicOperationQuestionData(Operation.ADD, (2, 2), 4),
+                ],
+                "to_tile": basic_operation_tile_question,
+                "slot_of": (7, 9, 10, 6),
+                "title": "Addition",
+                "label": "Sheet A",
+                "answer_key": False,
+            },
+            "arithmetic-sheet-a.pdf",
+        ),
+        (
+            "/api/worksheets/arithmetic.pdf?self_check_tiles=true&tile_pattern=simple"
+            "&problems=4&sheet=1ab2c3",
+            [0, 1, 1, 1, 1, 2, 2, 2],
+            200,
+            None,
+            {
+                "questions": [
+                    BasicOperationQuestionData(Operation.ADD, (0, 1), 1),
+                    BasicOperationQuestionData(Operation.ADD, (1, 1), 2),
+                    BasicOperationQuestionData(Operation.ADD, (1, 2), 3),
+                    BasicOperationQuestionData(Operation.ADD, (2, 2), 4),
+                ],
+                "to_tile": basic_operation_tile_question,
+                "slot_of": (7, 9, 10, 6),
+                "title": "Addition",
+                "label": "Sheet A",
+                "answer_key": False,
+            },
+            "arithmetic-sheet-a.pdf",
+        ),
+        # Division: a sheet missing the quotient, the dividend or the divisor. Missing divisors
+        # with tiles are generated differently: sample takes the first divisors and choice the
+        # largest quotient whose family is free.
+        (
+            "/api/worksheets/arithmetic.pdf?operation=divide&self_check_tiles=true"
+            "&tile_pattern=complex&problems=3&sheet=1ab2c3",
+            [4, 7, 3, 5, 2, 6],
+            200,
+            None,
+            {
+                "questions": [
+                    BasicOperationQuestionData(Operation.DIVIDE, (28, 4), 7),
+                    BasicOperationQuestionData(Operation.DIVIDE, (15, 3), 5),
+                    BasicOperationQuestionData(Operation.DIVIDE, (12, 2), 6),
+                ],
+                "to_tile": basic_operation_tile_question,
+                "slot_of": (11, 10, 9),
+                "title": "Division",
+                "label": "Sheet A",
+                "answer_key": False,
+            },
+            "arithmetic-sheet-a.pdf",
+        ),
+        (
+            # Every divisor from 1 to 10, which drawing one at a time could deadlock on. From 10
+            # down, each divisor takes its largest quotient whose fact family is still free.
+            "/api/worksheets/arithmetic.pdf?operation=divide&missing_number=divisor"
+            "&self_check_tiles=true&tile_pattern=complex&problems=10&largest_dividend=10"
+            "&largest_divisor=10&sheet=1ab2c3",
+            [],
+            200,
+            None,
+            {
+                "questions": [
+                    MissingNumberQuestionData(Operation.DIVIDE, Unknown.SECOND, 5, 5, 1),
+                    MissingNumberQuestionData(Operation.DIVIDE, Unknown.SECOND, 6, 3, 2),
+                    MissingNumberQuestionData(Operation.DIVIDE, Unknown.SECOND, 9, 3, 3),
+                    MissingNumberQuestionData(Operation.DIVIDE, Unknown.SECOND, 8, 2, 4),
+                    MissingNumberQuestionData(Operation.DIVIDE, Unknown.SECOND, 10, 2, 5),
+                    MissingNumberQuestionData(Operation.DIVIDE, Unknown.SECOND, 6, 1, 6),
+                    MissingNumberQuestionData(Operation.DIVIDE, Unknown.SECOND, 7, 1, 7),
+                    MissingNumberQuestionData(Operation.DIVIDE, Unknown.SECOND, 8, 1, 8),
+                    MissingNumberQuestionData(Operation.DIVIDE, Unknown.SECOND, 9, 1, 9),
+                    MissingNumberQuestionData(Operation.DIVIDE, Unknown.SECOND, 10, 1, 10),
+                ],
+                "to_tile": missing_number_tile_question,
+                "slot_of": (11, 10, 9, 8, 7, 6, 5, 4, 3, 2),
+                "title": "Division",
+                "label": "Sheet A",
+                "answer_key": False,
+            },
+            "arithmetic-sheet-a.pdf",
+        ),
+        (
+            # mixed: the missing divisor 1 (100 ÷ □ = 100) rules out the answer 1, so □ ÷ 1 = 1
+            # is drawn again
+            "/api/worksheets/arithmetic.pdf?operation=divide&missing_number=mixed"
+            "&self_check_tiles=true&tile_pattern=complex&problems=2&answer_key=true"
+            "&sheet=1ab2c3",
+            [1, 1, 4, 7],
+            200,
+            None,
+            {
+                "questions": [
+                    MissingNumberQuestionData(Operation.DIVIDE, Unknown.FIRST, 4, 7, 28),
+                    MissingNumberQuestionData(Operation.DIVIDE, Unknown.SECOND, 100, 100, 1),
+                ],
+                "to_tile": missing_number_tile_question,
+                "slot_of": (11, 10),
+                "title": "Division",
+                "label": "Sheet A",
+                "answer_key": True,
+            },
+            "arithmetic-sheet-a.pdf",
         ),
         # Options that are not allowed are refused before anything is drawn, and before the
         # redirect, so these URLs have no token.
@@ -176,7 +288,10 @@ def refused(message: str) -> dict[str, Any]:
             "/api/worksheets/arithmetic.pdf?self_check_tiles=true&problems=12&max_number=5",
             [],
             422,
-            refused("problems: too many for that largest number, which allows no repeated answers"),
+            refused(
+                "problems: at most 11 without repeated answers for that largest number. Lower "
+                "problems to 11, or raise the largest number to 6."
+            ),
             None,
             None,
         ),
@@ -185,7 +300,10 @@ def refused(message: str) -> dict[str, Any]:
             "&max_number=10",
             [],
             422,
-            refused("problems: too many for that largest number, which allows no repeated answers"),
+            refused(
+                "problems: at most 11 without repeated answers for that largest number. Lower "
+                "problems to 11, or raise the largest number to 11."
+            ),
             None,
             None,
         ),
@@ -194,7 +312,71 @@ def refused(message: str) -> dict[str, Any]:
             "&max_number=4",
             [],
             422,
-            refused("problems: too many for that largest number, which allows no repeated answers"),
+            refused(
+                "problems: at most 10 without repeated answers for that largest number. Lower "
+                "problems to 10, or raise the largest number to 5."
+            ),
+            None,
+            None,
+        ),
+        (
+            "/api/worksheets/arithmetic.pdf?operation=divide&missing_number=dividend"
+            "&self_check_tiles=true&problems=13",
+            [],
+            422,
+            refused("problems: self-check tiles has 12 tiles, so at most 12"),
+            None,
+            None,
+        ),
+        # The default largest divisor, 10, gives 10 different divisors to miss.
+        (
+            "/api/worksheets/arithmetic.pdf?operation=divide&missing_number=divisor"
+            "&self_check_tiles=true&problems=12",
+            [],
+            422,
+            refused(
+                "problems: at most 10 without repeated answers for that largest dividend and "
+                "divisor. Lower problems to 10, or raise the largest divisor to 12."
+            ),
+            None,
+            None,
+        ),
+        # With a largest dividend of 10 as well, raising either limit alone adds no divisor.
+        (
+            "/api/worksheets/arithmetic.pdf?operation=divide&missing_number=divisor"
+            "&self_check_tiles=true&problems=12&largest_dividend=10&largest_divisor=10",
+            [],
+            422,
+            refused(
+                "problems: at most 10 without repeated answers for that largest dividend and "
+                "divisor. Lower problems to 10."
+            ),
+            None,
+            None,
+        ),
+        # the quotients 0 to 10
+        (
+            "/api/worksheets/arithmetic.pdf?operation=divide&self_check_tiles=true&problems=12"
+            "&largest_dividend=10",
+            [],
+            422,
+            refused(
+                "problems: at most 11 without repeated answers for that largest dividend and "
+                "divisor. Lower problems to 11, or raise the largest dividend to 11."
+            ),
+            None,
+            None,
+        ),
+        # Mixed: 4 missing divisors can use up 8 of the 10 dividends, too many to leave 4.
+        (
+            "/api/worksheets/arithmetic.pdf?operation=divide&missing_number=mixed"
+            "&self_check_tiles=true&problems=8&largest_dividend=10&largest_divisor=10",
+            [],
+            422,
+            refused(
+                "problems: at most 7 without repeated answers for that largest dividend and "
+                "divisor. Lower problems to 7, or raise the largest dividend to 12."
+            ),
             None,
             None,
         ),
@@ -210,17 +392,23 @@ def test_arithmetic_pdf_for_self_check_tiles(
     client: Client,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """A request gets the self-check tiles PDF for its options, or the error that says what is
-    wrong.
-
-    - A refused request is compared with Ninja's JSON error, and has no PDF headers.
-    - A PDF is compared on its filename, its cache header (24 hours) and the text the renderer
-      draws for ``pdf_data``: the questions in the reversed slots, the title and label, and
-      whether there is an answer key.
     """
-    values = iter(drawn)
-    monkeypatch.setattr(random, "randint", lambda low, high: next(values))
-    monkeypatch.setattr(random, "shuffle", lambda items: items.reverse())
+    A request receives the tiles PDF for its options, or the error identifying the problem.
+
+    ``randint`` returns the scripted ``drawn`` values, and ``sample`` and ``choice`` take the
+    first divisors and the last quotient for missing divisors. ``shuffle`` reverses the
+    questions and the complex pattern's slots, and the simple pattern's slots are a real case's.
+
+    - A rejected request is compared with Ninja's JSON error, and has no PDF headers.
+    - A PDF is compared on its filename, its cache header (24 hours) and the text the renderer
+      draws for ``pdf_data``: the tile questions that ``to_tile`` makes, in the slots
+      ``slot_of``, the title and label, and whether there is an answer key.
+    """
+    randint_returns(monkeypatch, drawn)
+    sample_first(monkeypatch)
+    choose_last(monkeypatch)
+    reverse_shuffle(monkeypatch)
+    conventional_slot_of_returns(monkeypatch, REAL_CASE_SLOTS)
 
     response = client.get(url)
 
@@ -233,50 +421,12 @@ def test_arithmetic_pdf_for_self_check_tiles(
         assert response.json() == expected_json
     else:
         assert pdf_text(response.content) == pdf_text(
-            render(
-                pdf_data["questions"], pdf_data["answer_key"], pdf_data["title"], pdf_data["label"]
+            render_tiles(
+                pdf_data["questions"],
+                pdf_data["to_tile"],
+                pdf_data["slot_of"],
+                pdf_data["answer_key"],
+                pdf_data["title"],
+                pdf_data["label"],
             )
         )
-
-
-# three clean blocks, as on a real case
-CONVENTIONAL_SLOTS = (7, 9, 10, 6, 4, 8, 0, 3, 11, 1, 5, 2)
-
-
-@pytest.mark.parametrize(
-    ("query", "slots"),
-    [
-        ("", CONVENTIONAL_SLOTS),  # simple is the default
-        ("&tile_pattern=simple", CONVENTIONAL_SLOTS),
-        ("&tile_pattern=complex", REVERSED_SLOTS),
-    ],
-)
-def test_the_tile_pattern_chooses_where_the_slots_come_from(
-    query: str, slots: tuple[int, ...], client: Client, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """Simple takes its slots from ``conventional_slot_of`` and complex from ``random_slot_of``.
-
-    ``conventional_slot_of`` is replaced by a function that returns the clean blocks' slots, and
-    the shuffle by one that reverses the slots, so the PDF shows which one was used.
-    """
-    values = iter([0, 1, 1, 1, 1, 2, 2, 2])
-    monkeypatch.setattr(random, "randint", lambda low, high: next(values))
-    monkeypatch.setattr(random, "shuffle", lambda items: items.reverse())
-    monkeypatch.setattr(
-        "worksheets.registry.conventional_slot_of", lambda count: CONVENTIONAL_SLOTS[:count]
-    )
-    questions = [
-        BasicOperationQuestionData(Operation.ADD, (0, 1), 1),
-        BasicOperationQuestionData(Operation.ADD, (1, 1), 2),
-        BasicOperationQuestionData(Operation.ADD, (1, 2), 3),
-        BasicOperationQuestionData(Operation.ADD, (2, 2), 4),
-    ]
-
-    response = client.get(
-        f"/api/worksheets/arithmetic.pdf?self_check_tiles=true&problems=4&sheet=1ab2c3{query}"
-    )
-
-    assert response.status_code == 200
-    assert pdf_text(response.content) == pdf_text(
-        render(questions, False, "Addition", "Sheet A", slots)
-    )

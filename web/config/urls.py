@@ -27,6 +27,7 @@ api.add_router("/worksheets/", worksheets_router)
 urlpatterns = [
     path("", views.home, name="home"),
     path("arithmetic/", views.arithmetic, name="arithmetic"),
+    path("place-value/", views.place_value, name="place_value"),
     path("legacy/", views.legacy, name="legacy"),
     path("admin/", admin.site.urls),
     path("api/", api.urls),

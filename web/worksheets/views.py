@@ -1,8 +1,9 @@
-"""The pages: a home page, and one page of forms for each class of worksheet builder.
+"""
+The site's pages: a home page, and a page of forms for each group of worksheet builders.
 
-Each form opens its PDF in a new tab. The forms are built from each kind's options
-schema, so their defaults, limits and labels always match what the API accepts.
-Temporary, like the registry: the React front end replaces these pages.
+Each form opens its PDF in a new tab. The forms are generated from each kind's options schema,
+so their defaults, limits and labels always match what the API accepts. Temporary, like the
+registry: the React front end replaces these pages.
 """
 
 from collections.abc import Mapping
@@ -11,23 +12,32 @@ from typing import Any
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
+from core.basic_operations.representation import OPERATION_NAMES
 from core.self_check_tiles import SLOTS
-from render.pdf.arithmetic_worksheet import OPERATION_NAMES
+from core.wrong_answers import WRONG_ANSWER_COUNT
 
 from .registry import CORE_KINDS, LEGACY_KINDS, CoreKind, Kind
 
-# What each home page entry says, and the page it opens (a url name).
+# Home page entries: each builder's title, description and page (a URL name).
 BUILDERS = [
     {
         "title": "Arithmetic",
-        "description": "Addition, subtraction and multiplication questions, as a printable "
-        "multiple-choice sheet, or an answer sheet for self-check tiles.",
+        "description": "Addition, subtraction, multiplication and division questions, as a "
+        "printable multiple-choice sheet, or an answer sheet for self-check tiles. Division can "
+        "also leave out the dividend or the divisor for students to fill in.",
         "url_name": "arithmetic",
+    },
+    {
+        "title": "Place Value",
+        "description": "Write numbers in standard, expanded, unit or word form, or in expanded "
+        "notation, from another of those forms.",
+        "url_name": "place_value",
     },
 ]
 
 HEADINGS = {
-    "arithmetic": "Addition, Subtraction and Multiplication",
+    "arithmetic": "Addition, Subtraction, Multiplication and Division",
+    "place_value": "Write the Number in Another Form",
     "block": "Addition & Subtraction Word Problems — Base-Ten Blocks",
     "word": "Addition & Subtraction Word Problems",
     "strip": "Addition & Subtraction Word Problems — Strip Diagrams",
@@ -44,21 +54,24 @@ LIMITS = {"minimum": "min", "maximum": "max", "minLength": "minlength", "maxLeng
 
 
 def _field(name: str, schema: dict[str, Any]) -> dict[str, Any]:
-    """How to show one option, from its entry in the options' JSON schema."""
+    """Return the template context for one option's input, from its JSON schema entry."""
     field = {"name": name, "label": schema["title"], "value": schema["default"]}
     if "enum" in schema:
-        # a choice from a few is a select, unless the option's schema asks for radio buttons
-        return field | {"input": schema.get("input", "select"), "choices": schema["enum"]}
+        # An enum renders as a select unless its schema requests radio buttons. Each choice is
+        # (submitted value, displayed label), using the schema's labels where present.
+        labels = schema.get("labels", {})
+        choices = [(choice, labels.get(choice, choice)) for choice in schema["enum"]]
+        return field | {"input": schema.get("input", "select"), "choices": choices}
     if schema["type"] == "boolean":
         return field | {"input": "checkbox"}
     attrs = {html: schema[limit] for limit, html in LIMITS.items() if limit in schema}
     if schema["type"] == "integer" or "minLength" in schema:
-        attrs["required"] = "required"  # an empty box would be rejected by the API
+        attrs["required"] = "required"  # the API rejects an empty value
     return field | {"input": "number" if schema["type"] == "integer" else "text", "attrs": attrs}
 
 
 def _forms(kinds: Mapping[str, Kind[Any] | CoreKind[Any]]) -> list[dict[str, Any]]:
-    """One form for each kind, in the order given."""
+    """Return one form for each kind, in the given order."""
     forms = []
     for kind, spec in kinds.items():
         properties = spec.options.model_json_schema()["properties"]
@@ -66,6 +79,9 @@ def _forms(kinds: Mapping[str, Kind[Any] | CoreKind[Any]]) -> list[dict[str, Any
             {
                 "heading": HEADINGS[kind],
                 "url_name": f"api:{kind}_pdf",
+                # Core kinds refuse bad options before drawing anything, so the page checks
+                # them before opening a tab (see builder.html). Legacy kinds draw at once.
+                "check_first": isinstance(spec, CoreKind),
                 # no seed field: each sheet gets a random one
                 "fields": [_field(n, s) for n, s in properties.items() if n != "seed"],
             }
@@ -84,10 +100,31 @@ def arithmetic(request: HttpRequest) -> HttpResponse:
         "where you can print or save it. Every click makes a new sheet. Tick Self-check tile "
         "answers to swap the choices for an answer bank and a picture to match against the "
         f"flipped case. That sets the questions to {SLOTS}, one for each tile: ask for fewer, "
-        "such as 2 or 4, and the other tiles go unused.",
+        "such as 2 or 4, and the other tiles go unused. For division, Missing number can leave "
+        "out the dividend or the divisor instead of the answer, as a square to write it in. "
+        "Division uses the largest dividend and divisor instead of the largest number.",
         "forms": _forms({"arithmetic": CORE_KINDS["arithmetic"]}),
         "self_check_tiles_problems": SLOTS,
         "operation_titles": {op.value: name for op, name in OPERATION_NAMES.items()},
+    }
+    return render(request, "worksheets/builder.html", context)
+
+
+def place_value(request: HttpRequest) -> HttpResponse:
+    context = {
+        "page_title": "Place Value",
+        "intro": "Pick the form each number is shown in and the form to write it in. Mixed "
+        "picks a form for each question, never the same one twice in a question. The PDF opens "
+        "in a new tab, where you can print or save it. Every click makes a new sheet. Tick "
+        f"Multiple choice to list {WRONG_ANSWER_COUNT + 1} choices under each number instead of "
+        "an answer line: the "
+        "wrong ones are random numbers from the range. Tick Self-check tile answers to swap "
+        "the answer lines or choices for an answer bank and a picture to "
+        f"match against the flipped case. That sets the questions to {SLOTS}, one for each "
+        "tile: ask for fewer, such as 2 or 4, and the other tiles go unused.",
+        "forms": _forms({"place_value": CORE_KINDS["place_value"]}),
+        "self_check_tiles_problems": SLOTS,
+        "distinct_forms": True,
     }
     return render(request, "worksheets/builder.html", context)
 
