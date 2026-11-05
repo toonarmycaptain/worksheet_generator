@@ -38,6 +38,7 @@ def render_place_value_worksheet(
     path: str | BinaryIO,
     title: str,
     label: str,
+    name_line: bool,
     answer_key: bool,
 ) -> None:
     """
@@ -51,14 +52,14 @@ def render_place_value_worksheet(
     """
     pdf = new_pdf(path, title)
 
-    y = start_page(pdf, title, label, with_name_line=True)
+    y = start_page(pdf, title, label, with_name_line=name_line)
     for number, question in enumerate(questions, start=1):
         lines = _question_lines(question)
         choices = _choice_lines(question)
         space_under = CHOICES_GAP if choices else ANSWER_HEIGHT
         if y - (len(lines) + len(choices)) * LINE_HEIGHT - space_under < MARGIN:
             pdf.showPage()
-            y = start_page(pdf, title, label, with_name_line=True)
+            y = start_page(pdf, title, label, with_name_line=name_line)
         y = _draw_question(pdf, number, lines, choices, y)
 
     if answer_key:

@@ -91,17 +91,18 @@ def draw_number_line(c, x, y, width, start_val, chunks, op):
         c.drawCentredString((x0 + x1) / 2, y + 29, f"{sign} {ch}")
 
 
-def render(problems, path, title, label, teks, seed):
+def render(problems, path, title, label, name_line: bool, teks, seed):
     c = canvas.Canvas(path, pagesize=letter)
     st = {"y": 0.0, "page": 1}
     footer, new_page, ensure = wp.make_page(c, st, label, teks, seed)
 
     wp.draw_header(
-        c,
-        st,
-        title,
-        label,
-        "Use the number line. Start at the first number and jump by hundreds, tens, and ones.",
+        c=c,
+        st=st,
+        title=title,
+        label=label,
+        name_line=name_line,
+        subtitle="Use the number line. Start at the first number and jump by hundreds, tens, and ones.",
     )
 
     x = wp.LMARGIN + wp.TEXT_INDENT + 8
@@ -136,7 +137,15 @@ def main():
     os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)  # e.g. --out sheets/A.pdf
     rng = random.Random(args.seed)
     problems = wp.build_problems(rng, args.problems, hundreds_cap=9)
-    render(problems, args.out, args.title, args.label, "Texas TEKS 3.4(A), 3.5(A)", args.seed)
+    render(
+        problems=problems,
+        path=args.out,
+        title=args.title,
+        label=args.label,
+        name_line=True,
+        teks="Texas TEKS 3.4(A), 3.5(A)",
+        seed=args.seed,
+    )
     print(f"Wrote {args.out}  ({len(problems)} problems + answer key)")
 
 

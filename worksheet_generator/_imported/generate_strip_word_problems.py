@@ -67,7 +67,7 @@ def draw_strip(c, x, y_top, width, left_label, right_label, whole_label, split, 
     return y_top - (bar_top - bar_h)
 
 
-def render(problems, path, title, label, teks, seed, answer_key):
+def render(problems, path, title, label,name_line: bool, teks, seed, answer_key):
     c = canvas.Canvas(path, pagesize=letter)
     c.setTitle(f"{title} — {label}")  # shown by PDF viewers instead of "untitled"
     c.setSubject(teks)
@@ -76,11 +76,12 @@ def render(problems, path, title, label, teks, seed, answer_key):
     footer, new_page, ensure = wp.make_page(c, st, label, teks, seed)
 
     wp.draw_header(
-        c,
-        st,
-        title,
-        label,
-        "Use the strip diagram (bar model): two parts make a whole. Shaded box = what to find.",
+        c=c,
+        st=st,
+        title=title,
+        label=label,
+        name_line=name_line,
+        subtitle="Use the strip diagram (bar model): two parts make a whole. Shaded box = what to find.",
     )
 
     width = 360
@@ -125,7 +126,14 @@ def main():
     rng = random.Random(args.seed)
     problems = wp.build_problems(rng, args.problems, hundreds_cap=9)
     render(
-        problems, args.out, args.title, args.label, "Texas TEKS 3.5(A)", args.seed, args.answer_key
+        problems=problems,
+        path=args.out,
+        title=args.title,
+        label=args.label,
+        name_line=True,
+        teks="Texas TEKS 3.5(A)",
+        seed=args.seed,
+        answer_key=args.answer_key,
     )
     print(
         f"Wrote {args.out}  ({len(problems)} problems{' + answer key' if args.answer_key else ''})"

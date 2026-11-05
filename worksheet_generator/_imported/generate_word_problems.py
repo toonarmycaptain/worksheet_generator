@@ -142,7 +142,7 @@ def wrap(c, text, font, size, max_w):
     return lines
 
 
-def render(problems, path, title, label, teks, seed):
+def render(problems, path, title, label, name_line: bool, teks, seed):
     c = canvas.Canvas(path, pagesize=letter)
     st = {"y": 0.0, "page": 1}
 
@@ -162,7 +162,7 @@ def render(problems, path, title, label, teks, seed):
         if st["y"] - h < BMARGIN + 24:
             new_page()
 
-    def header():
+    def header(name_line: bool):
         st["y"] = PAGE_H - TMARGIN
         c.setFillColor(black)
         c.setFont("Helvetica-Bold", 15)
@@ -181,8 +181,9 @@ def render(problems, path, title, label, teks, seed):
         st["y"] -= 16
         c.setFillColor(black)
         c.setFont("Helvetica", 11)
-        c.drawString(LMARGIN, st["y"], "Name: ______________________________")
-        c.drawRightString(PAGE_W - RMARGIN, st["y"], "Date: ______________")
+        if name_line:
+            c.drawString(LMARGIN, st["y"], "Name: ______________________________")
+            c.drawRightString(PAGE_W - RMARGIN, st["y"], "Date: ______________")
         st["y"] -= 12
         c.setStrokeColor(HexColor("#cbd5e0"))
         c.setLineWidth(1)
@@ -224,7 +225,7 @@ def render(problems, path, title, label, teks, seed):
         c.drawString(LMARGIN + TEXT_INDENT, st["y"] - 4, "Answer: ______________________")
         st["y"] -= 22
 
-    header()
+    header(name_line=name_line)
     for idx, p in enumerate(problems, 1):
         render_problem(idx, p)
 
@@ -258,7 +259,15 @@ def main():
 
     rng = random.Random(args.seed)
     problems = build_problems(rng, args.problems)
-    render(problems, args.out, args.title, args.label, "Texas TEKS 3.4(A)", args.seed)
+    render(
+        problems=problems,
+        path=args.out,
+        title=args.title,
+        label=args.label,
+        name_line=True,
+        teks="Texas TEKS 3.4(A)",
+        seed=args.seed,
+    )
     print(f"Wrote {args.out}  ({len(problems)} problems + answer key)")
 
 

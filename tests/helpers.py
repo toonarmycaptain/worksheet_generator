@@ -155,9 +155,17 @@ def render_basic_operations(
     answer_key: bool,
     title: str,
     label: str,
+    name_line: bool = True,
 ) -> bytes:
     out = BytesIO()
-    render_basic_operations_worksheet(build(cases), out, title, label, answer_key)
+    render_basic_operations_worksheet(
+        questions=build(cases),
+        path=out,
+        title=title,
+        label=label,
+        name_line=name_line,
+        answer_key=answer_key,
+    )
     return out.getvalue()
 
 
@@ -166,9 +174,17 @@ def render_missing_numbers(
     answer_key: bool,
     title: str,
     label: str,
+    name_line: bool = True,
 ) -> bytes:
     out = BytesIO()
-    render_missing_number_worksheet(build(cases), out, title, label, answer_key)
+    render_missing_number_worksheet(
+        questions=build(cases),
+        path=out,
+        title=title,
+        label=label,
+        name_line=name_line,
+        answer_key=answer_key,
+    )
     return out.getvalue()
 
 
@@ -177,9 +193,17 @@ def render_place_value(
     answer_key: bool,
     title: str,
     label: str,
+    name_line: bool = True,
 ) -> bytes:
     out = BytesIO()
-    render_place_value_worksheet(build(cases), out, title, label, answer_key)
+    render_place_value_worksheet(
+        questions=build(cases),
+        path=out,
+        title=title,
+        label=label,
+        name_line=name_line,
+        answer_key=answer_key,
+    )
     return out.getvalue()
 
 
@@ -190,11 +214,18 @@ def render_tiles[Data: QuestionData](
     answer_key: bool,
     title: str,
     label: str,
+    name_line: bool = True,
 ) -> bytes:
     """Render the self-check tiles sheet, with ``to_tile`` making each question's tile question."""
     out = BytesIO()
     render_self_check_tiles_worksheet(
-        [to_tile(data) for data in questions], slot_of, out, title, label, answer_key
+        questions=[to_tile(data) for data in questions],
+        slot_of=slot_of,
+        path=out,
+        title=title,
+        label=label,
+        name_line=name_line,
+        answer_key=answer_key,
     )
     return out.getvalue()
 

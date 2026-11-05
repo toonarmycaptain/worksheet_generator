@@ -87,6 +87,7 @@ FORM_CHOICE_LABELS: dict[str, JsonValue] = {
     "mixed": "mixed",
 }
 AnswerKey = Annotated[bool, Field(title="Add an answer key page")]
+NameDateLine = Annotated[bool, Field(title="Add Name/Date blanks")]
 SelfCheckTiles = Annotated[bool, Field(title="Self-check tile answers")]
 # simple: a conventional picture; complex: tiles in arbitrary slots
 TilePattern = Annotated[
@@ -143,6 +144,7 @@ class Options(Schema):
     """Options common to every legacy kind. Without a seed, the endpoint picks a random one."""
 
     seed: int | None = Field(None, ge=0, le=MAX_SEED)
+    name_line: NameDateLine = False
 
 
 class ArithmeticOptions(Schema):
@@ -150,6 +152,7 @@ class ArithmeticOptions(Schema):
 
     title: Title = OPERATION_NAMES[Operation.ADD]  # the chosen operation's name by default
     label: Label = "Sheet A"
+    name_line: NameDateLine = False
     problems: Problems = 8
     operation: Literal["add", "subtract", "multiply", "divide"] = Field(
         "add", title="Operation", json_schema_extra={"labels": OPERATION_LABELS}
@@ -258,6 +261,7 @@ class PlaceValueOptions(Schema):
 
     title: Title = "Place Value"
     label: Label = "Sheet A"
+    name_line: NameDateLine = False
     problems: Problems = 8
     given: FormChoice = Field(
         "standard", title="From", json_schema_extra={"labels": FORM_CHOICE_LABELS}
@@ -399,7 +403,14 @@ def _arithmetic(o: ArithmeticOptions, out: BinaryIO) -> None:
         questions = generate_basic_operation_questions(
             o.problems, operation, high=high, largest_divisor=o.largest_divisor
         )
-        render_basic_operations_worksheet(questions, out, o.title, o.label, o.answer_key)
+        render_basic_operations_worksheet(
+            questions=questions,
+            path=out,
+            title=o.title,
+            label=o.label,
+            name_line=o.name_line,
+            answer_key=o.answer_key,
+        )
 
 
 def _missing_number(o: ArithmeticOptions, operation: Operation, out: BinaryIO) -> None:
@@ -417,7 +428,14 @@ def _missing_number(o: ArithmeticOptions, operation: Operation, out: BinaryIO) -
             o, [missing_number_tile_question(question.data) for question in questions], out
         )
     else:
-        render_missing_number_worksheet(questions, out, o.title, o.label, o.answer_key)
+        render_missing_number_worksheet(
+            questions=questions,
+            path=out,
+            title=o.title,
+            label=o.label,
+            name_line=o.name_line,
+            answer_key=o.answer_key,
+        )
 
 
 def _place_value(o: PlaceValueOptions, out: BinaryIO) -> None:
@@ -432,7 +450,14 @@ def _place_value(o: PlaceValueOptions, out: BinaryIO) -> None:
     if o.self_check_tiles:
         _render_tiles(o, [place_value_tile_question(question.data) for question in questions], out)
     else:
-        render_place_value_worksheet(questions, out, o.title, o.label, o.answer_key)
+        render_place_value_worksheet(
+            questions=questions,
+            path=out,
+            title=o.title,
+            label=o.label,
+            name_line=o.name_line,
+            answer_key=o.answer_key,
+        )
 
 
 def _form(choice: FormChoice) -> PlaceValueForm | None:
@@ -446,35 +471,82 @@ def _render_tiles(
     """Render a self-check tiles sheet for ``questions``, with slots for the requested pattern."""
     make_slots = conventional_slot_of if o.tile_pattern == "simple" else random_slot_of
     render_self_check_tiles_worksheet(
-        questions, make_slots(o.problems), out, o.title, o.label, o.answer_key
+        questions=questions,
+        slot_of=make_slots(o.problems),
+        path=out,
+        title=o.title,
+        label=o.label,
+        name_line=o.name_line,
+        answer_key=o.answer_key,
     )
 
 
 def _block(o: BlockOptions, seed: int, out: BinaryIO) -> None:
     problems = block.build_problems(random.Random(seed), o.problems)
-    block.render(problems, out, o.title, o.label, "Texas TEKS 2.2(A), 3.4(A)", seed)
+    block.render(
+        problems=problems,
+        path=out,
+        title=o.title,
+        label=o.label,
+        name_line=o.name_line,
+        teks="Texas TEKS 2.2(A), 3.4(A)",
+        seed=seed,
+    )
 
 
 def _word(o: WordOptions, seed: int, out: BinaryIO) -> None:
     problems = word.build_problems(random.Random(seed), o.problems)
-    word.render(problems, out, o.title, o.label, "Texas TEKS 3.4(A)", seed)
+    word.render(
+        problems=problems,
+        path=out,
+        title=o.title,
+        label=o.label,
+        name_line=o.name_line,
+        teks="Texas TEKS 3.4(A)",
+        seed=seed,
+    )
 
 
 def _strip(o: StripOptions, seed: int, out: BinaryIO) -> None:
     problems = wp_common.build_problems(random.Random(seed), o.problems, hundreds_cap=9)
-    strip.render(problems, out, o.title, o.label, "Texas TEKS 3.5(A)", seed, o.answer_key)
+    strip.render(
+        problems=problems,
+        path=out,
+        title=o.title,
+        label=o.label,
+        name_line=o.name_line,
+        teks="Texas TEKS 3.5(A)",
+        seed=seed,
+        answer_key=o.answer_key,
+    )
 
 
 def _number_line(o: NumberLineOptions, seed: int, out: BinaryIO) -> None:
     problems = wp_common.build_problems(random.Random(seed), o.problems, hundreds_cap=9)
-    number_line.render(problems, out, o.title, o.label, "Texas TEKS 3.4(A), 3.5(A)", seed)
+    number_line.render(
+        problems=problems,
+        path=out,
+        title=o.title,
+        label=o.label,
+        name_line=o.name_line,
+        teks="Texas TEKS 3.4(A), 3.5(A)",
+        seed=seed,
+    )
 
 
 def _number_line_mc(o: NumberLineMCOptions, seed: int, out: BinaryIO) -> None:
     problems = wp_common.build_problems(
         random.Random(seed), o.problems, hundreds_cap=9, add_sorted=True
     )
-    number_line_mc.render(problems, out, o.title, o.label, "Texas TEKS 3.4(A), 3.5(A)", seed)
+    number_line_mc.render(
+        problems=problems,
+        path=out,
+        title=o.title,
+        label=o.label,
+        name_line=o.name_line,
+        teks="Texas TEKS 3.4(A), 3.5(A)",
+        seed=seed,
+    )
 
 
 def _multiplication_mc(o: MultiplicationMCOptions, seed: int, out: BinaryIO) -> None:
@@ -482,18 +554,41 @@ def _multiplication_mc(o: MultiplicationMCOptions, seed: int, out: BinaryIO) -> 
         random.Random(seed), o.problems, o.max_factor, o.max_product
     )
     multiplication_mc.render(
-        problems, out, o.title, o.label, "Texas TEKS 3.4(K)", seed, not o.no_jump_labels
+        problems=problems,
+        path=out,
+        title=o.title,
+        label=o.label,
+        name_line=o.name_line,
+        teks="Texas TEKS 3.4(K)",
+        seed=seed,
+        jump_labels=not o.no_jump_labels,
     )
 
 
 def _data_graph(o: DataGraphOptions, seed: int, out: BinaryIO) -> None:
     problems = data_graph.build_problems(random.Random(seed), o.problems, o.list_style)
-    data_graph.render(problems, out, o.title, o.label, "Texas TEKS 3.8(A), 3.8(B)", seed)
+    data_graph.render(
+        problems=problems,
+        path=out,
+        title=o.title,
+        label=o.label,
+        name_line=o.name_line,
+        teks="Texas TEKS 3.8(A), 3.8(B)",
+        seed=seed,
+    )
 
 
 def _data_graph_mc(o: DataGraphMCOptions, seed: int, out: BinaryIO) -> None:
     problems = data_graph_mc.build_problems(random.Random(seed), o.problems, o.list_style)
-    data_graph_mc.render(problems, out, o.title, o.label, "Texas TEKS 3.8(A)", seed)
+    data_graph_mc.render(
+        problems=problems,
+        path=out,
+        title=o.title,
+        label=o.label,
+        name_line=o.name_line,
+        teks="Texas TEKS 3.8(A)",
+        seed=seed,
+    )
 
 
 def _worksheet(o: WorksheetOptions, seed: int, out: BinaryIO) -> None:
@@ -505,6 +600,7 @@ def _worksheet(o: WorksheetOptions, seed: int, out: BinaryIO) -> None:
         path=out,
         title=o.title,
         subtitle="Represent, add, and subtract numbers within 1,000 using base-ten blocks.",
+        name_line=o.name_line,
         teks="Texas TEKS 2.2(A), 2.4(C)",
         seed=seed,
         col=worksheet.BW if o.bw else worksheet.COLOR,

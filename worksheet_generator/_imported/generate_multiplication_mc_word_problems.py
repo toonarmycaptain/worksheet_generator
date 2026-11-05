@@ -325,7 +325,7 @@ def draw_option(c, x, y_top, w, letter, o, jump_labels=True):
 
 
 # ----------------------------------------------------------------- rendering
-def render(problems, path, title, label, teks, seed, jump_labels=True):
+def render(problems, path, title, label, name_line: bool, teks, seed, jump_labels=True):
     c = canvas.Canvas(path, pagesize=letter)
     c.setTitle(f"{title} — {label}")
     c.setSubject(teks)
@@ -333,11 +333,12 @@ def render(problems, path, title, label, teks, seed, jump_labels=True):
     st = {"y": 0.0, "page": 1, "show_seed": False}  # seed only on the answer key
     footer, new_page, ensure = wp.make_page(c, st, label, teks, seed)
     wp.draw_header(
-        c,
-        st,
-        title,
-        label,
-        "Each problem has 6 models. Exactly 3 match the story. The ? is the total.",
+        c=c,
+        st=st,
+        title=title,
+        label=label,
+        name_line=name_line,
+        subtitle="Each problem has 6 models. Exactly 3 match the story. The ? is the total.",
     )
 
     colw = (wp.CONTENT_W - wp.TEXT_INDENT) / 2
@@ -419,7 +420,14 @@ def main():
     rng = random.Random(args.seed)
     problems = build_problems(rng, args.problems, args.max_factor, args.max_product)
     render(
-        problems, args.out, args.title, args.label, "Texas TEKS 3.4(K)", args.seed, args.jump_labels
+        problems=problems,
+        path=args.out,
+        title=args.title,
+        label=args.label,
+        name_line=True,
+        teks="Texas TEKS 3.4(K)",
+        seed=args.seed,
+        jump_labels=args.jump_labels,
     )
     print(f"Wrote {args.out}  ({len(problems)} problems + answer key)")
 

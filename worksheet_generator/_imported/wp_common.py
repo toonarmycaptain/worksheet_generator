@@ -181,7 +181,7 @@ def make_page(c, st, label, teks, seed):
     return footer, new_page, ensure
 
 
-def draw_header(c, st, title, label, subtitle):
+def draw_header(c, st, title, label, name_line:bool, subtitle):
     st["y"] = PAGE_H - TMARGIN
     c.setFillColor(black)
     c.setFont("Helvetica-Bold", 15)
@@ -196,8 +196,9 @@ def draw_header(c, st, title, label, subtitle):
     st["y"] -= 16
     c.setFillColor(black)
     c.setFont("Helvetica", 11)
-    c.drawString(LMARGIN, st["y"], "Name: ______________________________")
-    c.drawRightString(PAGE_W - RMARGIN, st["y"], "Date: ______________")
+    if name_line:
+        c.drawString(LMARGIN, st["y"], "Name: ______________________________")
+        c.drawRightString(PAGE_W - RMARGIN, st["y"], "Date: ______________")
     st["y"] -= 12
     c.setStrokeColor(HexColor("#cbd5e0"))
     c.setLineWidth(1)

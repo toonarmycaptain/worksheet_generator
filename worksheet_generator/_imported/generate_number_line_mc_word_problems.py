@@ -134,16 +134,17 @@ def draw_option(c, x, y_top, width, letter, a, opt):
     draw_two_jump_line(c, x + 2 * r + 6, y_top - 30, width - 2 * r - 8, a, opt)
 
 
-def render(problems, path, title, label, teks, seed):
+def render(problems, path, title, label, name_line: bool, teks, seed):
     c = canvas.Canvas(path, pagesize=letter)
     st = {"y": 0.0, "page": 1}
     footer, new_page, ensure = wp.make_page(c, st, label, teks, seed)
     wp.draw_header(
-        c,
-        st,
-        title,
-        label,
-        "Each number line starts at 0 and shows both numbers as jumps. Circle the correct one.",
+        c=c,
+        st=st,
+        title=title,
+        label=label,
+        name_line=name_line,
+        subtitle="Each number line starts at 0 and shows both numbers as jumps. Circle the correct one.",
     )
 
     colw = (wp.CONTENT_W - wp.TEXT_INDENT) / 2
@@ -197,7 +198,15 @@ def main():
     os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)  # e.g. --out sheets/A.pdf
     rng = random.Random(args.seed)
     problems = wp.build_problems(rng, args.problems, hundreds_cap=9, add_sorted=True)
-    render(problems, args.out, args.title, args.label, "Texas TEKS 3.4(A), 3.5(A)", args.seed)
+    render(
+        problems=problems,
+        path=args.out,
+        title=args.title,
+        label=args.label,
+        name_line=True,
+        teks="Texas TEKS 3.4(A), 3.5(A)",
+        seed=args.seed,
+    )
     print(f"Wrote {args.out}  ({len(problems)} problems + answer key)")
 
 
