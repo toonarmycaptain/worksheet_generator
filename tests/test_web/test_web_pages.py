@@ -36,6 +36,7 @@ def test_pages(client: Client) -> None:
             [
                 b"title",
                 b"label",
+                b"name_line",
                 b"problems",
                 b"operation",
                 b"missing_number",
@@ -54,6 +55,7 @@ def test_pages(client: Client) -> None:
             [
                 b"title",
                 b"label",
+                b"name_line",
                 b"problems",
                 b"given",
                 b"asked",
@@ -239,6 +241,7 @@ def test_each_field_carries_its_label_for_the_check_first_messages(client: Clien
     assert re.findall(rb'name="(\w+)" data-label="([^"]+)"', content) == [
         (b"title", b"Title"),
         (b"label", b"Label"),
+        (b"name_line", b"Add Name/Date blanks"),
         (b"problems", b"Problems"),
         (b"operation", b"Operation"),
         (b"missing_number", b"Missing number"),

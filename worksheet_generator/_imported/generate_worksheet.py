@@ -172,7 +172,7 @@ def build_problems(rng, n_rep, n_add, n_sub, regroup=True):
 # ---------------------------------------------------------------------------
 # Rendering
 # ---------------------------------------------------------------------------
-def render(problems, path, title, subtitle, teks, seed, col):
+def render(problems, path, title, subtitle, name_line: bool, teks, seed, col):
     c = canvas.Canvas(path, pagesize=letter)
     st = {"y": 0.0, "page": 1}
 
@@ -212,7 +212,7 @@ def render(problems, path, title, subtitle, teks, seed, col):
         c.drawString(x - 6, y - 12, "unit = 1")
         st["y"] = y - 26
 
-    def header():
+    def header(name_line:bool):
         st["y"] = PAGE_H - TMARGIN
         c.setFillColor(black)
         c.setFont("Helvetica-Bold", 16)
@@ -224,8 +224,9 @@ def render(problems, path, title, subtitle, teks, seed, col):
         st["y"] -= 18
         c.setFillColor(black)
         c.setFont("Helvetica", 11)
-        c.drawString(LMARGIN, st["y"], "Name: ______________________________")
-        c.drawRightString(PAGE_W - RMARGIN, st["y"], "Date: ______________")
+        if name_line:
+            c.drawString(LMARGIN, st["y"], "Name: ______________________________")
+            c.drawRightString(PAGE_W - RMARGIN, st["y"], "Date: ______________")
         st["y"] -= 16
         c.setStrokeColor(HexColor("#cbd5e0"))
         c.setLineWidth(1)
@@ -300,7 +301,7 @@ def render(problems, path, title, subtitle, teks, seed, col):
 
     dispatch = {"represent": render_represent, "add": render_add, "sub": render_sub}
 
-    header()
+    header(name_line=name_line)
     for idx, p in enumerate(problems, 1):
         dispatch[p["type"]](idx, p)
 
@@ -344,10 +345,11 @@ def main():
     rng = random.Random(args.seed)
     problems = build_problems(rng, args.represent, args.add, args.sub, regroup=not args.no_regroup)
     render(
-        problems,
-        args.out,
+        problems=problems,
+        path=args.out,
         title=args.title,
         subtitle="Represent, add, and subtract numbers within 1,000 using base-ten blocks.",
+        name_line=True,
         teks="Texas TEKS 2.2(A), 2.4(C)",
         seed=args.seed,
         col=BW if args.bw else COLOR,

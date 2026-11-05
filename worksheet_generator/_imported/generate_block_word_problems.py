@@ -223,7 +223,7 @@ def wrap(c, text, font, size, max_w):
 
 
 # ---------------------------------------------------------------------- render
-def render(problems, path, title, label, teks, seed):
+def render(problems, path, title, label, name_line: bool, teks, seed):
     c = canvas.Canvas(path, pagesize=letter)
     st = {"y": 0.0, "page": 1}
 
@@ -263,7 +263,7 @@ def render(problems, path, title, label, teks, seed):
         c.drawString(x - 6, y - 11, "unit = 1")
         st["y"] = y - 24
 
-    def header():
+    def header(name_line: bool):
         st["y"] = PAGE_H - TMARGIN
         c.setFillColor(black)
         c.setFont("Helvetica-Bold", 15)
@@ -278,8 +278,9 @@ def render(problems, path, title, label, teks, seed):
         st["y"] -= 16
         c.setFillColor(black)
         c.setFont("Helvetica", 11)
-        c.drawString(LMARGIN, st["y"], "Name: ______________________________")
-        c.drawRightString(PAGE_W - RMARGIN, st["y"], "Date: ______________")
+        if name_line:
+            c.drawString(LMARGIN, st["y"], "Name: ______________________________")
+            c.drawRightString(PAGE_W - RMARGIN, st["y"], "Date: ______________")
         st["y"] -= 12
         c.setStrokeColor(HexColor("#cbd5e0"))
         c.setLineWidth(1)
@@ -348,7 +349,7 @@ def render(problems, path, title, label, teks, seed):
         answer_row()
         st["y"] -= 8
 
-    header()
+    header(name_line=name_line)
     for idx, p in enumerate(problems, 1):
         (render_add if p["op"] == "add" else render_sub)(idx, p)
 
@@ -380,7 +381,15 @@ def main():
     os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)  # e.g. --out sheets/A.pdf
     rng = random.Random(args.seed)
     problems = build_problems(rng, args.problems)
-    render(problems, args.out, args.title, args.label, "Texas TEKS 2.2(A), 3.4(A)", args.seed)
+    render(
+        problems=problems,
+        path=args.out,
+        title=args.title,
+        label=args.label,
+        name_line=True,
+        teks="Texas TEKS 2.2(A), 3.4(A)",
+        seed=args.seed,
+    )
     print(f"Wrote {args.out}  ({len(problems)} problems + answer key)")
 
 

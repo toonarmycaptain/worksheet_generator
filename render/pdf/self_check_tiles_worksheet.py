@@ -59,6 +59,7 @@ def render_self_check_tiles_worksheet(
     path: str | BinaryIO,
     title: str,
     label: str,
+    name_line: bool,
     answer_key: bool,
 ) -> None:
     """
@@ -73,7 +74,7 @@ def render_self_check_tiles_worksheet(
     """
     pdf = new_pdf(path, title)
 
-    y = start_page(pdf, title, label, with_name_line=True)
+    y = start_page(pdf, title, label, with_name_line=name_line)
     for index, question in enumerate(questions):
         column, row = divmod(index, QUESTIONS_PER_COLUMN)
         x = MARGIN + column * CONTENT_WIDTH / 2

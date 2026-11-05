@@ -68,6 +68,37 @@ from tests.helpers import (
                 "slot_of": REVERSED_SLOTS,
                 "title": "Addition",
                 "label": "Sheet A",
+                "name_line": False,
+                "answer_key": False,
+            },
+            "arithmetic-sheet-a.pdf",
+        ),
+        (
+            "/api/worksheets/arithmetic.pdf?self_check_tiles=true&tile_pattern=complex"
+            "&problems=12&name_line=true&sheet=1ab2c3",
+            [0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6],
+            200,
+            None,
+            {
+                "questions": [
+                    BasicOperationQuestionData(Operation.ADD, (0, 1), 1),
+                    BasicOperationQuestionData(Operation.ADD, (1, 1), 2),
+                    BasicOperationQuestionData(Operation.ADD, (1, 2), 3),
+                    BasicOperationQuestionData(Operation.ADD, (2, 2), 4),
+                    BasicOperationQuestionData(Operation.ADD, (2, 3), 5),
+                    BasicOperationQuestionData(Operation.ADD, (3, 3), 6),
+                    BasicOperationQuestionData(Operation.ADD, (3, 4), 7),
+                    BasicOperationQuestionData(Operation.ADD, (4, 4), 8),
+                    BasicOperationQuestionData(Operation.ADD, (4, 5), 9),
+                    BasicOperationQuestionData(Operation.ADD, (5, 5), 10),
+                    BasicOperationQuestionData(Operation.ADD, (5, 6), 11),
+                    BasicOperationQuestionData(Operation.ADD, (6, 6), 12),
+                ],
+                "to_tile": basic_operation_tile_question,
+                "slot_of": REVERSED_SLOTS,
+                "title": "Addition",
+                "label": "Sheet A",
+                "name_line": True,
                 "answer_key": False,
             },
             "arithmetic-sheet-a.pdf",
@@ -90,6 +121,7 @@ from tests.helpers import (
                 "slot_of": (11, 10, 9, 8),
                 "title": "Addition",
                 "label": "Sheet A",
+                "name_line": False,
                 "answer_key": False,
             },
             "arithmetic-sheet-a.pdf",
@@ -120,6 +152,7 @@ from tests.helpers import (
                 "slot_of": REVERSED_SLOTS,
                 "title": "Subtraction",
                 "label": "Sheet A",
+                "name_line": False,
                 "answer_key": True,
             },
             "arithmetic-sheet-a.pdf",
@@ -150,6 +183,7 @@ from tests.helpers import (
                 "slot_of": REVERSED_SLOTS,
                 "title": "Tables",
                 "label": "Day 2",
+                "name_line": False,
                 "answer_key": False,
             },
             "arithmetic-day-2.pdf",
@@ -172,6 +206,7 @@ from tests.helpers import (
                 "slot_of": (7, 9, 10, 6),
                 "title": "Addition",
                 "label": "Sheet A",
+                "name_line": False,
                 "answer_key": False,
             },
             "arithmetic-sheet-a.pdf",
@@ -193,6 +228,7 @@ from tests.helpers import (
                 "slot_of": (7, 9, 10, 6),
                 "title": "Addition",
                 "label": "Sheet A",
+                "name_line": False,
                 "answer_key": False,
             },
             "arithmetic-sheet-a.pdf",
@@ -216,6 +252,7 @@ from tests.helpers import (
                 "slot_of": (11, 10, 9),
                 "title": "Division",
                 "label": "Sheet A",
+                "name_line": False,
                 "answer_key": False,
             },
             "arithmetic-sheet-a.pdf",
@@ -246,6 +283,7 @@ from tests.helpers import (
                 "slot_of": (11, 10, 9, 8, 7, 6, 5, 4, 3, 2),
                 "title": "Division",
                 "label": "Sheet A",
+                "name_line": False,
                 "answer_key": False,
             },
             "arithmetic-sheet-a.pdf",
@@ -268,6 +306,7 @@ from tests.helpers import (
                 "slot_of": (11, 10),
                 "title": "Division",
                 "label": "Sheet A",
+                "name_line": False,
                 "answer_key": True,
             },
             "arithmetic-sheet-a.pdf",
@@ -402,7 +441,8 @@ def test_arithmetic_pdf_for_self_check_tiles(
     - A rejected request is compared with Ninja's JSON error, and has no PDF headers.
     - A PDF is compared on its filename, its cache header (24 hours) and the text the renderer
       draws for ``pdf_data``: the tile questions that ``to_tile`` makes, in the slots
-      ``slot_of``, the title and label, and whether there is an answer key.
+      ``slot_of``, the title and label, and whether there is a Name/Date line and an
+      answer key.
     """
     randint_returns(monkeypatch, drawn)
     sample_first(monkeypatch)
@@ -422,11 +462,12 @@ def test_arithmetic_pdf_for_self_check_tiles(
     else:
         assert pdf_text(response.content) == pdf_text(
             render_tiles(
-                pdf_data["questions"],
-                pdf_data["to_tile"],
-                pdf_data["slot_of"],
-                pdf_data["answer_key"],
-                pdf_data["title"],
-                pdf_data["label"],
+                questions=pdf_data["questions"],
+                to_tile=pdf_data["to_tile"],
+                slot_of=pdf_data["slot_of"],
+                answer_key=pdf_data["answer_key"],
+                title=pdf_data["title"],
+                label=pdf_data["label"],
+                name_line=pdf_data["name_line"],
             )
         )
