@@ -879,7 +879,7 @@ def draw_question(c, st, part, text):
     st["y"] -= max(2, len(lines)) * 14 + 8
 
 
-def render(problems, path, title, label, teks, seed):
+def render(problems, path, title, label, name_line: bool, teks, seed):
     c = canvas.Canvas(path, pagesize=letter)
     c.setTitle(f"{title} — {label}")
     c.setSubject(teks)
@@ -887,11 +887,12 @@ def render(problems, path, title, label, teks, seed):
     st = {"y": 0.0, "page": 1, "show_seed": False}  # seed only on the answer key
     footer, new_page, ensure = wp.make_page(c, st, label, teks, seed)
     wp.draw_header(
-        c,
-        st,
-        title,
-        label,
-        "Read the data. Complete the second graph or table, then solve the problems.",
+        c=c,
+        st=st,
+        title=title,
+        label=label,
+        name_line=name_line,
+        subtitle="Read the data. Complete the second graph or table, then solve the problems.",
     )
 
     x = wp.LMARGIN + wp.TEXT_INDENT
@@ -970,7 +971,15 @@ def main():
     os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)  # e.g. --out sheets/A.pdf
     rng = random.Random(args.seed)
     problems = build_problems(rng, args.problems, args.list_style)
-    render(problems, args.out, args.title, args.label, "Texas TEKS 3.8(A), 3.8(B)", args.seed)
+    render(
+        problems=problems,
+        path=args.out,
+        title=args.title,
+        label=args.label,
+        name_line=True,
+        teks="Texas TEKS 3.8(A), 3.8(B)",
+        seed=args.seed,
+    )
     print(f"Wrote {args.out}  ({len(problems)} problems + answer key)")
 
 

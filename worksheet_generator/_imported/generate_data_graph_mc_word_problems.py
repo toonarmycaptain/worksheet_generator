@@ -215,7 +215,7 @@ def draw_option(c, x, y_top, w, choice_letter, dataset, option):
 
 
 # ----------------------------------------------------------------- rendering
-def render(problems, path, title, label, teks, seed):
+def render(problems, path, title, label, name_line: bool, teks, seed):
     c = canvas.Canvas(path, pagesize=letter)
     c.setTitle(f"{title} — {label}")
     c.setSubject(teks)
@@ -223,11 +223,12 @@ def render(problems, path, title, label, teks, seed):
     st = {"y": 0.0, "page": 1, "show_seed": False}  # seed only on the answer key
     footer, new_page, ensure = wp.make_page(c, st, label, teks, seed)
     wp.draw_header(
-        c,
-        st,
-        title,
-        label,
-        "Each problem shows data one way. Find the choice that shows the SAME data another way.",
+        c=c,
+        st=st,
+        title=title,
+        label=label,
+        name_line=name_line,
+        subtitle="Each problem shows data one way. Find the choice that shows the SAME data another way.",
     )
 
     content_w = wp.CONTENT_W - wp.TEXT_INDENT
@@ -316,7 +317,15 @@ def main():
     os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)  # e.g. --out sheets/A.pdf
     rng = random.Random(args.seed)
     problems = build_problems(rng, args.problems, args.list_style)
-    render(problems, args.out, args.title, args.label, "Texas TEKS 3.8(A)", args.seed)
+    render(
+        problems=problems,
+        path=args.out,
+        title=args.title,
+        label=args.label,
+        name_line=True,
+        teks="Texas TEKS 3.8(A)",
+        seed=args.seed,
+    )
     print(f"Wrote {args.out}  ({len(problems)} problems + answer key)")
 
 

@@ -64,6 +64,25 @@ def sample_returns_then_last(monkeypatch: pytest.MonkeyPatch, drawn: list[int]) 
                 ],
                 "title": "Place Value",
                 "label": "Sheet A",
+                "name_line": False,
+                "answer_key": False,
+            },
+            "place_value-sheet-a.pdf",
+        ),
+        (
+            # the defaults: standard to expanded, written
+            "/api/worksheets/place_value.pdf?problems=2&name_line=true&sheet=1ab2c3",
+            [35043, 50421],
+            200,
+            None,
+            {
+                "cases": [
+                    (PlaceValueQuestionData(35043, STANDARD, EXPANDED), ()),
+                    (PlaceValueQuestionData(50421, STANDARD, EXPANDED), ()),
+                ],
+                "title": "Place Value",
+                "label": "Sheet A",
+                "name_line": True,
                 "answer_key": False,
             },
             "place_value-sheet-a.pdf",
@@ -78,6 +97,7 @@ def sample_returns_then_last(monkeypatch: pytest.MonkeyPatch, drawn: list[int]) 
                 "cases": [(PlaceValueQuestionData(54321, WORD, STANDARD), ())],
                 "title": "Number Forms",
                 "label": "Day 2",
+                "name_line": False,
                 "answer_key": True,
             },
             "place_value-day-2.pdf",
@@ -92,6 +112,7 @@ def sample_returns_then_last(monkeypatch: pytest.MonkeyPatch, drawn: list[int]) 
                 "cases": [(PlaceValueQuestionData(35043, WORD, EXPANDED_NOTATION), ())],
                 "title": "Place Value",
                 "label": "Sheet A",
+                "name_line": False,
                 "answer_key": False,
             },
             "place_value-sheet-a.pdf",
@@ -106,6 +127,7 @@ def sample_returns_then_last(monkeypatch: pytest.MonkeyPatch, drawn: list[int]) 
                 "cases": [(PlaceValueQuestionData(35043, EXPANDED_NOTATION, WORD), ())],
                 "title": "Place Value",
                 "label": "Sheet A",
+                "name_line": False,
                 "answer_key": False,
             },
             "place_value-sheet-a.pdf",
@@ -123,6 +145,7 @@ def sample_returns_then_last(monkeypatch: pytest.MonkeyPatch, drawn: list[int]) 
                 ],
                 "title": "Place Value",
                 "label": "Sheet A",
+                "name_line": False,
                 "answer_key": True,
             },
             "place_value-sheet-a.pdf",
@@ -138,6 +161,7 @@ def sample_returns_then_last(monkeypatch: pytest.MonkeyPatch, drawn: list[int]) 
                 "cases": [(PlaceValueQuestionData(1, STANDARD, EXPANDED), (2, 3, 4))],
                 "title": "Place Value",
                 "label": "Sheet A",
+                "name_line": False,
                 "answer_key": False,
             },
             "place_value-sheet-a.pdf",
@@ -261,12 +285,13 @@ def test_place_value_pdf(
                 answer_key=pdf_data["answer_key"],
                 title=pdf_data["title"],
                 label=pdf_data["label"],
+                name_line=pdf_data["name_line"],
             )
         )
 
 
 @pytest.mark.parametrize(
-    ("url", "drawn", "status", "expected_json", "questions", "slot_of", "answer_key"),
+    ("url", "drawn", "status", "expected_json", "questions", "slot_of", "answer_key", "name_line"),
     [
         (
             # simple, the default: the conventional slots
@@ -281,6 +306,22 @@ def test_place_value_pdf(
             ],
             (7, 9),
             False,
+            False,
+        ),
+        (
+            # simple, the default: the conventional slots
+            "/api/worksheets/place_value.pdf?self_check_tiles=true&given=expanded&asked=standard"
+            "&problems=2&name_line=true&sheet=1ab2c3",
+            [35043, 50421],
+            200,
+            None,
+            [
+                PlaceValueQuestionData(35043, EXPANDED, STANDARD),
+                PlaceValueQuestionData(50421, EXPANDED, STANDARD),
+            ],
+            (7, 9),
+            False,
+            True,
         ),
         (
             # complex, with answers in word form
@@ -295,6 +336,7 @@ def test_place_value_pdf(
             ],
             (11, 10),
             True,
+            False,
         ),
         (
             # tiles win over multiple choice, so a range too small for wrong answers is fine
@@ -309,6 +351,7 @@ def test_place_value_pdf(
             ],
             (11, 10),
             False,
+            False,
         ),
         (
             "/api/worksheets/place_value.pdf?self_check_tiles=true&problems=13",
@@ -317,6 +360,7 @@ def test_place_value_pdf(
             refused("problems: self-check tiles has 12 tiles, so at most 12"),
             None,
             None,
+            False,
             False,
         ),
     ],
@@ -329,6 +373,7 @@ def test_place_value_pdf_for_self_check_tiles(
     questions: list[PlaceValueQuestionData] | None,
     slot_of: tuple[int, ...] | None,
     answer_key: bool,
+    name_line: bool,
     client: Client,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -351,12 +396,13 @@ def test_place_value_pdf_for_self_check_tiles(
     else:
         assert pdf_text(response.content) == pdf_text(
             render_tiles(
-                questions,
-                place_value_tile_question,
-                slot_of,
-                answer_key,
-                "Place Value",
-                "Sheet A",
+                questions=questions,
+                to_tile=place_value_tile_question,
+                slot_of=slot_of,
+                answer_key=answer_key,
+                title="Place Value",
+                label="Sheet A",
+                name_line=name_line,
             )
         )
 

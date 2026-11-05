@@ -44,6 +44,7 @@ def render_basic_operations_worksheet(
     path: str | BinaryIO,
     title: str,
     label: str,
+    name_line: bool,
     answer_key: bool,
 ) -> None:
     """
@@ -53,12 +54,12 @@ def render_basic_operations_worksheet(
     """
     pdf = new_pdf(path, title)
 
-    y = start_page(pdf, title, label, with_name_line=True)
+    y = start_page(pdf, title, label, with_name_line=name_line)
     for number, question in enumerate(questions, start=1):
         lines = simpleSplit(stem(question.data), FONT, TEXT_SIZE, TEXT_WIDTH)
         if y - len(lines) * LINE_HEIGHT - OPTIONS_HEIGHT < MARGIN:
             pdf.showPage()
-            y = start_page(pdf, title, label, with_name_line=True)
+            y = start_page(pdf, title, label, with_name_line=name_line)
         y = _draw_question(pdf, number, question, lines, y)
 
     if answer_key:
@@ -72,6 +73,7 @@ def render_missing_number_worksheet(
     path: str | BinaryIO,
     title: str,
     label: str,
+    name_line: bool,
     answer_key: bool,
 ) -> None:
     """
@@ -83,11 +85,11 @@ def render_missing_number_worksheet(
     pdf = new_pdf(path, title)
 
     column_width = (PAGE_WIDTH - 2 * MARGIN) / FILL_IN_COLUMNS
-    y = start_page(pdf, title, label, with_name_line=True) - FILL_IN_DROP
+    y = start_page(pdf, title, label, with_name_line=name_line) - FILL_IN_DROP
     for row_start in range(0, len(questions), FILL_IN_COLUMNS):
         if y - BLANK_SIDE / 2 < MARGIN:
             pdf.showPage()
-            y = start_page(pdf, title, label, with_name_line=True) - FILL_IN_DROP
+            y = start_page(pdf, title, label, with_name_line=name_line) - FILL_IN_DROP
         row = questions[row_start : row_start + FILL_IN_COLUMNS]
         for column, question in enumerate(row):
             x = MARGIN + column * column_width
