@@ -1,11 +1,11 @@
 === in_order ===
-title: Arithmetic
+title: Basic Operations
 media boxes: 0 0 612 792
 --- stream 1
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 0 0 0 rg
 BT /F2 18 Tf 21.6 TL ET
-BT 1 0 0 1 54 738 Tm (Arithmetic) Tj T* ET
+BT 1 0 0 1 54 738 Tm (Basic Operations) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
 BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
@@ -274,13 +274,13 @@ BT 1 0 0 1 54 236 Tm (Close the case and flip it over. If every) Tj T* ET
 BT 1 0 0 1 54 221 Tm (answer is right, the back looks like this.) Tj T* ET
 
 === real_case ===
-title: Arithmetic
+title: Basic Operations
 media boxes: 0 0 612 792
 --- stream 1
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 0 0 0 rg
 BT /F2 18 Tf 21.6 TL ET
-BT 1 0 0 1 54 738 Tm (Arithmetic) Tj T* ET
+BT 1 0 0 1 54 738 Tm (Basic Operations) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
 BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
@@ -549,13 +549,13 @@ BT 1 0 0 1 54 236 Tm (Close the case and flip it over. If every) Tj T* ET
 BT 1 0 0 1 54 221 Tm (answer is right, the back looks like this.) Tj T* ET
 
 === real_case_answer_key ===
-title: Arithmetic
+title: Basic Operations
 media boxes: 0 0 612 792; 0 0 612 792
 --- stream 1
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 0 0 0 rg
 BT /F2 18 Tf 21.6 TL ET
-BT 1 0 0 1 54 738 Tm (Arithmetic) Tj T* ET
+BT 1 0 0 1 54 738 Tm (Basic Operations) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
 BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
@@ -826,7 +826,7 @@ BT 1 0 0 1 54 221 Tm (answer is right, the back looks like this.) Tj T* ET
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 0 0 0 rg
 BT /F2 18 Tf 21.6 TL ET
-BT 1 0 0 1 54 738 Tm (Arithmetic: Answer Key) Tj T* ET
+BT 1 0 0 1 54 738 Tm (Basic Operations: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
@@ -1144,13 +1144,13 @@ BT 1 0 0 1 54 236 Tm (Close the case and flip it over. If every) Tj T* ET
 BT 1 0 0 1 54 221 Tm (answer is right, the back looks like this.) Tj T* ET
 
 === four_questions ===
-title: Arithmetic
+title: Basic Operations
 media boxes: 0 0 612 792
 --- stream 1
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 0 0 0 rg
 BT /F2 18 Tf 21.6 TL ET
-BT 1 0 0 1 54 738 Tm (Arithmetic) Tj T* ET
+BT 1 0 0 1 54 738 Tm (Basic Operations) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
 BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
@@ -1356,13 +1356,13 @@ BT 1 0 0 1 54 236 Tm (Close the case and flip it over. If every) Tj T* ET
 BT 1 0 0 1 54 221 Tm (answer is right, the back looks like this.) Tj T* ET
 
 === four_questions_answer_key ===
-title: Arithmetic
+title: Basic Operations
 media boxes: 0 0 612 792; 0 0 612 792
 --- stream 1
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 0 0 0 rg
 BT /F2 18 Tf 21.6 TL ET
-BT 1 0 0 1 54 738 Tm (Arithmetic) Tj T* ET
+BT 1 0 0 1 54 738 Tm (Basic Operations) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
 BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
@@ -1570,7 +1570,7 @@ BT 1 0 0 1 54 221 Tm (answer is right, the back looks like this.) Tj T* ET
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 0 0 0 rg
 BT /F2 18 Tf 21.6 TL ET
-BT 1 0 0 1 54 738 Tm (Arithmetic: Answer Key) Tj T* ET
+BT 1 0 0 1 54 738 Tm (Basic Operations: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET

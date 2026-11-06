@@ -14,19 +14,22 @@ from django.test import Client
 @pytest.mark.parametrize(
     ("url", "location"),
     [
-        ("/api/worksheets/arithmetic.pdf", "/api/worksheets/arithmetic.pdf?sheet=1ab2c3"),
         (
-            "/api/worksheets/arithmetic.pdf?operation=multiply&problems=2",
-            "/api/worksheets/arithmetic.pdf?operation=multiply&problems=2&sheet=1ab2c3",
+            "/api/worksheets/basic_operations.pdf",
+            "/api/worksheets/basic_operations.pdf?sheet=1ab2c3",
         ),
         (
-            "/api/worksheets/arithmetic.pdf?title=Times+Tables&label=Day+2",
-            "/api/worksheets/arithmetic.pdf?title=Times+Tables&label=Day+2&sheet=1ab2c3",
+            "/api/worksheets/basic_operations.pdf?operation=multiply&problems=2",
+            "/api/worksheets/basic_operations.pdf?operation=multiply&problems=2&sheet=1ab2c3",
+        ),
+        (
+            "/api/worksheets/basic_operations.pdf?title=Times+Tables&label=Day+2",
+            "/api/worksheets/basic_operations.pdf?title=Times+Tables&label=Day+2&sheet=1ab2c3",
         ),
         # an empty token counts as none
         (
-            "/api/worksheets/arithmetic.pdf?problems=3&sheet=",
-            "/api/worksheets/arithmetic.pdf?problems=3&sheet=1ab2c3",
+            "/api/worksheets/basic_operations.pdf?problems=3&sheet=",
+            "/api/worksheets/basic_operations.pdf?problems=3&sheet=1ab2c3",
         ),
         (
             "/api/worksheets/place_value.pdf?given=word",

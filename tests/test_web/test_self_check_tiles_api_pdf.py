@@ -1,15 +1,15 @@
 """
-Tests for the arithmetic endpoint's self-check tiles option: an answer bank and a pattern.
+Tests for the basic operations endpoint's self-check tiles option: an answer bank and a pattern.
 
-``test_arithmetic_pdf_for_self_check_tiles`` scripts ``random.randint`` (operands, or a divisor
-then a quotient) and makes ``random.shuffle`` reverse its list, so the complex pattern's slots
-are in reverse order (question 1's answer in L). ``conventional_slot_of`` is replaced to return
-the slots of a real case, so each PDF shows which pattern its slots came from. The PDF must then
-match what the self-check tiles renderer draws for the same questions and slots, which is
-tested in ``test_self_check_tiles_worksheet``. Disallowed options get Ninja's JSON error. The
-rest of the endpoint's behaviour, such as the other limits, is shared with the plain sheet and
-tested in ``test_arithmetic_api_pdf``; the redirect for a request without a ``sheet`` token is
-tested in ``test_sheet_redirect``.
+``test_basic_operations_pdf_for_self_check_tiles`` scripts ``random.randint`` (operands, or a
+divisor then a quotient) and makes ``random.shuffle`` reverse its list, so the complex pattern's
+slots are in reverse order (question 1's answer in L). ``conventional_slot_of`` is replaced to
+return the slots of a real case, so each PDF shows which pattern its slots came from. The PDF must
+then match what the self-check tiles renderer draws for the same questions and slots, which is
+tested in ``test_self_check_tiles_worksheet``. Disallowed options get Ninja's JSON error. The rest
+of the endpoint's behaviour, such as the other limits, is shared with the plain sheet and tested in
+``test_basic_operations_api_pdf``; the redirect for a request without a ``sheet`` token is tested in
+``test_sheet_redirect``.
 """
 
 from typing import Any
@@ -44,7 +44,7 @@ from tests.helpers import (
     ("url", "drawn", "status", "expected_json", "pdf_data", "filename"),
     [
         (
-            "/api/worksheets/arithmetic.pdf?self_check_tiles=true&tile_pattern=complex"
+            "/api/worksheets/basic_operations.pdf?self_check_tiles=true&tile_pattern=complex"
             "&problems=12&sheet=1ab2c3",
             [0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6],
             200,
@@ -71,10 +71,10 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": False,
             },
-            "arithmetic-sheet-a.pdf",
+            "basic_operations-sheet-a.pdf",
         ),
         (
-            "/api/worksheets/arithmetic.pdf?self_check_tiles=true&tile_pattern=complex"
+            "/api/worksheets/basic_operations.pdf?self_check_tiles=true&tile_pattern=complex"
             "&problems=12&name_line=true&sheet=1ab2c3",
             [0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6],
             200,
@@ -101,11 +101,11 @@ from tests.helpers import (
                 "name_line": True,
                 "answer_key": False,
             },
-            "arithmetic-sheet-a.pdf",
+            "basic_operations-sheet-a.pdf",
         ),
         (
             # 4 questions use tiles 1 to 4, in the first four of the shuffled slots (L, K, J, I)
-            "/api/worksheets/arithmetic.pdf?self_check_tiles=true&tile_pattern=complex"
+            "/api/worksheets/basic_operations.pdf?self_check_tiles=true&tile_pattern=complex"
             "&problems=4&sheet=1ab2c3",
             [0, 1, 1, 1, 1, 2, 2, 2],
             200,
@@ -124,11 +124,11 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": False,
             },
-            "arithmetic-sheet-a.pdf",
+            "basic_operations-sheet-a.pdf",
         ),
         (
             # the larger number goes first, and 0 to 11 are the 12 differences
-            "/api/worksheets/arithmetic.pdf?self_check_tiles=true&problems=12&operation=subtract"
+            "/api/worksheets/basic_operations.pdf?self_check_tiles=true&problems=12&operation=subtract"
             "&tile_pattern=complex&max_number=11&answer_key=true&sheet=1ab2c3",
             [0, 0, 1, 0, 0, 2, 3, 0, 0, 4, 5, 0, 0, 6, 7, 0, 0, 8, 9, 0, 0, 10, 11, 0],
             200,
@@ -155,11 +155,11 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": True,
             },
-            "arithmetic-sheet-a.pdf",
+            "basic_operations-sheet-a.pdf",
         ),
         (
             # twelve different products, from 0 to 15
-            "/api/worksheets/arithmetic.pdf?self_check_tiles=true&problems=12&operation=multiply"
+            "/api/worksheets/basic_operations.pdf?self_check_tiles=true&problems=12&operation=multiply"
             "&tile_pattern=complex&max_number=5&title=Tables&label=Day+2&sheet=1ab2c3",
             [0, 5, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 2, 3, 2, 4, 3, 3, 2, 5, 3, 4, 3, 5],
             200,
@@ -186,12 +186,12 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": False,
             },
-            "arithmetic-day-2.pdf",
+            "basic_operations-day-2.pdf",
         ),
         # The tile pattern chooses where the slots come from: simple, the default, from
         # conventional_slot_of. The rows above use complex, whose slots come from random_slot_of.
         (
-            "/api/worksheets/arithmetic.pdf?self_check_tiles=true&problems=4&sheet=1ab2c3",
+            "/api/worksheets/basic_operations.pdf?self_check_tiles=true&problems=4&sheet=1ab2c3",
             [0, 1, 1, 1, 1, 2, 2, 2],
             200,
             None,
@@ -209,10 +209,10 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": False,
             },
-            "arithmetic-sheet-a.pdf",
+            "basic_operations-sheet-a.pdf",
         ),
         (
-            "/api/worksheets/arithmetic.pdf?self_check_tiles=true&tile_pattern=simple"
+            "/api/worksheets/basic_operations.pdf?self_check_tiles=true&tile_pattern=simple"
             "&problems=4&sheet=1ab2c3",
             [0, 1, 1, 1, 1, 2, 2, 2],
             200,
@@ -231,13 +231,13 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": False,
             },
-            "arithmetic-sheet-a.pdf",
+            "basic_operations-sheet-a.pdf",
         ),
         # Division: a sheet missing the quotient, the dividend or the divisor. Missing divisors
         # with tiles are generated differently: sample takes the first divisors and choice the
         # largest quotient whose family is free.
         (
-            "/api/worksheets/arithmetic.pdf?operation=divide&self_check_tiles=true"
+            "/api/worksheets/basic_operations.pdf?operation=divide&self_check_tiles=true"
             "&tile_pattern=complex&problems=3&sheet=1ab2c3",
             [4, 7, 3, 5, 2, 6],
             200,
@@ -255,12 +255,12 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": False,
             },
-            "arithmetic-sheet-a.pdf",
+            "basic_operations-sheet-a.pdf",
         ),
         (
             # Every divisor from 1 to 10, which drawing one at a time could deadlock on. From 10
             # down, each divisor takes its largest quotient whose fact family is still free.
-            "/api/worksheets/arithmetic.pdf?operation=divide&missing_number=divisor"
+            "/api/worksheets/basic_operations.pdf?operation=divide&missing_number=divisor"
             "&self_check_tiles=true&tile_pattern=complex&problems=10&largest_dividend=10"
             "&largest_divisor=10&sheet=1ab2c3",
             [],
@@ -286,12 +286,12 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": False,
             },
-            "arithmetic-sheet-a.pdf",
+            "basic_operations-sheet-a.pdf",
         ),
         (
             # mixed: the missing divisor 1 (100 ÷ □ = 100) rules out the answer 1, so □ ÷ 1 = 1
             # is drawn again
-            "/api/worksheets/arithmetic.pdf?operation=divide&missing_number=mixed"
+            "/api/worksheets/basic_operations.pdf?operation=divide&missing_number=mixed"
             "&self_check_tiles=true&tile_pattern=complex&problems=2&answer_key=true"
             "&sheet=1ab2c3",
             [1, 1, 4, 7],
@@ -309,12 +309,12 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": True,
             },
-            "arithmetic-sheet-a.pdf",
+            "basic_operations-sheet-a.pdf",
         ),
         # Options that are not allowed are refused before anything is drawn, and before the
         # redirect, so these URLs have no token.
         (
-            "/api/worksheets/arithmetic.pdf?self_check_tiles=true&problems=13",
+            "/api/worksheets/basic_operations.pdf?self_check_tiles=true&problems=13",
             [],
             422,
             refused("problems: self-check tiles has 12 tiles, so at most 12"),
@@ -324,7 +324,7 @@ from tests.helpers import (
         # one more problem than there are different answers: 11 sums from 0 to 5, 11 differences
         # from 0 to 10, and 10 products from 0 to 4
         (
-            "/api/worksheets/arithmetic.pdf?self_check_tiles=true&problems=12&max_number=5",
+            "/api/worksheets/basic_operations.pdf?self_check_tiles=true&problems=12&max_number=5",
             [],
             422,
             refused(
@@ -335,7 +335,7 @@ from tests.helpers import (
             None,
         ),
         (
-            "/api/worksheets/arithmetic.pdf?self_check_tiles=true&problems=12&operation=subtract"
+            "/api/worksheets/basic_operations.pdf?self_check_tiles=true&problems=12&operation=subtract"
             "&max_number=10",
             [],
             422,
@@ -347,7 +347,7 @@ from tests.helpers import (
             None,
         ),
         (
-            "/api/worksheets/arithmetic.pdf?self_check_tiles=true&problems=11&operation=multiply"
+            "/api/worksheets/basic_operations.pdf?self_check_tiles=true&problems=11&operation=multiply"
             "&max_number=4",
             [],
             422,
@@ -359,7 +359,7 @@ from tests.helpers import (
             None,
         ),
         (
-            "/api/worksheets/arithmetic.pdf?operation=divide&missing_number=dividend"
+            "/api/worksheets/basic_operations.pdf?operation=divide&missing_number=dividend"
             "&self_check_tiles=true&problems=13",
             [],
             422,
@@ -369,7 +369,7 @@ from tests.helpers import (
         ),
         # The default largest divisor, 10, gives 10 different divisors to miss.
         (
-            "/api/worksheets/arithmetic.pdf?operation=divide&missing_number=divisor"
+            "/api/worksheets/basic_operations.pdf?operation=divide&missing_number=divisor"
             "&self_check_tiles=true&problems=12",
             [],
             422,
@@ -382,7 +382,7 @@ from tests.helpers import (
         ),
         # With a largest dividend of 10 as well, raising either limit alone adds no divisor.
         (
-            "/api/worksheets/arithmetic.pdf?operation=divide&missing_number=divisor"
+            "/api/worksheets/basic_operations.pdf?operation=divide&missing_number=divisor"
             "&self_check_tiles=true&problems=12&largest_dividend=10&largest_divisor=10",
             [],
             422,
@@ -395,7 +395,7 @@ from tests.helpers import (
         ),
         # the quotients 0 to 10
         (
-            "/api/worksheets/arithmetic.pdf?operation=divide&self_check_tiles=true&problems=12"
+            "/api/worksheets/basic_operations.pdf?operation=divide&self_check_tiles=true&problems=12"
             "&largest_dividend=10",
             [],
             422,
@@ -408,7 +408,7 @@ from tests.helpers import (
         ),
         # Mixed: 4 missing divisors can use up 8 of the 10 dividends, too many to leave 4.
         (
-            "/api/worksheets/arithmetic.pdf?operation=divide&missing_number=mixed"
+            "/api/worksheets/basic_operations.pdf?operation=divide&missing_number=mixed"
             "&self_check_tiles=true&problems=8&largest_dividend=10&largest_divisor=10",
             [],
             422,
@@ -421,7 +421,7 @@ from tests.helpers import (
         ),
     ],
 )
-def test_arithmetic_pdf_for_self_check_tiles(
+def test_basic_operations_pdf_for_self_check_tiles(
     url: str,
     drawn: list[int],
     status: int,

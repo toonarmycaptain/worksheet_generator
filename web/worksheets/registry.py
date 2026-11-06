@@ -68,8 +68,8 @@ from worksheet_generator._imported import wp_common
 # Seeds are for development and tests; users get no promise that a seed remakes a sheet.
 MAX_SEED = 2**53 - 1
 MAX_PROBLEMS = 20
-MAXIMUM_ARITHMETIC_OPERAND = 999
-# An arithmetic sheet's missing number -> the operand left out, or None for mixed
+MAXIMUM_OPERAND = 999
+# A basic operations sheet's missing number -> the operand left out, or None for mixed
 MISSING_NUMBERS = {"dividend": Unknown.FIRST, "divisor": Unknown.SECOND, "mixed": None}
 
 Title = Annotated[str, Field(min_length=1, max_length=80)]
@@ -160,8 +160,10 @@ class HeaderOptions(Schema):
         return Header(title=self.title, label=self.label, name_line=self.name_line)
 
 
-class ArithmeticOptions(HeaderOptions):
-    """Options for the arithmetic kind, built on the core. There is no seed: every sheet is new."""
+class BasicOperationOptions(HeaderOptions):
+    """
+    Options for the basic operations kind, built on the core. There is no seed: every sheet is new.
+    """
 
     title: Title = OPERATION_NAMES[Operation.ADD]  # the chosen operation's name by default
     problems: Problems = 8
@@ -173,13 +175,11 @@ class ArithmeticOptions(HeaderOptions):
         "answer", title="Missing number"
     )
     max_number: int = Field(
-        DEFAULT_LARGEST_OPERAND, ge=1, le=MAXIMUM_ARITHMETIC_OPERAND, title="Largest number"
+        DEFAULT_LARGEST_OPERAND, ge=1, le=MAXIMUM_OPERAND, title="Largest number"
     )
     # Division's limits, used instead of max_number; the quotient follows from them.
-    largest_dividend: int = Field(
-        100, ge=1, le=MAXIMUM_ARITHMETIC_OPERAND, title="Largest dividend"
-    )
-    largest_divisor: int = Field(10, ge=1, le=MAXIMUM_ARITHMETIC_OPERAND, title="Largest divisor")
+    largest_dividend: int = Field(100, ge=1, le=MAXIMUM_OPERAND, title="Largest dividend")
+    largest_divisor: int = Field(10, ge=1, le=MAXIMUM_OPERAND, title="Largest divisor")
     answer_key: AnswerKey = False
     self_check_tiles: SelfCheckTiles = False
     tile_pattern: TilePattern = "simple"
@@ -213,7 +213,7 @@ class ArithmeticOptions(HeaderOptions):
         if self.problems > possible:
             raises = {
                 "largest number": _smallest_raise(
-                    possible_with, self.problems, self.max_number, MAXIMUM_ARITHMETIC_OPERAND
+                    possible_with, self.problems, self.max_number, MAXIMUM_OPERAND
                 )
             }
             repeats = "repeated answers" if self.self_check_tiles else "repeats"
@@ -253,13 +253,13 @@ class ArithmeticOptions(HeaderOptions):
                     lambda dividend: possible_with(dividend, self.largest_divisor),
                     self.problems,
                     self.largest_dividend,
-                    MAXIMUM_ARITHMETIC_OPERAND,
+                    MAXIMUM_OPERAND,
                 ),
                 "largest divisor": _smallest_raise(
                     lambda divisor: possible_with(self.largest_dividend, divisor),
                     self.problems,
                     self.largest_divisor,
-                    MAXIMUM_ARITHMETIC_OPERAND,
+                    MAXIMUM_OPERAND,
                 ),
             }
             repeats = "repeated answers" if self.self_check_tiles else "repeats"
@@ -389,7 +389,7 @@ class WorksheetOptions(Options):
         return self
 
 
-def _arithmetic(o: ArithmeticOptions, out: BinaryIO) -> None:
+def _basic_operations(o: BasicOperationOptions, out: BinaryIO) -> None:
     operation = Operation(o.operation)
     # Division's largest operand is its dividend. Only division uses largest_divisor.
     high = o.largest_dividend if operation is Operation.DIVIDE else o.max_number
@@ -420,7 +420,7 @@ def _arithmetic(o: ArithmeticOptions, out: BinaryIO) -> None:
         )
 
 
-def _missing_number(o: ArithmeticOptions, operation: Operation, out: BinaryIO) -> None:
+def _missing_number(o: BasicOperationOptions, operation: Operation, out: BinaryIO) -> None:
     """Render missing-number equations, as a fill-in sheet or a self-check tiles sheet."""
     questions = generate_missing_number_questions(
         o.problems,
@@ -469,7 +469,7 @@ def _form(choice: FormChoice) -> PlaceValueForm | None:
 
 
 def _render_tiles(
-    o: ArithmeticOptions | PlaceValueOptions, questions: Sequence[TileQuestion], out: BinaryIO
+    o: BasicOperationOptions | PlaceValueOptions, questions: Sequence[TileQuestion], out: BinaryIO
 ) -> None:
     """Render a self-check tiles sheet for ``questions``, with slots for the requested pattern."""
     make_slots = conventional_slot_of if o.tile_pattern == "simple" else random_slot_of
@@ -650,6 +650,6 @@ LEGACY_KINDS: dict[str, Kind[Any]] = {
 
 # The kinds built on the core.
 CORE_KINDS: dict[str, CoreKind[Any]] = {
-    "arithmetic": CoreKind(ArithmeticOptions, _arithmetic),
+    "basic_operations": CoreKind(BasicOperationOptions, _basic_operations),
     "place_value": CoreKind(PlaceValueOptions, _place_value),
 }
