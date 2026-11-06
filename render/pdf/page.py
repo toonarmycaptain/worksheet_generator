@@ -7,6 +7,7 @@ answer key pages.
 
 import re
 from collections.abc import Callable, Iterable
+from dataclasses import dataclass, replace
 from typing import BinaryIO
 
 from reportlab.lib.colors import gray
@@ -120,36 +121,48 @@ def new_pdf(path: str | BinaryIO, title: str) -> Canvas:
     return pdf
 
 
-def start_page(pdf: Canvas, title: str, label: str, *, with_name_line: bool) -> float:
+@dataclass(frozen=True)
+class Header:
+    """
+    What ``start_page`` draws on each page: ``title`` at the top, the Name/Date line below it
+    when ``name_line`` is set, and ``label`` in the footer.
+    """
+
+    title: str
+    label: str
+    name_line: bool
+
+
+def start_page(pdf: Canvas, header: Header) -> float:
     """Draw a new page's header and footer, and return the y at which content starts."""
     pdf.setFillColor("black")
     pdf.setFont(BOLD_FONT, 18)
-    pdf.drawString(MARGIN, PAGE_HEIGHT - MARGIN, title)
-    if with_name_line:
+    pdf.drawString(MARGIN, PAGE_HEIGHT - MARGIN, header.title)
+    if header.name_line:
         pdf.setFont(FONT, TEXT_SIZE)
         pdf.drawString(MARGIN, PAGE_HEIGHT - MARGIN - 30, "Name: " + "_" * 28)
         pdf.drawString(PAGE_WIDTH / 2 + 40, PAGE_HEIGHT - MARGIN - 30, "Date: " + "_" * 16)
     pdf.setFont(FONT, 9)
     pdf.setFillColor(gray)
-    pdf.drawString(MARGIN, MARGIN / 2, label)
+    pdf.drawString(MARGIN, MARGIN / 2, header.label)
     pdf.setFillColor("black")
     return FIRST_LINE_Y
 
 
-def draw_answer_key(pdf: Canvas, title: str, label: str, solutions: Iterable[str]) -> None:
+def draw_answer_key(pdf: Canvas, header: Header, solutions: Iterable[str]) -> None:
     """
     Draw the answer key, starting on a new page, with each solution numbered and wrapped.
 
     A solution that would run past the bottom margin starts on the next page.
     """
-    key_title = f"{title}: Answer Key"
+    key_header = replace(header, title=f"{header.title}: Answer Key", name_line=False)
     pdf.showPage()
-    y = start_page(pdf, key_title, label, with_name_line=False)
+    y = start_page(pdf, key_header)
     for number, solution in enumerate(solutions, start=1):
         lines = wrap(solution, TEXT_SIZE, TEXT_WIDTH)
         if y - (len(lines) - 1) * LINE_HEIGHT < MARGIN + LINE_HEIGHT:
             pdf.showPage()
-            y = start_page(pdf, key_title, label, with_name_line=False)
+            y = start_page(pdf, key_header)
         pdf.setFont(FONT, TEXT_SIZE)
         pdf.drawString(MARGIN, y, f"{number}.")
         for line in lines:
