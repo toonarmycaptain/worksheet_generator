@@ -1,5 +1,5 @@
 """
-Tests for the arithmetic worksheet PDFs, rendered from hand-built questions.
+Tests for the basic operations worksheet PDFs, rendered from hand-built questions.
 
 The question generator is not used. Questions are built by hand, and ``reverse_shuffle`` fixes
 their option order by reversing the options, so the correct answer is always last.
@@ -105,7 +105,7 @@ EXPECTED = GOLDENS / "basic_operations_worksheet_pdf_expecteds.txt"
             render_basic_operations,
             FOUR_OPERATIONS,
             False,
-            "Arithmetic",
+            "Basic Operations",
             "Sheet A",
         ),
         (
@@ -113,7 +113,7 @@ EXPECTED = GOLDENS / "basic_operations_worksheet_pdf_expecteds.txt"
             render_basic_operations,
             FOUR_OPERATIONS,
             True,
-            "Arithmetic",
+            "Basic Operations",
             "Sheet A",
         ),
         (
@@ -129,7 +129,7 @@ EXPECTED = GOLDENS / "basic_operations_worksheet_pdf_expecteds.txt"
             render_basic_operations,
             WORD_PROBLEMS,
             True,
-            "Arithmetic",
+            "Basic Operations",
             "Sheet A",
         ),
         (
@@ -137,7 +137,7 @@ EXPECTED = GOLDENS / "basic_operations_worksheet_pdf_expecteds.txt"
             render_basic_operations,
             NINE_QUESTIONS,
             True,
-            "Arithmetic",
+            "Basic Operations",
             "Sheet A",
         ),
         # The missing-number sheet draws its title and label as the multiple-choice sheet does.

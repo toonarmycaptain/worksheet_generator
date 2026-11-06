@@ -110,7 +110,7 @@ def pdf_text(pdf: bytes) -> str:
     """The PDF's title, page sizes and each page's drawing commands, as text.
 
     reportlab writes each page as an ASCII85 and Flate encoded stream. Decoded, a line says
-    what is drawn where, such as ``BT 1 0 0 1 54 738 Tm (Arithmetic) Tj T* ET``, so a changed
+    what is drawn where, such as ``BT 1 0 0 1 54 738 Tm (Basic Operations) Tj T* ET``, so a changed
     title or a moved line is a changed line. Fonts are named, not embedded, in these PDFs.
     """
     title = re.search(rb"/Title \(((?:\\.|[^\\)])*)\)", pdf)

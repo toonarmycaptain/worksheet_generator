@@ -890,7 +890,7 @@ def test_division_from_scripted_draws(
         # and 5, and 2 each by 6 to 10
         (Operation.DIVIDE, 0, 10, None, 100, 37),
         (Operation.DIVIDE, 0, 10, 2, 100, 17),  # dividing by 1 and 2 only
-        (Operation.DIVIDE, 0, 100, 10, 1000, 301),  # the arithmetic page's defaults
+        (Operation.DIVIDE, 0, 100, 10, 1000, 301),  # the basic operations page's defaults
         (Operation.DIVIDE, 2, 20, None, 100, 27),  # divisors and quotients of at least 2
         (Operation.DIVIDE, 0, 1, 1, 100, 2),  # 0 ÷ 1 and 1 ÷ 1
         (Operation.DIVIDE, 0, 100, 10, 20, 20),

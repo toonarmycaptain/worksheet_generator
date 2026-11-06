@@ -112,7 +112,7 @@ EXPECTED = GOLDENS / "self_check_tiles_worksheet_pdf_expecteds.txt"
             basic_operation_tile_question,
             IN_ORDER,
             False,
-            "Arithmetic",
+            "Basic Operations",
             "Sheet A",
         ),
         (
@@ -121,7 +121,7 @@ EXPECTED = GOLDENS / "self_check_tiles_worksheet_pdf_expecteds.txt"
             basic_operation_tile_question,
             REAL_CASE_SLOTS,
             False,
-            "Arithmetic",
+            "Basic Operations",
             "Sheet A",
         ),
         (
@@ -130,7 +130,7 @@ EXPECTED = GOLDENS / "self_check_tiles_worksheet_pdf_expecteds.txt"
             basic_operation_tile_question,
             REAL_CASE_SLOTS,
             True,
-            "Arithmetic",
+            "Basic Operations",
             "Sheet A",
         ),
         (
@@ -148,7 +148,7 @@ EXPECTED = GOLDENS / "self_check_tiles_worksheet_pdf_expecteds.txt"
             basic_operation_tile_question,
             FOUR,
             False,
-            "Arithmetic",
+            "Basic Operations",
             "Sheet A",
         ),
         (
@@ -157,7 +157,7 @@ EXPECTED = GOLDENS / "self_check_tiles_worksheet_pdf_expecteds.txt"
             basic_operation_tile_question,
             FOUR,
             True,
-            "Arithmetic",
+            "Basic Operations",
             "Sheet A",
         ),
         # Place-value questions are drawn in their given form, with answers in their asked form.
@@ -217,8 +217,8 @@ def test_pdf_draws_the_expected_text(
     The decoded PDF matches this case's section of
     ``self_check_tiles_worksheet_pdf_expecteds.txt``.
 
-    ``to_tile`` makes each question's tile question: arithmetic, place value or missing number.
-    The sheet uses as many of the questions as there are slots in ``slot_of``.
+    ``to_tile`` makes each question's tile question: basic operations, place value or missing
+    number. The sheet uses as many of the questions as there are slots in ``slot_of``.
     """
     actual = pdf_text(
         render_tiles(questions[: len(slot_of)], to_tile, slot_of, answer_key, title, label)
