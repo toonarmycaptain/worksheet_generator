@@ -23,7 +23,10 @@ from pydantic import JsonValue, model_validator
 
 from core.basic_operations.data import Operation, Unknown
 from core.basic_operations.generator import (
+    DEFAULT_LARGEST_DIVIDEND,
+    DEFAULT_LARGEST_DIVISOR,
     DEFAULT_LARGEST_OPERAND,
+    MAXIMUM_OPERAND,
     count_possible_answers,
     count_possible_missing_number_questions,
     count_possible_questions,
@@ -67,8 +70,7 @@ from worksheet_generator._imported import wp_common
 # Largest integer JavaScript holds exactly, so a seed survives a trip through the browser.
 # Seeds are for development and tests; users get no promise that a seed remakes a sheet.
 MAX_SEED = 2**53 - 1
-MAX_PROBLEMS = 20
-MAXIMUM_OPERAND = 999
+MAX_PROBLEMS = 20  # caps the work one request asks of the server; renderers add pages as needed
 # A basic operations sheet's missing number -> the operand left out, or None for mixed
 MISSING_NUMBERS = {"dividend": Unknown.FIRST, "divisor": Unknown.SECOND, "mixed": None}
 
@@ -178,8 +180,12 @@ class BasicOperationOptions(HeaderOptions):
         DEFAULT_LARGEST_OPERAND, ge=1, le=MAXIMUM_OPERAND, title="Largest number"
     )
     # Division's limits, used instead of max_number; the quotient follows from them.
-    largest_dividend: int = Field(100, ge=1, le=MAXIMUM_OPERAND, title="Largest dividend")
-    largest_divisor: int = Field(10, ge=1, le=MAXIMUM_OPERAND, title="Largest divisor")
+    largest_dividend: int = Field(
+        DEFAULT_LARGEST_DIVIDEND, ge=1, le=MAXIMUM_OPERAND, title="Largest dividend"
+    )
+    largest_divisor: int = Field(
+        DEFAULT_LARGEST_DIVISOR, ge=1, le=MAXIMUM_OPERAND, title="Largest divisor"
+    )
     answer_key: AnswerKey = False
     self_check_tiles: SelfCheckTiles = False
     tile_pattern: TilePattern = "simple"
