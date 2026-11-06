@@ -25,6 +25,7 @@ from render.pdf.page import (
     TEXT_INDENT,
     TEXT_SIZE,
     TEXT_WIDTH,
+    Header,
     draw_answer_key,
     draw_text,
     new_pdf,
@@ -42,9 +43,7 @@ FILL_IN_COLUMNS = 2
 def render_basic_operations_worksheet(
     questions: Sequence[Question[BasicOperationQuestionData]],
     path: str | BinaryIO,
-    title: str,
-    label: str,
-    name_line: bool,
+    header: Header,
     answer_key: bool,
 ) -> None:
     """
@@ -52,18 +51,18 @@ def render_basic_operations_worksheet(
 
     ``path`` is a filename or a binary file-like object.
     """
-    pdf = new_pdf(path, title)
+    pdf = new_pdf(path, header.title)
 
-    y = start_page(pdf, title, label, with_name_line=name_line)
+    y = start_page(pdf, header)
     for number, question in enumerate(questions, start=1):
         lines = simpleSplit(stem(question.data), FONT, TEXT_SIZE, TEXT_WIDTH)
         if y - len(lines) * LINE_HEIGHT - OPTIONS_HEIGHT < MARGIN:
             pdf.showPage()
-            y = start_page(pdf, title, label, with_name_line=name_line)
+            y = start_page(pdf, header)
         y = _draw_question(pdf, number, question, lines, y)
 
     if answer_key:
-        draw_answer_key(pdf, title, label, [_solution(question) for question in questions])
+        draw_answer_key(pdf, header, [_solution(question) for question in questions])
 
     pdf.save()
 
@@ -71,9 +70,7 @@ def render_basic_operations_worksheet(
 def render_missing_number_worksheet(
     questions: Sequence[Question[MissingNumberQuestionData]],
     path: str | BinaryIO,
-    title: str,
-    label: str,
-    name_line: bool,
+    header: Header,
     answer_key: bool,
 ) -> None:
     """
@@ -82,14 +79,14 @@ def render_missing_number_worksheet(
     Each equation has an empty square for its missing number. The equations are laid out in two
     columns, numbered across the rows. ``path`` is a filename or a binary file-like object.
     """
-    pdf = new_pdf(path, title)
+    pdf = new_pdf(path, header.title)
 
     column_width = (PAGE_WIDTH - 2 * MARGIN) / FILL_IN_COLUMNS
-    y = start_page(pdf, title, label, with_name_line=name_line) - FILL_IN_DROP
+    y = start_page(pdf, header) - FILL_IN_DROP
     for row_start in range(0, len(questions), FILL_IN_COLUMNS):
         if y - BLANK_SIDE / 2 < MARGIN:
             pdf.showPage()
-            y = start_page(pdf, title, label, with_name_line=name_line) - FILL_IN_DROP
+            y = start_page(pdf, header) - FILL_IN_DROP
         row = questions[row_start : row_start + FILL_IN_COLUMNS]
         for column, question in enumerate(row):
             x = MARGIN + column * column_width
@@ -105,7 +102,7 @@ def render_missing_number_worksheet(
             f"{data.answer}    ({missing_number_equation(data, data.answer)})"
             for data in (question.data for question in questions)
         ]
-        draw_answer_key(pdf, title, label, solutions)
+        draw_answer_key(pdf, header, solutions)
 
     pdf.save()
 

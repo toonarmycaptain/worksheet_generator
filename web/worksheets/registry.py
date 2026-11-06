@@ -48,6 +48,7 @@ from render.pdf.basic_operations_worksheet import (
     render_basic_operations_worksheet,
     render_missing_number_worksheet,
 )
+from render.pdf.page import Header
 from render.pdf.place_value_worksheet import render_place_value_worksheet
 from render.pdf.self_check_tiles_worksheet import render_self_check_tiles_worksheet
 from worksheet_generator._imported import generate_block_word_problems as block
@@ -147,12 +148,22 @@ class Options(Schema):
     name_line: NameDateLine = False
 
 
-class ArithmeticOptions(Schema):
+class HeaderOptions(Schema):
+    """Options for the page header and footer of every core kind. Each kind sets its title."""
+
+    title: Title
+    label: Label = "Sheet A"
+    name_line: NameDateLine = False
+
+    def header(self) -> Header:
+        """The page header these options describe, as the renderers take it."""
+        return Header(title=self.title, label=self.label, name_line=self.name_line)
+
+
+class ArithmeticOptions(HeaderOptions):
     """Options for the arithmetic kind, built on the core. There is no seed: every sheet is new."""
 
     title: Title = OPERATION_NAMES[Operation.ADD]  # the chosen operation's name by default
-    label: Label = "Sheet A"
-    name_line: NameDateLine = False
     problems: Problems = 8
     operation: Literal["add", "subtract", "multiply", "divide"] = Field(
         "add", title="Operation", json_schema_extra={"labels": OPERATION_LABELS}
@@ -256,12 +267,10 @@ class ArithmeticOptions(Schema):
         return self
 
 
-class PlaceValueOptions(Schema):
+class PlaceValueOptions(HeaderOptions):
     """Options for the place-value kind, built on the core. There is no seed: every sheet is new."""
 
     title: Title = "Place Value"
-    label: Label = "Sheet A"
-    name_line: NameDateLine = False
     problems: Problems = 8
     given: FormChoice = Field(
         "standard", title="From", json_schema_extra={"labels": FORM_CHOICE_LABELS}
@@ -406,9 +415,7 @@ def _arithmetic(o: ArithmeticOptions, out: BinaryIO) -> None:
         render_basic_operations_worksheet(
             questions=questions,
             path=out,
-            title=o.title,
-            label=o.label,
-            name_line=o.name_line,
+            header=o.header(),
             answer_key=o.answer_key,
         )
 
@@ -431,9 +438,7 @@ def _missing_number(o: ArithmeticOptions, operation: Operation, out: BinaryIO) -
         render_missing_number_worksheet(
             questions=questions,
             path=out,
-            title=o.title,
-            label=o.label,
-            name_line=o.name_line,
+            header=o.header(),
             answer_key=o.answer_key,
         )
 
@@ -453,9 +458,7 @@ def _place_value(o: PlaceValueOptions, out: BinaryIO) -> None:
         render_place_value_worksheet(
             questions=questions,
             path=out,
-            title=o.title,
-            label=o.label,
-            name_line=o.name_line,
+            header=o.header(),
             answer_key=o.answer_key,
         )
 
@@ -474,9 +477,7 @@ def _render_tiles(
         questions=questions,
         slot_of=make_slots(o.problems),
         path=out,
-        title=o.title,
-        label=o.label,
-        name_line=o.name_line,
+        header=o.header(),
         answer_key=o.answer_key,
     )
 

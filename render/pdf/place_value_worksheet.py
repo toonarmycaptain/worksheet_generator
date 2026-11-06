@@ -21,6 +21,7 @@ from render.pdf.page import (
     TEXT_INDENT,
     TEXT_SIZE,
     TEXT_WIDTH,
+    Header,
     draw_answer_key,
     new_pdf,
     start_page,
@@ -36,9 +37,7 @@ CHOICES_GAP = 18  # gap between a question's last option and the next question
 def render_place_value_worksheet(
     questions: Sequence[Question[PlaceValueQuestionData]],
     path: str | BinaryIO,
-    title: str,
-    label: str,
-    name_line: bool,
+    header: Header,
     answer_key: bool,
 ) -> None:
     """
@@ -50,20 +49,20 @@ def render_place_value_worksheet(
     number in the asked form, prefixed by the correct letter for a multiple-choice question.
     ``path`` is a filename or a binary file-like object.
     """
-    pdf = new_pdf(path, title)
+    pdf = new_pdf(path, header.title)
 
-    y = start_page(pdf, title, label, with_name_line=name_line)
+    y = start_page(pdf, header)
     for number, question in enumerate(questions, start=1):
         lines = _question_lines(question)
         choices = _choice_lines(question)
         space_under = CHOICES_GAP if choices else ANSWER_HEIGHT
         if y - (len(lines) + len(choices)) * LINE_HEIGHT - space_under < MARGIN:
             pdf.showPage()
-            y = start_page(pdf, title, label, with_name_line=name_line)
+            y = start_page(pdf, header)
         y = _draw_question(pdf, number, lines, choices, y)
 
     if answer_key:
-        draw_answer_key(pdf, title, label, [_solution(question) for question in questions])
+        draw_answer_key(pdf, header, [_solution(question) for question in questions])
 
     pdf.save()
 

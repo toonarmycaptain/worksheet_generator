@@ -24,6 +24,7 @@ from render.pdf.page import (
     PAGE_WIDTH,
     TEXT_INDENT,
     TEXT_SIZE,
+    Header,
     draw_answer_key,
     draw_text,
     new_pdf,
@@ -57,9 +58,7 @@ def render_self_check_tiles_worksheet(
     questions: Sequence[TileQuestion],
     slot_of: Sequence[int],
     path: str | BinaryIO,
-    title: str,
-    label: str,
-    name_line: bool,
+    header: Header,
     answer_key: bool,
 ) -> None:
     """
@@ -72,9 +71,9 @@ def render_self_check_tiles_worksheet(
     boxes grow taller to fit. A question too long for one line of its column is drawn smaller,
     on up to two lines. ``path`` is a filename or a binary file-like object.
     """
-    pdf = new_pdf(path, title)
+    pdf = new_pdf(path, header.title)
 
-    y = start_page(pdf, title, label, with_name_line=name_line)
+    y = start_page(pdf, header)
     for index, question in enumerate(questions):
         column, row = divmod(index, QUESTIONS_PER_COLUMN)
         x = MARGIN + column * CONTENT_WIDTH / 2
@@ -95,7 +94,7 @@ def render_self_check_tiles_worksheet(
             f"{question.solution}    ({ascii_uppercase[slot]})"
             for question, slot in zip(questions, slot_of, strict=True)
         ]
-        draw_answer_key(pdf, title, label, solutions)
+        draw_answer_key(pdf, header, solutions)
 
     pdf.save()
 

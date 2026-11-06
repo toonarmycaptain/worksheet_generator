@@ -6,7 +6,7 @@ import pytest
 from reportlab.pdfgen.canvas import Canvas
 
 from core.question import BLANK
-from render.pdf.page import TEXT_SIZE, TEXT_WIDTH, draw_answer_key, text_width, wrap
+from render.pdf.page import TEXT_SIZE, TEXT_WIDTH, Header, draw_answer_key, text_width, wrap
 from tests.data import TIMES
 
 # 777,777 in expanded notation: one line at the full width
@@ -119,5 +119,5 @@ def test_an_answer_key_goes_on_to_another_page_when_one_is_full(
 ) -> None:
     """A solution whose last line would fall below the bottom margin starts on the next page."""
     pdf = Canvas(BytesIO())
-    draw_answer_key(pdf, "Place Value", "Sheet A", solutions)
+    draw_answer_key(pdf, Header(title="Place Value", label="Sheet A", name_line=False), solutions)
     assert pdf.getPageNumber() == last_page
