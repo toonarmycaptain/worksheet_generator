@@ -16,7 +16,6 @@ from typing import Any
 
 import pytest
 from django.test import Client
-from worksheets.registry import MAXIMUM_OPERAND
 
 from core.basic_operations.data import (
     BasicOperationQuestionData,
@@ -24,6 +23,7 @@ from core.basic_operations.data import (
     Operation,
     Unknown,
 )
+from core.basic_operations.generator import MAXIMUM_OPERAND
 from tests.helpers import (
     pdf_text,
     randint_returns,
