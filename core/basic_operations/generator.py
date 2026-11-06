@@ -14,6 +14,9 @@ from core.question import Question
 from core.wrong_answers import WRONG_ANSWER_COUNT, random_wrong_answers
 
 DEFAULT_LARGEST_OPERAND = 10  # the default for ``high``, the largest operand or dividend
+DEFAULT_LARGEST_DIVIDEND = 100  # a division sheet's default ``high``
+DEFAULT_LARGEST_DIVISOR = 10  # a division sheet's default ``largest_divisor``
+MAXIMUM_OPERAND = 999  # the most a sheet allows for ``high`` and ``largest_divisor``
 
 
 def generate_basic_operation_question(
