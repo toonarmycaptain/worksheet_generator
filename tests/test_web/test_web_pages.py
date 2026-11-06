@@ -31,8 +31,8 @@ def test_pages(client: Client) -> None:
     ("url", "action", "fields"),
     [
         (
-            "/arithmetic/",
-            b"/api/worksheets/arithmetic.pdf",
+            "/basic-operations/",
+            b"/api/worksheets/basic_operations.pdf",
             [
                 b"title",
                 b"label",
@@ -87,7 +87,7 @@ def test_builder_page(url: str, action: bytes, fields: list[bytes], client: Clie
 def test_the_tile_pattern_is_a_pair_of_radio_buttons_that_defaults_to_simple(
     client: Client,
 ) -> None:
-    content = client.get("/arithmetic/").content
+    content = client.get("/basic-operations/").content
     assert re.findall(
         rb'<input type="radio" name="tile_pattern" value="(\w+)"( checked)?>', content
     ) == [(b"simple", b" checked"), (b"complex", b"")]
@@ -97,7 +97,7 @@ def test_the_tile_pattern_is_a_pair_of_radio_buttons_that_defaults_to_simple(
     ("url", "name", "expected"),
     [
         (
-            "/arithmetic/",
+            "/basic-operations/",
             "operation",
             [
                 (b"add", b" selected", b"Addition"),
@@ -156,7 +156,7 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
 @pytest.mark.parametrize(
     ("url", "script"),
     [
-        ("/arithmetic/", False),
+        ("/basic-operations/", False),
         ("/place-value/", True),
         ("/legacy/", False),
     ],
@@ -176,7 +176,7 @@ def test_the_place_value_page_keeps_from_and_to_different(
 @pytest.mark.parametrize(
     ("url", "tiles_script", "titles_script"),
     [
-        ("/arithmetic/", True, True),
+        ("/basic-operations/", True, True),
         ("/place-value/", True, False),
         ("/legacy/", False, False),
     ],
@@ -185,10 +185,11 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
     client: Client, url: str, tiles_script: bool, titles_script: bool
 ) -> None:
     """
-    The arithmetic and place-value pages include the script that sets problems to 12 for tiles.
+    The basic operations and place-value pages include the script that sets problems to 12 for
+    tiles.
 
     The legacy page has no self-check tiles box, and so no script. Whether the script works is
-    checked manually in a browser. Only the arithmetic page has the operation names that its
+    checked manually in a browser. Only the basic operations page has the operation names that its
     other script puts in the title.
     """
     content = client.get(url).content
@@ -199,7 +200,7 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
 @pytest.mark.parametrize(
     ("url", "forms"),
     [
-        ("/arithmetic/", [(b"/api/worksheets/arithmetic.pdf", b" data-check-first")]),
+        ("/basic-operations/", [(b"/api/worksheets/basic_operations.pdf", b" data-check-first")]),
         ("/place-value/", [(b"/api/worksheets/place_value.pdf", b" data-check-first")]),
         (
             "/legacy/",
@@ -237,7 +238,7 @@ def test_each_field_carries_its_label_for_the_check_first_messages(client: Clien
 
     The tile pattern's radio buttons have none, as no message names them.
     """
-    content = client.get("/arithmetic/").content
+    content = client.get("/basic-operations/").content
     assert re.findall(rb'name="(\w+)" data-label="([^"]+)"', content) == [
         (b"title", b"Title"),
         (b"label", b"Label"),
@@ -257,8 +258,8 @@ def test_legacy_page(client: Client) -> None:
     """
     The legacy page has a form for each of the nine imported scripts, and a link home.
 
-    The form actions are compared as a whole, in order, so an omitted script, or the arithmetic
-    form appearing here, makes them differ.
+    The form actions are compared as a whole, in order, so an omitted script, or the basic
+    operations form appearing here, makes them differ.
     """
     content = client.get("/legacy/").content
 

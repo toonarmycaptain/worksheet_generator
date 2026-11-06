@@ -21,11 +21,11 @@ from .registry import CORE_KINDS, LEGACY_KINDS, CoreKind, Kind
 # Home page entries: each builder's title, description and page (a URL name).
 BUILDERS = [
     {
-        "title": "Arithmetic",
+        "title": "Basic Operations",
         "description": "Addition, subtraction, multiplication and division questions, as a "
         "printable multiple-choice sheet, or an answer sheet for self-check tiles. Division can "
         "also leave out the dividend or the divisor for students to fill in.",
-        "url_name": "arithmetic",
+        "url_name": "basic_operations",
     },
     {
         "title": "Place Value",
@@ -36,7 +36,7 @@ BUILDERS = [
 ]
 
 HEADINGS = {
-    "arithmetic": "Addition, Subtraction, Multiplication and Division",
+    "basic_operations": "Addition, Subtraction, Multiplication and Division",
     "place_value": "Write the Number in Another Form",
     "block": "Addition & Subtraction Word Problems — Base-Ten Blocks",
     "word": "Addition & Subtraction Word Problems",
@@ -93,9 +93,9 @@ def home(request: HttpRequest) -> HttpResponse:
     return render(request, "worksheets/home.html", {"builders": BUILDERS})
 
 
-def arithmetic(request: HttpRequest) -> HttpResponse:
+def basic_operations(request: HttpRequest) -> HttpResponse:
     context = {
-        "page_title": "Arithmetic",
+        "page_title": "Basic Operations",
         "intro": "Pick the operation and the size of the numbers. The PDF opens in a new tab, "
         "where you can print or save it. Every click makes a new sheet. Tick Self-check tile "
         "answers to swap the choices for an answer bank and a picture to match against the "
@@ -103,7 +103,7 @@ def arithmetic(request: HttpRequest) -> HttpResponse:
         "such as 2 or 4, and the other tiles go unused. For division, Missing number can leave "
         "out the dividend or the divisor instead of the answer, as a square to write it in. "
         "Division uses the largest dividend and divisor instead of the largest number.",
-        "forms": _forms({"arithmetic": CORE_KINDS["arithmetic"]}),
+        "forms": _forms({"basic_operations": CORE_KINDS["basic_operations"]}),
         "self_check_tiles_problems": SLOTS,
         "operation_titles": {op.value: name for op, name in OPERATION_NAMES.items()},
     }

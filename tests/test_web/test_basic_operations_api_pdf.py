@@ -1,7 +1,8 @@
 """
-Tests for the arithmetic worksheet endpoint: its options reach the core and the renderer intact.
+Tests for the basic operations worksheet endpoint: its options reach the core and the renderer
+intact.
 
-The questions are random, so ``test_arithmetic_pdf`` scripts ``random.randint`` (the operands)
+The questions are random, so ``test_basic_operations_pdf`` scripts ``random.randint`` (the operands)
 and makes ``random.sample`` take the top of the allowed wrong-answer range, which exposes the
 operation's and ``max_number``'s limits in the PDF. The PDF must then match what the renderer
 draws for the same questions. Disallowed options get Ninja's JSON error. The renderer's output
@@ -15,7 +16,7 @@ from typing import Any
 
 import pytest
 from django.test import Client
-from worksheets.registry import MAXIMUM_ARITHMETIC_OPERAND
+from worksheets.registry import MAXIMUM_OPERAND
 
 from core.basic_operations.data import (
     BasicOperationQuestionData,
@@ -38,7 +39,7 @@ from tests.helpers import (
     ("url", "drawn", "status", "expected_json", "pdf_data", "filename"),
     [
         (
-            "/api/worksheets/arithmetic.pdf?operation=add&problems=2&sheet=1ab2c3",
+            "/api/worksheets/basic_operations.pdf?operation=add&problems=2&sheet=1ab2c3",
             [3, 4, 5, 6],
             200,
             None,
@@ -53,10 +54,10 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": False,
             },
-            "arithmetic-sheet-a.pdf",
+            "basic_operations-sheet-a.pdf",
         ),
         (
-            "/api/worksheets/arithmetic.pdf?operation=add&problems=2&name_line=true&sheet=1ab2c3",
+            "/api/worksheets/basic_operations.pdf?operation=add&problems=2&name_line=true&sheet=1ab2c3",
             [3, 4, 5, 6],
             200,
             None,
@@ -71,10 +72,10 @@ from tests.helpers import (
                 "name_line": True,
                 "answer_key": False,
             },
-            "arithmetic-sheet-a.pdf",
+            "basic_operations-sheet-a.pdf",
         ),
         (
-            "/api/worksheets/arithmetic.pdf?operation=subtract&problems=2&answer_key=true"
+            "/api/worksheets/basic_operations.pdf?operation=subtract&problems=2&answer_key=true"
             "&sheet=1ab2c3",
             [7, 3, 9, 2],
             200,
@@ -90,10 +91,10 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": True,
             },
-            "arithmetic-sheet-a.pdf",
+            "basic_operations-sheet-a.pdf",
         ),
         (
-            "/api/worksheets/arithmetic.pdf?operation=multiply&problems=2&title=Tables&label=Day+2"
+            "/api/worksheets/basic_operations.pdf?operation=multiply&problems=2&title=Tables&label=Day+2"
             "&sheet=1ab2c3",
             [6, 7, 2, 8],
             200,
@@ -109,11 +110,11 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": False,
             },
-            "arithmetic-day-2.pdf",
+            "basic_operations-day-2.pdf",
         ),
         (
             # max_number=5 lowers the top of the wrong answers from 20 to 10
-            "/api/worksheets/arithmetic.pdf?problems=1&max_number=5&sheet=1ab2c3",
+            "/api/worksheets/basic_operations.pdf?problems=1&max_number=5&sheet=1ab2c3",
             [3, 4],
             200,
             None,
@@ -125,10 +126,10 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": False,
             },
-            "arithmetic-sheet-a.pdf",
+            "basic_operations-sheet-a.pdf",
         ),
         (
-            "/api/worksheets/arithmetic.pdf?problems=1&label=&sheet=1ab2c3",
+            "/api/worksheets/basic_operations.pdf?problems=1&label=&sheet=1ab2c3",
             [3, 4],
             200,
             None,
@@ -140,12 +141,12 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": False,
             },
-            "arithmetic.pdf",
+            "basic_operations.pdf",
         ),
         (
             # 3 problems is all the different pairs that 0 and 1 make, and the top of the wrong
             # answers is raised to 3, the number of wrong answers
-            "/api/worksheets/arithmetic.pdf?problems=3&max_number=1&sheet=1ab2c3",
+            "/api/worksheets/basic_operations.pdf?problems=3&max_number=1&sheet=1ab2c3",
             [0, 0, 0, 1, 1, 1],
             200,
             None,
@@ -161,12 +162,13 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": False,
             },
-            "arithmetic-sheet-a.pdf",
+            "basic_operations-sheet-a.pdf",
         ),
         # Options that are not allowed are refused before anything is drawn, and before the
         # redirect, so these URLs have no token.
         (
-            "/api/worksheets/arithmetic.pdf?operation=power",  # not an operation the sheet has
+            # not an operation the sheet has
+            "/api/worksheets/basic_operations.pdf?operation=power",
             [],
             422,
             {
@@ -183,7 +185,7 @@ from tests.helpers import (
             None,
         ),
         (
-            "/api/worksheets/arithmetic.pdf?problems=0",
+            "/api/worksheets/basic_operations.pdf?problems=0",
             [],
             422,
             {
@@ -200,7 +202,7 @@ from tests.helpers import (
             None,
         ),
         (
-            "/api/worksheets/arithmetic.pdf?problems=21",
+            "/api/worksheets/basic_operations.pdf?problems=21",
             [],
             422,
             {
@@ -217,7 +219,7 @@ from tests.helpers import (
             None,
         ),
         (
-            "/api/worksheets/arithmetic.pdf?title=",
+            "/api/worksheets/basic_operations.pdf?title=",
             [],
             422,
             {
@@ -234,7 +236,7 @@ from tests.helpers import (
             None,
         ),
         (
-            "/api/worksheets/arithmetic.pdf?max_number=0",
+            "/api/worksheets/basic_operations.pdf?max_number=0",
             [],
             422,
             {
@@ -251,7 +253,7 @@ from tests.helpers import (
             None,
         ),
         (
-            f"/api/worksheets/arithmetic.pdf?max_number={MAXIMUM_ARITHMETIC_OPERAND + 1}",
+            f"/api/worksheets/basic_operations.pdf?max_number={MAXIMUM_OPERAND + 1}",
             [],
             422,
             {
@@ -259,10 +261,8 @@ from tests.helpers import (
                     {
                         "type": "less_than_equal",
                         "loc": ["query", "max_number"],
-                        "msg": (
-                            f"Input should be less than or equal to {MAXIMUM_ARITHMETIC_OPERAND}"
-                        ),
-                        "ctx": {"le": MAXIMUM_ARITHMETIC_OPERAND},
+                        "msg": (f"Input should be less than or equal to {MAXIMUM_OPERAND}"),
+                        "ctx": {"le": MAXIMUM_OPERAND},
                     },
                 ],
             },
@@ -271,7 +271,7 @@ from tests.helpers import (
         ),
         (
             # no title: the operation's name
-            "/api/worksheets/arithmetic.pdf?operation=multiply&problems=1&sheet=1ab2c3",
+            "/api/worksheets/basic_operations.pdf?operation=multiply&problems=1&sheet=1ab2c3",
             [6, 7],
             200,
             None,
@@ -285,11 +285,11 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": False,
             },
-            "arithmetic-sheet-a.pdf",
+            "basic_operations-sheet-a.pdf",
         ),
         (
             # 3 numbers make only 6 different pairs, so 7 problems cannot all be different
-            "/api/worksheets/arithmetic.pdf?problems=7&max_number=2",
+            "/api/worksheets/basic_operations.pdf?problems=7&max_number=2",
             [],
             422,
             {
@@ -316,7 +316,7 @@ from tests.helpers import (
         (
             # division: a divisor, then a quotient, with the wrong answers up to the largest
             # dividend, 100 by default
-            "/api/worksheets/arithmetic.pdf?operation=divide&problems=2&sheet=1ab2c3",
+            "/api/worksheets/basic_operations.pdf?operation=divide&problems=2&sheet=1ab2c3",
             [4, 7, 3, 5],
             200,
             None,
@@ -331,11 +331,11 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": False,
             },
-            "arithmetic-sheet-a.pdf",
+            "basic_operations-sheet-a.pdf",
         ),
         (
             # largest_dividend=20 lowers the top of the wrong answers to 20
-            "/api/worksheets/arithmetic.pdf?operation=divide&problems=1&largest_dividend=20"
+            "/api/worksheets/basic_operations.pdf?operation=divide&problems=1&largest_dividend=20"
             "&largest_divisor=5&sheet=1ab2c3",
             [4, 5],
             200,
@@ -350,11 +350,11 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": False,
             },
-            "arithmetic-sheet-a.pdf",
+            "basic_operations-sheet-a.pdf",
         ),
         (
             # division ignores the largest number
-            "/api/worksheets/arithmetic.pdf?operation=divide&problems=1&max_number=5&sheet=1ab2c3",
+            "/api/worksheets/basic_operations.pdf?operation=divide&problems=1&max_number=5&sheet=1ab2c3",
             [4, 7],
             200,
             None,
@@ -368,10 +368,10 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": False,
             },
-            "arithmetic-sheet-a.pdf",
+            "basic_operations-sheet-a.pdf",
         ),
         (
-            "/api/worksheets/arithmetic.pdf?operation=add&missing_number=dividend",
+            "/api/worksheets/basic_operations.pdf?operation=add&missing_number=dividend",
             [],
             422,
             refused("missing_number: only division has a missing dividend or divisor"),
@@ -380,7 +380,7 @@ from tests.helpers import (
         ),
         (
             # dividing by 1, 2 and 3 into dividends up to 3 makes only 8 different questions
-            "/api/worksheets/arithmetic.pdf?operation=divide&problems=20&largest_dividend=3"
+            "/api/worksheets/basic_operations.pdf?operation=divide&problems=20&largest_dividend=3"
             "&largest_divisor=3",
             [],
             422,
@@ -394,7 +394,7 @@ from tests.helpers import (
         (
             # dividends and divisors up to 10 make 15 fact families. Raising the largest divisor
             # alone adds none, since no divisor can be larger than the dividend.
-            "/api/worksheets/arithmetic.pdf?operation=divide&missing_number=divisor&problems=20"
+            "/api/worksheets/basic_operations.pdf?operation=divide&missing_number=divisor&problems=20"
             "&largest_dividend=10&largest_divisor=10",
             [],
             422,
@@ -406,7 +406,7 @@ from tests.helpers import (
             None,
         ),
         (
-            "/api/worksheets/arithmetic.pdf?operation=divide&largest_dividend=0",
+            "/api/worksheets/basic_operations.pdf?operation=divide&largest_dividend=0",
             [],
             422,
             {
@@ -423,8 +423,8 @@ from tests.helpers import (
             None,
         ),
         (
-            "/api/worksheets/arithmetic.pdf?operation=divide"
-            f"&largest_divisor={MAXIMUM_ARITHMETIC_OPERAND + 1}",
+            "/api/worksheets/basic_operations.pdf?operation=divide"
+            f"&largest_divisor={MAXIMUM_OPERAND + 1}",
             [],
             422,
             {
@@ -432,10 +432,8 @@ from tests.helpers import (
                     {
                         "type": "less_than_equal",
                         "loc": ["query", "largest_divisor"],
-                        "msg": (
-                            f"Input should be less than or equal to {MAXIMUM_ARITHMETIC_OPERAND}"
-                        ),
-                        "ctx": {"le": MAXIMUM_ARITHMETIC_OPERAND},
+                        "msg": (f"Input should be less than or equal to {MAXIMUM_OPERAND}"),
+                        "ctx": {"le": MAXIMUM_OPERAND},
                     },
                 ],
             },
@@ -444,7 +442,7 @@ from tests.helpers import (
         ),
         # a missing dividend or divisor: equations to fill in, drawn as a divisor then a quotient
         (
-            "/api/worksheets/arithmetic.pdf?operation=divide&missing_number=dividend&problems=2"
+            "/api/worksheets/basic_operations.pdf?operation=divide&missing_number=dividend&problems=2"
             "&sheet=1ab2c3",
             [4, 7, 3, 5],
             200,
@@ -460,10 +458,10 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": False,
             },
-            "arithmetic-sheet-a.pdf",
+            "basic_operations-sheet-a.pdf",
         ),
         (
-            "/api/worksheets/arithmetic.pdf?operation=divide&missing_number=divisor&problems=2"
+            "/api/worksheets/basic_operations.pdf?operation=divide&missing_number=divisor&problems=2"
             "&answer_key=true&title=Find+the+Divisor&label=Day+2&sheet=1ab2c3",
             [4, 7, 3, 5],
             200,
@@ -479,11 +477,11 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": True,
             },
-            "arithmetic-day-2.pdf",
+            "basic_operations-day-2.pdf",
         ),
         (
             # mixed: the missing divisor is made first, then the sheet is reversed
-            "/api/worksheets/arithmetic.pdf?operation=divide&missing_number=mixed&problems=2"
+            "/api/worksheets/basic_operations.pdf?operation=divide&missing_number=mixed&problems=2"
             "&sheet=1ab2c3",
             [4, 7, 3, 5],
             200,
@@ -499,12 +497,12 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": False,
             },
-            "arithmetic-sheet-a.pdf",
+            "basic_operations-sheet-a.pdf",
         ),
         (
             # limits above the defaults reach the generator: with the default largest divisor
             # of 10, the divisor 20 could not be drawn
-            "/api/worksheets/arithmetic.pdf?operation=divide&missing_number=dividend&problems=1"
+            "/api/worksheets/basic_operations.pdf?operation=divide&missing_number=dividend&problems=1"
             "&largest_dividend=500&largest_divisor=20&sheet=1ab2c3",
             [20, 25],
             200,
@@ -519,11 +517,11 @@ from tests.helpers import (
                 "name_line": False,
                 "answer_key": False,
             },
-            "arithmetic-sheet-a.pdf",
+            "basic_operations-sheet-a.pdf",
         ),
     ],
 )
-def test_arithmetic_pdf(
+def test_basic_operations_pdf(
     url: str,
     drawn: list[int],
     status: int,
