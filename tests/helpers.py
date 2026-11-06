@@ -30,6 +30,7 @@ from render.pdf.basic_operations_worksheet import (
     render_basic_operations_worksheet,
     render_missing_number_worksheet,
 )
+from render.pdf.page import Header
 from render.pdf.place_value_worksheet import render_place_value_worksheet
 from render.pdf.self_check_tiles_worksheet import render_self_check_tiles_worksheet
 
@@ -161,9 +162,7 @@ def render_basic_operations(
     render_basic_operations_worksheet(
         questions=build(cases),
         path=out,
-        title=title,
-        label=label,
-        name_line=name_line,
+        header=Header(title=title, label=label, name_line=name_line),
         answer_key=answer_key,
     )
     return out.getvalue()
@@ -180,9 +179,7 @@ def render_missing_numbers(
     render_missing_number_worksheet(
         questions=build(cases),
         path=out,
-        title=title,
-        label=label,
-        name_line=name_line,
+        header=Header(title=title, label=label, name_line=name_line),
         answer_key=answer_key,
     )
     return out.getvalue()
@@ -199,9 +196,7 @@ def render_place_value(
     render_place_value_worksheet(
         questions=build(cases),
         path=out,
-        title=title,
-        label=label,
-        name_line=name_line,
+        header=Header(title=title, label=label, name_line=name_line),
         answer_key=answer_key,
     )
     return out.getvalue()
@@ -222,9 +217,7 @@ def render_tiles[Data: QuestionData](
         questions=[to_tile(data) for data in questions],
         slot_of=slot_of,
         path=out,
-        title=title,
-        label=label,
-        name_line=name_line,
+        header=Header(title=title, label=label, name_line=name_line),
         answer_key=answer_key,
     )
     return out.getvalue()
