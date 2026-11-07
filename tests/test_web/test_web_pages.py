@@ -110,6 +110,19 @@ def test_pages(client: Client) -> None:
                 b"tile_pattern",
             ],
         ),
+        (
+            "/data-and-graphs/",
+            [b"/api/worksheets/data_graphs.pdf"],
+            [
+                b"title",
+                b"label",
+                b"name_line",
+                b"problems",
+                b"list_style",  # a radio button for each style
+                b"list_style",
+                b"answer_key",
+            ],
+        ),
     ],
 )
 def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], client: Client) -> None:
@@ -158,6 +171,12 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
                 (b"mixed", b" checked", b"Mixed"),
                 (b"always", b"", b"Always"),
             ],
+        ),
+        # a grid by default
+        (
+            "/data-and-graphs/",
+            "list_style",
+            [(b"grid", b" checked", b"Grid"), (b"commas", b"", b"Commas")],
         ),
     ],
 )
@@ -316,6 +335,7 @@ def test_a_checkbox_group_sends_each_ticked_choice_s_id_and_shows_its_name(
     [
         ("/basic-operations/", False),
         ("/place-value/", True),
+        ("/data-and-graphs/", False),
         ("/legacy/", False),
     ],
 )
@@ -336,6 +356,7 @@ def test_the_place_value_page_keeps_from_and_to_different(
     [
         ("/basic-operations/", True, True, True),
         ("/place-value/", True, False, False),
+        ("/data-and-graphs/", False, False, False),
         ("/legacy/", False, False, False),
     ],
 )
@@ -369,6 +390,7 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
             b'"blocks": ["add", "subtract"]}</script>',
         ),
         ("/place-value/", None),
+        ("/data-and-graphs/", None),
     ],
 )
 def test_the_representation_script_greys_out_the_operations_a_representation_cannot_show(
@@ -397,6 +419,7 @@ def test_the_representation_script_greys_out_the_operations_a_representation_can
             ],
         ),
         ("/place-value/", [(b"/api/worksheets/place_value.pdf", b" data-check-first")]),
+        ("/data-and-graphs/", [(b"/api/worksheets/data_graphs.pdf", b" data-check-first")]),
         (
             "/legacy/",
             [
