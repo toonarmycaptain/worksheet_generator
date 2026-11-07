@@ -1,7 +1,7 @@
 """
 Wording of basic-operation questions: each operation's symbol and name, the equations, and the
 questions as the self-check tiles sheet shows them. Also the pictures drawn with word problems,
-with their instructions, hints and diagram descriptions.
+with their sheet titles, instructions, hints and diagram descriptions.
 """
 
 from collections.abc import Collection, Sequence
@@ -103,6 +103,18 @@ PICTURE_NAMES = {
     Picture.NUMBER_LINE: "Number Lines",
     Picture.BLOCKS: "Base-Ten Blocks",
 }
+WORD_PROBLEMS_NAME = "Word Problems"
+
+
+def word_problems_title(picture: Picture) -> str:
+    """
+    Return what a sheet of word problems drawn with ``picture`` is called, so its title unless
+    one is given: "Word Problems", followed by the picture's name unless the sheet is text only.
+    """
+    if picture is Picture.NONE:
+        return WORD_PROBLEMS_NAME
+    return f"{WORD_PROBLEMS_NAME} — {PICTURE_NAMES[picture]}"
+
 
 _STRIP_HINTS = {
     Operation.ADD: "Both parts are shown. Add the parts to find the whole.",
@@ -196,18 +208,25 @@ def instruction(picture: Picture, operations: Collection[Operation]) -> str:
             else:
                 makes = "two parts make a whole"
             return f"Use the strip diagram (bar model): {makes}. The ? shows what to find."
-        case Picture.NONE | Picture.NUMBER_LINE | Picture.BLOCKS:
+        case Picture.NONE:
+            return "Read each problem. Show your work in the box."
+        case Picture.NUMBER_LINE | Picture.BLOCKS:
             raise NotImplementedError(f"The {picture} picture is not built yet.")
         case _:
             assert_never(picture)
 
 
-def hint(data: BasicOperationQuestionData, picture: Picture) -> str:
-    """Return the hint printed under a word problem, for the picture drawn with it."""
+def hint(data: BasicOperationQuestionData, picture: Picture) -> str | None:
+    """
+    Return the hint printed under a word problem, for the picture drawn with it, or None if the
+    picture has no hints.
+    """
     match picture:
         case Picture.STRIP:
             return _STRIP_HINTS[data.operation]
-        case Picture.NONE | Picture.NUMBER_LINE | Picture.BLOCKS:
+        case Picture.NONE:
+            return None
+        case Picture.NUMBER_LINE | Picture.BLOCKS:
             raise NotImplementedError(f"The {picture} picture is not built yet.")
         case _:
             assert_never(picture)

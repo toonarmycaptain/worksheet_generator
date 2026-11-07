@@ -41,6 +41,7 @@ from core.basic_operations.representation import (
     basic_operation_tile_question,
     missing_number_tile_question,
     operations_name,
+    word_problems_title,
 )
 from core.placevalue.data import PlaceValueForm
 from core.placevalue.generator import (
@@ -346,7 +347,7 @@ class WordProblemOptions(HeaderOptions):
     Options for the word problems kind, built on the core. There is no seed: every sheet is new.
     """
 
-    title: Title = f"Word Problems — {PICTURE_NAMES[Picture.STRIP]}"
+    title: Title = word_problems_title(Picture.STRIP)  # the picture's title by default
     problems: Problems = 4
     # Each problem's operation is drawn at random from those ticked.
     operations: list[OperationChoice] = Field(
@@ -356,14 +357,22 @@ class WordProblemOptions(HeaderOptions):
         json_schema_extra={"labels": OPERATION_LABELS},
     )
     # Only the pictures that can be drawn so far
-    picture: Literal["strip"] = Field(
+    picture: Literal["strip", "none"] = Field(
         "strip", title="Picture", json_schema_extra={"labels": PICTURE_LABELS}
     )
-    no_hints: bool = Field(False, title="Leave out the hints")
+    no_hints: bool = Field(False, title="Leave out the hints")  # text only has none
     answer_key: AnswerKey = False
     # Tiles replace the answer lines with an answer bank page.
     self_check_tiles: SelfCheckTiles = False
     tile_pattern: TilePattern = "simple"
+
+    @model_validator(mode="after")
+    def _title_follows_the_picture(self) -> Self:
+        # The default is the default picture's title. A request that picks another and gives no
+        # title gets its title.
+        if "title" not in self.model_fields_set:
+            self.title = word_problems_title(Picture(self.picture))
+        return self
 
     @model_validator(mode="after")
     def _enough_different_problems(self) -> Self:
@@ -557,14 +566,19 @@ def _tile_slots(o: BasicOperationOptions | PlaceValueOptions | WordProblemOption
 
 
 def _word_problems(o: WordProblemOptions, out: BinaryIO) -> None:
+    picture = Picture(o.picture)
     render_word_problems_worksheet(
         questions=generate_word_problems(
-            o.problems, _operations(o.operations), distinct_answers=o.self_check_tiles
+            o.problems,
+            _operations(o.operations),
+            distinct_answers=o.self_check_tiles,
+            # comparisons only on text-only sheets: a strip shows parts making a whole
+            comparisons=picture is Picture.NONE,
         ),
         path=out,
         header=o.header(),
         answer_key=o.answer_key,
-        picture=Picture(o.picture),
+        picture=picture,
         hints=not o.no_hints,
         slot_of=_tile_slots(o) if o.self_check_tiles else None,
     )

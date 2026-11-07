@@ -3,14 +3,15 @@ PDF worksheets of word problems, each drawn with the sheet's picture, with an op
 page.
 
 The first page has the picture's instruction under its header. Each problem has its number and
-wording, a hint unless hints are turned off, the picture, and an answer line. A sheet for the
-self-check tiles case has no answer lines, and ends with a page for the answer bank and pattern.
+wording, a hint if the picture has one and hints aren't turned off, the picture, and an answer
+line. A text-only problem's picture is a box to show the work in. A sheet for the self-check
+tiles case has no answer lines, and ends with a page for the answer bank and pattern.
 """
 
 from collections.abc import Sequence
 from typing import BinaryIO, assert_never
 
-from reportlab.lib.colors import gray
+from reportlab.lib.colors import HexColor, gray
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.pdfgen.canvas import Canvas
 
@@ -57,6 +58,15 @@ ANSWER_DROP = 26  # from the bottom of the picture down to the answer line, room
 ANSWER_LABEL = "Answer: "
 ANSWER_LINE_LENGTH = 120
 PROBLEM_GAP = 22  # from the answer line, or the picture, down to the next problem's baseline
+# Text only: the box to show the work in, as wide as the text, with a label in its top-left corner
+WORK_BOX_HEIGHT = 60
+WORK_BOX_CORNER_RADIUS = 4
+WORK_BOX_COLOUR = HexColor("#cbd5e0")  # light grey
+WORK_BOX_LABEL = "Show your work"
+WORK_BOX_LABEL_SIZE = 9
+WORK_BOX_LABEL_COLOUR = HexColor("#a0aec0")  # grey
+WORK_BOX_LABEL_INSET = 5  # from the box's left edge to the label
+WORK_BOX_LABEL_DROP = 12  # from the box's top down to the label's baseline
 
 
 def render_word_problems_worksheet(
@@ -88,7 +98,8 @@ def render_word_problems_worksheet(
     y = _draw_instruction(pdf, instruction(picture, operations), start_page(pdf, header))
     for number, question in enumerate(questions, start=1):
         lines = wrap(stem(question.data), TEXT_SIZE, TEXT_WIDTH)
-        hint_lines = wrap(hint(question.data, picture), HINT_SIZE, TEXT_WIDTH) if hints else []
+        hint_text = hint(question.data, picture) if hints else None
+        hint_lines = wrap(hint_text, HINT_SIZE, TEXT_WIDTH) if hint_text is not None else []
         height = (
             len(lines) * LINE_HEIGHT
             + len(hint_lines) * HINT_LINE_HEIGHT
@@ -170,7 +181,9 @@ def _picture_height(picture: Picture) -> float:
     match picture:
         case Picture.STRIP:
             return STRIP_HEIGHT
-        case Picture.NONE | Picture.NUMBER_LINE | Picture.BLOCKS:
+        case Picture.NONE:
+            return WORK_BOX_HEIGHT
+        case Picture.NUMBER_LINE | Picture.BLOCKS:
             raise NotImplementedError(f"The {picture} picture is not built yet.")
         case _:
             assert_never(picture)
@@ -190,7 +203,23 @@ def _draw_picture(
                     draw_equal_strip(pdf, x, top, diagram)
                 case _:
                     assert_never(diagram)
-        case Picture.NONE | Picture.NUMBER_LINE | Picture.BLOCKS:
+        case Picture.NONE:
+            _draw_work_box(pdf, x, top)
+        case Picture.NUMBER_LINE | Picture.BLOCKS:
             raise NotImplementedError(f"The {picture} picture is not built yet.")
         case _:
             assert_never(picture)
+
+
+def _draw_work_box(pdf: Canvas, x: float, top: float) -> None:
+    """Draw the box to show the work in, with its top-left corner at (``x``, ``top``)."""
+    pdf.saveState()
+    pdf.setStrokeColor(WORK_BOX_COLOUR)
+    pdf.setLineWidth(1)
+    pdf.roundRect(
+        x, top - WORK_BOX_HEIGHT, TEXT_WIDTH, WORK_BOX_HEIGHT, WORK_BOX_CORNER_RADIUS, fill=0
+    )
+    pdf.setFont(ITALIC_FONT, WORK_BOX_LABEL_SIZE)
+    pdf.setFillColor(WORK_BOX_LABEL_COLOUR)
+    pdf.drawString(x + WORK_BOX_LABEL_INSET, top - WORK_BOX_LABEL_DROP, WORK_BOX_LABEL)
+    pdf.restoreState()

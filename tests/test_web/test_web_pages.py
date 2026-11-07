@@ -120,8 +120,12 @@ def test_the_tile_pattern_is_a_pair_of_radio_buttons_that_defaults_to_simple(
 @pytest.mark.parametrize(
     ("url", "name", "expected"),
     [
-        # a Literal of one value, the only picture drawn so far, is still a dropdown
-        ("/basic-operations/", "picture", [(b"strip", b" selected", b"Strip Diagrams")]),
+        # the pictures drawn so far
+        (
+            "/basic-operations/",
+            "picture",
+            [(b"strip", b" selected", b"Strip Diagrams"), (b"none", b"", b"Text Only")],
+        ),
         (
             "/place-value/",
             "given",
@@ -154,8 +158,8 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
     """
     Each dropdown option sends its ID and displays its name, with the expected default selected.
 
-    Picture offers only strip diagrams. From defaults to standard and To to expanded, and each
-    also offers mixed.
+    Picture defaults to strip diagrams, and also offers text only. From defaults to standard and
+    To to expanded, and each also offers mixed.
     """
     content = client.get(url).content
     select = re.search(
@@ -252,15 +256,15 @@ def test_the_place_value_page_keeps_from_and_to_different(
 
 
 @pytest.mark.parametrize(
-    ("url", "tiles_script", "titles_script"),
+    ("url", "tiles_script", "titles_script", "picture_script"),
     [
-        ("/basic-operations/", True, True),
-        ("/place-value/", True, False),
-        ("/legacy/", False, False),
+        ("/basic-operations/", True, True, True),
+        ("/place-value/", True, False, False),
+        ("/legacy/", False, False, False),
     ],
 )
 def test_ticking_self_check_tiles_asks_for_12_questions(
-    client: Client, url: str, tiles_script: bool, titles_script: bool
+    client: Client, url: str, tiles_script: bool, titles_script: bool, picture_script: bool
 ) -> None:
     """
     The basic operations and place-value pages include the script that sets problems to 12 for
@@ -268,11 +272,13 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
 
     The legacy page has no self-check tiles box, and so no script. Whether the script works is
     checked manually in a browser. Only the basic operations page has the operation names that its
-    other script puts in the title.
+    other script puts in the title, and the word problems titles that its picture script puts in
+    the title (that script also hides "Leave out the hints" for text only).
     """
     content = client.get(url).content
     assert (b"selfCheckTiles.checked ? 12 : problems.defaultValue" in content) is tiles_script
     assert (b'id="operation-titles"' in content) is titles_script
+    assert (b'id="picture-titles"' in content) is picture_script
 
 
 @pytest.mark.parametrize(

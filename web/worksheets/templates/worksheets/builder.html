@@ -142,6 +142,36 @@
   </script>
   {% endif %}
 
+  {% if picture_titles %}
+  {{ picture_titles|json_script:"picture-titles" }}
+  <script type="module">
+    // The word problems form: the only one with a picture.
+    const picture = document.querySelector("select[name=picture]");
+    const form = picture.form;
+
+    // The title follows the picture, unless it has been changed to something else.
+    const titles = JSON.parse(document.getElementById("picture-titles").textContent);
+    picture.addEventListener("change", () => {
+      if (Object.values(titles).includes(form.elements.title.value)) {
+        form.elements.title.value = titles[picture.value];
+      }
+    });
+
+    // Text only has no hints, so the box to leave them out is hidden, and disabled so it isn't
+    // sent.
+    function showNoHints() {
+      const show = picture.value !== "none";
+      form.elements.no_hints.disabled = !show;
+      // the page's CSS shows labels as blocks, which would win over the hidden attribute
+      form.elements.no_hints.closest("label").style.display = show ? "" : "none";
+    }
+    picture.addEventListener("change", showNoHints);
+    // also when the browser restores the choices, going back to the page
+    window.addEventListener("pageshow", showNoHints);
+    showNoHints();
+  </script>
+  {% endif %}
+
   <script type="module">
     // A group of checkboxes, such as the operations, needs at least one ticked: while none is,
     // the form's button is greyed out, with a note saying why. A group of more than two has an

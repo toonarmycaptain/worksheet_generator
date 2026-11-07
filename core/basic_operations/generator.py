@@ -507,7 +507,11 @@ def count_possible_word_problems(
 
 
 def generate_word_problems(
-    count: int, operations: Sequence[Operation], *, distinct_answers: bool = False
+    count: int,
+    operations: Sequence[Operation],
+    *,
+    distinct_answers: bool = False,
+    comparisons: bool = False,
 ) -> list[Question[BasicOperationQuestionData]]:
     """
     Generate ``count`` word problems, each with an operation drawn at random from ``operations``.
@@ -515,8 +519,9 @@ def generate_word_problems(
     Addition and subtraction take the operand sizes in ``WORD_PROBLEM_DIGITS`` in turn, in random
     order: 2-digit operands are 11 to 99 and 3-digit operands 100 to 999. A sum is at most 999,
     and a difference at least 10, with the larger operand first. Multiplication and division are
-    equal groups, as in ``_equal_groups``. The wording comes from the word-problem bank. The
-    problems are answered in writing, so they have no wrong answers.
+    equal groups, as in ``_equal_groups``. The wording comes from the word-problem bank, with its
+    comparisons too if ``comparisons`` is set. The problems are answered in writing, so they have
+    no wrong answers.
 
     No two problems of the same operation have the same operands, and with ``distinct_answers``
     no two problems share an answer either: a problem that breaks either rule is drawn again.
@@ -558,7 +563,7 @@ def generate_word_problems(
         seen.add((operation, data.operands))
         answers.add(data.answer)
         unworded.append(data)
-    texts = word_problem_texts(unworded)
+    texts = word_problem_texts(unworded, comparisons=comparisons)
     return [
         Question(replace(data, question_text=text), ())
         for data, text in zip(unworded, texts, strict=True)
