@@ -60,7 +60,7 @@ def test_pages(client: Client) -> None:
                 b"operations",
                 b"operations",
                 b"max_number",
-                b"picture",
+                b"representation",
                 b"no_hints",
                 b"black_and_white",
                 b"answer_key",
@@ -124,7 +124,7 @@ def test_the_tile_pattern_is_a_pair_of_radio_buttons_that_defaults_to_simple(
     [
         (
             "/basic-operations/",
-            "picture",
+            "representation",
             [
                 (b"strip", b" selected", b"Strip Diagrams"),
                 (b"none", b"", b"Text Only"),
@@ -164,8 +164,8 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
     """
     Each dropdown option sends its ID and displays its name, with the expected default selected.
 
-    Picture defaults to strip diagrams, and also offers text only. From defaults to standard and
-    To to expanded, and each also offers mixed.
+    Representation defaults to strip diagrams, and also offers text only. From defaults to standard
+    and To to expanded, and each also offers mixed.
     """
     content = client.get(url).content
     select = re.search(
@@ -262,7 +262,7 @@ def test_the_place_value_page_keeps_from_and_to_different(
 
 
 @pytest.mark.parametrize(
-    ("url", "tiles_script", "titles_script", "picture_script"),
+    ("url", "tiles_script", "titles_script", "representation_script"),
     [
         ("/basic-operations/", True, True, True),
         ("/place-value/", True, False, False),
@@ -270,7 +270,7 @@ def test_the_place_value_page_keeps_from_and_to_different(
     ],
 )
 def test_ticking_self_check_tiles_asks_for_12_questions(
-    client: Client, url: str, tiles_script: bool, titles_script: bool, picture_script: bool
+    client: Client, url: str, tiles_script: bool, titles_script: bool, representation_script: bool
 ) -> None:
     """
     The basic operations and place-value pages include the script that sets problems to 12 for
@@ -278,13 +278,13 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
 
     The legacy page has no self-check tiles box, and so no script. Whether the script works is
     checked manually in a browser. Only the basic operations page has the operation names that its
-    other script puts in the title, and the word problems titles that its picture script puts in
-    the title (that script also hides "Leave out the hints" for text only).
+    other script puts in the title, and the word problems titles that its representation script puts
+    in the title (that script also hides "Leave out the hints" for text only).
     """
     content = client.get(url).content
     assert (b"selfCheckTiles.checked ? 12 : problems.defaultValue" in content) is tiles_script
     assert (b'id="operation-titles"' in content) is titles_script
-    assert (b'id="picture-titles"' in content) is picture_script
+    assert (b'id="representation-titles"' in content) is representation_script
 
 
 @pytest.mark.parametrize(
@@ -292,7 +292,7 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
     [
         (
             "/basic-operations/",
-            b'<script id="picture-operations" type="application/json">'
+            b'<script id="representation-operations" type="application/json">'
             b'{"strip": ["add", "subtract", "multiply", "divide"], '
             b'"none": ["add", "subtract", "multiply", "divide"], '
             b'"number_line": ["add", "subtract"], '
@@ -301,14 +301,17 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
         ("/place-value/", None),
     ],
 )
-def test_the_picture_script_greys_out_the_operations_a_picture_cannot_show(
+def test_the_representation_script_greys_out_the_operations_a_representation_cannot_show(
     client: Client, url: str, expected: bytes | None
 ) -> None:
     """
-    The basic operations page has the operations each picture can show, for the picture script
-    to grey out the others. Whether the script works is checked manually in a browser.
+    The basic operations page has the operations each representation can show, for the
+    representation script to grey out the others. Whether the script works is checked manually in a
+    browser.
     """
-    found = re.search(rb'<script id="picture-operations".*?</script>', client.get(url).content)
+    found = re.search(
+        rb'<script id="representation-operations".*?</script>', client.get(url).content
+    )
     assert (found.group() if found else None) == expected
 
 
@@ -378,7 +381,7 @@ def test_each_field_carries_its_label_for_the_check_first_messages(client: Clien
         (b"name_line", b"Add Name/Date blanks"),
         (b"problems", b"Problems"),
         (b"max_number", b"Largest number"),
-        (b"picture", b"Picture"),
+        (b"representation", b"Representation"),
         (b"no_hints", b"Leave out the hints"),
         (b"black_and_white", b"Black and white blocks"),
         (b"answer_key", b"Add an answer key page"),

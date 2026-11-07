@@ -6,7 +6,7 @@ wrong answers.
 
 Each case's output is stored as text decoded from the PDF, in one file with a section per case:
 ``goldens/word_problems_worksheet_pdf_expecteds.txt``. The text includes the instruction, the
-key to base-ten blocks, every problem's wording and hint, its picture or work box, the answer
+key to base-ten blocks, every problem's wording and hint, its representation or work box, the answer
 lines or the answer bank and pattern, the answer key and the page breaks. To regenerate sections
 after an intended change, uncomment the ``write_section`` lines in
 ``test_pdf_draws_the_expected_text`` and run it (``-k`` selects cases).
@@ -15,7 +15,7 @@ after an intended change, uncomment the ``write_section`` lines in
 import pytest
 
 from core.basic_operations.data import BasicOperationQuestionData, Operation
-from core.basic_operations.representation import Picture
+from core.basic_operations.representation import Representation
 from tests.data import REAL_CASE_SLOTS
 from tests.helpers import GOLDENS, pdf_text, read_sections, render_word_problems
 
@@ -170,7 +170,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
     (
         "case_name",
         "questions",
-        "picture",
+        "representation",
         "hints",
         "black_and_white",
         "slot_of",
@@ -182,7 +182,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
         (
             "add_and_subtract",
             ADD_AND_SUBTRACT,
-            Picture.STRIP,
+            Representation.STRIP,
             True,
             False,
             None,
@@ -193,7 +193,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
         (
             "add_and_subtract_no_hints_answer_key",
             ADD_AND_SUBTRACT,
-            Picture.STRIP,
+            Representation.STRIP,
             False,
             False,
             None,
@@ -204,7 +204,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
         (
             "splits_at_their_limits",
             SPLITS_AT_THEIR_LIMITS,
-            Picture.STRIP,
+            Representation.STRIP,
             True,
             False,
             None,
@@ -212,11 +212,21 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             TITLE,
             "Sheet A",
         ),
-        ("five_problems", FIVE_PROBLEMS, Picture.STRIP, True, False, None, False, TITLE, "Sheet A"),
+        (
+            "five_problems",
+            FIVE_PROBLEMS,
+            Representation.STRIP,
+            True,
+            False,
+            None,
+            False,
+            TITLE,
+            "Sheet A",
+        ),
         (
             "multiply_and_divide",
             MULTIPLY_AND_DIVIDE,
-            Picture.STRIP,
+            Representation.STRIP,
             True,
             False,
             None,
@@ -227,7 +237,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
         (
             "groups_at_their_limits",
             GROUPS_AT_THEIR_LIMITS,
-            Picture.STRIP,
+            Representation.STRIP,
             True,
             False,
             None,
@@ -236,12 +246,22 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "Sheet A",
         ),
         # the key has each operation's equation
-        ("all_four_answer_key", ALL_FOUR, Picture.STRIP, True, False, None, True, TITLE, "Sheet A"),
+        (
+            "all_four_answer_key",
+            ALL_FOUR,
+            Representation.STRIP,
+            True,
+            False,
+            None,
+            True,
+            TITLE,
+            "Sheet A",
+        ),
         # no answer lines, and the bank and pattern on a page of their own; the key has letters
         (
             "self_check_tiles_answer_key",
             ADD_AND_SUBTRACT,
-            Picture.STRIP,
+            Representation.STRIP,
             True,
             False,
             REAL_CASE_SLOTS[:2],
@@ -252,7 +272,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
         (
             "other_title_and_label",
             ADD_AND_SUBTRACT,
-            Picture.STRIP,
+            Representation.STRIP,
             True,
             False,
             None,
@@ -265,7 +285,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
         (
             "text_only_all_four_answer_key",
             ALL_FOUR,
-            Picture.NONE,
+            Representation.NONE,
             True,
             False,
             None,
@@ -277,7 +297,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
         (
             "text_only_five_problems",
             FIVE_PROBLEMS,
-            Picture.NONE,
+            Representation.NONE,
             True,
             False,
             None,
@@ -289,7 +309,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
         (
             "text_only_self_check_tiles_answer_key",
             ADD_AND_SUBTRACT,
-            Picture.NONE,
+            Representation.NONE,
             True,
             False,
             REAL_CASE_SLOTS[:2],
@@ -302,7 +322,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
         (
             "number_line_add_and_subtract",
             ADD_AND_SUBTRACT,
-            Picture.NUMBER_LINE,
+            Representation.NUMBER_LINE,
             True,
             False,
             None,
@@ -313,7 +333,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
         (
             "number_line_jumps_no_hints_answer_key",
             JUMPS,
-            Picture.NUMBER_LINE,
+            Representation.NUMBER_LINE,
             False,
             False,
             None,
@@ -325,7 +345,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
         (
             "number_line_five_problems",
             FIVE_PROBLEMS,
-            Picture.NUMBER_LINE,
+            Representation.NUMBER_LINE,
             True,
             False,
             None,
@@ -337,7 +357,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
         (
             "number_line_self_check_tiles_answer_key",
             ADD_AND_SUBTRACT,
-            Picture.NUMBER_LINE,
+            Representation.NUMBER_LINE,
             True,
             False,
             REAL_CASE_SLOTS[:2],
@@ -350,7 +370,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
         (
             "blocks_add_and_subtract",
             BLOCKS,
-            Picture.BLOCKS,
+            Representation.BLOCKS,
             True,
             False,
             None,
@@ -362,7 +382,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
         (
             "blocks_no_hints_answer_key",
             BLOCKS,
-            Picture.BLOCKS,
+            Representation.BLOCKS,
             False,
             False,
             None,
@@ -374,7 +394,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
         (
             "blocks_black_and_white",
             BLOCKS,
-            Picture.BLOCKS,
+            Representation.BLOCKS,
             True,
             True,
             None,
@@ -385,7 +405,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
         (
             "blocks_at_their_limits",
             BLOCKS_AT_THEIR_LIMITS,
-            Picture.BLOCKS,
+            Representation.BLOCKS,
             True,
             False,
             None,
@@ -397,7 +417,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
         (
             "blocks_five_problems",
             FIVE_PROBLEMS,
-            Picture.BLOCKS,
+            Representation.BLOCKS,
             True,
             False,
             None,
@@ -409,7 +429,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
         (
             "blocks_self_check_tiles_answer_key",
             BLOCKS,
-            Picture.BLOCKS,
+            Representation.BLOCKS,
             True,
             False,
             REAL_CASE_SLOTS[:2],
@@ -422,7 +442,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
 def test_pdf_draws_the_expected_text(
     case_name: str,
     questions: list[BasicOperationQuestionData],
-    picture: Picture,
+    representation: Representation,
     hints: bool,
     black_and_white: bool,
     slot_of: tuple[int, ...] | None,
@@ -440,7 +460,7 @@ def test_pdf_draws_the_expected_text(
     """
     actual = pdf_text(
         render_word_problems(
-            questions, picture, hints, black_and_white, slot_of, answer_key, title, label
+            questions, representation, hints, black_and_white, slot_of, answer_key, title, label
         )
     )
 
