@@ -4,7 +4,7 @@ questions as the self-check tiles sheet shows them. Also the pictures drawn with
 with their instructions, hints and diagram descriptions.
 """
 
-from collections.abc import Sequence
+from collections.abc import Collection, Sequence
 from dataclasses import dataclass
 from enum import StrEnum
 from typing import assert_never
@@ -107,14 +107,18 @@ PICTURE_NAMES = {
 _STRIP_HINTS = {
     Operation.ADD: "Both parts are shown. Add the parts to find the whole.",
     Operation.SUBTRACT: "The whole and one part are shown. Subtract to find the missing part.",
+    Operation.MULTIPLY: "Equal groups are shown. Multiply the group size by the number of groups.",
+    Operation.DIVIDE: "The whole is split into equal groups. "
+    "Divide to find the amount in each group.",
 }
 
 
 class StripUnknown(StrEnum):
     """The value of a strip diagram that is unknown, and shown as "?"."""
 
-    WHOLE = "whole"  # the total, labelled above the bar: an addition's sum
+    WHOLE = "whole"  # the total, labelled above the bar: an addition's sum, or a product
     RIGHT = "right"  # the right-hand part: a subtraction's difference
+    SIZE = "size"  # every part of an equal-groups strip: a division's quotient
 
 
 @dataclass(frozen=True)
@@ -133,12 +137,34 @@ class StripDiagram:
     unknown: StripUnknown
 
 
-def strip_diagram(data: BasicOperationQuestionData) -> StripDiagram:
+@dataclass(frozen=True)
+class EqualStripDiagram:
     """
-    Return the strip diagram for an addition or subtraction question.
+    An equal-groups strip diagram: a bar split into ``groups`` equal parts, each of ``size``.
+
+    ``unknown`` identifies the value to show as "?": the whole, or the size, which every part
+    shows. 3 groups of 4 is ``(3, 4, WHOLE)``, and 12 shared into 3 groups is ``(3, 4, SIZE)``.
+    """
+
+    groups: int
+    size: int
+    unknown: StripUnknown
+
+    @property
+    def whole(self) -> int:
+        """The total of the equal parts, labelled above the bar."""
+        return self.groups * self.size
+
+
+def strip_diagram(data: BasicOperationQuestionData) -> StripDiagram | EqualStripDiagram:
+    """
+    Return the strip diagram for a question.
 
     Addition shows its operands as the parts and asks for the whole. Subtraction shows its first
     operand as the whole and its second as the left part, and asks for the right part.
+    Multiplication shows its first operand's number of equal parts, each of its second operand,
+    and asks for the whole. Division shows its first operand as the whole, split into its second
+    operand's number of equal parts, and asks for their size.
     """
     first, second = data.operands
     match data.operation:
@@ -146,20 +172,30 @@ def strip_diagram(data: BasicOperationQuestionData) -> StripDiagram:
             return StripDiagram((first, second), data.answer, StripUnknown.WHOLE)
         case Operation.SUBTRACT:
             return StripDiagram((second, data.answer), first, StripUnknown.RIGHT)
-        case Operation.MULTIPLY | Operation.DIVIDE:
-            raise NotImplementedError("Strip diagrams are built for + and - only.")
+        case Operation.MULTIPLY:
+            return EqualStripDiagram(first, second, StripUnknown.WHOLE)
+        case Operation.DIVIDE:
+            return EqualStripDiagram(second, data.answer, StripUnknown.SIZE)
         case _:
             assert_never(data.operation)
 
 
-def instruction(picture: Picture) -> str:
-    """Return the instruction printed under a word-problem sheet's header, for its picture."""
+def instruction(picture: Picture, operations: Collection[Operation]) -> str:
+    """
+    Return the instruction printed under a word-problem sheet's header, for its picture and the
+    operations of its problems.
+    """
     match picture:
         case Picture.STRIP:
-            return (
-                "Use the strip diagram (bar model): two parts make a whole. "
-                "The ? shows what to find."
-            )
+            parts = not {Operation.ADD, Operation.SUBTRACT}.isdisjoint(operations)
+            equal_groups = not {Operation.MULTIPLY, Operation.DIVIDE}.isdisjoint(operations)
+            if parts and equal_groups:
+                makes = "parts or equal groups make a whole"
+            elif equal_groups:
+                makes = "equal groups make a whole"
+            else:
+                makes = "two parts make a whole"
+            return f"Use the strip diagram (bar model): {makes}. The ? shows what to find."
         case Picture.NONE | Picture.NUMBER_LINE | Picture.BLOCKS:
             raise NotImplementedError(f"The {picture} picture is not built yet.")
         case _:

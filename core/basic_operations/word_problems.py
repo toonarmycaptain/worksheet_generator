@@ -76,6 +76,25 @@ TEMPLATES: dict[Operation, tuple[str, ...]] = {
         "{n1} had {a} points and lost {b} points. How many points does {n1} have now?",
         "{n1} needs {a} {obj} in all and has {b} so far. How many more {obj} are needed?",
     ),
+    # {a} groups of {b}: the whole is to find
+    Operation.MULTIPLY: (
+        "{n1} has {a} bags with {b} {obj} in each bag. How many {obj} are there in all?",
+        "There are {a} boxes. Each box holds {b} {obj}. How many {obj} altogether?",
+        "{n1} plants {a} rows with {b} flowers in each row. How many flowers did {n1} plant?",
+        "Each basket has {b} {obj}. How many {obj} are in {a} baskets?",
+        "{n1} buys {a} packs of {obj} with {b} in each pack. How many {obj} in all?",
+        "{a} friends each have {b} {obj}. How many {obj} do they have together?",
+    ),
+    # {a} shared equally into {b} groups (partitive division): the size of each group is to find
+    Operation.DIVIDE: (
+        "{n1} shares {a} {obj} equally among {b} friends. How many {obj} does each friend get?",
+        "{a} {obj} are put into {b} equal groups. How many {obj} are in each group?",
+        "{n1} puts {a} {obj} into {b} baskets with the same number in each. "
+        "How many {obj} per basket?",
+        "{b} students share {a} {obj} equally. How many {obj} does each student get?",
+        "{a} {obj} are placed in {b} equal rows. How many {obj} are in each row?",
+        "{n1} divides {a} {obj} into {b} equal piles. How many {obj} are in each pile?",
+    ),
 }
 
 

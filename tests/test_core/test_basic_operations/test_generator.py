@@ -20,6 +20,7 @@ from core.basic_operations.generator import (
     count_possible_missing_number_questions,
     count_possible_questions,
     count_possible_sheet_questions,
+    count_possible_word_problems,
     generate_basic_operation_questions,
     generate_missing_number_questions,
     generate_word_problems,
@@ -1351,6 +1352,8 @@ def test_missing_number_sheet_errors(
 
 TWO_DIGITS = (11, 99)  # a word problem's 2-digit operands
 THREE_DIGITS = (100, 999)
+GROUPS = (2, 6)  # a multiplication or division word problem's number of groups
+GROUP_SIZES = (2, 20)  # and the size of each group
 
 
 @pytest.mark.parametrize(
@@ -1477,6 +1480,118 @@ THREE_DIGITS = (100, 999)
                 ),
             ],
         ),
+        # multiplication: the groups, then the size of each, with the whole to find
+        (
+            1,
+            [Operation.MULTIPLY],
+            [Operation.MULTIPLY],
+            False,
+            [3, 4],
+            [GROUPS, GROUP_SIZES],
+            [
+                BasicOperationQuestionData(
+                    Operation.MULTIPLY,
+                    (3, 4),
+                    12,
+                    "3 friends each have 4 cards. How many cards do they have together?",
+                ),
+            ],
+        ),
+        # division: the same draws share the whole, 12, into 3 groups, with their size to find
+        (
+            1,
+            [Operation.DIVIDE],
+            [Operation.DIVIDE],
+            False,
+            [3, 4],
+            [GROUPS, GROUP_SIZES],
+            [
+                BasicOperationQuestionData(
+                    Operation.DIVIDE,
+                    (12, 3),
+                    4,
+                    "Maria divides 12 cards into 3 equal piles. How many cards are in each pile?",
+                ),
+            ],
+        ),
+        # A second 3 groups of 4 is redrawn. 4 groups of 3 is another story, so it stays, even
+        # with the same answer.
+        (
+            2,
+            [Operation.MULTIPLY],
+            [Operation.MULTIPLY, Operation.MULTIPLY],
+            False,
+            [3, 4, 3, 4, 4, 3],
+            [GROUPS, GROUP_SIZES, GROUPS, GROUP_SIZES, GROUPS, GROUP_SIZES],
+            [
+                BasicOperationQuestionData(
+                    Operation.MULTIPLY,
+                    (3, 4),
+                    12,
+                    "3 friends each have 4 cards. How many cards do they have together?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.MULTIPLY,
+                    (4, 3),
+                    12,
+                    "Maria buys 4 packs of cards with 3 in each pack. How many cards in all?",
+                ),
+            ],
+        ),
+        # with distinct answers, 12 shared into 3 is redrawn, as 2 groups of 2 is also 4
+        (
+            2,
+            [Operation.MULTIPLY, Operation.DIVIDE],
+            [Operation.MULTIPLY, Operation.DIVIDE],
+            True,
+            [2, 2, 3, 4, 3, 5],
+            [GROUPS, GROUP_SIZES, GROUPS, GROUP_SIZES, GROUPS, GROUP_SIZES],
+            [
+                BasicOperationQuestionData(
+                    Operation.MULTIPLY,
+                    (2, 2),
+                    4,
+                    "2 friends each have 2 cards. How many cards do they have together?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.DIVIDE,
+                    (15, 3),
+                    5,
+                    "Maria divides 15 cards into 3 equal piles. How many cards are in each pile?",
+                ),
+            ],
+        ),
+        # The sizes go to the additions only: two sizes, reversed, so 2 and 3 digits then 2 and
+        # 2. The multiplication between them takes none.
+        (
+            3,
+            [Operation.ADD, Operation.MULTIPLY],
+            [Operation.ADD, Operation.MULTIPLY, Operation.ADD],
+            False,
+            [47, 925, 3, 4, 99, 99],
+            [TWO_DIGITS, THREE_DIGITS, GROUPS, GROUP_SIZES, TWO_DIGITS, TWO_DIGITS],
+            [
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (47, 925),
+                    972,
+                    "A basket held 47 cards. Maria added 925 more. "
+                    "How many cards are in the basket now?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.MULTIPLY,
+                    (3, 4),
+                    12,
+                    "3 friends each have 4 cards. How many cards do they have together?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (99, 99),
+                    198,
+                    "Maria scored 99 points, then scored 99 more points. How many points in all?",
+                ),
+            ],
+        ),
     ],
 )
 def test_word_problems_from_scripted_draws(
@@ -1490,7 +1605,9 @@ def test_word_problems_from_scripted_draws(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """
-    Each problem's operands are drawn at its size, and redrawn until they meet the limits.
+    Each problem's numbers are drawn, and redrawn until they meet the limits and repeat no
+    problem: an addition's or subtraction's operands at its size, and a multiplication's or
+    division's groups and size of each.
 
     ``picks`` are the operations drawn, ``reverse_shuffle`` reverses the sizes, and the wording
     is scripted as in ``test_word_problems``. Every scripted draw must be made, within
@@ -1510,9 +1627,79 @@ def test_word_problems_from_scripted_draws(
     ]
 
 
-def test_random_word_problems_have_distinct_answers() -> None:
-    """A sheet of the most problems allowed, 20, is produced with no answer repeated."""
-    questions = generate_word_problems(
-        20, [Operation.ADD, Operation.SUBTRACT], distinct_answers=True
+@pytest.mark.parametrize(
+    ("operations", "count"),
+    [
+        # the most problems allowed, 20
+        ([Operation.ADD, Operation.SUBTRACT], 20),
+        # the most division allows, with its 19 answers, 2 to 20
+        ([Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE], 19),
+    ],
+)
+def test_random_word_problems_have_distinct_answers(
+    operations: list[Operation], count: int
+) -> None:
+    """A sheet of the most problems the operations allow is produced with no answer repeated."""
+    questions = generate_word_problems(count, operations, distinct_answers=True)
+    assert len({question.data.answer for question in questions}) == count
+
+
+@pytest.mark.parametrize(
+    ("operations", "distinct_answers", "up_to", "expected"),
+    [
+        # the fewest answers of any size: the differences of two 2-digit numbers, 10 to 88
+        ([Operation.ADD], False, 100, 79),
+        ([Operation.ADD, Operation.SUBTRACT], True, 100, 79),
+        # 5 group counts (2 to 6) times 19 sizes (2 to 20)
+        ([Operation.MULTIPLY], False, 100, 95),
+        ([Operation.DIVIDE], False, 100, 95),
+        # the distinct products of those
+        ([Operation.MULTIPLY], True, 100, 59),
+        # a division's answer is the size of each group
+        ([Operation.DIVIDE], True, 100, 19),
+        # the least of the operations'
+        ([Operation.ADD, Operation.DIVIDE], True, 100, 19),
+        # capped
+        ([Operation.MULTIPLY, Operation.DIVIDE], False, 12, 12),
+    ],
+)
+def test_count_possible_word_problems(
+    operations: list[Operation], distinct_answers: bool, up_to: int, expected: int
+) -> None:
+    """Any one operation may be drawn for every problem, so the count is the least of theirs."""
+    possible = count_possible_word_problems(
+        operations, distinct_answers=distinct_answers, up_to=up_to
     )
-    assert len({question.data.answer for question in questions}) == 20
+    assert possible == expected
+
+
+@pytest.mark.parametrize(
+    ("operations", "distinct_answers", "count", "message"),
+    [
+        (
+            [Operation.DIVIDE],
+            True,
+            20,
+            "Cannot make 20 problems with different answers: only 19 possible.",
+        ),
+        (
+            [Operation.ADD, Operation.SUBTRACT],
+            True,
+            80,
+            "Cannot make 80 problems with different answers: only 79 possible.",
+        ),
+        ([Operation.MULTIPLY], False, 96, "Cannot make 96 different problems: only 95 possible."),
+    ],
+)
+def test_word_problem_sheet_errors(
+    operations: list[Operation], distinct_answers: bool, count: int, message: str
+) -> None:
+    """
+    Requesting more problems than the operations allow raises ``ValueError`` saying how many.
+
+    Without that check, generation would loop forever looking for an answer or a problem that
+    does not exist.
+    """
+    with pytest.raises(ValueError) as error:
+        generate_word_problems(count, operations, distinct_answers=distinct_answers)
+    assert str(error.value) == message

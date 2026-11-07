@@ -55,7 +55,9 @@ def test_pages(client: Client) -> None:
                 b"label",
                 b"name_line",
                 b"problems",
-                b"operations",  # addition and subtraction
+                b"operations",  # a checkbox for each operation
+                b"operations",
+                b"operations",
                 b"operations",
                 b"picture",
                 b"no_hints",
@@ -183,13 +185,18 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
             ],
             True,
         ),
-        # both by default, and no All box for two
+        # addition and subtraction by default, with an All box for the four
         (
             "/basic-operations/",
             b"/api/worksheets/word_problems.pdf",
             "operations",
-            [(b"add", b" checked", b"Addition"), (b"subtract", b" checked", b"Subtraction")],
-            False,
+            [
+                (b"add", b" checked", b"Addition"),
+                (b"subtract", b" checked", b"Subtraction"),
+                (b"multiply", b"", b"Multiplication"),
+                (b"divide", b"", b"Division"),
+            ],
+            True,
         ),
     ],
 )

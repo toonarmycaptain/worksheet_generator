@@ -29,6 +29,7 @@ from core.basic_operations.generator import (
     MAXIMUM_OPERAND,
     count_possible_missing_number_questions,
     count_possible_sheet_questions,
+    count_possible_word_problems,
     generate_basic_operation_questions,
     generate_missing_number_questions,
     generate_word_problems,
@@ -345,8 +346,8 @@ class WordProblemOptions(HeaderOptions):
 
     title: Title = f"Word Problems — {PICTURE_NAMES[Picture.STRIP]}"
     problems: Problems = 4
-    # Each problem's operation is drawn at random from those ticked: only the operations built.
-    operations: list[Literal["add", "subtract"]] = Field(
+    # Each problem's operation is drawn at random from those ticked.
+    operations: list[OperationChoice] = Field(
         ["add", "subtract"],
         min_length=1,
         title="Operations",
@@ -363,9 +364,19 @@ class WordProblemOptions(HeaderOptions):
     tile_pattern: TilePattern = "simple"
 
     @model_validator(mode="after")
-    def _a_tile_for_each_problem(self) -> Self:
+    def _enough_different_problems(self) -> Self:
         if self.self_check_tiles:
             _at_most_one_question_per_tile(self.problems)
+        # Any one operation may be drawn for every problem, and with tiles each tile needs a
+        # distinct answer. There are no number limits to raise.
+        possible = count_possible_word_problems(
+            _operations(self.operations),
+            distinct_answers=self.self_check_tiles,
+            up_to=self.problems,
+        )
+        if self.problems > possible:
+            repeats = "repeated answers" if self.self_check_tiles else "repeats"
+            raise _too_many_problems(possible, repeats, "choice of operations", {})
         return self
 
 

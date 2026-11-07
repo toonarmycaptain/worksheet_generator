@@ -3,7 +3,8 @@
 import random
 from collections.abc import Iterator, Sequence
 from dataclasses import replace
-from typing import assert_never
+from functools import partial
+from typing import Literal, assert_never
 
 from core.basic_operations.data import (
     BasicOperationQuestionData,
@@ -26,6 +27,10 @@ WORD_PROBLEM_DIGITS = ((2, 2), (2, 3), (3, 2), (3, 3))
 WORD_PROBLEM_RANGES = {2: (11, 99), 3: (100, 999)}
 LARGEST_WORD_PROBLEM_SUM = 999
 SMALLEST_WORD_PROBLEM_DIFFERENCE = 10
+# The number of equal groups in a multiplication or division word problem, smallest and largest;
+# six is as many as a strip diagram has room for
+WORD_PROBLEM_GROUPS = (2, 6)
+WORD_PROBLEM_GROUP_SIZES = (2, 20)  # the number in each of those groups, smallest and largest
 
 
 def generate_basic_operation_question(
@@ -377,30 +382,87 @@ def generate_missing_number_questions(
     return questions
 
 
+def count_possible_word_problems(
+    operations: Sequence[Operation], *, distinct_answers: bool = False, up_to: int
+) -> int:
+    """
+    Count the word problems ``generate_word_problems`` can produce for ``operations``.
+
+    As in ``count_possible_sheet_questions``, any one operation may be drawn for every problem,
+    so the count is the smallest that any one operation allows by itself: its distinct answers
+    with ``distinct_answers``, and otherwise its distinct problems. For addition and subtraction
+    this is the fewest answers at any operand size, the 79 differences of two 2-digit operands,
+    from 10 to 88. The count is capped at ``up_to``.
+    """
+    groups = range(WORD_PROBLEM_GROUPS[0], WORD_PROBLEM_GROUPS[1] + 1)
+    sizes = range(WORD_PROBLEM_GROUP_SIZES[0], WORD_PROBLEM_GROUP_SIZES[1] + 1)
+    counts = [up_to]
+    for operation in operations:
+        match operation:
+            case Operation.ADD | Operation.SUBTRACT:
+                smallest, largest = WORD_PROBLEM_RANGES[2]
+                counts.append(largest - smallest - SMALLEST_WORD_PROBLEM_DIFFERENCE + 1)
+            case Operation.MULTIPLY if distinct_answers:
+                counts.append(len({number * size for number in groups for size in sizes}))
+            case Operation.DIVIDE if distinct_answers:
+                counts.append(len(sizes))  # the answer is the size of each group
+            case Operation.MULTIPLY | Operation.DIVIDE:
+                counts.append(len(groups) * len(sizes))
+            case _:
+                assert_never(operation)
+    return min(counts)
+
+
 def generate_word_problems(
     count: int, operations: Sequence[Operation], *, distinct_answers: bool = False
 ) -> list[Question[BasicOperationQuestionData]]:
     """
     Generate ``count`` word problems, each with an operation drawn at random from ``operations``.
 
-    Only addition and subtraction are built; the other operations raise ``NotImplementedError``.
-    The operand sizes take ``WORD_PROBLEM_DIGITS`` in turn, in random order: 2-digit operands are
-    11 to 99 and 3-digit operands 100 to 999. A sum is at most 999, and a difference at least 10,
-    with the larger operand first. The wording comes from the word-problem bank. The problems are
-    answered in writing, so they have no wrong answers.
+    Addition and subtraction take the operand sizes in ``WORD_PROBLEM_DIGITS`` in turn, in random
+    order: 2-digit operands are 11 to 99 and 3-digit operands 100 to 999. A sum is at most 999,
+    and a difference at least 10, with the larger operand first. Multiplication and division are
+    equal groups, as in ``_equal_groups``. The wording comes from the word-problem bank. The
+    problems are answered in writing, so they have no wrong answers.
 
-    With ``distinct_answers``, no two problems share an answer: a problem whose answer is taken
-    is drawn again. Every operation and size allows at least 79 answers (2-digit differences
-    from 10 to 88), so this ends quickly for any sheet.
+    No two problems of the same operation have the same operands, and with ``distinct_answers``
+    no two problems share an answer either: a problem that breaks either rule is drawn again.
+
+    Raises ``ValueError`` if the operations allow fewer than ``count`` such problems, as counted
+    by ``count_possible_word_problems``.
     """
-    digits = [WORD_PROBLEM_DIGITS[index % len(WORD_PROBLEM_DIGITS)] for index in range(count)]
+    possible = count_possible_word_problems(
+        operations, distinct_answers=distinct_answers, up_to=count
+    )
+    if count > possible:
+        kind = "problems with different answers" if distinct_answers else "different problems"
+        raise ValueError(f"Cannot make {count} {kind}: only {possible} possible.")
+
+    chosen = random.choices(operations, k=count)
+    sums_and_differences = sum(
+        operation in (Operation.ADD, Operation.SUBTRACT) for operation in chosen
+    )
+    digits = [
+        WORD_PROBLEM_DIGITS[index % len(WORD_PROBLEM_DIGITS)]
+        for index in range(sums_and_differences)
+    ]
     random.shuffle(digits)
+    next_digits = iter(digits)
     unworded: list[BasicOperationQuestionData] = []
+    seen: set[tuple[Operation, tuple[int, int]]] = set()
     answers: set[int] = set()
-    for operation, sizes in zip(random.choices(operations, k=count), digits, strict=True):
-        data = _word_problem(operation, sizes)
-        while distinct_answers and data.answer in answers:
-            data = _word_problem(operation, sizes)
+    for operation in chosen:
+        match operation:
+            case Operation.ADD | Operation.SUBTRACT:
+                draw = partial(_sum_or_difference, operation, next(next_digits))
+            case Operation.MULTIPLY | Operation.DIVIDE:
+                draw = partial(_equal_groups, operation)
+            case _:
+                assert_never(operation)
+        data = draw()
+        while (operation, data.operands) in seen or (distinct_answers and data.answer in answers):
+            data = draw()
+        seen.add((operation, data.operands))
         answers.add(data.answer)
         unworded.append(data)
     texts = word_problem_texts(unworded)
@@ -410,7 +472,9 @@ def generate_word_problems(
     ]
 
 
-def _word_problem(operation: Operation, digits: tuple[int, int]) -> BasicOperationQuestionData:
+def _sum_or_difference(
+    operation: Literal[Operation.ADD, Operation.SUBTRACT], digits: tuple[int, int]
+) -> BasicOperationQuestionData:
     """
     Draw operands with ``digits`` digits, redrawing until they meet the word-problem limits.
 
@@ -429,10 +493,30 @@ def _word_problem(operation: Operation, digits: tuple[int, int]) -> BasicOperati
                 first, second = max(first, second), min(first, second)
                 if first - second >= SMALLEST_WORD_PROBLEM_DIFFERENCE:
                     return BasicOperationQuestionData(operation, (first, second), first - second)
-            case Operation.MULTIPLY | Operation.DIVIDE:
-                raise NotImplementedError("Word problems are built for + and - only.")
             case _:
                 assert_never(operation)
+
+
+def _equal_groups(
+    operation: Literal[Operation.MULTIPLY, Operation.DIVIDE],
+) -> BasicOperationQuestionData:
+    """
+    Draw an equal-groups problem: a number of groups from ``WORD_PROBLEM_GROUPS``, each of a
+    size from ``WORD_PROBLEM_GROUP_SIZES``.
+
+    Multiplication's operands are the groups and the size, so 3 groups of 4 is (3, 4), and the
+    whole is to find. Division is partitive: its operands are the whole and the groups it is
+    shared into, so 12 shared into 3 groups is (12, 3), and the size of each group is to find.
+    """
+    groups = random.randint(*WORD_PROBLEM_GROUPS)
+    size = random.randint(*WORD_PROBLEM_GROUP_SIZES)
+    match operation:
+        case Operation.MULTIPLY:
+            return BasicOperationQuestionData(operation, (groups, size), groups * size)
+        case Operation.DIVIDE:
+            return BasicOperationQuestionData(operation, (groups * size, groups), size)
+        case _:
+            assert_never(operation)
 
 
 def _distinct_missing_divisors(

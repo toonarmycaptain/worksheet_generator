@@ -786,3 +786,335 @@ BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 82 392 Tm (Answer: ) Tj T* ET
 n 141.122 392 m 261.122 392 l S
 
+=== multiply_and_divide ===
+title: Word Problems \204 Strip Diagrams
+media boxes: 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Strip Diagrams) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (Use the strip diagram \(bar model\): equal groups make a whole. The ? shows what to find.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 652 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 652 Tm (Maria has 3 bags with 4 stickers in each bag. How many stickers are there in) Tj T* ET
+BT 1 0 0 1 82 632 Tm (all?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 612 Tm (Equal groups are shown. Multiply the group size by the number of groups.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 239.692 595 Tm (whole: ?) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 591 m 442 591 l S
+n 82 591 m 82 587 l S
+n 442 591 m 442 587 l S
+.176471 .215686 .282353 RG
+1.2 w
+.811765 .890196 .968627 rg
+n 82 549 120 34 re B*
+n 202 549 120 34 re B*
+n 322 549 120 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 138.664 562 Tm (4) Tj T* ET
+BT 1 0 0 1 258.664 562 Tm (4) Tj T* ET
+BT 1 0 0 1 378.664 562 Tm (4) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 523 Tm (Answer: ) Tj T* ET
+n 141.122 523 m 261.122 523 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 501 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 501 Tm (Jamal shares 12 marbles equally among 3 friends. How many marbles does) Tj T* ET
+BT 1 0 0 1 82 481 Tm (each friend get?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 461 Tm (The whole is split into equal groups. Divide to find the amount in each group.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 236.9365 444 Tm (whole: 12) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 440 m 442 440 l S
+n 82 440 m 82 436 l S
+n 442 440 m 442 436 l S
+.176471 .215686 .282353 RG
+1.2 w
+.996078 .952941 .780392 rg
+n 82 398 120 34 re B*
+n 202 398 120 34 re B*
+n 322 398 120 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 138.334 411 Tm (?) Tj T* ET
+BT 1 0 0 1 258.334 411 Tm (?) Tj T* ET
+BT 1 0 0 1 378.334 411 Tm (?) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 372 Tm (Answer: ) Tj T* ET
+n 141.122 372 m 261.122 372 l S
+
+=== groups_at_their_limits ===
+title: Word Problems \204 Strip Diagrams
+media boxes: 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Strip Diagrams) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (Use the strip diagram \(bar model\): equal groups make a whole. The ? shows what to find.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 652 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 652 Tm (There are 6 boxes. Each box holds 20 crayons. How many crayons) Tj T* ET
+BT 1 0 0 1 82 632 Tm (altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 612 Tm (Equal groups are shown. Multiply the group size by the number of groups.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 239.692 595 Tm (whole: ?) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 591 m 442 591 l S
+n 82 591 m 82 587 l S
+n 442 591 m 442 587 l S
+.176471 .215686 .282353 RG
+1.2 w
+.811765 .890196 .968627 rg
+n 82 549 60 34 re B*
+n 142 549 60 34 re B*
+n 202 549 60 34 re B*
+n 262 549 60 34 re B*
+n 322 549 60 34 re B*
+n 382 549 60 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 105.328 562 Tm (20) Tj T* ET
+BT 1 0 0 1 165.328 562 Tm (20) Tj T* ET
+BT 1 0 0 1 225.328 562 Tm (20) Tj T* ET
+BT 1 0 0 1 285.328 562 Tm (20) Tj T* ET
+BT 1 0 0 1 345.328 562 Tm (20) Tj T* ET
+BT 1 0 0 1 405.328 562 Tm (20) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 523 Tm (Answer: ) Tj T* ET
+n 141.122 523 m 261.122 523 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 501 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 501 Tm (4 beads are put into 2 equal groups. How many beads are in each group?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 481 Tm (The whole is split into equal groups. Divide to find the amount in each group.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 239.9945 464 Tm (whole: 4) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 460 m 442 460 l S
+n 82 460 m 82 456 l S
+n 442 460 m 442 456 l S
+.176471 .215686 .282353 RG
+1.2 w
+.996078 .952941 .780392 rg
+n 82 418 180 34 re B*
+n 262 418 180 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 168.334 431 Tm (?) Tj T* ET
+BT 1 0 0 1 348.334 431 Tm (?) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 392 Tm (Answer: ) Tj T* ET
+n 141.122 392 m 261.122 392 l S
+
+=== all_four_answer_key ===
+title: Word Problems \204 Strip Diagrams
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Strip Diagrams) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (Use the strip diagram \(bar model\): parts or equal groups make a whole. The ? shows what to) Tj T* ET
+BT 1 0 0 1 54 662 Tm (find.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 636 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 636 Tm (Maria collected 47 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 616 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 596 Tm (Both parts are shown. Add the parts to find the whole.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 239.692 579 Tm (whole: ?) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 575 m 442 575 l S
+n 82 575 m 82 571 l S
+n 442 575 m 442 571 l S
+.176471 .215686 .282353 RG
+1.2 w
+.811765 .890196 .968627 rg
+n 82 533 235 34 re B*
+.811765 .890196 .968627 rg
+n 317 533 125 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 192.828 546 Tm (47) Tj T* ET
+BT 1 0 0 1 372.828 546 Tm (25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 507 Tm (Answer: ) Tj T* ET
+n 141.122 507 m 261.122 507 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 485 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 485 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 465 Tm (The whole and one part are shown. Subtract to find the missing part.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 236.9365 448 Tm (whole: 72) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 444 m 442 444 l S
+n 82 444 m 82 440 l S
+n 442 444 m 442 440 l S
+.176471 .215686 .282353 RG
+1.2 w
+.811765 .890196 .968627 rg
+n 82 402 125 34 re B*
+.996078 .952941 .780392 rg
+n 207 402 235 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 137.828 415 Tm (25) Tj T* ET
+BT 1 0 0 1 320.834 415 Tm (?) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 376 Tm (Answer: ) Tj T* ET
+n 141.122 376 m 261.122 376 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 354 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 354 Tm (Maria has 3 bags with 4 stickers in each bag. How many stickers are there in) Tj T* ET
+BT 1 0 0 1 82 334 Tm (all?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 314 Tm (Equal groups are shown. Multiply the group size by the number of groups.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 239.692 297 Tm (whole: ?) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 293 m 442 293 l S
+n 82 293 m 82 289 l S
+n 442 293 m 442 289 l S
+.176471 .215686 .282353 RG
+1.2 w
+.811765 .890196 .968627 rg
+n 82 251 120 34 re B*
+n 202 251 120 34 re B*
+n 322 251 120 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 138.664 264 Tm (4) Tj T* ET
+BT 1 0 0 1 258.664 264 Tm (4) Tj T* ET
+BT 1 0 0 1 378.664 264 Tm (4) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 225 Tm (Answer: ) Tj T* ET
+n 141.122 225 m 261.122 225 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 203 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 203 Tm (Jamal shares 12 marbles equally among 3 friends. How many marbles does) Tj T* ET
+BT 1 0 0 1 82 183 Tm (each friend get?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 163 Tm (The whole is split into equal groups. Divide to find the amount in each group.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 236.9365 146 Tm (whole: 12) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 142 m 442 142 l S
+n 82 142 m 82 138 l S
+n 442 142 m 442 138 l S
+.176471 .215686 .282353 RG
+1.2 w
+.996078 .952941 .780392 rg
+n 82 100 120 34 re B*
+n 202 100 120 34 re B*
+n 322 100 120 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 138.334 113 Tm (?) Tj T* ET
+BT 1 0 0 1 258.334 113 Tm (?) Tj T* ET
+BT 1 0 0 1 378.334 113 Tm (?) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 74 Tm (Answer: ) Tj T* ET
+n 141.122 74 m 261.122 74 l S
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Strip Diagrams: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (47 + 25 = 72) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 658 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 638 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 638 Tm (3 \327 4 = 12) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 618 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 618 Tm (12 \367 3 = 4) Tj T* ET
+
