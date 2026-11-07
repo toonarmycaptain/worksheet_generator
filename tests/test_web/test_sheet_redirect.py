@@ -19,8 +19,8 @@ from django.test import Client
             "/api/worksheets/basic_operations.pdf?sheet=1ab2c3",
         ),
         (
-            "/api/worksheets/basic_operations.pdf?operation=multiply&problems=2",
-            "/api/worksheets/basic_operations.pdf?operation=multiply&problems=2&sheet=1ab2c3",
+            "/api/worksheets/basic_operations.pdf?operations=multiply&problems=2",
+            "/api/worksheets/basic_operations.pdf?operations=multiply&problems=2&sheet=1ab2c3",
         ),
         (
             "/api/worksheets/basic_operations.pdf?title=Times+Tables&label=Day+2",

@@ -1,8 +1,9 @@
 """
 Tests for the word problems endpoint: its options reach the core and the renderer intact.
 
-The tests script ``random``. ``randint`` returns the operands listed, and ``shuffle`` reverses,
-so the operations and sizes come in reverse order and the complex tile pattern runs from L to A.
+The tests script ``random``. ``choices`` returns the operations listed as picks, ``randint``
+the operands listed, and ``shuffle`` reverses, so the sizes come in reverse order and the
+complex tile pattern runs from L to A.
 The wording takes the first two names, the last object and each operation's last template.
 ``conventional_slot_of`` gives the slots of a real case. The PDF must then match what the
 renderer draws for the same questions. Disallowed options get Ninja's JSON error. The renderer's
@@ -18,6 +19,7 @@ from core.basic_operations.data import BasicOperationQuestionData, Operation
 from core.basic_operations.representation import Picture
 from tests.data import REAL_CASE_SLOTS
 from tests.helpers import (
+    choices_returns,
     choose_last,
     conventional_slot_of_returns,
     pdf_text,
@@ -44,11 +46,12 @@ ADD = BasicOperationQuestionData(
 
 
 @pytest.mark.parametrize(
-    ("url", "drawn", "status", "expected_json", "pdf_data", "filename"),
+    ("url", "picks", "drawn", "status", "expected_json", "pdf_data", "filename"),
     [
         (
             # the defaults, with 2 problems: subtraction then addition, each with its hint
             "/api/worksheets/word_problems.pdf?problems=2&sheet=1ab2c3",
+            [Operation.SUBTRACT, Operation.ADD],
             [40, 150, 47, 25],
             200,
             None,
@@ -64,8 +67,10 @@ ADD = BasicOperationQuestionData(
             "word_problems-sheet-a.pdf",
         ),
         (
-            "/api/worksheets/word_problems.pdf?problems=1&no_hints=true&answer_key=true"
-            "&title=Story+Problems&label=Day+2&name_line=true&sheet=1ab2c3",
+            # addition only
+            "/api/worksheets/word_problems.pdf?operations=add&problems=1&no_hints=true"
+            "&answer_key=true&title=Story+Problems&label=Day+2&name_line=true&sheet=1ab2c3",
+            [Operation.ADD],
             [47, 25],
             200,
             None,
@@ -84,6 +89,7 @@ ADD = BasicOperationQuestionData(
             # Tiles, with the simple pattern by default. Their answers must differ, so 55 + 55,
             # also 110, is redrawn.
             "/api/worksheets/word_problems.pdf?self_check_tiles=true&problems=2&sheet=1ab2c3",
+            [Operation.SUBTRACT, Operation.ADD],
             [40, 150, 55, 55, 47, 25],
             200,
             None,
@@ -101,6 +107,7 @@ ADD = BasicOperationQuestionData(
         (
             "/api/worksheets/word_problems.pdf?self_check_tiles=true&tile_pattern=complex"
             "&problems=2&answer_key=true&sheet=1ab2c3",
+            [Operation.SUBTRACT, Operation.ADD],
             [40, 150, 47, 25],
             200,
             None,
@@ -120,6 +127,7 @@ ADD = BasicOperationQuestionData(
         (
             "/api/worksheets/word_problems.pdf?self_check_tiles=true&problems=13",
             [],
+            [],
             422,
             refused("problems: self-check tiles has 12 tiles, so at most 12"),
             None,
@@ -127,6 +135,7 @@ ADD = BasicOperationQuestionData(
         ),
         (
             "/api/worksheets/word_problems.pdf?problems=21",
+            [],
             [],
             422,
             {
@@ -143,8 +152,28 @@ ADD = BasicOperationQuestionData(
             None,
         ),
         (
+            # only the operations built are accepted
+            "/api/worksheets/word_problems.pdf?operations=multiply",
+            [],
+            [],
+            422,
+            {
+                "detail": [
+                    {
+                        "type": "literal_error",
+                        "loc": ["query", "options", "operations", 0],
+                        "msg": "Input should be 'add' or 'subtract'",
+                        "ctx": {"expected": "'add' or 'subtract'"},
+                    },
+                ],
+            },
+            None,
+            None,
+        ),
+        (
             # only the pictures that can be drawn are accepted
             "/api/worksheets/word_problems.pdf?picture=blocks",
+            [],
             [],
             422,
             {
@@ -164,6 +193,7 @@ ADD = BasicOperationQuestionData(
 )
 def test_word_problems_pdf(
     url: str,
+    picks: list[Operation],
     drawn: list[int],
     status: int,
     expected_json: dict[str, Any] | None,
@@ -179,6 +209,7 @@ def test_word_problems_pdf(
     - A PDF is compared on its filename, its cache header and the text the renderer draws for
       ``pdf_data``.
     """
+    choices_returns(monkeypatch, picks)
     randint_returns(monkeypatch, drawn)
     reverse_shuffle(monkeypatch)
     sample_first(monkeypatch)

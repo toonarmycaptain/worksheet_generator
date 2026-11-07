@@ -4,6 +4,7 @@ questions as the self-check tiles sheet shows them. Also the pictures drawn with
 with their instructions, hints and diagram descriptions.
 """
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from enum import StrEnum
 from typing import assert_never
@@ -31,6 +32,17 @@ OPERATION_NAMES = {
     Operation.MULTIPLY: "Multiplication",
     Operation.DIVIDE: "Division",
 }
+MIXED_OPERATIONS_NAME = "Mixed Operations"  # a sheet of more than two operations
+
+
+def operations_name(operations: Sequence[Operation]) -> str:
+    """
+    Return what a sheet of ``operations`` is called: one operation's name, two joined by "and"
+    ("Addition and Subtraction"), or ``MIXED_OPERATIONS_NAME`` for more.
+    """
+    if len(operations) > 2:
+        return MIXED_OPERATIONS_NAME
+    return " and ".join(OPERATION_NAMES[operation] for operation in operations)
 
 
 def equation(data: BasicOperationQuestionData) -> str:

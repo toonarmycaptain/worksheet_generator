@@ -18,6 +18,7 @@ from core.basic_operations.representation import (
     instruction,
     missing_number_equation,
     missing_number_tile_question,
+    operations_name,
     strip_diagram,
 )
 from core.question import BLANK
@@ -141,3 +142,18 @@ def test_hint(data: BasicOperationQuestionData, picture: Picture, expected: str)
 )
 def test_instruction(picture: Picture, expected: str) -> None:
     assert instruction(picture) == expected
+
+
+@pytest.mark.parametrize(
+    ("operations", "expected"),
+    [
+        ([Operation.ADD], "Addition"),
+        ([Operation.DIVIDE], "Division"),
+        ([Operation.ADD, Operation.SUBTRACT], "Addition and Subtraction"),
+        ([Operation.MULTIPLY, Operation.DIVIDE], "Multiplication and Division"),
+        ([Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY], "Mixed Operations"),
+        (list(Operation), "Mixed Operations"),
+    ],
+)
+def test_operations_name(operations: list[Operation], expected: str) -> None:
+    assert operations_name(operations) == expected

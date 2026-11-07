@@ -27,9 +27,8 @@ from core.basic_operations.generator import (
     DEFAULT_LARGEST_DIVISOR,
     DEFAULT_LARGEST_OPERAND,
     MAXIMUM_OPERAND,
-    count_possible_answers,
     count_possible_missing_number_questions,
-    count_possible_questions,
+    count_possible_sheet_questions,
     generate_basic_operation_questions,
     generate_missing_number_questions,
     generate_word_problems,
@@ -40,6 +39,7 @@ from core.basic_operations.representation import (
     Picture,
     basic_operation_tile_question,
     missing_number_tile_question,
+    operations_name,
 )
 from core.placevalue.data import PlaceValueForm
 from core.placevalue.generator import (
@@ -82,9 +82,10 @@ Title = Annotated[str, Field(min_length=1, max_length=80)]
 Label = Annotated[str, Field(max_length=40)]
 Problems = Annotated[int, Field(ge=1, le=MAX_PROBLEMS)]
 ListStyle = Literal["mix", "grid", "commas"]
+OperationChoice = Literal["add", "subtract", "multiply", "divide"]  # an Operation value
 # A PlaceValueForm value, or mixed, where the form is chosen per question.
 FormChoice = Literal["standard", "expanded", "unit", "expanded_notation", "word", "mixed"]
-# Operation dropdown labels: each operation's sheet title
+# Operations checkbox labels: each operation's sheet title
 OPERATION_LABELS: dict[str, JsonValue] = {
     operation.value: name for operation, name in OPERATION_NAMES.items()
 }
@@ -132,6 +133,11 @@ def _smallest_raise(count: Callable[[int], int], needed: int, current: int, top:
     return low
 
 
+def _operations(ticked: Sequence[str]) -> list[Operation]:
+    """Return the ticked operations, each once, in the order of ``Operation``."""
+    return [operation for operation in Operation if operation.value in ticked]
+
+
 def _too_many_problems(
     possible: int, repeats: str, limits: str, raises: Mapping[str, int | None]
 ) -> ValueError:
@@ -175,12 +181,13 @@ class BasicOperationOptions(HeaderOptions):
     Options for the basic operations kind, built on the core. There is no seed: every sheet is new.
     """
 
-    title: Title = OPERATION_NAMES[Operation.ADD]  # the chosen operation's name by default
+    title: Title = OPERATION_NAMES[Operation.ADD]  # the chosen operations' name by default
     problems: Problems = 8
-    operation: Literal["add", "subtract", "multiply", "divide"] = Field(
-        "add", title="Operation", json_schema_extra={"labels": OPERATION_LABELS}
+    # Each question's operation is drawn at random from those ticked.
+    operations: list[OperationChoice] = Field(
+        ["add"], min_length=1, title="Operations", json_schema_extra={"labels": OPERATION_LABELS}
     )
-    # Division only: any value but answer produces fill-in equations, such as □ ÷ 4 = 7
+    # Division alone: any value but answer produces fill-in equations, such as □ ÷ 4 = 7
     missing_number: Literal["answer", "dividend", "divisor", "mixed"] = Field(
         "answer", title="Missing number"
     )
@@ -198,50 +205,32 @@ class BasicOperationOptions(HeaderOptions):
     self_check_tiles: SelfCheckTiles = False
     tile_pattern: TilePattern = "simple"
 
+    @property
+    def chosen_operations(self) -> list[Operation]:
+        """The ticked operations, each once, in the order of ``Operation``."""
+        return _operations(self.operations)
+
     @model_validator(mode="after")
-    def _title_follows_the_operation(self) -> Self:
-        # The default is the name of the default operation. A request that names another
-        # operation and no title gets that operation's name.
+    def _title_follows_the_operations(self) -> Self:
+        # The default is the name of the default operation. A request that ticks others and
+        # gives no title gets their name.
         if "title" not in self.model_fields_set:
-            self.title = OPERATION_NAMES[Operation(self.operation)]
+            self.title = operations_name(self.chosen_operations)
         return self
 
     @model_validator(mode="after")
     def _enough_different_questions(self) -> Self:
-        if self.operation == "divide":
-            return self  # _enough_divisions checks those
-        if self.missing_number != "answer":
-            raise ValueError("missing_number: only division has a missing dividend or divisor")
-        operation = Operation(self.operation)
-        if self.self_check_tiles:
-            _at_most_one_question_per_tile(self.problems)
-
-        def possible_with(largest: int) -> int:
-            if self.self_check_tiles:
-                # each tile needs a distinct answer
-                return count_possible_answers(operation, high=largest, up_to=self.problems)
-            # a reversed pair counts as a repeat
-            return count_possible_questions(operation, high=largest, up_to=self.problems)
-
-        possible = possible_with(self.max_number)
-        if self.problems > possible:
-            raises = {
-                "largest number": _smallest_raise(
-                    possible_with, self.problems, self.max_number, MAXIMUM_OPERAND
+        operations = self.chosen_operations
+        if self.missing_number != "answer" and operations != [Operation.DIVIDE]:
+            if Operation.DIVIDE in operations:
+                raise ValueError(
+                    "missing_number: only division by itself has a missing dividend or divisor"
                 )
-            }
-            repeats = "repeated answers" if self.self_check_tiles else "repeats"
-            raise _too_many_problems(possible, repeats, "largest number", raises)
-        return self
-
-    @model_validator(mode="after")
-    def _enough_divisions(self) -> Self:
-        if self.operation != "divide":
-            return self
+            raise ValueError("missing_number: only division has a missing dividend or divisor")
         if self.self_check_tiles:
             _at_most_one_question_per_tile(self.problems)
 
-        def possible_with(dividend: int, divisor: int) -> int:
+        def possible_with(largest: int, dividend: int, divisor: int) -> int:
             if self.missing_number != "answer":
                 # No fact family twice (28 ÷ 4 = 7 and 28 ÷ 7 = 4), and with tiles no answer
                 # twice.
@@ -253,32 +242,51 @@ class BasicOperationOptions(HeaderOptions):
                     distinct_answers=self.self_check_tiles,
                     up_to=self.problems,
                 )
-            if self.self_check_tiles:
-                return count_possible_answers(Operation.DIVIDE, high=dividend, up_to=self.problems)
-            # Each division fact is a different question.
-            return count_possible_questions(
-                Operation.DIVIDE, high=dividend, largest_divisor=divisor, up_to=self.problems
+            # Any one operation may be drawn for every question. A reversed pair counts as a
+            # repeat, and with tiles each tile needs a distinct answer.
+            return count_possible_sheet_questions(
+                operations,
+                high=largest,
+                largest_dividend=dividend,
+                largest_divisor=divisor,
+                distinct_answers=self.self_check_tiles,
+                up_to=self.problems,
             )
 
-        possible = possible_with(self.largest_dividend, self.largest_divisor)
-        if self.problems > possible:
-            raises = {
-                "largest dividend": _smallest_raise(
-                    lambda dividend: possible_with(dividend, self.largest_divisor),
-                    self.problems,
-                    self.largest_dividend,
-                    MAXIMUM_OPERAND,
-                ),
-                "largest divisor": _smallest_raise(
-                    lambda divisor: possible_with(self.largest_dividend, divisor),
-                    self.problems,
-                    self.largest_divisor,
-                    MAXIMUM_OPERAND,
-                ),
-            }
-            repeats = "repeated answers" if self.self_check_tiles else "repeats"
-            raise _too_many_problems(possible, repeats, "largest dividend and divisor", raises)
-        return self
+        possible = possible_with(self.max_number, self.largest_dividend, self.largest_divisor)
+        if self.problems <= possible:
+            return self
+        division = Operation.DIVIDE in operations
+        others = any(operation is not Operation.DIVIDE for operation in operations)
+        raises: dict[str, int | None] = {}
+        if others:
+            raises["largest number"] = _smallest_raise(
+                lambda largest: possible_with(largest, self.largest_dividend, self.largest_divisor),
+                self.problems,
+                self.max_number,
+                MAXIMUM_OPERAND,
+            )
+        if division:
+            raises["largest dividend"] = _smallest_raise(
+                lambda dividend: possible_with(self.max_number, dividend, self.largest_divisor),
+                self.problems,
+                self.largest_dividend,
+                MAXIMUM_OPERAND,
+            )
+            raises["largest divisor"] = _smallest_raise(
+                lambda divisor: possible_with(self.max_number, self.largest_dividend, divisor),
+                self.problems,
+                self.largest_divisor,
+                MAXIMUM_OPERAND,
+            )
+        if division and others:
+            limits = "largest number, dividend and divisor"
+        elif division:
+            limits = "largest dividend and divisor"
+        else:
+            limits = "largest number"
+        repeats = "repeated answers" if self.self_check_tiles else "repeats"
+        raise _too_many_problems(possible, repeats, limits, raises)
 
 
 class PlaceValueOptions(HeaderOptions):
@@ -337,6 +345,13 @@ class WordProblemOptions(HeaderOptions):
 
     title: Title = f"Word Problems — {PICTURE_NAMES[Picture.STRIP]}"
     problems: Problems = 4
+    # Each problem's operation is drawn at random from those ticked: only the operations built.
+    operations: list[Literal["add", "subtract"]] = Field(
+        ["add", "subtract"],
+        min_length=1,
+        title="Operations",
+        json_schema_extra={"labels": OPERATION_LABELS},
+    )
     # Only the pictures that can be drawn so far
     picture: Literal["strip"] = Field(
         "strip", title="Picture", json_schema_extra={"labels": PICTURE_LABELS}
@@ -428,17 +443,16 @@ class WorksheetOptions(Options):
 
 
 def _basic_operations(o: BasicOperationOptions, out: BinaryIO) -> None:
-    operation = Operation(o.operation)
     # Division's largest operand is its dividend. Only division uses largest_divisor.
-    high = o.largest_dividend if operation is Operation.DIVIDE else o.max_number
     if o.missing_number != "answer":
-        _missing_number(o, operation, out)
+        _missing_number(o, Operation.DIVIDE, out)
     elif o.self_check_tiles:
         # The answer bank replaces the options, so there are no wrong answers.
         questions = generate_basic_operation_questions(
             o.problems,
-            operation,
-            high=high,
+            o.chosen_operations,
+            high=o.max_number,
+            largest_dividend=o.largest_dividend,
             largest_divisor=o.largest_divisor,
             wrong_answer_count=0,
             distinct_answers=True,
@@ -448,7 +462,11 @@ def _basic_operations(o: BasicOperationOptions, out: BinaryIO) -> None:
         )
     else:
         questions = generate_basic_operation_questions(
-            o.problems, operation, high=high, largest_divisor=o.largest_divisor
+            o.problems,
+            o.chosen_operations,
+            high=o.max_number,
+            largest_dividend=o.largest_dividend,
+            largest_divisor=o.largest_divisor,
         )
         render_basic_operations_worksheet(
             questions=questions,
@@ -527,7 +545,9 @@ def _tile_slots(o: BasicOperationOptions | PlaceValueOptions | WordProblemOption
 
 def _word_problems(o: WordProblemOptions, out: BinaryIO) -> None:
     render_word_problems_worksheet(
-        questions=generate_word_problems(o.problems, distinct_answers=o.self_check_tiles),
+        questions=generate_word_problems(
+            o.problems, _operations(o.operations), distinct_answers=o.self_check_tiles
+        ),
         path=out,
         header=o.header(),
         answer_key=o.answer_key,

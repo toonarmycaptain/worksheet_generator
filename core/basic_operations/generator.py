@@ -1,7 +1,7 @@
 """Random generation of arithmetic questions, missing-number equations and word problems."""
 
 import random
-from collections.abc import Iterator
+from collections.abc import Iterator, Sequence
 from dataclasses import replace
 from typing import assert_never
 
@@ -138,54 +138,103 @@ def count_possible_questions(
     return min(possible, up_to)
 
 
-def generate_basic_operation_questions(
-    count: int,
-    operation: Operation,
+def count_possible_sheet_questions(
+    operations: Sequence[Operation],
     *,
     low: int = 0,
     high: int = DEFAULT_LARGEST_OPERAND,
+    largest_dividend: int | None = None,
+    largest_divisor: int | None = None,
+    distinct_answers: bool = False,
+    up_to: int,
+) -> int:
+    """
+    Count the questions ``generate_basic_operation_questions`` can produce for ``operations``.
+
+    Each question's operation is drawn at random, so any one operation may be drawn for every
+    question. The count is therefore the smallest that any one operation allows by itself: its
+    distinct answers with ``distinct_answers``, as in ``count_possible_answers``, and otherwise
+    its distinct questions, as in ``count_possible_questions``. That many are always possible
+    with distinct answers across operations too: each operation has at least that many answers,
+    and the other questions take at most one fewer. The count is capped at ``up_to``.
+    """
+    counts = []
+    for operation in operations:
+        largest = _largest_operand(operation, high, largest_dividend)
+        if distinct_answers:
+            counts.append(count_possible_answers(operation, low=low, high=largest, up_to=up_to))
+        else:
+            counts.append(
+                count_possible_questions(
+                    operation, low=low, high=largest, largest_divisor=largest_divisor, up_to=up_to
+                )
+            )
+    return min(counts)
+
+
+def generate_basic_operation_questions(
+    count: int,
+    operations: Sequence[Operation],
+    *,
+    low: int = 0,
+    high: int = DEFAULT_LARGEST_OPERAND,
+    largest_dividend: int | None = None,
     largest_divisor: int | None = None,
     wrong_answer_count: int = WRONG_ANSWER_COUNT,
     distinct_answers: bool = False,
 ) -> list[Question[BasicOperationQuestionData]]:
     """
-    Generate ``count`` questions with no repeated operand pair, in either order.
+    Generate ``count`` questions, each with an operation drawn at random from ``operations``.
 
-    With ``distinct_answers``, no two questions share an answer either, so 3 + 4 excludes 2 + 5.
-    ``largest_divisor`` applies to division, as in ``generate_basic_operation_question``.
+    No two questions of the same operation have the same operand pair, in either order. With
+    ``distinct_answers``, no two questions share an answer either, whatever their operations, so
+    3 + 4 excludes 2 + 5 and 10 - 3. Operands are from ``low`` to ``high``, except that a
+    division's dividend is at most ``largest_dividend`` (``high`` when ``None``) and its divisor
+    at most ``largest_divisor``, as in ``generate_basic_operation_question``.
 
-    Raises ``ValueError`` if the settings allow fewer than ``count`` such questions.
+    Raises ``ValueError`` if the settings allow fewer than ``count`` such questions, as counted
+    by ``count_possible_sheet_questions``.
     """
-    if distinct_answers:
-        possible = count_possible_answers(operation, low=low, high=high, up_to=count)
-        kind = "questions with different answers"
-    else:
-        possible = count_possible_questions(
-            operation, low=low, high=high, largest_divisor=largest_divisor, up_to=count
-        )
-        kind = "different questions"
+    possible = count_possible_sheet_questions(
+        operations,
+        low=low,
+        high=high,
+        largest_dividend=largest_dividend,
+        largest_divisor=largest_divisor,
+        distinct_answers=distinct_answers,
+        up_to=count,
+    )
     if count > possible:
+        kind = "questions with different answers" if distinct_answers else "different questions"
         raise ValueError(f"Cannot make {count} {kind}: only {possible} possible.")
 
     questions: list[Question[BasicOperationQuestionData]] = []
-    seen_pairs: set[tuple[int, ...]] = set()
+    seen_pairs: set[tuple[Operation, tuple[int, ...]]] = set()
     seen_answers: set[int] = set()
-    while len(questions) < count:
-        question = generate_basic_operation_question(
-            operation,
-            low=low,
-            high=high,
-            largest_divisor=largest_divisor,
-            wrong_answer_count=wrong_answer_count,
-        )
-        pair = tuple(sorted(question.data.operands))
-        answer = question.data.answer
-        if pair in seen_pairs or (distinct_answers and answer in seen_answers):
-            continue
+    for operation in random.choices(operations, k=count):
+        while True:
+            question = generate_basic_operation_question(
+                operation,
+                low=low,
+                high=_largest_operand(operation, high, largest_dividend),
+                largest_divisor=largest_divisor,
+                wrong_answer_count=wrong_answer_count,
+            )
+            pair = (operation, tuple(sorted(question.data.operands)))
+            answer = question.data.answer
+            if pair not in seen_pairs and not (distinct_answers and answer in seen_answers):
+                break
         seen_pairs.add(pair)
         seen_answers.add(answer)
         questions.append(question)
     return questions
+
+
+def _largest_operand(operation: Operation, high: int, largest_dividend: int | None) -> int:
+    """Return ``largest_dividend`` for division, if given, and otherwise ``high``."""
+    if operation is Operation.DIVIDE and largest_dividend is not None:
+        return largest_dividend
+    return high
 
 
 def generate_missing_number_question(
@@ -329,28 +378,26 @@ def generate_missing_number_questions(
 
 
 def generate_word_problems(
-    count: int, *, distinct_answers: bool = False
+    count: int, operations: Sequence[Operation], *, distinct_answers: bool = False
 ) -> list[Question[BasicOperationQuestionData]]:
     """
-    Generate ``count`` addition and subtraction word problems, to answer in writing.
+    Generate ``count`` word problems, each with an operation drawn at random from ``operations``.
 
-    Half the problems, rounded up, are addition and the rest subtraction, in random order. Their
-    operand sizes take ``WORD_PROBLEM_DIGITS`` in turn, also in random order: 2-digit operands
-    are 11 to 99 and 3-digit operands 100 to 999. A sum is at most 999, and a difference at least
-    10, with the larger operand first. The wording comes from the word-problem bank. As
-    free-response questions, they have no wrong answers.
+    Only addition and subtraction are built; the other operations raise ``NotImplementedError``.
+    The operand sizes take ``WORD_PROBLEM_DIGITS`` in turn, in random order: 2-digit operands are
+    11 to 99 and 3-digit operands 100 to 999. A sum is at most 999, and a difference at least 10,
+    with the larger operand first. The wording comes from the word-problem bank. The problems are
+    answered in writing, so they have no wrong answers.
 
     With ``distinct_answers``, no two problems share an answer: a problem whose answer is taken
     is drawn again. Every operation and size allows at least 79 answers (2-digit differences
     from 10 to 88), so this ends quickly for any sheet.
     """
-    operations = [Operation.ADD] * ((count + 1) // 2) + [Operation.SUBTRACT] * (count // 2)
-    random.shuffle(operations)
     digits = [WORD_PROBLEM_DIGITS[index % len(WORD_PROBLEM_DIGITS)] for index in range(count)]
     random.shuffle(digits)
     unworded: list[BasicOperationQuestionData] = []
     answers: set[int] = set()
-    for operation, sizes in zip(operations, digits, strict=True):
+    for operation, sizes in zip(random.choices(operations, k=count), digits, strict=True):
         data = _word_problem(operation, sizes)
         while distinct_answers and data.answer in answers:
             data = _word_problem(operation, sizes)

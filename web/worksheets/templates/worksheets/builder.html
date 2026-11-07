@@ -14,6 +14,16 @@
       {% for field in form.fields %}
         {% if field.input == "checkbox" %}
         <label><input type="checkbox" name="{{ field.name }}" data-label="{{ field.label }}"{% if field.value %} checked{% endif %}> {{ field.label }}</label>
+        {% elif field.input == "checkboxes" %}
+        {# a group of more than two has an All box, with no name, so it isn't sent #}
+        <div class="choices" role="group" data-checkboxes="{{ field.label }}">{{ field.label }}:
+          {% for value, text in field.choices %}
+          <label><input type="checkbox" name="{{ field.name }}" value="{{ value }}"{% if value in field.value %} checked{% endif %}> {{ text }}</label>
+          {% endfor %}
+          {% if field.choices|length > 2 %}
+          <label><input type="checkbox" data-all> All</label>
+          {% endif %}
+        </div>
         {% elif field.input == "radio" %}
         <div class="choices" role="radiogroup">{{ field.label }}:
           {% for value, text in field.choices %}
@@ -88,33 +98,80 @@
   {% if operation_titles %}
   {{ operation_titles|json_script:"operation-titles" }}
   <script type="module">
-    // The title follows the operation, unless it has been changed to something else.
-    const titles = JSON.parse(document.getElementById("operation-titles").textContent);
-    const form = document.querySelector("select[name=operation]").form;
-    form.elements.operation.addEventListener("change", () => {
-      if (Object.values(titles).includes(form.elements.title.value)) {
-        form.elements.title.value = titles[form.elements.operation.value];
-      }
-    });
+    // The basic operations form: the only one with a missing number.
+    const form = document.querySelector("select[name=missing_number]").form;
+    const boxes = [...form.querySelectorAll("input[name=operations]")];
+    const ticked = () => boxes.filter((box) => box.checked).map((box) => box.value);
 
-    // Division has its own fields, and the other operations use the largest number. Only the
-    // chosen operation's fields show, and the others are disabled, so they aren't sent.
-    const divisionFields = ["missing_number", "largest_dividend", "largest_divisor"];
-    function showOperationFields() {
-      const divide = form.elements.operation.value === "divide";
-      for (const name of [...divisionFields, "max_number"]) {
-        const unused = divisionFields.includes(name) !== divide;
-        form.elements[name].disabled = unused;
-        // the page's CSS shows labels as blocks, which would win over the hidden attribute
-        form.elements[name].closest("label").style.display = unused ? "none" : "";
+    // The title follows the ticked operations, unless it has been changed to something else.
+    // Titles are keyed by the ticked values, in order, joined by commas.
+    const titles = JSON.parse(document.getElementById("operation-titles").textContent);
+    function followTitle() {
+      const title = titles[ticked().join(",")];
+      if (title && Object.values(titles).includes(form.elements.title.value)) {
+        form.elements.title.value = title;
       }
     }
-    form.elements.operation.addEventListener("change", showOperationFields);
+
+    // Division has its own fields, and the other operations use the largest number. Only the
+    // fields of the ticked operations show, and the others are disabled, so they aren't sent.
+    // Missing number is for division by itself.
+    function showOperationFields() {
+      const chosen = ticked();
+      const divide = chosen.includes("divide");
+      const others = chosen.some((value) => value !== "divide");
+      const shown = {
+        max_number: others || !divide,
+        largest_dividend: divide,
+        largest_divisor: divide,
+        missing_number: divide && !others,
+      };
+      for (const [name, show] of Object.entries(shown)) {
+        form.elements[name].disabled = !show;
+        // the page's CSS shows labels as blocks, which would win over the hidden attribute
+        form.elements[name].closest("label").style.display = show ? "" : "none";
+      }
+    }
+    for (const box of boxes) {
+      box.addEventListener("change", followTitle);
+      box.addEventListener("change", showOperationFields);
+    }
     // also when the browser restores the choices, going back to the page
     window.addEventListener("pageshow", showOperationFields);
     showOperationFields();
   </script>
   {% endif %}
+
+  <script type="module">
+    // A group of checkboxes, such as the operations, needs at least one ticked: while none is,
+    // the form's button is greyed out, with a note saying why. A group of more than two has an
+    // All box, which ticks or clears them all, and is ticked while they all are.
+    for (const group of document.querySelectorAll("[data-checkboxes]")) {
+      const boxes = [...group.querySelectorAll("input[name]")];
+      const all = group.querySelector("input[data-all]");
+      const button = group.closest("form").querySelector("button");
+      const note = document.createElement("span");
+      note.textContent = ` Tick at least one of the ${group.dataset.checkboxes.toLowerCase()}.`;
+      button.after(note);
+      const update = () => {
+        const count = boxes.filter((box) => box.checked).length;
+        button.disabled = count === 0;
+        note.hidden = count > 0;
+        if (all) all.checked = count === boxes.length;
+      };
+      for (const box of boxes) box.addEventListener("change", update);
+      all?.addEventListener("change", () => {
+        // Set every box first: each change event runs update, which would untick All partway.
+        const tick = all.checked;
+        for (const box of boxes) box.checked = tick;
+        // setting checked doesn't fire change, which the other scripts listen for
+        for (const box of boxes) box.dispatchEvent(new Event("change"));
+      });
+      // also when the browser restores the choices, going back to the page
+      window.addEventListener("pageshow", update);
+      update();
+    }
+  </script>
 
   <script type="module">
     // On a form marked data-check-first, Make PDF asks the server whether the options work
@@ -171,9 +228,9 @@
 
     // One of Ninja's 422 errors, led by its field's label. A check on the options as a whole
     // names its field first ("problems: at most 10 …"); a single field's error has the field
-    // as the last part of its loc.
+    // as the last name in its loc, which for a list is followed by the entry's index.
     function describe(form, error) {
-      let field = error.loc.at(-1);
+      let field = error.loc.findLast((part) => typeof part === "string");
       let text = error.msg;
       if (field === "options") {
         const named = /^(\w+): (.*)$/s.exec(error.ctx?.error ?? "");

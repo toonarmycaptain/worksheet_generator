@@ -15,7 +15,7 @@ import base64
 import random
 import re
 import zlib
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from io import BytesIO
 from pathlib import Path
 from typing import Any
@@ -92,6 +92,35 @@ def sample_last(monkeypatch: pytest.MonkeyPatch) -> None:
 def reverse_shuffle(monkeypatch: pytest.MonkeyPatch) -> None:
     """Make ``random.shuffle`` reverse the list."""
     monkeypatch.setattr(random, "shuffle", lambda items: items.reverse())
+
+
+def choices_returns(monkeypatch: pytest.MonkeyPatch, picks: list[Any]) -> None:
+    """
+    Make ``random.choices`` return ``picks``, such as the operation drawn for each question.
+
+    Picks that are not ``k`` items of the population raise ``ValueError``, as the real
+    ``choices`` never returns them.
+    """
+
+    def choices(population: Sequence[Any], k: int) -> list[Any]:
+        if k != len(picks) or any(pick not in population for pick in picks):
+            raise ValueError(f"{picks} are not {k} picks from {population}")
+        return list(picks)
+
+    monkeypatch.setattr(random, "choices", choices)
+
+
+def choices_in_turn(monkeypatch: pytest.MonkeyPatch) -> None:
+    """
+    Make ``random.choices`` take the population's items in turn, from the first.
+
+    With one operation, every question gets it; with several, they take turns in order.
+    """
+    monkeypatch.setattr(
+        random,
+        "choices",
+        lambda population, k: [population[index % len(population)] for index in range(k)],
+    )
 
 
 def choose_last(monkeypatch: pytest.MonkeyPatch) -> None:
