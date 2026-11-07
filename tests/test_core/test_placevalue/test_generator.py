@@ -18,6 +18,7 @@ from core.placevalue.generator import (
     generate_place_value_question,
     generate_place_value_questions,
 )
+from core.question import FreeResponse, MultipleChoice
 from tests.data import EXPANDED, EXPANDED_NOTATION, STANDARD, UNIT, WORD
 from tests.helpers import randint_returns, randint_returns_low, reverse_shuffle, sample_first
 
@@ -94,8 +95,14 @@ def test_a_mixed_form_is_picked_from_the_forms_other_than_the_other_one(
 @pytest.mark.parametrize(
     ("wrong_answer_count", "low", "high", "drawn", "expected"),
     [
-        # written: no wrong answers, so the answer is the only option
-        (0, 1000, 99_999, 35043, (PlaceValueQuestionData(35043, STANDARD, EXPANDED), (), (35043,))),
+        # written: free response, with no options
+        (
+            0,
+            1000,
+            99_999,
+            35043,
+            (PlaceValueQuestionData(35043, STANDARD, EXPANDED), FreeResponse()),
+        ),
         # sample takes the bottom of the range, and shuffle reverses the options
         (
             3,
@@ -104,8 +111,7 @@ def test_a_mixed_form_is_picked_from_the_forms_other_than_the_other_one(
             35043,
             (
                 PlaceValueQuestionData(35043, STANDARD, EXPANDED),
-                (1000, 1001, 1002),
-                (1002, 1001, 1000, 35043),
+                MultipleChoice((1002, 1001, 1000, 35043), frozenset({3})),
             ),
         ),
         # the correct answer is left out of the wrong answers
@@ -114,14 +120,20 @@ def test_a_mixed_form_is_picked_from_the_forms_other_than_the_other_one(
             10,
             13,
             10,
-            (PlaceValueQuestionData(10, STANDARD, EXPANDED), (11, 12, 13), (13, 12, 11, 10)),
+            (
+                PlaceValueQuestionData(10, STANDARD, EXPANDED),
+                MultipleChoice((13, 12, 11, 10), frozenset({3})),
+            ),
         ),
         (
             3,
             10,
             13,
             12,
-            (PlaceValueQuestionData(12, STANDARD, EXPANDED), (10, 11, 13), (13, 11, 10, 12)),
+            (
+                PlaceValueQuestionData(12, STANDARD, EXPANDED),
+                MultipleChoice((13, 11, 10, 12), frozenset({3})),
+            ),
         ),
     ],
 )
@@ -130,10 +142,10 @@ def test_wrong_answers_come_from_the_range(
     low: int,
     high: int,
     drawn: int,
-    expected: tuple[PlaceValueQuestionData, tuple[int, ...], tuple[int, ...]],
+    expected: tuple[PlaceValueQuestionData, FreeResponse | MultipleChoice[int]],
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """Each case is the complete question: its data, wrong answers and options, in order."""
+    """Each case is the complete question: its data and its response."""
     randint_returns(monkeypatch, [drawn])
     sample_first(monkeypatch)
     reverse_shuffle(monkeypatch)
@@ -142,7 +154,7 @@ def test_wrong_answers_come_from_the_range(
         STANDARD, EXPANDED, low=low, high=high, wrong_answer_count=wrong_answer_count
     )
 
-    assert (question.data, question.wrong_answers, question.options) == expected
+    assert (question.data, question.response) == expected
 
 
 @pytest.mark.parametrize(

@@ -2,9 +2,9 @@
 
 import random
 
-from core.placevalue.data import PlaceValueForm, PlaceValueQuestionData
+from core.placevalue.data import PlaceValueForm, PlaceValueQuestion, PlaceValueQuestionData
 from core.placevalue.representation import LARGEST_NUMBER, WRITTEN_FORMS
-from core.question import Question
+from core.question import FreeResponse, Question, multiple_choice
 from core.wrong_answers import random_wrong_answers
 
 # The default range of a question's number: four- and five-digit numbers.
@@ -19,7 +19,7 @@ def generate_place_value_question(
     low: int = DEFAULT_SMALLEST_NUMBER,
     high: int = DEFAULT_LARGEST_NUMBER,
     wrong_answer_count: int = 0,
-) -> Question[PlaceValueQuestionData]:
+) -> PlaceValueQuestion:
     """
     Generate a question whose number is drawn at random from ``low`` to ``high``.
 
@@ -46,7 +46,7 @@ def generate_place_value_questions(
     low: int = DEFAULT_SMALLEST_NUMBER,
     high: int = DEFAULT_LARGEST_NUMBER,
     wrong_answer_count: int = 0,
-) -> list[Question[PlaceValueQuestionData]]:
+) -> list[PlaceValueQuestion]:
     """
     Generate ``count`` questions with distinct numbers, whatever their forms.
 
@@ -83,11 +83,14 @@ def _question(
     low: int,
     high: int,
     wrong_answer_count: int,
-) -> Question[PlaceValueQuestionData]:
+) -> PlaceValueQuestion:
     """Build the question for ``number``, choosing any mixed forms and its wrong answers."""
     if given is None:
         given = random.choice([form for form in WRITTEN_FORMS if form != asked])
     if asked is None:
         asked = random.choice([form for form in WRITTEN_FORMS if form != given])
+    data = PlaceValueQuestionData(number, given, asked)
     wrong_answers = random_wrong_answers(number, count=wrong_answer_count, low=low, high=high)
-    return Question(PlaceValueQuestionData(number, given, asked), wrong_answers)
+    if not wrong_answers:
+        return Question(data, FreeResponse())
+    return Question(data, multiple_choice((number,), wrong_answers))

@@ -26,7 +26,7 @@ from core.base_ten_blocks import BlocksQuestionData
 from core.basic_operations.data import BasicOperationQuestionData, MissingNumberQuestionData
 from core.basic_operations.representation import Representation
 from core.placevalue.data import PlaceValueQuestionData
-from core.question import Question, QuestionData
+from core.question import FreeResponse, Question, QuestionData, multiple_choice
 from core.self_check_tiles import TileQuestion
 from render.pdf.base_ten_blocks_worksheet import render_base_ten_blocks_worksheet
 from render.pdf.basic_operations_worksheet import (
@@ -178,12 +178,6 @@ def write_section(path: Path, name: str, text: str) -> None:
     path.write_text("".join(f"=== {case} ===\n{body}\n\n" for case, body in sections.items()))
 
 
-def build[Data: QuestionData](
-    cases: list[tuple[Data, tuple[int, ...]]],
-) -> list[Question[Data]]:
-    return [Question(data, wrong_answers) for data, wrong_answers in cases]
-
-
 def render_basic_operations(
     cases: list[tuple[BasicOperationQuestionData, tuple[int, ...]]],
     answer_key: bool,
@@ -193,7 +187,10 @@ def render_basic_operations(
 ) -> bytes:
     out = BytesIO()
     render_basic_operations_worksheet(
-        questions=build(cases),
+        questions=[
+            Question(data, multiple_choice((data.answer,), wrong_answers))
+            for data, wrong_answers in cases
+        ],
         path=out,
         header=Header(title=title, label=label, name_line=name_line),
         answer_key=answer_key,
@@ -210,7 +207,7 @@ def render_missing_numbers(
 ) -> bytes:
     out = BytesIO()
     render_missing_number_worksheet(
-        questions=build(cases),
+        questions=[Question(data, FreeResponse()) for data, _ in cases],
         path=out,
         header=Header(title=title, label=label, name_line=name_line),
         answer_key=answer_key,
@@ -227,7 +224,13 @@ def render_place_value(
 ) -> bytes:
     out = BytesIO()
     render_place_value_worksheet(
-        questions=build(cases),
+        questions=[
+            Question(
+                data,
+                multiple_choice((data.answer,), wrong_answers) if wrong_answers else FreeResponse(),
+            )
+            for data, wrong_answers in cases
+        ],
         path=out,
         header=Header(title=title, label=label, name_line=name_line),
         answer_key=answer_key,
@@ -235,7 +238,7 @@ def render_place_value(
     return out.getvalue()
 
 
-def render_tiles[Data: QuestionData](
+def render_tiles[Data: QuestionData[Any]](
     questions: list[Data],
     to_tile: Callable[[Data], TileQuestion],
     slot_of: tuple[int, ...],
@@ -270,7 +273,7 @@ def render_word_problems(
     """Render the word problems sheet, each question free response, with no wrong answers."""
     out = BytesIO()
     render_word_problems_worksheet(
-        questions=[Question(data, ()) for data in questions],
+        questions=[Question(data, FreeResponse()) for data in questions],
         path=out,
         header=Header(title=title, label=label, name_line=name_line),
         answer_key=answer_key,
@@ -294,7 +297,7 @@ def render_base_ten_blocks(
     """Render the base-ten blocks sheet, each question free response, with no wrong answers."""
     out = BytesIO()
     render_base_ten_blocks_worksheet(
-        questions=[Question(data, ()) for data in questions],
+        questions=[Question(data, FreeResponse()) for data in questions],
         path=out,
         header=Header(title=title, label=label, name_line=name_line),
         answer_key=answer_key,
