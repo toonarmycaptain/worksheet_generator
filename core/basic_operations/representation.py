@@ -1,7 +1,7 @@
 """
 Wording of basic-operation questions: each operation's symbol and name, the equations, and the
-questions as the self-check tiles sheet shows them. Also the pictures drawn with word problems,
-with their sheet titles, instructions, hints and diagram descriptions.
+questions as the self-check tiles sheet shows them. Also the representations drawn with word
+problems, with their sheet titles, instructions, hints and diagram descriptions.
 """
 
 from collections.abc import Collection, Sequence
@@ -85,10 +85,10 @@ def missing_number_tile_question(data: MissingNumberQuestionData) -> TileQuestio
     )
 
 
-class Picture(StrEnum):
+class Representation(StrEnum):
     """
-    The picture drawn with each word problem on a sheet. Values are stable identifiers for the
-    API and storage.
+    The representation drawn with each word problem on a sheet. Values are stable identifiers for
+    the API and storage.
     """
 
     STRIP = "strip"  # a part-part-whole strip diagram, or bar model
@@ -97,36 +97,37 @@ class Picture(StrEnum):
     BLOCKS = "blocks"  # base-ten blocks
 
 
-# What each picture is called, in a sheet's title and on the web page
-PICTURE_NAMES = {
-    Picture.STRIP: "Strip Diagrams",
-    Picture.NONE: "Text Only",
-    Picture.NUMBER_LINE: "Number Lines",
-    Picture.BLOCKS: "Base-Ten Blocks",
+# What each representation is called, in a sheet's title and on the web page
+REPRESENTATION_NAMES = {
+    Representation.STRIP: "Strip Diagrams",
+    Representation.NONE: "Text Only",
+    Representation.NUMBER_LINE: "Number Lines",
+    Representation.BLOCKS: "Base-Ten Blocks",
 }
 WORD_PROBLEMS_NAME = "Word Problems"
 
-# The operations each picture can show. A number line jumps forward or back, and base-ten blocks
-# are joined or crossed out, so they show only addition and subtraction.
-PICTURE_OPERATIONS = {
-    Picture.STRIP: frozenset(Operation),
-    Picture.NONE: frozenset(Operation),
-    Picture.NUMBER_LINE: frozenset({Operation.ADD, Operation.SUBTRACT}),
-    Picture.BLOCKS: frozenset({Operation.ADD, Operation.SUBTRACT}),
+# The operations each representation can show. A number line jumps forward or back, and base-ten
+# blocks are joined or crossed out, so they show only addition and subtraction.
+REPRESENTATION_OPERATIONS = {
+    Representation.STRIP: frozenset(Operation),
+    Representation.NONE: frozenset(Operation),
+    Representation.NUMBER_LINE: frozenset({Operation.ADD, Operation.SUBTRACT}),
+    Representation.BLOCKS: frozenset({Operation.ADD, Operation.SUBTRACT}),
 }
 # The largest operand of a word problem drawn with base-ten blocks. A number has at most 5 flats,
 # so they fit in one row.
 LARGEST_BLOCKS_OPERAND = 599
 
 
-def word_problems_title(picture: Picture) -> str:
+def word_problems_title(representation: Representation) -> str:
     """
-    Return what a sheet of word problems drawn with ``picture`` is called, so its title unless
-    one is given: "Word Problems", followed by the picture's name unless the sheet is text only.
+    Return what a sheet of word problems drawn with ``representation`` is called, so its title
+    unless one is given: "Word Problems", followed by the representation's name unless the sheet is
+    text only.
     """
-    if picture is Picture.NONE:
+    if representation is Representation.NONE:
         return WORD_PROBLEMS_NAME
-    return f"{WORD_PROBLEMS_NAME} — {PICTURE_NAMES[picture]}"
+    return f"{WORD_PROBLEMS_NAME} — {REPRESENTATION_NAMES[representation]}"
 
 
 _STRIP_HINTS = {
@@ -274,13 +275,13 @@ def blocks_diagram(data: BasicOperationQuestionData) -> BlocksDiagram:
             assert_never(data.operation)
 
 
-def instruction(picture: Picture, operations: Collection[Operation]) -> str:
+def instruction(representation: Representation, operations: Collection[Operation]) -> str:
     """
-    Return the instruction printed under a word-problem sheet's header, for its picture and the
-    operations of its problems.
+    Return the instruction printed under a word-problem sheet's header, for its representation and
+    the operations of its problems.
     """
-    match picture:
-        case Picture.STRIP:
+    match representation:
+        case Representation.STRIP:
             parts = not {Operation.ADD, Operation.SUBTRACT}.isdisjoint(operations)
             equal_groups = not {Operation.MULTIPLY, Operation.DIVIDE}.isdisjoint(operations)
             if parts and equal_groups:
@@ -290,32 +291,32 @@ def instruction(picture: Picture, operations: Collection[Operation]) -> str:
             else:
                 makes = "two parts make a whole"
             return f"Use the strip diagram (bar model): {makes}. The ? shows what to find."
-        case Picture.NONE:
+        case Representation.NONE:
             return "Read each problem. Show your work in the box."
-        case Picture.NUMBER_LINE:
+        case Representation.NUMBER_LINE:
             return (
                 "Use the number line. Start at the first number and jump by hundreds, tens, and "
                 "ones."
             )
-        case Picture.BLOCKS:
+        case Representation.BLOCKS:
             return "Use the base-ten blocks to help you solve each problem."
         case _:
-            assert_never(picture)
+            assert_never(representation)
 
 
-def hint(data: BasicOperationQuestionData, picture: Picture) -> str | None:
+def hint(data: BasicOperationQuestionData, representation: Representation) -> str | None:
     """
-    Return the hint printed under a word problem, for the picture drawn with it, or None if the
-    picture has no hints.
+    Return the hint printed under a word problem, for the representation drawn with it, or None if
+    the representation has no hints.
     """
-    match picture:
-        case Picture.STRIP:
+    match representation:
+        case Representation.STRIP:
             return _STRIP_HINTS[data.operation]
-        case Picture.NONE:
+        case Representation.NONE:
             return None
-        case Picture.NUMBER_LINE:
+        case Representation.NUMBER_LINE:
             return _NUMBER_LINE_HINTS[data.operation]
-        case Picture.BLOCKS:
+        case Representation.BLOCKS:
             return _BLOCKS_HINTS[data.operation].format(b=data.operands[1])
         case _:
-            assert_never(picture)
+            assert_never(representation)

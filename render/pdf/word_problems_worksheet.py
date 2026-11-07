@@ -1,13 +1,13 @@
 """
-PDF worksheets of word problems, each drawn with the sheet's picture, with an optional answer key
-page.
+PDF worksheets of word problems, each drawn with the sheet's representation, with an optional answer
+key page.
 
-The first page has the picture's instruction under its header, and for base-ten blocks a key to
-the blocks. Each problem has its number and wording, a hint if the picture has one and hints
-aren't turned off, the picture, and an answer line. A text-only problem's picture is a box to
-show the work in. A number line's last box is its answer, so it has no answer line. A sheet for
-the self-check tiles case has no answer lines, and ends with a page for the answer bank and
-pattern.
+The first page has the representation's instruction under its header, and for base-ten blocks a key
+to the blocks. Each problem has its number and wording, a hint if the representation has one and
+hints aren't turned off, the representation, and an answer line. A text-only problem's
+representation is a box to show the work in. A number line's last box is its answer, so it has no
+answer line. A sheet for the self-check tiles case has no answer lines, and ends with a page for the
+answer bank and pattern.
 """
 
 from collections.abc import Sequence
@@ -20,7 +20,7 @@ from reportlab.pdfgen.canvas import Canvas
 from core.basic_operations.data import BasicOperationQuestionData
 from core.basic_operations.representation import (
     EqualStripDiagram,
-    Picture,
+    Representation,
     StripDiagram,
     basic_operation_tile_question,
     blocks_diagram,
@@ -70,11 +70,11 @@ INSTRUCTION_LINE_HEIGHT = 16
 INSTRUCTION_GAP = 10  # extra space between the instruction and the first problem
 HINT_SIZE = 11
 HINT_LINE_HEIGHT = 15
-PICTURE_RAISE = 6  # a picture's top is this far above the next text baseline
-ANSWER_DROP = 26  # from the bottom of the picture down to the answer line, room to write
+REPRESENTATION_RAISE = 6  # a representation's top is this far above the next text baseline
+ANSWER_DROP = 26  # from the bottom of the representation down to the answer line, room to write
 ANSWER_LABEL = "Answer: "
 ANSWER_LINE_LENGTH = 120
-PROBLEM_GAP = 22  # from the answer line, or the picture, down to the next problem's baseline
+PROBLEM_GAP = 22  # from the answer line, or the representation, down to the next problem's baseline
 # Text only: the box to show the work in, as wide as the text, with a label in its top-left corner
 WORK_BOX_HEIGHT = 60
 WORK_BOX_CORNER_RADIUS = 4
@@ -91,13 +91,13 @@ def render_word_problems_worksheet(
     path: str | BinaryIO,
     header: Header,
     answer_key: bool,
-    picture: Picture,
+    representation: Representation,
     hints: bool,
     slot_of: Sequence[int] | None,
     black_and_white: bool = False,
 ) -> None:
     """
-    Render word problems, each drawn with ``picture``, and the answer key if requested, to
+    Render word problems, each drawn with ``representation``, and the answer key if requested, to
     ``path``.
 
     Each problem's hint is left out when ``hints`` is False, and so is the note beside base-ten
@@ -112,24 +112,24 @@ def render_word_problems_worksheet(
     questions, and their answers must be distinct. The answer key adds each answer's slot letter.
     """
     pdf = new_pdf(path, header.title)
-    answer_lines = slot_of is None and picture is not Picture.NUMBER_LINE
+    answer_lines = slot_of is None and representation is not Representation.NUMBER_LINE
     colours = GREY_BLOCKS if black_and_white else COLOUR_BLOCKS
 
     operations = {question.data.operation for question in questions}
-    y = _draw_instruction(pdf, instruction(picture, operations), start_page(pdf, header))
-    if picture is Picture.BLOCKS:
-        top = y + PICTURE_RAISE
+    y = _draw_instruction(pdf, instruction(representation, operations), start_page(pdf, header))
+    if representation is Representation.BLOCKS:
+        top = y + REPRESENTATION_RAISE
         draw_blocks_key(pdf, MARGIN, top, colours)
         y = top - BLOCKS_KEY_HEIGHT - PROBLEM_GAP
     for number, question in enumerate(questions, start=1):
         lines = wrap(stem(question.data), TEXT_SIZE, TEXT_WIDTH)
-        hint_text = hint(question.data, picture) if hints else None
+        hint_text = hint(question.data, representation) if hints else None
         hint_lines = wrap(hint_text, HINT_SIZE, TEXT_WIDTH) if hint_text is not None else []
         height = (
             len(lines) * LINE_HEIGHT
             + len(hint_lines) * HINT_LINE_HEIGHT
-            - PICTURE_RAISE
-            + _picture_height(question.data, picture)
+            - REPRESENTATION_RAISE
+            + _representation_height(question.data, representation)
             + (ANSWER_DROP if answer_lines else 0)
         )
         if y - height < MARGIN:
@@ -141,7 +141,7 @@ def render_word_problems_worksheet(
             question.data,
             lines,
             hint_lines,
-            picture,
+            representation,
             answer_lines,
             hints,
             colours,
@@ -180,14 +180,14 @@ def _draw_problem(
     data: BasicOperationQuestionData,
     lines: list[str],
     hint_lines: list[str],
-    picture: Picture,
+    representation: Representation,
     answer_line: bool,
     hints: bool,
     colours: BlockColours,
     y: float,
 ) -> float:
     """
-    Draw one problem, from its number down to its picture, followed by an answer line if
+    Draw one problem, from its number down to its representation, followed by an answer line if
     ``answer_line`` is set, and return the y below it.
 
     ``hints`` and ``colours`` are for base-ten blocks: whether to write the note saying how many
@@ -205,10 +205,10 @@ def _draw_problem(
         y -= HINT_LINE_HEIGHT
     pdf.setFillColor("black")
 
-    top = y + PICTURE_RAISE
-    _draw_picture(pdf, data, picture, MARGIN + TEXT_INDENT, top, hints, colours)
+    top = y + REPRESENTATION_RAISE
+    _draw_representation(pdf, data, representation, MARGIN + TEXT_INDENT, top, hints, colours)
 
-    bottom = top - _picture_height(data, picture)
+    bottom = top - _representation_height(data, representation)
     if answer_line:
         bottom -= ANSWER_DROP
         pdf.setFont(BOLD_FONT, TEXT_SIZE)
@@ -218,35 +218,37 @@ def _draw_problem(
     return bottom - PROBLEM_GAP
 
 
-def _picture_height(data: BasicOperationQuestionData, picture: Picture) -> float:
-    match picture:
-        case Picture.STRIP:
+def _representation_height(
+    data: BasicOperationQuestionData, representation: Representation
+) -> float:
+    match representation:
+        case Representation.STRIP:
             return STRIP_HEIGHT
-        case Picture.NONE:
+        case Representation.NONE:
             return WORK_BOX_HEIGHT
-        case Picture.NUMBER_LINE:
+        case Representation.NUMBER_LINE:
             return NUMBER_LINE_HEIGHT
-        case Picture.BLOCKS:
+        case Representation.BLOCKS:
             return blocks_height(blocks_diagram(data))
         case _:
-            assert_never(picture)
+            assert_never(representation)
 
 
-def _draw_picture(
+def _draw_representation(
     pdf: Canvas,
     data: BasicOperationQuestionData,
-    picture: Picture,
+    representation: Representation,
     x: float,
     top: float,
     hints: bool,
     colours: BlockColours,
 ) -> None:
     """
-    Draw the problem's picture with its top-left corner at (``x``, ``top``). ``hints`` and
+    Draw the problem's representation with its top-left corner at (``x``, ``top``). ``hints`` and
     ``colours`` are for base-ten blocks, as in ``_draw_problem``.
     """
-    match picture:
-        case Picture.STRIP:
+    match representation:
+        case Representation.STRIP:
             diagram = strip_diagram(data)
             match diagram:
                 case StripDiagram():
@@ -255,14 +257,14 @@ def _draw_picture(
                     draw_equal_strip(pdf, x, top, diagram)
                 case _:
                     assert_never(diagram)
-        case Picture.NONE:
+        case Representation.NONE:
             _draw_work_box(pdf, x, top)
-        case Picture.NUMBER_LINE:
+        case Representation.NUMBER_LINE:
             draw_number_line(pdf, x, top, data.operands[0], number_line_jumps(data))
-        case Picture.BLOCKS:
+        case Representation.BLOCKS:
             draw_blocks(pdf, x, top, blocks_diagram(data), colours, note=hints)
         case _:
-            assert_never(picture)
+            assert_never(representation)
 
 
 def _draw_work_box(pdf: Canvas, x: float, top: float) -> None:

@@ -142,59 +142,60 @@
   </script>
   {% endif %}
 
-  {% if picture_titles %}
-  {{ picture_titles|json_script:"picture-titles" }}
-  {{ picture_operations|json_script:"picture-operations" }}
+  {% if representation_titles %}
+  {{ representation_titles|json_script:"representation-titles" }}
+  {{ representation_operations|json_script:"representation-operations" }}
   <script type="module">
-    // The word problems form: the only one with a picture.
-    const picture = document.querySelector("select[name=picture]");
-    const form = picture.form;
+    // The word problems form: the only one with a representation.
+    const representation = document.querySelector("select[name=representation]");
+    const form = representation.form;
 
-    // The title follows the picture, unless it has been changed to something else.
-    const titles = JSON.parse(document.getElementById("picture-titles").textContent);
-    picture.addEventListener("change", () => {
+    // The title follows the representation, unless it has been changed to something else.
+    const titles = JSON.parse(document.getElementById("representation-titles").textContent);
+    representation.addEventListener("change", () => {
       if (Object.values(titles).includes(form.elements.title.value)) {
-        form.elements.title.value = titles[picture.value];
+        form.elements.title.value = titles[representation.value];
       }
     });
 
     // Text only has no hints, so the box to leave them out is hidden, and disabled so it isn't
     // sent.
     function showNoHints() {
-      const show = picture.value !== "none";
+      const show = representation.value !== "none";
       form.elements.no_hints.disabled = !show;
       // the page's CSS shows labels as blocks, which would win over the hidden attribute
       form.elements.no_hints.closest("label").style.display = show ? "" : "none";
     }
-    picture.addEventListener("change", showNoHints);
+    representation.addEventListener("change", showNoHints);
     // also when the browser restores the choices, going back to the page
     window.addEventListener("pageshow", showNoHints);
     showNoHints();
 
     // Only base-ten blocks have colours to leave out, so the black and white box is hidden, and
-    // disabled, for the other pictures.
+    // disabled, for the other representations.
     function showBlackAndWhite() {
-      const show = picture.value === "blocks";
+      const show = representation.value === "blocks";
       form.elements.black_and_white.disabled = !show;
       // the page's CSS shows labels as blocks, which would win over the hidden attribute
       form.elements.black_and_white.closest("label").style.display = show ? "" : "none";
     }
-    picture.addEventListener("change", showBlackAndWhite);
+    representation.addEventListener("change", showBlackAndWhite);
     window.addEventListener("pageshow", showBlackAndWhite);
     showBlackAndWhite();
 
-    // The operations the picture can't show, such as multiplication on a number line, are greyed
-    // out, so they aren't sent. Their ticks come back with a picture that can show them.
-    const shown = JSON.parse(document.getElementById("picture-operations").textContent);
+    // The operations the representation can't show, such as multiplication on a number line, are
+    // greyed out, so they aren't sent. Their ticks come back with a representation that can show
+    // them.
+    const shown = JSON.parse(document.getElementById("representation-operations").textContent);
     const operations = [...form.querySelectorAll("input[name=operations]")];
     function greyOutOperations() {
       for (const box of operations) {
-        box.disabled = !shown[picture.value].includes(box.value);
+        box.disabled = !shown[representation.value].includes(box.value);
         // the checkboxes script counts only the boxes that aren't greyed out
         box.dispatchEvent(new Event("change"));
       }
     }
-    picture.addEventListener("change", greyOutOperations);
+    representation.addEventListener("change", greyOutOperations);
     window.addEventListener("pageshow", greyOutOperations);
     greyOutOperations();
 

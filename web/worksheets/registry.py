@@ -39,9 +39,9 @@ from core.basic_operations.generator import (
 from core.basic_operations.representation import (
     LARGEST_BLOCKS_OPERAND,
     OPERATION_NAMES,
-    PICTURE_NAMES,
-    PICTURE_OPERATIONS,
-    Picture,
+    REPRESENTATION_NAMES,
+    REPRESENTATION_OPERATIONS,
+    Representation,
     basic_operation_tile_question,
     missing_number_tile_question,
     operations_name,
@@ -100,9 +100,9 @@ FORM_CHOICE_LABELS: dict[str, JsonValue] = {
     **{form.value: name for form, name in FORM_NAMES.items()},
     "mixed": "mixed",
 }
-# Picture dropdown labels: each picture's name
-PICTURE_LABELS: dict[str, JsonValue] = {
-    picture.value: name for picture, name in PICTURE_NAMES.items()
+# Representation dropdown labels: each representation's name
+REPRESENTATION_LABELS: dict[str, JsonValue] = {
+    representation.value: name for representation, name in REPRESENTATION_NAMES.items()
 }
 AnswerKey = Annotated[bool, Field(title="Add an answer key page")]
 NameDateLine = Annotated[bool, Field(title="Add Name/Date blanks")]
@@ -351,7 +351,8 @@ class WordProblemOptions(HeaderOptions):
     Options for the word problems kind, built on the core. There is no seed: every sheet is new.
     """
 
-    title: Title = word_problems_title(Picture.STRIP)  # the picture's title by default
+    # the representation's title by default
+    title: Title = word_problems_title(Representation.STRIP)
     problems: Problems = 4
     # Each problem's operation is drawn at random from those ticked.
     operations: list[OperationChoice] = Field(
@@ -368,8 +369,8 @@ class WordProblemOptions(HeaderOptions):
         le=LARGEST_WORD_PROBLEM_NUMBER,
         title="Largest number",
     )
-    picture: Literal["strip", "none", "number_line", "blocks"] = Field(
-        "strip", title="Picture", json_schema_extra={"labels": PICTURE_LABELS}
+    representation: Literal["strip", "none", "number_line", "blocks"] = Field(
+        "strip", title="Representation", json_schema_extra={"labels": REPRESENTATION_LABELS}
     )
     no_hints: bool = Field(False, title="Leave out the hints")  # text only has none
     black_and_white: bool = Field(False, title="Black and white blocks")  # for photocopying
@@ -380,26 +381,28 @@ class WordProblemOptions(HeaderOptions):
 
     @property
     def largest_operand(self) -> int:
-        """The largest operand the picture can show: base-ten blocks show at most 599."""
-        if Picture(self.picture) is Picture.BLOCKS:
+        """The largest operand the representation can show: base-ten blocks show at most 599."""
+        if Representation(self.representation) is Representation.BLOCKS:
             return LARGEST_BLOCKS_OPERAND
         return LARGEST_WORD_PROBLEM_NUMBER
 
     @model_validator(mode="after")
-    def _title_follows_the_picture(self) -> Self:
-        # The default is the default picture's title. A request that picks another and gives no
-        # title gets its title.
+    def _title_follows_the_representation(self) -> Self:
+        # The default is the default representation's title. A request that picks another and gives
+        # no title gets its title.
         if "title" not in self.model_fields_set:
-            self.title = word_problems_title(Picture(self.picture))
+            self.title = word_problems_title(Representation(self.representation))
         return self
 
     @model_validator(mode="after")
-    def _picture_shows_the_operations(self) -> Self:
-        picture = Picture(self.picture)
-        shown = PICTURE_OPERATIONS[picture]
+    def _representation_shows_the_operations(self) -> Self:
+        representation = Representation(self.representation)
+        shown = REPRESENTATION_OPERATIONS[representation]
         if not shown.issuperset(_operations(self.operations)):
             names = operations_name([operation for operation in Operation if operation in shown])
-            raise ValueError(f"operations: {PICTURE_NAMES[picture]} show only {names.lower()}")
+            raise ValueError(
+                f"operations: {REPRESENTATION_NAMES[representation]} show only {names.lower()}"
+            )
         return self
 
     @model_validator(mode="after")
@@ -611,7 +614,7 @@ def _tile_slots(o: BasicOperationOptions | PlaceValueOptions | WordProblemOption
 
 
 def _word_problems(o: WordProblemOptions, out: BinaryIO) -> None:
-    picture = Picture(o.picture)
+    representation = Representation(o.representation)
     render_word_problems_worksheet(
         questions=generate_word_problems(
             o.problems,
@@ -619,14 +622,14 @@ def _word_problems(o: WordProblemOptions, out: BinaryIO) -> None:
             distinct_answers=o.self_check_tiles,
             # No comparisons on strip or blocks sheets: a strip shows parts making a whole, and
             # blocks show the first number with the second crossed out, taken away.
-            comparisons=picture not in (Picture.STRIP, Picture.BLOCKS),
+            comparisons=representation not in (Representation.STRIP, Representation.BLOCKS),
             largest_number=o.max_number,
             largest_operand=o.largest_operand,
         ),
         path=out,
         header=o.header(),
         answer_key=o.answer_key,
-        picture=picture,
+        representation=representation,
         hints=not o.no_hints,
         slot_of=_tile_slots(o) if o.self_check_tiles else None,
         black_and_white=o.black_and_white,

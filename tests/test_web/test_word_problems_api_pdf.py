@@ -15,7 +15,7 @@ import pytest
 from django.test import Client
 
 from core.basic_operations.data import BasicOperationQuestionData, Operation
-from core.basic_operations.representation import Picture
+from core.basic_operations.representation import Representation
 from tests.data import REAL_CASE_SLOTS
 from tests.helpers import (
     choices_returns,
@@ -56,7 +56,7 @@ ADD = BasicOperationQuestionData(
             None,
             {
                 "questions": [SUBTRACT, ADD],
-                "picture": Picture.STRIP,
+                "representation": Representation.STRIP,
                 "hints": True,
                 "black_and_white": False,
                 "slot_of": None,
@@ -77,7 +77,7 @@ ADD = BasicOperationQuestionData(
             None,
             {
                 "questions": [ADD],
-                "picture": Picture.STRIP,
+                "representation": Representation.STRIP,
                 "hints": False,
                 "black_and_white": False,
                 "slot_of": None,
@@ -98,7 +98,7 @@ ADD = BasicOperationQuestionData(
             None,
             {
                 "questions": [SUBTRACT, ADD],
-                "picture": Picture.STRIP,
+                "representation": Representation.STRIP,
                 "hints": True,
                 "black_and_white": False,
                 "slot_of": (7, 9),
@@ -118,7 +118,7 @@ ADD = BasicOperationQuestionData(
             None,
             {
                 "questions": [SUBTRACT, ADD],
-                "picture": Picture.STRIP,
+                "representation": Representation.STRIP,
                 "hints": True,
                 "black_and_white": False,
                 "slot_of": (11, 10),
@@ -174,7 +174,7 @@ ADD = BasicOperationQuestionData(
                         "3 friends each have 4 cards. How many cards do they have together?",
                     ),
                 ],
-                "picture": Picture.STRIP,
+                "representation": Representation.STRIP,
                 "hints": True,
                 "black_and_white": False,
                 "slot_of": None,
@@ -204,7 +204,7 @@ ADD = BasicOperationQuestionData(
                     ),
                     ADD,
                 ],
-                "picture": Picture.STRIP,
+                "representation": Representation.STRIP,
                 "hints": True,
                 "black_and_white": False,
                 "slot_of": None,
@@ -239,7 +239,7 @@ ADD = BasicOperationQuestionData(
                         "30 cards are placed in 5 equal rows. How many cards are in each row?",
                     ),
                 ],
-                "picture": Picture.STRIP,
+                "representation": Representation.STRIP,
                 "hints": True,
                 "black_and_white": False,
                 "slot_of": (7, 9),
@@ -254,7 +254,7 @@ ADD = BasicOperationQuestionData(
             # Text only, with the title "Word Problems", since none is given. The hints are on,
             # but text only has none. Subtraction is worded with its comparison, the last of its
             # templates on a text-only sheet.
-            "/api/worksheets/word_problems.pdf?picture=none&problems=2&sheet=1ab2c3",
+            "/api/worksheets/word_problems.pdf?representation=none&problems=2&sheet=1ab2c3",
             [Operation.SUBTRACT, Operation.ADD],
             [40, 150, 47, 25],
             200,
@@ -270,7 +270,7 @@ ADD = BasicOperationQuestionData(
                     ),
                     ADD,
                 ],
-                "picture": Picture.NONE,
+                "representation": Representation.NONE,
                 "hints": True,
                 "black_and_white": False,
                 "slot_of": None,
@@ -283,7 +283,7 @@ ADD = BasicOperationQuestionData(
         ),
         (
             # text only with multiplication, and a title given, which is kept
-            "/api/worksheets/word_problems.pdf?picture=none&operations=multiply&problems=1"
+            "/api/worksheets/word_problems.pdf?representation=none&operations=multiply&problems=1"
             "&title=Story+Problems&sheet=1ab2c3",
             [Operation.MULTIPLY],
             [3, 4],
@@ -298,7 +298,7 @@ ADD = BasicOperationQuestionData(
                         "3 friends each have 4 cards. How many cards do they have together?",
                     ),
                 ],
-                "picture": Picture.NONE,
+                "representation": Representation.NONE,
                 "hints": True,
                 "black_and_white": False,
                 "slot_of": None,
@@ -312,7 +312,7 @@ ADD = BasicOperationQuestionData(
         (
             # Number lines, with their title, since none is given. Subtraction is worded with its
             # comparison, the last of its templates on a number-line sheet.
-            "/api/worksheets/word_problems.pdf?picture=number_line&problems=2&sheet=1ab2c3",
+            "/api/worksheets/word_problems.pdf?representation=number_line&problems=2&sheet=1ab2c3",
             [Operation.SUBTRACT, Operation.ADD],
             [40, 150, 47, 25],
             200,
@@ -328,7 +328,7 @@ ADD = BasicOperationQuestionData(
                     ),
                     ADD,
                 ],
-                "picture": Picture.NUMBER_LINE,
+                "representation": Representation.NUMBER_LINE,
                 "hints": True,
                 "black_and_white": False,
                 "slot_of": None,
@@ -341,7 +341,7 @@ ADD = BasicOperationQuestionData(
         ),
         (
             # number lines with tiles and the answer key
-            "/api/worksheets/word_problems.pdf?picture=number_line&self_check_tiles=true"
+            "/api/worksheets/word_problems.pdf?representation=number_line&self_check_tiles=true"
             "&problems=2&answer_key=true&sheet=1ab2c3",
             [Operation.SUBTRACT, Operation.ADD],
             [40, 150, 47, 25],
@@ -358,7 +358,7 @@ ADD = BasicOperationQuestionData(
                     ),
                     ADD,
                 ],
-                "picture": Picture.NUMBER_LINE,
+                "representation": Representation.NUMBER_LINE,
                 "hints": True,
                 "black_and_white": False,
                 "slot_of": (7, 9),
@@ -371,7 +371,7 @@ ADD = BasicOperationQuestionData(
         ),
         # a number line shows only addition and subtraction
         (
-            "/api/worksheets/word_problems.pdf?picture=number_line&operations=add"
+            "/api/worksheets/word_problems.pdf?representation=number_line&operations=add"
             "&operations=multiply",
             [],
             [],
@@ -381,7 +381,7 @@ ADD = BasicOperationQuestionData(
             None,
         ),
         (
-            "/api/worksheets/word_problems.pdf?picture=number_line&operations=divide",
+            "/api/worksheets/word_problems.pdf?representation=number_line&operations=divide",
             [],
             [],
             422,
@@ -392,14 +392,14 @@ ADD = BasicOperationQuestionData(
         (
             # Base-ten blocks, with their title, since none is given. Subtraction has no
             # comparison on a blocks sheet, so it is worded with the last of its other templates.
-            "/api/worksheets/word_problems.pdf?picture=blocks&problems=2&sheet=1ab2c3",
+            "/api/worksheets/word_problems.pdf?representation=blocks&problems=2&sheet=1ab2c3",
             [Operation.SUBTRACT, Operation.ADD],
             [40, 150, 47, 25],
             200,
             None,
             {
                 "questions": [SUBTRACT, ADD],
-                "picture": Picture.BLOCKS,
+                "representation": Representation.BLOCKS,
                 "hints": True,
                 "black_and_white": False,
                 "slot_of": None,
@@ -412,7 +412,7 @@ ADD = BasicOperationQuestionData(
         ),
         (
             # black and white blocks, without the hints or the note saying what to cross out
-            "/api/worksheets/word_problems.pdf?picture=blocks&operations=subtract&problems=1"
+            "/api/worksheets/word_problems.pdf?representation=blocks&operations=subtract&problems=1"
             "&black_and_white=true&no_hints=true&sheet=1ab2c3",
             [Operation.SUBTRACT],
             [40, 150],
@@ -420,7 +420,7 @@ ADD = BasicOperationQuestionData(
             None,
             {
                 "questions": [SUBTRACT],
-                "picture": Picture.BLOCKS,
+                "representation": Representation.BLOCKS,
                 "hints": False,
                 "black_and_white": True,
                 "slot_of": None,
@@ -433,7 +433,7 @@ ADD = BasicOperationQuestionData(
         ),
         (
             # base-ten blocks show only addition and subtraction
-            "/api/worksheets/word_problems.pdf?picture=blocks&operations=multiply",
+            "/api/worksheets/word_problems.pdf?representation=blocks&operations=multiply",
             [],
             [],
             422,
@@ -451,7 +451,7 @@ ADD = BasicOperationQuestionData(
             None,
             {
                 "questions": [ADD],
-                "picture": Picture.STRIP,
+                "representation": Representation.STRIP,
                 "hints": True,
                 "black_and_white": False,
                 "slot_of": None,
@@ -508,7 +508,7 @@ ADD = BasicOperationQuestionData(
                         "How many cards are in each pile?",
                     ),
                 ],
-                "picture": Picture.STRIP,
+                "representation": Representation.STRIP,
                 "hints": True,
                 "black_and_white": False,
                 "slot_of": None,
@@ -596,7 +596,7 @@ def test_word_problems_pdf(
         assert pdf_text(response.content) == pdf_text(
             render_word_problems(
                 questions=pdf_data["questions"],
-                picture=pdf_data["picture"],
+                representation=pdf_data["representation"],
                 hints=pdf_data["hints"],
                 black_and_white=pdf_data["black_and_white"],
                 slot_of=pdf_data["slot_of"],

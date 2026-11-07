@@ -16,7 +16,8 @@ templates use ``{obj}``. A new template is one more string in its operation's tu
 operation is one more entry in ``TEMPLATES``.
 
 Comparisons, which ask how many more one has than another, are kept apart in
-``COMPARISON_TEMPLATES``: a part-part-whole picture, such as the strip diagram, can't show them.
+``COMPARISON_TEMPLATES``: a part-part-whole representation, such as the strip diagram, can't show
+them.
 """
 
 import random

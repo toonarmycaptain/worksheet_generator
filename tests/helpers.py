@@ -23,7 +23,7 @@ from typing import Any
 import pytest
 
 from core.basic_operations.data import BasicOperationQuestionData, MissingNumberQuestionData
-from core.basic_operations.representation import Picture
+from core.basic_operations.representation import Representation
 from core.placevalue.data import PlaceValueQuestionData
 from core.question import Question, QuestionData
 from core.self_check_tiles import TileQuestion
@@ -256,7 +256,7 @@ def render_tiles[Data: QuestionData](
 
 def render_word_problems(
     questions: list[BasicOperationQuestionData],
-    picture: Picture,
+    representation: Representation,
     hints: bool,
     black_and_white: bool,
     slot_of: tuple[int, ...] | None,
@@ -272,7 +272,7 @@ def render_word_problems(
         path=out,
         header=Header(title=title, label=label, name_line=name_line),
         answer_key=answer_key,
-        picture=picture,
+        representation=representation,
         hints=hints,
         slot_of=slot_of,
         black_and_white=black_and_white,
