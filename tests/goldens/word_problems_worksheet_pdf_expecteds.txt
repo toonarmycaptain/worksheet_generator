@@ -1,0 +1,788 @@
+=== add_and_subtract ===
+title: Word Problems \204 Strip Diagrams
+media boxes: 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Strip Diagrams) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (Use the strip diagram \(bar model\): two parts make a whole. The ? shows what to find.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 652 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 652 Tm (Maria collected 47 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 632 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 612 Tm (Both parts are shown. Add the parts to find the whole.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 239.692 595 Tm (whole: ?) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 591 m 442 591 l S
+n 82 591 m 82 587 l S
+n 442 591 m 442 587 l S
+.176471 .215686 .282353 RG
+1.2 w
+.811765 .890196 .968627 rg
+n 82 549 235 34 re B*
+.811765 .890196 .968627 rg
+n 317 549 125 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 192.828 562 Tm (47) Tj T* ET
+BT 1 0 0 1 372.828 562 Tm (25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 523 Tm (Answer: ) Tj T* ET
+n 141.122 523 m 261.122 523 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 501 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 501 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 481 Tm (The whole and one part are shown. Subtract to find the missing part.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 236.9365 464 Tm (whole: 72) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 460 m 442 460 l S
+n 82 460 m 82 456 l S
+n 442 460 m 442 456 l S
+.176471 .215686 .282353 RG
+1.2 w
+.811765 .890196 .968627 rg
+n 82 418 125 34 re B*
+.996078 .952941 .780392 rg
+n 207 418 235 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 137.828 431 Tm (25) Tj T* ET
+BT 1 0 0 1 320.834 431 Tm (?) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 392 Tm (Answer: ) Tj T* ET
+n 141.122 392 m 261.122 392 l S
+
+=== add_and_subtract_no_hints_answer_key ===
+title: Word Problems \204 Strip Diagrams
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Strip Diagrams) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (Use the strip diagram \(bar model\): two parts make a whole. The ? shows what to find.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 652 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 652 Tm (Maria collected 47 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 632 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 239.692 610 Tm (whole: ?) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 606 m 442 606 l S
+n 82 606 m 82 602 l S
+n 442 606 m 442 602 l S
+.176471 .215686 .282353 RG
+1.2 w
+.811765 .890196 .968627 rg
+n 82 564 235 34 re B*
+.811765 .890196 .968627 rg
+n 317 564 125 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 192.828 577 Tm (47) Tj T* ET
+BT 1 0 0 1 372.828 577 Tm (25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 538 Tm (Answer: ) Tj T* ET
+n 141.122 538 m 261.122 538 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 516 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 516 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 236.9365 494 Tm (whole: 72) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 490 m 442 490 l S
+n 82 490 m 82 486 l S
+n 442 490 m 442 486 l S
+.176471 .215686 .282353 RG
+1.2 w
+.811765 .890196 .968627 rg
+n 82 448 125 34 re B*
+.996078 .952941 .780392 rg
+n 207 448 235 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 137.828 461 Tm (25) Tj T* ET
+BT 1 0 0 1 320.834 461 Tm (?) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 422 Tm (Answer: ) Tj T* ET
+n 141.122 422 m 261.122 422 l S
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Strip Diagrams: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (47 + 25 = 72) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 658 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47) Tj T* ET
+
+=== splits_at_their_limits ===
+title: Word Problems \204 Strip Diagrams
+media boxes: 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Strip Diagrams) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (Use the strip diagram \(bar model\): two parts make a whole. The ? shows what to find.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 652 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 652 Tm (There were 12 books in the bin. Leo put in 900 more. How many books are) Tj T* ET
+BT 1 0 0 1 82 632 Tm (in the bin now?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 612 Tm (Both parts are shown. Add the parts to find the whole.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 239.692 595 Tm (whole: ?) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 591 m 442 591 l S
+n 82 591 m 82 587 l S
+n 442 591 m 442 587 l S
+.176471 .215686 .282353 RG
+1.2 w
+.811765 .890196 .968627 rg
+n 82 549 115.2 34 re B*
+.811765 .890196 .968627 rg
+n 197.2 549 244.8 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 132.928 562 Tm (12) Tj T* ET
+BT 1 0 0 1 309.592 562 Tm (900) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 523 Tm (Answer: ) Tj T* ET
+n 141.122 523 m 261.122 523 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 501 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 501 Tm (Sam had 89 apples and used 74. How many apples are left?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 481 Tm (The whole and one part are shown. Subtract to find the missing part.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 236.9365 464 Tm (whole: 89) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 460 m 442 460 l S
+n 82 460 m 82 456 l S
+n 442 460 m 442 456 l S
+.176471 .215686 .282353 RG
+1.2 w
+.811765 .890196 .968627 rg
+n 82 418 244.8 34 re B*
+.996078 .952941 .780392 rg
+n 326.8 418 115.2 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 197.728 431 Tm (74) Tj T* ET
+BT 1 0 0 1 380.734 431 Tm (?) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 392 Tm (Answer: ) Tj T* ET
+n 141.122 392 m 261.122 392 l S
+
+=== five_problems ===
+title: Word Problems \204 Strip Diagrams
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Strip Diagrams) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (Use the strip diagram \(bar model\): two parts make a whole. The ? shows what to find.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 652 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 652 Tm (Maria collected 11 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 632 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 612 Tm (Both parts are shown. Add the parts to find the whole.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 239.692 595 Tm (whole: ?) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 591 m 442 591 l S
+n 82 591 m 82 587 l S
+n 442 591 m 442 587 l S
+.176471 .215686 .282353 RG
+1.2 w
+.811765 .890196 .968627 rg
+n 82 549 115.2 34 re B*
+.811765 .890196 .968627 rg
+n 197.2 549 244.8 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 132.928 562 Tm (11) Tj T* ET
+BT 1 0 0 1 312.928 562 Tm (25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 523 Tm (Answer: ) Tj T* ET
+n 141.122 523 m 261.122 523 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 501 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 501 Tm (Maria collected 22 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 481 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 461 Tm (Both parts are shown. Add the parts to find the whole.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 239.692 444 Tm (whole: ?) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 440 m 442 440 l S
+n 82 440 m 82 436 l S
+n 442 440 m 442 436 l S
+.176471 .215686 .282353 RG
+1.2 w
+.811765 .890196 .968627 rg
+n 82 398 168.5106 34 re B*
+.811765 .890196 .968627 rg
+n 250.5106 398 191.4894 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 159.5833 411 Tm (22) Tj T* ET
+BT 1 0 0 1 339.5833 411 Tm (25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 372 Tm (Answer: ) Tj T* ET
+n 141.122 372 m 261.122 372 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 350 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 350 Tm (Maria collected 33 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 330 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 310 Tm (Both parts are shown. Add the parts to find the whole.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 239.692 293 Tm (whole: ?) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 289 m 442 289 l S
+n 82 289 m 82 285 l S
+n 442 289 m 442 285 l S
+.176471 .215686 .282353 RG
+1.2 w
+.811765 .890196 .968627 rg
+n 82 247 204.8276 34 re B*
+.811765 .890196 .968627 rg
+n 286.8276 247 155.1724 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 177.7418 260 Tm (33) Tj T* ET
+BT 1 0 0 1 357.7418 260 Tm (25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 221 Tm (Answer: ) Tj T* ET
+n 141.122 221 m 261.122 221 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 199 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 199 Tm (Maria collected 44 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 179 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 159 Tm (Both parts are shown. Add the parts to find the whole.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 239.692 142 Tm (whole: ?) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 138 m 442 138 l S
+n 82 138 m 82 134 l S
+n 442 138 m 442 134 l S
+.176471 .215686 .282353 RG
+1.2 w
+.811765 .890196 .968627 rg
+n 82 96 229.5652 34 re B*
+.811765 .890196 .968627 rg
+n 311.5652 96 130.4348 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 190.1106 109 Tm (44) Tj T* ET
+BT 1 0 0 1 370.1106 109 Tm (25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 70 Tm (Answer: ) Tj T* ET
+n 141.122 70 m 261.122 70 l S
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Strip Diagrams) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Maria collected 55 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 658 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 638 Tm (Both parts are shown. Add the parts to find the whole.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 239.692 621 Tm (whole: ?) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 617 m 442 617 l S
+n 82 617 m 82 613 l S
+n 442 617 m 442 613 l S
+.176471 .215686 .282353 RG
+1.2 w
+.811765 .890196 .968627 rg
+n 82 575 244.8 34 re B*
+.811765 .890196 .968627 rg
+n 326.8 575 115.2 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 197.728 588 Tm (55) Tj T* ET
+BT 1 0 0 1 377.728 588 Tm (25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 549 Tm (Answer: ) Tj T* ET
+n 141.122 549 m 261.122 549 l S
+
+=== self_check_tiles_answer_key ===
+title: Word Problems \204 Strip Diagrams
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Strip Diagrams) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (Use the strip diagram \(bar model\): two parts make a whole. The ? shows what to find.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 652 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 652 Tm (Maria collected 47 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 632 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 612 Tm (Both parts are shown. Add the parts to find the whole.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 239.692 595 Tm (whole: ?) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 591 m 442 591 l S
+n 82 591 m 82 587 l S
+n 442 591 m 442 587 l S
+.176471 .215686 .282353 RG
+1.2 w
+.811765 .890196 .968627 rg
+n 82 549 235 34 re B*
+.811765 .890196 .968627 rg
+n 317 549 125 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 192.828 562 Tm (47) Tj T* ET
+BT 1 0 0 1 372.828 562 Tm (25) Tj T* ET
+Q
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 527 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 527 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 507 Tm (The whole and one part are shown. Subtract to find the missing part.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 236.9365 490 Tm (whole: 72) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 486 m 442 486 l S
+n 82 486 m 82 482 l S
+n 442 486 m 442 482 l S
+.176471 .215686 .282353 RG
+1.2 w
+.811765 .890196 .968627 rg
+n 82 444 125 34 re B*
+.996078 .952941 .780392 rg
+n 207 444 235 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 137.828 457 Tm (25) Tj T* ET
+BT 1 0 0 1 320.834 457 Tm (?) Tj T* ET
+Q
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Strip Diagrams) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (Answer bank) Tj T* ET
+BT /F1 11 Tf 13.2 TL ET
+BT 1 0 0 1 54 662 Tm (Put each numbered tile in the slot whose letter matches the answer to its question. Shaded boxes are) Tj T* ET
+BT 1 0 0 1 54 649 Tm (not used.) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 578 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.668 626 Tm (A) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 578 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 626 Tm (B) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 578 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 259.668 626 Tm (C) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 578 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 343.668 626 Tm (D) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 578 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.998 626 Tm (E) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 578 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 626 Tm (F) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 534 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.332 520 Tm (G) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 534 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 171.104 551 Tm (72) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 520 Tm (H) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 534 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 262.332 520 Tm (I) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 534 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 339.104 551 Tm (47) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 344.664 520 Tm (J) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 534 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.668 520 Tm (K) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 534 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 520 Tm (L) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 318 432 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 358 432 40 40 re f*
+.941176 .745098 0 rg
+n 358 472 m 378 472 l 378 452 l 398 432 l 358 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 432 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 398 432 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 438 432 40 40 re f*
+0 .235294 .784314 rg
+n 438 472 m 458 472 l 458 452 l 478 432 l 438 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 432 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 478 432 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 432 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 518 432 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 432 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 318 392 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 392 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 358 392 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 392 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 398 392 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 392 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 438 392 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 392 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 478 392 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 392 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 518 392 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 392 40 40 re S
+Q
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 458 Tm (Close the case and flip it over. If every) Tj T* ET
+BT 1 0 0 1 54 443 Tm (answer is right, the back looks like this.) Tj T* ET
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Strip Diagrams: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (47 + 25 = 72    \(H\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 658 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47    \(J\)) Tj T* ET
+
+=== other_title_and_label ===
+title: Story Problems
+media boxes: 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Story Problems) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Day 2) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (Use the strip diagram \(bar model\): two parts make a whole. The ? shows what to find.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 652 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 652 Tm (Maria collected 47 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 632 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 612 Tm (Both parts are shown. Add the parts to find the whole.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 239.692 595 Tm (whole: ?) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 591 m 442 591 l S
+n 82 591 m 82 587 l S
+n 442 591 m 442 587 l S
+.176471 .215686 .282353 RG
+1.2 w
+.811765 .890196 .968627 rg
+n 82 549 235 34 re B*
+.811765 .890196 .968627 rg
+n 317 549 125 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 192.828 562 Tm (47) Tj T* ET
+BT 1 0 0 1 372.828 562 Tm (25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 523 Tm (Answer: ) Tj T* ET
+n 141.122 523 m 261.122 523 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 501 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 501 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 481 Tm (The whole and one part are shown. Subtract to find the missing part.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 236.9365 464 Tm (whole: 72) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 460 m 442 460 l S
+n 82 460 m 82 456 l S
+n 442 460 m 442 456 l S
+.176471 .215686 .282353 RG
+1.2 w
+.811765 .890196 .968627 rg
+n 82 418 125 34 re B*
+.996078 .952941 .780392 rg
+n 207 418 235 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 137.828 431 Tm (25) Tj T* ET
+BT 1 0 0 1 320.834 431 Tm (?) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 392 Tm (Answer: ) Tj T* ET
+n 141.122 392 m 261.122 392 l S
+

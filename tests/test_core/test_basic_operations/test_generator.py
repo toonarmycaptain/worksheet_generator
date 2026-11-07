@@ -1,9 +1,10 @@
 """
-Tests for the arithmetic and missing-number question generators.
+Tests for the arithmetic, missing-number and word-problem generators.
 
 The ``..._from_scripted_draws`` tests pin the exact output: ``random`` is scripted, so each case
-lists the questions that must be produced. The no-repeats tests and
-``test_missing_number_sheets_can_always_be_finished`` use real random draws.
+lists the questions that must be produced. The no-repeats tests,
+``test_missing_number_sheets_can_always_be_finished`` and
+``test_random_word_problems_have_distinct_answers`` use real random draws.
 """
 
 import pytest
@@ -20,6 +21,7 @@ from core.basic_operations.generator import (
     count_possible_questions,
     generate_basic_operation_questions,
     generate_missing_number_questions,
+    generate_word_problems,
 )
 from tests.helpers import (
     choose_last,
@@ -1221,3 +1223,159 @@ def test_missing_number_sheet_errors(
             distinct_answers=distinct_answers,
         )
     assert str(error.value) == message
+
+
+TWO_DIGITS = (11, 99)  # a word problem's 2-digit operands
+THREE_DIGITS = (100, 999)
+
+
+@pytest.mark.parametrize(
+    ("count", "distinct_answers", "drawn", "bounds", "expected"),
+    [
+        # one problem: addition of two 2-digit numbers
+        (
+            1,
+            False,
+            [11, 99],
+            [TWO_DIGITS, TWO_DIGITS],
+            [
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (11, 99),
+                    110,
+                    "A basket held 11 cards. Maria added 99 more. "
+                    "How many cards are in the basket now?",
+                ),
+            ],
+        ),
+        # The default 4, one of each size. Reversed, subtraction comes first, with 3 and 3 digits
+        # then 3 and 2, and addition gets 2 and 3 then 2 and 2. 305 - 300 is redrawn, as its
+        # difference is under 10, and 300 and 645 are swapped. 60 + 950 is redrawn, as its sum
+        # is over 999.
+        (
+            4,
+            False,
+            [305, 300, 300, 645, 512, 48, 60, 950, 47, 925, 99, 99],
+            [
+                THREE_DIGITS,
+                THREE_DIGITS,
+                THREE_DIGITS,
+                THREE_DIGITS,
+                THREE_DIGITS,
+                TWO_DIGITS,
+                TWO_DIGITS,
+                THREE_DIGITS,
+                TWO_DIGITS,
+                THREE_DIGITS,
+                TWO_DIGITS,
+                TWO_DIGITS,
+            ],
+            [
+                BasicOperationQuestionData(
+                    Operation.SUBTRACT,
+                    (645, 300),
+                    345,
+                    "Maria needs 645 cards in all and has 300 so far. "
+                    "How many more cards are needed?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.SUBTRACT,
+                    (512, 48),
+                    464,
+                    "Maria had 512 points and lost 48 points. How many points does Maria have now?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (47, 925),
+                    972,
+                    "A basket held 47 cards. Maria added 925 more. "
+                    "How many cards are in the basket now?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (99, 99),
+                    198,
+                    "Maria scored 99 points, then scored 99 more points. How many points in all?",
+                ),
+            ],
+        ),
+        # without distinct answers, 150 - 40 and 55 + 55 can both be 110
+        (
+            2,
+            False,
+            [40, 150, 55, 55],
+            [TWO_DIGITS, THREE_DIGITS, TWO_DIGITS, TWO_DIGITS],
+            [
+                BasicOperationQuestionData(
+                    Operation.SUBTRACT,
+                    (150, 40),
+                    110,
+                    "Maria needs 150 cards in all and has 40 so far. "
+                    "How many more cards are needed?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (55, 55),
+                    110,
+                    "A basket held 55 cards. Maria added 55 more. "
+                    "How many cards are in the basket now?",
+                ),
+            ],
+        ),
+        # with them, 55 + 55 is redrawn
+        (
+            2,
+            True,
+            [40, 150, 55, 55, 47, 25],
+            [TWO_DIGITS, THREE_DIGITS, TWO_DIGITS, TWO_DIGITS, TWO_DIGITS, TWO_DIGITS],
+            [
+                BasicOperationQuestionData(
+                    Operation.SUBTRACT,
+                    (150, 40),
+                    110,
+                    "Maria needs 150 cards in all and has 40 so far. "
+                    "How many more cards are needed?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (47, 25),
+                    72,
+                    "A basket held 47 cards. Maria added 25 more. "
+                    "How many cards are in the basket now?",
+                ),
+            ],
+        ),
+    ],
+)
+def test_word_problems_from_scripted_draws(
+    count: int,
+    distinct_answers: bool,
+    drawn: list[int],
+    bounds: list[tuple[int, int]],
+    expected: list[BasicOperationQuestionData],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """
+    Each problem's operands are drawn at its size, and redrawn until they meet the limits.
+
+    ``reverse_shuffle`` reverses the operations and the sizes, and the wording is scripted as in
+    ``test_word_problems``. Every scripted draw must be made, within ``bounds``. The problems
+    are free response, with no wrong answers.
+    """
+    drawn_from = randint_returns(monkeypatch, drawn)
+    reverse_shuffle(monkeypatch)
+    sample_first(monkeypatch)
+    choose_last(monkeypatch)
+
+    questions = generate_word_problems(count, distinct_answers=distinct_answers)
+
+    assert drawn_from == bounds
+    assert [(question.data, question.wrong_answers) for question in questions] == [
+        (data, ()) for data in expected
+    ]
+
+
+def test_random_word_problems_have_distinct_answers() -> None:
+    """A sheet of the most problems allowed, 20, is produced with no answer repeated."""
+    questions = generate_word_problems(20, distinct_answers=True)
+    assert len({question.data.answer for question in questions}) == 20
