@@ -26,8 +26,8 @@ BUILDERS = [
         "title": "Basic Operations",
         "description": "Addition, subtraction, multiplication and division questions, as a "
         "printable multiple-choice sheet, or an answer sheet for self-check tiles. Division can "
-        "also leave out the dividend or the divisor for students to fill in. Addition and "
-        "subtraction also come as word problems with strip diagrams.",
+        "also leave out the dividend or the divisor for students to fill in. All four also come "
+        "as word problems with strip diagrams.",
         "url_name": "basic_operations",
     },
     {
@@ -41,7 +41,9 @@ BUILDERS = [
 HEADINGS = {
     "basic_operations": "Addition, Subtraction, Multiplication and Division",
     "place_value": "Write the Number in Another Form",
-    "word_problems": "Addition and Subtraction Word Problems",
+    "word_problems": "Word Problems",
+}
+LEGACY_HEADINGS = {
     "block": "Addition & Subtraction Word Problems — Base-Ten Blocks",
     "word": "Addition & Subtraction Word Problems",
     "strip": "Addition & Subtraction Word Problems — Strip Diagrams",
@@ -52,6 +54,7 @@ HEADINGS = {
     "data_graph_mc": "Data and Graphs — Pick the Matching Graph",
     "worksheet": "Base-Ten Blocks: 3-Digit Addition & Subtraction",
 }
+HEADINGS |= LEGACY_HEADINGS
 
 # JSON schema limit -> HTML input attribute
 LIMITS = {"minimum": "min", "maximum": "max", "minLength": "minlength", "maxLength": "maxlength"}
@@ -108,20 +111,13 @@ def home(request: HttpRequest) -> HttpResponse:
 def basic_operations(request: HttpRequest) -> HttpResponse:
     context = {
         "page_title": "Basic Operations",
-        "intro": "Tick the operations and pick the size of the numbers. With more than one "
-        "ticked, each question's operation is picked at random. The PDF opens in a new tab, "
-        "where you can print or save it. Every click makes a new sheet. Tick Self-check tile "
-        "answers to swap the choices for an answer bank and a picture to match against the "
+        "intro": "Tick the operations and pick the size of the numbers. The PDF opens in a new "
+        "tab, where you can print or save it. Every click makes a new sheet. Tick Self-check "
+        "tile answers to swap the choices for an answer bank and a picture to match against the "
         f"flipped case. That sets the questions to {SLOTS}, one for each tile: ask for fewer, "
         "such as 2 or 4, and the other tiles go unused. With division by itself, Missing number "
         "can leave out the dividend or the divisor instead of the answer, as a square to write "
-        "it in. Division uses the largest dividend and divisor instead of the largest number. "
-        "The word problems below use 2- and 3-digit numbers, for TEKS 3.5(A). Each has a strip "
-        "diagram "
-        "(bar model) of its two parts and the whole, with a ? for the number to find. Tick Leave "
-        "out the hints to drop the hint under each problem. Self-check tiles work the same way "
-        f"here, setting the problems to {SLOTS}: the problems have no answer lines, and the "
-        "answer bank and picture come on a page after them.",
+        "it in. Division uses the largest dividend and divisor instead of the largest number.",
         "forms": _forms(
             {
                 "basic_operations": CORE_KINDS["basic_operations"],

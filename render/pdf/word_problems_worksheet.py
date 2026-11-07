@@ -16,7 +16,9 @@ from reportlab.pdfgen.canvas import Canvas
 
 from core.basic_operations.data import BasicOperationQuestionData
 from core.basic_operations.representation import (
+    EqualStripDiagram,
     Picture,
+    StripDiagram,
     basic_operation_tile_question,
     equation,
     hint,
@@ -25,7 +27,7 @@ from core.basic_operations.representation import (
     strip_diagram,
 )
 from core.question import Question
-from render.pdf.diagrams import STRIP_HEIGHT, draw_strip
+from render.pdf.diagrams import STRIP_HEIGHT, draw_equal_strip, draw_strip
 from render.pdf.page import (
     BOLD_FONT,
     CONTENT_WIDTH,
@@ -82,7 +84,8 @@ def render_word_problems_worksheet(
     pdf = new_pdf(path, header.title)
     answer_lines = slot_of is None
 
-    y = _draw_instruction(pdf, instruction(picture), start_page(pdf, header))
+    operations = {question.data.operation for question in questions}
+    y = _draw_instruction(pdf, instruction(picture, operations), start_page(pdf, header))
     for number, question in enumerate(questions, start=1):
         lines = wrap(stem(question.data), TEXT_SIZE, TEXT_WIDTH)
         hint_lines = wrap(hint(question.data, picture), HINT_SIZE, TEXT_WIDTH) if hints else []
@@ -179,7 +182,14 @@ def _draw_picture(
     """Draw the problem's picture with its top-left corner at (``x``, ``top``)."""
     match picture:
         case Picture.STRIP:
-            draw_strip(pdf, x, top, strip_diagram(data))
+            diagram = strip_diagram(data)
+            match diagram:
+                case StripDiagram():
+                    draw_strip(pdf, x, top, diagram)
+                case EqualStripDiagram():
+                    draw_equal_strip(pdf, x, top, diagram)
+                case _:
+                    assert_never(diagram)
         case Picture.NONE | Picture.NUMBER_LINE | Picture.BLOCKS:
             raise NotImplementedError(f"The {picture} picture is not built yet.")
         case _:
