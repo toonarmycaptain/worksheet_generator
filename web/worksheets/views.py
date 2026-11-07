@@ -14,7 +14,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
 from core.basic_operations.data import Operation
-from core.basic_operations.representation import operations_name
+from core.basic_operations.representation import Picture, operations_name, word_problems_title
 from core.self_check_tiles import SLOTS
 from core.wrong_answers import WRONG_ANSWER_COUNT
 
@@ -27,7 +27,7 @@ BUILDERS = [
         "description": "Addition, subtraction, multiplication and division questions, as a "
         "printable multiple-choice sheet, or an answer sheet for self-check tiles. Division can "
         "also leave out the dividend or the divisor for students to fill in. All four also come "
-        "as word problems with strip diagrams.",
+        "as word problems.",
         "url_name": "basic_operations",
     },
     {
@@ -131,6 +131,8 @@ def basic_operations(request: HttpRequest) -> HttpResponse:
             for size in range(1, len(Operation) + 1)
             for ticked in combinations(Operation, size)
         },
+        # each picture's value -> the title of word problems drawn with it
+        "picture_titles": {picture.value: word_problems_title(picture) for picture in Picture},
     }
     return render(request, "worksheets/builder.html", context)
 
