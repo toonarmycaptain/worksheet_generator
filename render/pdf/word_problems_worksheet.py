@@ -17,13 +17,13 @@ from reportlab.lib.colors import HexColor, gray
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.pdfgen.canvas import Canvas
 
+from core.base_ten_blocks import blocks_diagram
 from core.basic_operations.data import BasicOperationQuestionData
 from core.basic_operations.representation import (
     EqualStripDiagram,
     Representation,
     StripDiagram,
     basic_operation_tile_question,
-    blocks_diagram,
     equation,
     hint,
     instruction,

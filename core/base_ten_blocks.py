@@ -1,6 +1,6 @@
 """
-Sheets of questions shown with base-ten blocks: writing the number the blocks show, and adding and
-subtracting with them, mixed on one sheet.
+Base-ten blocks, and sheets of questions shown with them: writing the number the blocks show, and
+adding and subtracting with them, mixed on one sheet.
 
 Writing the number is a place-value question whose number is given as blocks. Adding and
 subtracting are basic-operation questions drawn as blocks: both numbers, to combine, for a sum,
@@ -9,25 +9,90 @@ and the first number, to cross out from, for a difference.
 
 import random
 from collections.abc import Iterator, Sequence
+from dataclasses import dataclass
 from enum import StrEnum
 from itertools import islice
 from typing import Literal, assert_never
 
 from core.basic_operations.data import BasicOperationQuestionData, Operation
 from core.basic_operations.regrouping import Regrouping, fits_regrouping
-from core.basic_operations.representation import (
-    LARGEST_BLOCKS_OPERAND,
-    BlocksDiagram,
-    blocks_diagram,
-    equation,
-)
+from core.basic_operations.representation import OPERATION_NAMES, equation
 from core.placevalue.data import PlaceValueForm, PlaceValueQuestionData
-from core.placevalue.representation import LARGEST_BLOCKS_NUMBER, base_ten_blocks, format_number
+from core.placevalue.representation import format_number
 from core.question import Question
 from core.self_check_tiles import TileQuestion
 
+LARGEST_BLOCKS_NUMBER = 999  # base-ten blocks go up to the hundreds' flats
+# The largest number drawn as blocks: an operand of a word problem or sheet question, or a number
+# to write. A number has at most 5 flats, so they fit in one row.
+LARGEST_BLOCKS_OPERAND = 599
 # Every number on the legacy sheet, answers included, was at least 100, so each had a flat.
 DEFAULT_SMALLEST_BLOCKS_NUMBER = 100
+
+# What each base-ten block is called, keyed by its value, largest first, as a sheet's key names
+# them
+BLOCK_NAMES = {100: "flat", 10: "rod", 1: "unit"}
+
+
+@dataclass(frozen=True)
+class BaseTenBlocks:
+    """A number shown as base-ten blocks: ``hundreds`` flats, ``tens`` rods and ``ones`` units."""
+
+    hundreds: int
+    tens: int
+    ones: int
+
+
+def base_ten_blocks(number: int) -> BaseTenBlocks:
+    """
+    Return the fewest base-ten blocks that show ``number``: one block for each unit of each
+    digit, so 347 is 3 flats, 4 rods and 7 units.
+
+    Raises ``ValueError`` for a number below 0 or above ``LARGEST_BLOCKS_NUMBER``.
+    """
+    if not 0 <= number <= LARGEST_BLOCKS_NUMBER:
+        raise ValueError(
+            f"Base-ten blocks show numbers from 0 to {LARGEST_BLOCKS_NUMBER}, not {number}."
+        )
+    hundreds, rest = divmod(number, 100)
+    tens, ones = divmod(rest, 10)
+    return BaseTenBlocks(hundreds, tens, ones)
+
+
+@dataclass(frozen=True)
+class BlocksDiagram:
+    """
+    Base-ten blocks for a word problem: ``numbers`` drawn as blocks, one under another, and the
+    amount to cross out of the last of them, or None if none is crossed out.
+
+    47 + 25 is ``((BaseTenBlocks(0, 4, 7), BaseTenBlocks(0, 2, 5)), None)``, and 72 - 25 is
+    ``((BaseTenBlocks(0, 7, 2),), 25)``.
+    """
+
+    numbers: tuple[BaseTenBlocks, ...]
+    cross_out: int | None
+
+
+def blocks_diagram(data: BasicOperationQuestionData) -> BlocksDiagram:
+    """
+    Return the base-ten blocks for a question.
+
+    Addition shows both operands, to combine. Subtraction shows its first operand, with its
+    second as the amount to cross out. Base-ten blocks show only addition and subtraction, so any
+    other operation raises ``ValueError``.
+    """
+    first, second = data.operands
+    match data.operation:
+        case Operation.ADD:
+            return BlocksDiagram((base_ten_blocks(first), base_ten_blocks(second)), None)
+        case Operation.SUBTRACT:
+            return BlocksDiagram((base_ten_blocks(first),), second)
+        case Operation.MULTIPLY | Operation.DIVIDE:
+            name = OPERATION_NAMES[data.operation].lower()
+            raise ValueError(f"Base-ten blocks show only addition and subtraction, not {name}.")
+        case _:
+            assert_never(data.operation)
+
 
 type BlocksQuestionData = PlaceValueQuestionData | BasicOperationQuestionData
 

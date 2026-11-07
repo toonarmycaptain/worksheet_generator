@@ -13,15 +13,14 @@ from math import ceil, hypot
 from reportlab.lib.colors import Color, HexColor
 from reportlab.pdfgen.canvas import Canvas
 
+from core.base_ten_blocks import BLOCK_NAMES, BaseTenBlocks, BlocksDiagram
 from core.basic_operations.data import Operation
 from core.basic_operations.representation import (
     SYMBOLS,
-    BlocksDiagram,
     EqualStripDiagram,
     StripDiagram,
     StripUnknown,
 )
-from core.placevalue.representation import BLOCK_NAMES, BaseTenBlocks
 from render.pdf.page import BOLD_FONT, FONT, ITALIC_FONT, TEXT_INDENT, TEXT_WIDTH
 
 UNKNOWN_LABEL = "?"
