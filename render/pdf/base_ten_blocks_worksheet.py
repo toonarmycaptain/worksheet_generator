@@ -17,6 +17,7 @@ from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.pdfgen.canvas import Canvas
 
 from core.base_ten_blocks import (
+    BlocksDiagram,
     BlocksQuestionData,
     blocks_answer_label,
     blocks_prompt,
@@ -25,7 +26,6 @@ from core.base_ten_blocks import (
     blocks_tile_question,
 )
 from core.basic_operations.data import BasicOperationQuestionData
-from core.basic_operations.representation import BlocksDiagram
 from core.placevalue.data import PlaceValueQuestionData
 from core.question import Question
 from render.pdf.diagrams import (

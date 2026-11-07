@@ -24,6 +24,8 @@ from pydantic import JsonValue, model_validator
 from core.base_ten_blocks import (
     BLOCKS_QUESTION_NAMES,
     DEFAULT_SMALLEST_BLOCKS_NUMBER,
+    LARGEST_BLOCKS_NUMBER,
+    LARGEST_BLOCKS_OPERAND,
     BlocksQuestionType,
     count_possible_blocks_questions,
     generate_blocks_questions,
@@ -45,7 +47,6 @@ from core.basic_operations.generator import (
 )
 from core.basic_operations.regrouping import REGROUPING_NAMES, Regrouping
 from core.basic_operations.representation import (
-    LARGEST_BLOCKS_OPERAND,
     OPERATION_NAMES,
     REPRESENTATION_NAMES,
     REPRESENTATION_OPERATIONS,
@@ -63,7 +64,6 @@ from core.placevalue.generator import (
 )
 from core.placevalue.representation import (
     FORM_NAMES,
-    LARGEST_BLOCKS_NUMBER,
     LARGEST_NUMBER,
     place_value_tile_question,
 )
