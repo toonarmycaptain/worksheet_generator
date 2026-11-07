@@ -5,7 +5,6 @@ Every form except standard form omits places whose digit is 0, so 35,043 has no 
 Standard form is the number itself, with commas between groups of three digits.
 """
 
-from dataclasses import dataclass
 from typing import assert_never
 
 from core.placevalue.data import PlaceValueForm, PlaceValueQuestionData
@@ -13,11 +12,6 @@ from core.question import Question
 from core.self_check_tiles import TileQuestion
 
 LARGEST_NUMBER = 999_999  # the forms have place names up to the hundred thousands
-LARGEST_BLOCKS_NUMBER = 999  # base-ten blocks go up to the hundreds' flats
-
-# What each base-ten block is called, keyed by its value, largest first, as a sheet's key names
-# them
-BLOCK_NAMES = {100: "flat", 10: "rod", 1: "unit"}
 
 # What each form is called, in a question ("Write in expanded form:") and on the web page
 FORM_NAMES = {
@@ -69,31 +63,6 @@ def place_value_terms(number: int) -> tuple[int, ...]:
     """
     _check_in_range(number)
     return tuple(digit * 10**place for digit, place in _non_zero_digits(number))
-
-
-@dataclass(frozen=True)
-class BaseTenBlocks:
-    """A number shown as base-ten blocks: ``hundreds`` flats, ``tens`` rods and ``ones`` units."""
-
-    hundreds: int
-    tens: int
-    ones: int
-
-
-def base_ten_blocks(number: int) -> BaseTenBlocks:
-    """
-    Return the fewest base-ten blocks that show ``number``: one block for each unit of each
-    digit, so 347 is 3 flats, 4 rods and 7 units.
-
-    Raises ``ValueError`` for a number below 0 or above ``LARGEST_BLOCKS_NUMBER``.
-    """
-    if not 0 <= number <= LARGEST_BLOCKS_NUMBER:
-        raise ValueError(
-            f"Base-ten blocks show numbers from 0 to {LARGEST_BLOCKS_NUMBER}, not {number}."
-        )
-    hundreds, rest = divmod(number, 100)
-    tens, ones = divmod(rest, 10)
-    return BaseTenBlocks(hundreds, tens, ones)
 
 
 def format_number(number: int, form: PlaceValueForm) -> str:

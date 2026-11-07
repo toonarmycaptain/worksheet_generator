@@ -1,6 +1,7 @@
 """
-Tests for base-ten blocks sheets: each question's wording and blocks, how many questions the
-limits allow, and generating a sheet.
+Tests for base-ten blocks: the blocks that show a number, the blocks drawn for an addition or
+subtraction, and on a sheet, each question's wording and blocks, how many questions the limits
+allow, and generating a sheet.
 
 The generator tests script ``random``: ``randint`` returns the numbers listed, each within its
 draw's bounds, ``sample`` gives any extra questions to the last types, and ``shuffle`` reverses.
@@ -9,9 +10,13 @@ draw's bounds, ``sample`` gives any extra questions to the last types, and ``shu
 import pytest
 
 from core.base_ten_blocks import (
+    BaseTenBlocks,
+    BlocksDiagram,
     BlocksQuestionData,
     BlocksQuestionType,
+    base_ten_blocks,
     blocks_answer_label,
+    blocks_diagram,
     blocks_prompt,
     blocks_question_diagram,
     blocks_solution,
@@ -21,15 +26,102 @@ from core.base_ten_blocks import (
 )
 from core.basic_operations.data import BasicOperationQuestionData, Operation
 from core.basic_operations.regrouping import Regrouping
-from core.basic_operations.representation import BlocksDiagram
 from core.placevalue.data import PlaceValueQuestionData
-from core.placevalue.representation import BaseTenBlocks
 from core.self_check_tiles import TileQuestion
 from tests.data import BLOCKS, STANDARD
 from tests.helpers import randint_returns, reverse_shuffle, sample_last
 
 WRITE_NUMBER, ADD, SUBTRACT = BlocksQuestionType  # in the enum's order
 NEVER, MIXED, ALWAYS = Regrouping  # in the enum's order
+
+
+@pytest.mark.parametrize(
+    ("number", "expected"),
+    [
+        (347, BaseTenBlocks(hundreds=3, tens=4, ones=7)),
+        # a digit of 0 has no blocks
+        (305, BaseTenBlocks(hundreds=3, tens=0, ones=5)),
+        (47, BaseTenBlocks(hundreds=0, tens=4, ones=7)),
+        (1, BaseTenBlocks(hundreds=0, tens=0, ones=1)),
+        (0, BaseTenBlocks(hundreds=0, tens=0, ones=0)),
+        (999, BaseTenBlocks(hundreds=9, tens=9, ones=9)),
+    ],
+)
+def test_base_ten_blocks(number: int, expected: BaseTenBlocks) -> None:
+    """The fewest blocks: one flat, rod or unit for each unit of each digit."""
+    assert base_ten_blocks(number) == expected
+
+
+@pytest.mark.parametrize(
+    ("number", "message"),
+    [
+        (-1, "Base-ten blocks show numbers from 0 to 999, not -1."),
+        (1000, "Base-ten blocks show numbers from 0 to 999, not 1000."),
+    ],
+)
+def test_base_ten_blocks_errors(number: int, message: str) -> None:
+    """There is no block for a thousand, so 1,000 raises ``ValueError`` rather than 10 flats."""
+    with pytest.raises(ValueError) as error:
+        base_ten_blocks(number)
+    assert str(error.value) == message
+
+
+@pytest.mark.parametrize(
+    ("data", "expected"),
+    [
+        # addition: both numbers, to combine
+        (
+            BasicOperationQuestionData(Operation.ADD, (47, 25), 72),
+            BlocksDiagram(
+                numbers=(
+                    BaseTenBlocks(hundreds=0, tens=4, ones=7),
+                    BaseTenBlocks(hundreds=0, tens=2, ones=5),
+                ),
+                cross_out=None,
+            ),
+        ),
+        (
+            BasicOperationQuestionData(Operation.ADD, (450, 380), 830),
+            BlocksDiagram(
+                numbers=(
+                    BaseTenBlocks(hundreds=4, tens=5, ones=0),
+                    BaseTenBlocks(hundreds=3, tens=8, ones=0),
+                ),
+                cross_out=None,
+            ),
+        ),
+        # subtraction: the first number, with the second to cross out
+        (
+            BasicOperationQuestionData(Operation.SUBTRACT, (72, 25), 47),
+            BlocksDiagram(numbers=(BaseTenBlocks(hundreds=0, tens=7, ones=2),), cross_out=25),
+        ),
+        (
+            BasicOperationQuestionData(Operation.SUBTRACT, (504, 208), 296),
+            BlocksDiagram(numbers=(BaseTenBlocks(hundreds=5, tens=0, ones=4),), cross_out=208),
+        ),
+    ],
+)
+def test_blocks_diagram(data: BasicOperationQuestionData, expected: BlocksDiagram) -> None:
+    assert blocks_diagram(data) == expected
+
+
+@pytest.mark.parametrize(
+    ("data", "message"),
+    [
+        (
+            BasicOperationQuestionData(Operation.MULTIPLY, (3, 4), 12),
+            "Base-ten blocks show only addition and subtraction, not multiplication.",
+        ),
+        (
+            BasicOperationQuestionData(Operation.DIVIDE, (12, 3), 4),
+            "Base-ten blocks show only addition and subtraction, not division.",
+        ),
+    ],
+)
+def test_blocks_diagram_errors(data: BasicOperationQuestionData, message: str) -> None:
+    with pytest.raises(ValueError) as error:
+        blocks_diagram(data)
+    assert str(error.value) == message
 
 
 @pytest.mark.parametrize(

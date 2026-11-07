@@ -1,6 +1,6 @@
 """The wording of basic-operation questions: a missing-number equation, how the self-check tiles
-sheet shows a question, and a word problem's strip diagram, number line jumps, base-ten blocks,
-hint, instruction and sheet title."""
+sheet shows a question, and a word problem's strip diagram, number line jumps, hint, instruction
+and sheet title."""
 
 import pytest
 
@@ -11,13 +11,11 @@ from core.basic_operations.data import (
     Unknown,
 )
 from core.basic_operations.representation import (
-    BlocksDiagram,
     EqualStripDiagram,
     Representation,
     StripDiagram,
     StripUnknown,
     basic_operation_tile_question,
-    blocks_diagram,
     hint,
     instruction,
     missing_number_equation,
@@ -27,7 +25,6 @@ from core.basic_operations.representation import (
     strip_diagram,
     word_problems_title,
 )
-from core.placevalue.representation import BaseTenBlocks
 from core.question import BLANK
 from core.self_check_tiles import TileQuestion
 
@@ -170,58 +167,6 @@ def test_number_line_jumps(data: BasicOperationQuestionData, expected: tuple[int
 def test_number_line_jumps_errors(data: BasicOperationQuestionData, message: str) -> None:
     with pytest.raises(ValueError) as error:
         number_line_jumps(data)
-    assert str(error.value) == message
-
-
-@pytest.mark.parametrize(
-    ("data", "expected"),
-    [
-        # addition: both numbers, to combine
-        (
-            ADD,
-            BlocksDiagram(
-                numbers=(
-                    BaseTenBlocks(hundreds=0, tens=4, ones=7),
-                    BaseTenBlocks(hundreds=0, tens=2, ones=5),
-                ),
-                cross_out=None,
-            ),
-        ),
-        (
-            BasicOperationQuestionData(Operation.ADD, (450, 380), 830),
-            BlocksDiagram(
-                numbers=(
-                    BaseTenBlocks(hundreds=4, tens=5, ones=0),
-                    BaseTenBlocks(hundreds=3, tens=8, ones=0),
-                ),
-                cross_out=None,
-            ),
-        ),
-        # subtraction: the first number, with the second to cross out
-        (
-            SUBTRACT,
-            BlocksDiagram(numbers=(BaseTenBlocks(hundreds=0, tens=7, ones=2),), cross_out=25),
-        ),
-        (
-            BasicOperationQuestionData(Operation.SUBTRACT, (504, 208), 296),
-            BlocksDiagram(numbers=(BaseTenBlocks(hundreds=5, tens=0, ones=4),), cross_out=208),
-        ),
-    ],
-)
-def test_blocks_diagram(data: BasicOperationQuestionData, expected: BlocksDiagram) -> None:
-    assert blocks_diagram(data) == expected
-
-
-@pytest.mark.parametrize(
-    ("data", "message"),
-    [
-        (MULTIPLY, "Base-ten blocks show only addition and subtraction, not multiplication."),
-        (DIVIDE, "Base-ten blocks show only addition and subtraction, not division."),
-    ],
-)
-def test_blocks_diagram_errors(data: BasicOperationQuestionData, message: str) -> None:
-    with pytest.raises(ValueError) as error:
-        blocks_diagram(data)
     assert str(error.value) == message
 
 
