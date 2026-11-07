@@ -302,6 +302,84 @@ ADD = BasicOperationQuestionData(
             "word_problems-sheet-a.pdf",
         ),
         (
+            # Number lines, with their title, since none is given. Subtraction is worded with its
+            # comparison, the last of its templates on a number-line sheet.
+            "/api/worksheets/word_problems.pdf?picture=number_line&problems=2&sheet=1ab2c3",
+            [Operation.SUBTRACT, Operation.ADD],
+            [40, 150, 47, 25],
+            200,
+            None,
+            {
+                "questions": [
+                    BasicOperationQuestionData(
+                        Operation.SUBTRACT,
+                        (150, 40),
+                        110,
+                        "Maria has 150 cards and Jamal has 40 cards. "
+                        "How many more cards does Maria have than Jamal?",
+                    ),
+                    ADD,
+                ],
+                "picture": Picture.NUMBER_LINE,
+                "hints": True,
+                "slot_of": None,
+                "answer_key": False,
+                "title": "Word Problems — Number Lines",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        (
+            # number lines with tiles and the answer key
+            "/api/worksheets/word_problems.pdf?picture=number_line&self_check_tiles=true"
+            "&problems=2&answer_key=true&sheet=1ab2c3",
+            [Operation.SUBTRACT, Operation.ADD],
+            [40, 150, 47, 25],
+            200,
+            None,
+            {
+                "questions": [
+                    BasicOperationQuestionData(
+                        Operation.SUBTRACT,
+                        (150, 40),
+                        110,
+                        "Maria has 150 cards and Jamal has 40 cards. "
+                        "How many more cards does Maria have than Jamal?",
+                    ),
+                    ADD,
+                ],
+                "picture": Picture.NUMBER_LINE,
+                "hints": True,
+                "slot_of": (7, 9),
+                "answer_key": True,
+                "title": "Word Problems — Number Lines",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        # a number line shows only addition and subtraction
+        (
+            "/api/worksheets/word_problems.pdf?picture=number_line&operations=add"
+            "&operations=multiply",
+            [],
+            [],
+            422,
+            refused("operations: Number Lines show only addition and subtraction"),
+            None,
+            None,
+        ),
+        (
+            "/api/worksheets/word_problems.pdf?picture=number_line&operations=divide",
+            [],
+            [],
+            422,
+            refused("operations: Number Lines show only addition and subtraction"),
+            None,
+            None,
+        ),
+        (
             # only the pictures that can be drawn are accepted
             "/api/worksheets/word_problems.pdf?picture=blocks",
             [],
@@ -312,8 +390,8 @@ ADD = BasicOperationQuestionData(
                     {
                         "type": "literal_error",
                         "loc": ["query", "picture"],
-                        "msg": "Input should be 'strip' or 'none'",
-                        "ctx": {"expected": "'strip' or 'none'"},
+                        "msg": "Input should be 'strip', 'none' or 'number_line'",
+                        "ctx": {"expected": "'strip', 'none' or 'number_line'"},
                     },
                 ],
             },

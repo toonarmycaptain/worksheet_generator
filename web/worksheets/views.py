@@ -14,7 +14,12 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
 from core.basic_operations.data import Operation
-from core.basic_operations.representation import Picture, operations_name, word_problems_title
+from core.basic_operations.representation import (
+    PICTURE_OPERATIONS,
+    Picture,
+    operations_name,
+    word_problems_title,
+)
 from core.self_check_tiles import SLOTS
 from core.wrong_answers import WRONG_ANSWER_COUNT
 
@@ -133,6 +138,11 @@ def basic_operations(request: HttpRequest) -> HttpResponse:
         },
         # each picture's value -> the title of word problems drawn with it
         "picture_titles": {picture.value: word_problems_title(picture) for picture in Picture},
+        # each picture's value -> the values of the operations it can show
+        "picture_operations": {
+            picture.value: [operation.value for operation in Operation if operation in shown]
+            for picture, shown in PICTURE_OPERATIONS.items()
+        },
     }
     return render(request, "worksheets/builder.html", context)
 

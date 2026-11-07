@@ -21,6 +21,7 @@ from tests.helpers import GOLDENS, pdf_text, read_sections, render_word_problems
 
 TITLE = "Word Problems — Strip Diagrams"
 TEXT_ONLY_TITLE = "Word Problems"
+NUMBER_LINE_TITLE = "Word Problems — Number Lines"
 
 ADD_AND_SUBTRACT = [
     BasicOperationQuestionData(
@@ -85,6 +86,29 @@ GROUPS_AT_THEIR_LIMITS = [
         (4, 2),
         2,
         "4 beads are put into 2 equal groups. How many beads are in each group?",
+    ),
+]
+
+# Number lines of three jumps, two with no tens jump for the 0, and one, so wider steps. The
+# subtraction starts at the right and jumps left.
+JUMPS = [
+    BasicOperationQuestionData(
+        Operation.SUBTRACT,
+        (347, 125),
+        222,
+        "There were 347 cards on the shelf. 125 of them were sold. How many cards are left?",
+    ),
+    BasicOperationQuestionData(
+        Operation.ADD,
+        (35, 804),
+        839,
+        "Kai had 35 pennies and found 804 more. How many pennies does Kai have now?",
+    ),
+    BasicOperationQuestionData(
+        Operation.ADD,
+        (81, 70),
+        151,
+        "Sofia read 81 pages on Monday and 70 pages on Tuesday. How many pages in all?",
     ),
 ]
 
@@ -209,6 +233,50 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             TEXT_ONLY_TITLE,
             "Sheet A",
         ),
+        # Number lines: jumps with a box under each landing, the last captioned "answer", so no
+        # answer lines. The key has each equation, without the landings.
+        (
+            "number_line_add_and_subtract",
+            ADD_AND_SUBTRACT,
+            Picture.NUMBER_LINE,
+            True,
+            None,
+            False,
+            NUMBER_LINE_TITLE,
+            "Sheet A",
+        ),
+        (
+            "number_line_jumps_no_hints_answer_key",
+            JUMPS,
+            Picture.NUMBER_LINE,
+            False,
+            None,
+            True,
+            NUMBER_LINE_TITLE,
+            "Sheet A",
+        ),
+        # four number lines of two lines each fill the first page, so the fifth starts a second
+        (
+            "number_line_five_problems",
+            FIVE_PROBLEMS,
+            Picture.NUMBER_LINE,
+            True,
+            None,
+            False,
+            NUMBER_LINE_TITLE,
+            "Sheet A",
+        ),
+        # tiles: the number lines are drawn as they are, followed by the bank and pattern
+        (
+            "number_line_self_check_tiles_answer_key",
+            ADD_AND_SUBTRACT,
+            Picture.NUMBER_LINE,
+            True,
+            REAL_CASE_SLOTS[:2],
+            True,
+            NUMBER_LINE_TITLE,
+            "Sheet A",
+        ),
     ],
 )
 def test_pdf_draws_the_expected_text(
@@ -225,8 +293,8 @@ def test_pdf_draws_the_expected_text(
     The decoded PDF matches this case's section of ``word_problems_worksheet_pdf_expecteds.txt``.
 
     One comparison covers the instruction, the wording, the hints, the strips and their splits
-    or equal parts, the answer lines or the answer bank and pattern, the answer key, the page
-    breaks, and the title and label.
+    or equal parts, the number lines and their jumps, the answer lines or the answer bank and
+    pattern, the answer key, the page breaks, and the title and label.
     """
     actual = pdf_text(
         render_word_problems(questions, picture, hints, slot_of, answer_key, title, label)

@@ -37,6 +37,7 @@ from core.basic_operations.generator import (
 from core.basic_operations.representation import (
     OPERATION_NAMES,
     PICTURE_NAMES,
+    PICTURE_OPERATIONS,
     Picture,
     basic_operation_tile_question,
     missing_number_tile_question,
@@ -357,7 +358,7 @@ class WordProblemOptions(HeaderOptions):
         json_schema_extra={"labels": OPERATION_LABELS},
     )
     # Only the pictures that can be drawn so far
-    picture: Literal["strip", "none"] = Field(
+    picture: Literal["strip", "none", "number_line"] = Field(
         "strip", title="Picture", json_schema_extra={"labels": PICTURE_LABELS}
     )
     no_hints: bool = Field(False, title="Leave out the hints")  # text only has none
@@ -372,6 +373,15 @@ class WordProblemOptions(HeaderOptions):
         # title gets its title.
         if "title" not in self.model_fields_set:
             self.title = word_problems_title(Picture(self.picture))
+        return self
+
+    @model_validator(mode="after")
+    def _picture_shows_the_operations(self) -> Self:
+        picture = Picture(self.picture)
+        shown = PICTURE_OPERATIONS[picture]
+        if not shown.issuperset(_operations(self.operations)):
+            names = operations_name([operation for operation in Operation if operation in shown])
+            raise ValueError(f"operations: {PICTURE_NAMES[picture]} show only {names.lower()}")
         return self
 
     @model_validator(mode="after")
@@ -572,8 +582,8 @@ def _word_problems(o: WordProblemOptions, out: BinaryIO) -> None:
             o.problems,
             _operations(o.operations),
             distinct_answers=o.self_check_tiles,
-            # comparisons only on text-only sheets: a strip shows parts making a whole
-            comparisons=picture is Picture.NONE,
+            # no comparisons on strip sheets: a strip shows parts making a whole
+            comparisons=picture is not Picture.STRIP,
         ),
         path=out,
         header=o.header(),

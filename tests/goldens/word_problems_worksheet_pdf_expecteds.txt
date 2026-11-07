@@ -1717,3 +1717,1105 @@ BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
 BT 1 0 0 1 82 658 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47    \(J\)) Tj T* ET
 
+=== number_line_add_and_subtract ===
+title: Word Problems \204 Number Lines
+media boxes: 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Number Lines) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (Use the number line. Start at the first number and jump by hundreds, tens, and ones.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 652 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 652 Tm (Maria collected 47 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 632 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 612 Tm (Jump forward to add. Fill in each box; the last box is your answer.) Tj T* ET
+0 0 0 rg
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 89 565 m 551 565 l S
+n 82 565 m 89 569 l 89 561 l h
+f*
+n 558 565 m 551 569 l 551 561 l h
+f*
+n 97 561 m 97 569 l S
+n 320 561 m 320 569 l S
+n 543 561 m 543 569 l S
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 90.884 548 Tm (47) Tj T* ET
+.290196 .333333 .407843 RG
+1 w
+n
+301 538 m
+339 538 l
+340.6584 538 342 539.3416 342 541 c
+342 553 l
+342 554.6584 340.6584 556 339 556 c
+301 556 l
+299.3416 556 298 554.6584 298 553 c
+298 541 l
+298 539.3416 299.3416 538 301 538 c
+h
+S
+n
+524 538 m
+562 538 l
+563.6584 538 565 539.3416 565 541 c
+565 553 l
+565 554.6584 563.6584 556 562 556 c
+524 556 l
+522.3416 556 521 554.6584 521 553 c
+521 541 l
+521 539.3416 522.3416 538 524 538 c
+h
+S
+BT /F3 8 Tf 9.6 TL ET
+.443137 .501961 .588235 rg
+BT 1 0 0 1 530.108 529 Tm (answer) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+BT /F2 10 Tf 12 TL ET
+n 97 565 m 152.75 591 264.25 591 312.7497 568.3813 c
+S
+n 320 565 m 314.229 571.5533 l 311.2704 565.2093 l h
+f*
+BT 1 0 0 1 198.63 594 Tm (+ 20) Tj T* ET
+n 320 565 m 375.75 591 487.25 591 535.7497 568.3813 c
+S
+n 543 565 m 537.229 571.5533 l 534.2704 565.2093 l h
+f*
+BT 1 0 0 1 424.41 594 Tm (+ 5) Tj T* ET
+Q
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 507 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 507 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 487 Tm (Jump backward to subtract. Fill in each box; the last box is your answer.) Tj T* ET
+0 0 0 rg
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 89 440 m 551 440 l S
+n 82 440 m 89 444 l 89 436 l h
+f*
+n 558 440 m 551 444 l 551 436 l h
+f*
+n 543 436 m 543 444 l S
+n 320 436 m 320 444 l S
+n 97 436 m 97 444 l S
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 536.884 423 Tm (72) Tj T* ET
+.290196 .333333 .407843 RG
+1 w
+n
+301 413 m
+339 413 l
+340.6584 413 342 414.3416 342 416 c
+342 428 l
+342 429.6584 340.6584 431 339 431 c
+301 431 l
+299.3416 431 298 429.6584 298 428 c
+298 416 l
+298 414.3416 299.3416 413 301 413 c
+h
+S
+n
+78 413 m
+116 413 l
+117.6584 413 119 414.3416 119 416 c
+119 428 l
+119 429.6584 117.6584 431 116 431 c
+78 431 l
+76.3416 431 75 429.6584 75 428 c
+75 416 l
+75 414.3416 76.3416 413 78 413 c
+h
+S
+BT /F3 8 Tf 9.6 TL ET
+.443137 .501961 .588235 rg
+BT 1 0 0 1 84.108 404 Tm (answer) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+BT /F2 10 Tf 12 TL ET
+n 543 440 m 487.25 466 375.75 466 327.2503 443.3813 c
+S
+n 320 440 m 328.7296 440.2093 l 325.771 446.5533 l h
+f*
+BT 1 0 0 1 421.805 469 Tm /F4 10 Tf 12 TL (-) Tj /F2 10 Tf 12 TL ( 20) Tj T* ET
+n 320 440 m 264.25 466 152.75 466 104.2503 443.3813 c
+S
+n 97 440 m 105.7296 440.2093 l 102.771 446.5533 l h
+f*
+BT 1 0 0 1 201.585 469 Tm /F4 10 Tf 12 TL (-) Tj /F2 10 Tf 12 TL ( 5) Tj T* ET
+Q
+
+=== number_line_jumps_no_hints_answer_key ===
+title: Word Problems \204 Number Lines
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Number Lines) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (Use the number line. Start at the first number and jump by hundreds, tens, and ones.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 652 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 652 Tm (There were 347 cards on the shelf. 125 of them were sold. How many cards) Tj T* ET
+BT 1 0 0 1 82 632 Tm (are left?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 89 580 m 551 580 l S
+n 82 580 m 89 584 l 89 576 l h
+f*
+n 558 580 m 551 584 l 551 576 l h
+f*
+n 543 576 m 543 584 l S
+n 394.3333 576 m 394.3333 584 l S
+n 245.6667 576 m 245.6667 584 l S
+n 97 576 m 97 584 l S
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 533.826 563 Tm (347) Tj T* ET
+.290196 .333333 .407843 RG
+1 w
+n
+375.3333 553 m
+413.3333 553 l
+414.9917 553 416.3333 554.3416 416.3333 556 c
+416.3333 568 l
+416.3333 569.6584 414.9917 571 413.3333 571 c
+375.3333 571 l
+373.6749 571 372.3333 569.6584 372.3333 568 c
+372.3333 556 l
+372.3333 554.3416 373.6749 553 375.3333 553 c
+h
+S
+n
+226.6667 553 m
+264.6667 553 l
+266.3251 553 267.6667 554.3416 267.6667 556 c
+267.6667 568 l
+267.6667 569.6584 266.3251 571 264.6667 571 c
+226.6667 571 l
+225.0083 571 223.6667 569.6584 223.6667 568 c
+223.6667 556 l
+223.6667 554.3416 225.0083 553 226.6667 553 c
+h
+S
+n
+78 553 m
+116 553 l
+117.6584 553 119 554.3416 119 556 c
+119 568 l
+119 569.6584 117.6584 571 116 571 c
+78 571 l
+76.3416 571 75 569.6584 75 568 c
+75 556 l
+75 554.3416 76.3416 553 78 553 c
+h
+S
+BT /F3 8 Tf 9.6 TL ET
+.443137 .501961 .588235 rg
+BT 1 0 0 1 84.108 544 Tm (answer) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+BT /F2 10 Tf 12 TL ET
+n 543 580 m 505.8333 606 431.5 606 400.8886 584.5857 c
+S
+n 394.3333 580 m 402.8948 581.7178 l 398.8823 587.4536 l h
+f*
+BT 1 0 0 1 456.1917 609 Tm /F4 10 Tf 12 TL (-) Tj /F2 10 Tf 12 TL ( 100) Tj T* ET
+n 394.3333 580 m 357.1667 606 282.8333 606 252.2219 584.5857 c
+S
+n 245.6667 580 m 254.2282 581.7178 l 250.2156 587.4536 l h
+f*
+BT 1 0 0 1 310.305 609 Tm /F4 10 Tf 12 TL (-) Tj /F2 10 Tf 12 TL ( 20) Tj T* ET
+n 245.6667 580 m 208.5 606 134.1667 606 103.5552 584.5857 c
+S
+n 97 580 m 105.5615 581.7178 l 101.549 587.4536 l h
+f*
+BT 1 0 0 1 164.4183 609 Tm /F4 10 Tf 12 TL (-) Tj /F2 10 Tf 12 TL ( 5) Tj T* ET
+Q
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 522 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 522 Tm (Kai had 35 pennies and found 804 more. How many pennies does Kai have) Tj T* ET
+BT 1 0 0 1 82 502 Tm (now?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 89 450 m 551 450 l S
+n 82 450 m 89 454 l 89 446 l h
+f*
+n 558 450 m 551 454 l 551 446 l h
+f*
+n 97 446 m 97 454 l S
+n 320 446 m 320 454 l S
+n 543 446 m 543 454 l S
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 90.884 433 Tm (35) Tj T* ET
+.290196 .333333 .407843 RG
+1 w
+n
+301 423 m
+339 423 l
+340.6584 423 342 424.3416 342 426 c
+342 438 l
+342 439.6584 340.6584 441 339 441 c
+301 441 l
+299.3416 441 298 439.6584 298 438 c
+298 426 l
+298 424.3416 299.3416 423 301 423 c
+h
+S
+n
+524 423 m
+562 423 l
+563.6584 423 565 424.3416 565 426 c
+565 438 l
+565 439.6584 563.6584 441 562 441 c
+524 441 l
+522.3416 441 521 439.6584 521 438 c
+521 426 l
+521 424.3416 522.3416 423 524 423 c
+h
+S
+BT /F3 8 Tf 9.6 TL ET
+.443137 .501961 .588235 rg
+BT 1 0 0 1 530.108 414 Tm (answer) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+BT /F2 10 Tf 12 TL ET
+n 97 450 m 152.75 476 264.25 476 312.7497 453.3813 c
+S
+n 320 450 m 314.229 456.5533 l 311.2704 450.2093 l h
+f*
+BT 1 0 0 1 195.85 479 Tm (+ 800) Tj T* ET
+n 320 450 m 375.75 476 487.25 476 535.7497 453.3813 c
+S
+n 543 450 m 537.229 456.5533 l 534.2704 450.2093 l h
+f*
+BT 1 0 0 1 424.41 479 Tm (+ 4) Tj T* ET
+Q
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 392 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 392 Tm (Sofia read 81 pages on Monday and 70 pages on Tuesday. How many) Tj T* ET
+BT 1 0 0 1 82 372 Tm (pages in all?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 89 320 m 551 320 l S
+n 82 320 m 89 324 l 89 316 l h
+f*
+n 558 320 m 551 324 l 551 316 l h
+f*
+n 97 316 m 97 324 l S
+n 543 316 m 543 324 l S
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 90.884 303 Tm (81) Tj T* ET
+.290196 .333333 .407843 RG
+1 w
+n
+524 293 m
+562 293 l
+563.6584 293 565 294.3416 565 296 c
+565 308 l
+565 309.6584 563.6584 311 562 311 c
+524 311 l
+522.3416 311 521 309.6584 521 308 c
+521 296 l
+521 294.3416 522.3416 293 524 293 c
+h
+S
+BT /F3 8 Tf 9.6 TL ET
+.443137 .501961 .588235 rg
+BT 1 0 0 1 530.108 284 Tm (answer) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+BT /F2 10 Tf 12 TL ET
+n 97 320 m 208.5 346 431.5 346 535.209 321.8167 c
+S
+n 543 320 m 536.0038 325.2253 l 534.4142 318.4082 l h
+f*
+BT 1 0 0 1 310.13 349 Tm (+ 70) Tj T* ET
+Q
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Number Lines: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (347 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 125 = 222) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 658 Tm (35 + 804 = 839) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 638 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 638 Tm (81 + 70 = 151) Tj T* ET
+
+=== number_line_five_problems ===
+title: Word Problems \204 Number Lines
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Number Lines) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (Use the number line. Start at the first number and jump by hundreds, tens, and ones.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 652 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 652 Tm (Maria collected 11 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 632 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 612 Tm (Jump forward to add. Fill in each box; the last box is your answer.) Tj T* ET
+0 0 0 rg
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 89 565 m 551 565 l S
+n 82 565 m 89 569 l 89 561 l h
+f*
+n 558 565 m 551 569 l 551 561 l h
+f*
+n 97 561 m 97 569 l S
+n 320 561 m 320 569 l S
+n 543 561 m 543 569 l S
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 90.884 548 Tm (11) Tj T* ET
+.290196 .333333 .407843 RG
+1 w
+n
+301 538 m
+339 538 l
+340.6584 538 342 539.3416 342 541 c
+342 553 l
+342 554.6584 340.6584 556 339 556 c
+301 556 l
+299.3416 556 298 554.6584 298 553 c
+298 541 l
+298 539.3416 299.3416 538 301 538 c
+h
+S
+n
+524 538 m
+562 538 l
+563.6584 538 565 539.3416 565 541 c
+565 553 l
+565 554.6584 563.6584 556 562 556 c
+524 556 l
+522.3416 556 521 554.6584 521 553 c
+521 541 l
+521 539.3416 522.3416 538 524 538 c
+h
+S
+BT /F3 8 Tf 9.6 TL ET
+.443137 .501961 .588235 rg
+BT 1 0 0 1 530.108 529 Tm (answer) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+BT /F2 10 Tf 12 TL ET
+n 97 565 m 152.75 591 264.25 591 312.7497 568.3813 c
+S
+n 320 565 m 314.229 571.5533 l 311.2704 565.2093 l h
+f*
+BT 1 0 0 1 198.63 594 Tm (+ 20) Tj T* ET
+n 320 565 m 375.75 591 487.25 591 535.7497 568.3813 c
+S
+n 543 565 m 537.229 571.5533 l 534.2704 565.2093 l h
+f*
+BT 1 0 0 1 424.41 594 Tm (+ 5) Tj T* ET
+Q
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 507 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 507 Tm (Maria collected 22 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 487 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 467 Tm (Jump forward to add. Fill in each box; the last box is your answer.) Tj T* ET
+0 0 0 rg
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 89 420 m 551 420 l S
+n 82 420 m 89 424 l 89 416 l h
+f*
+n 558 420 m 551 424 l 551 416 l h
+f*
+n 97 416 m 97 424 l S
+n 320 416 m 320 424 l S
+n 543 416 m 543 424 l S
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 90.884 403 Tm (22) Tj T* ET
+.290196 .333333 .407843 RG
+1 w
+n
+301 393 m
+339 393 l
+340.6584 393 342 394.3416 342 396 c
+342 408 l
+342 409.6584 340.6584 411 339 411 c
+301 411 l
+299.3416 411 298 409.6584 298 408 c
+298 396 l
+298 394.3416 299.3416 393 301 393 c
+h
+S
+n
+524 393 m
+562 393 l
+563.6584 393 565 394.3416 565 396 c
+565 408 l
+565 409.6584 563.6584 411 562 411 c
+524 411 l
+522.3416 411 521 409.6584 521 408 c
+521 396 l
+521 394.3416 522.3416 393 524 393 c
+h
+S
+BT /F3 8 Tf 9.6 TL ET
+.443137 .501961 .588235 rg
+BT 1 0 0 1 530.108 384 Tm (answer) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+BT /F2 10 Tf 12 TL ET
+n 97 420 m 152.75 446 264.25 446 312.7497 423.3813 c
+S
+n 320 420 m 314.229 426.5533 l 311.2704 420.2093 l h
+f*
+BT 1 0 0 1 198.63 449 Tm (+ 20) Tj T* ET
+n 320 420 m 375.75 446 487.25 446 535.7497 423.3813 c
+S
+n 543 420 m 537.229 426.5533 l 534.2704 420.2093 l h
+f*
+BT 1 0 0 1 424.41 449 Tm (+ 5) Tj T* ET
+Q
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 362 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 362 Tm (Maria collected 33 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 342 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 322 Tm (Jump forward to add. Fill in each box; the last box is your answer.) Tj T* ET
+0 0 0 rg
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 89 275 m 551 275 l S
+n 82 275 m 89 279 l 89 271 l h
+f*
+n 558 275 m 551 279 l 551 271 l h
+f*
+n 97 271 m 97 279 l S
+n 320 271 m 320 279 l S
+n 543 271 m 543 279 l S
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 90.884 258 Tm (33) Tj T* ET
+.290196 .333333 .407843 RG
+1 w
+n
+301 248 m
+339 248 l
+340.6584 248 342 249.3416 342 251 c
+342 263 l
+342 264.6584 340.6584 266 339 266 c
+301 266 l
+299.3416 266 298 264.6584 298 263 c
+298 251 l
+298 249.3416 299.3416 248 301 248 c
+h
+S
+n
+524 248 m
+562 248 l
+563.6584 248 565 249.3416 565 251 c
+565 263 l
+565 264.6584 563.6584 266 562 266 c
+524 266 l
+522.3416 266 521 264.6584 521 263 c
+521 251 l
+521 249.3416 522.3416 248 524 248 c
+h
+S
+BT /F3 8 Tf 9.6 TL ET
+.443137 .501961 .588235 rg
+BT 1 0 0 1 530.108 239 Tm (answer) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+BT /F2 10 Tf 12 TL ET
+n 97 275 m 152.75 301 264.25 301 312.7497 278.3813 c
+S
+n 320 275 m 314.229 281.5533 l 311.2704 275.2093 l h
+f*
+BT 1 0 0 1 198.63 304 Tm (+ 20) Tj T* ET
+n 320 275 m 375.75 301 487.25 301 535.7497 278.3813 c
+S
+n 543 275 m 537.229 281.5533 l 534.2704 275.2093 l h
+f*
+BT 1 0 0 1 424.41 304 Tm (+ 5) Tj T* ET
+Q
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 217 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 217 Tm (Maria collected 44 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 197 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 177 Tm (Jump forward to add. Fill in each box; the last box is your answer.) Tj T* ET
+0 0 0 rg
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 89 130 m 551 130 l S
+n 82 130 m 89 134 l 89 126 l h
+f*
+n 558 130 m 551 134 l 551 126 l h
+f*
+n 97 126 m 97 134 l S
+n 320 126 m 320 134 l S
+n 543 126 m 543 134 l S
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 90.884 113 Tm (44) Tj T* ET
+.290196 .333333 .407843 RG
+1 w
+n
+301 103 m
+339 103 l
+340.6584 103 342 104.3416 342 106 c
+342 118 l
+342 119.6584 340.6584 121 339 121 c
+301 121 l
+299.3416 121 298 119.6584 298 118 c
+298 106 l
+298 104.3416 299.3416 103 301 103 c
+h
+S
+n
+524 103 m
+562 103 l
+563.6584 103 565 104.3416 565 106 c
+565 118 l
+565 119.6584 563.6584 121 562 121 c
+524 121 l
+522.3416 121 521 119.6584 521 118 c
+521 106 l
+521 104.3416 522.3416 103 524 103 c
+h
+S
+BT /F3 8 Tf 9.6 TL ET
+.443137 .501961 .588235 rg
+BT 1 0 0 1 530.108 94 Tm (answer) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+BT /F2 10 Tf 12 TL ET
+n 97 130 m 152.75 156 264.25 156 312.7497 133.3813 c
+S
+n 320 130 m 314.229 136.5533 l 311.2704 130.2093 l h
+f*
+BT 1 0 0 1 198.63 159 Tm (+ 20) Tj T* ET
+n 320 130 m 375.75 156 487.25 156 535.7497 133.3813 c
+S
+n 543 130 m 537.229 136.5533 l 534.2704 130.2093 l h
+f*
+BT 1 0 0 1 424.41 159 Tm (+ 5) Tj T* ET
+Q
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Number Lines) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Maria collected 55 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 658 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 638 Tm (Jump forward to add. Fill in each box; the last box is your answer.) Tj T* ET
+0 0 0 rg
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 89 591 m 551 591 l S
+n 82 591 m 89 595 l 89 587 l h
+f*
+n 558 591 m 551 595 l 551 587 l h
+f*
+n 97 587 m 97 595 l S
+n 320 587 m 320 595 l S
+n 543 587 m 543 595 l S
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 90.884 574 Tm (55) Tj T* ET
+.290196 .333333 .407843 RG
+1 w
+n
+301 564 m
+339 564 l
+340.6584 564 342 565.3416 342 567 c
+342 579 l
+342 580.6584 340.6584 582 339 582 c
+301 582 l
+299.3416 582 298 580.6584 298 579 c
+298 567 l
+298 565.3416 299.3416 564 301 564 c
+h
+S
+n
+524 564 m
+562 564 l
+563.6584 564 565 565.3416 565 567 c
+565 579 l
+565 580.6584 563.6584 582 562 582 c
+524 582 l
+522.3416 582 521 580.6584 521 579 c
+521 567 l
+521 565.3416 522.3416 564 524 564 c
+h
+S
+BT /F3 8 Tf 9.6 TL ET
+.443137 .501961 .588235 rg
+BT 1 0 0 1 530.108 555 Tm (answer) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+BT /F2 10 Tf 12 TL ET
+n 97 591 m 152.75 617 264.25 617 312.7497 594.3813 c
+S
+n 320 591 m 314.229 597.5533 l 311.2704 591.2093 l h
+f*
+BT 1 0 0 1 198.63 620 Tm (+ 20) Tj T* ET
+n 320 591 m 375.75 617 487.25 617 535.7497 594.3813 c
+S
+n 543 591 m 537.229 597.5533 l 534.2704 591.2093 l h
+f*
+BT 1 0 0 1 424.41 620 Tm (+ 5) Tj T* ET
+Q
+
+=== number_line_self_check_tiles_answer_key ===
+title: Word Problems \204 Number Lines
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Number Lines) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (Use the number line. Start at the first number and jump by hundreds, tens, and ones.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 652 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 652 Tm (Maria collected 47 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 632 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 612 Tm (Jump forward to add. Fill in each box; the last box is your answer.) Tj T* ET
+0 0 0 rg
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 89 565 m 551 565 l S
+n 82 565 m 89 569 l 89 561 l h
+f*
+n 558 565 m 551 569 l 551 561 l h
+f*
+n 97 561 m 97 569 l S
+n 320 561 m 320 569 l S
+n 543 561 m 543 569 l S
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 90.884 548 Tm (47) Tj T* ET
+.290196 .333333 .407843 RG
+1 w
+n
+301 538 m
+339 538 l
+340.6584 538 342 539.3416 342 541 c
+342 553 l
+342 554.6584 340.6584 556 339 556 c
+301 556 l
+299.3416 556 298 554.6584 298 553 c
+298 541 l
+298 539.3416 299.3416 538 301 538 c
+h
+S
+n
+524 538 m
+562 538 l
+563.6584 538 565 539.3416 565 541 c
+565 553 l
+565 554.6584 563.6584 556 562 556 c
+524 556 l
+522.3416 556 521 554.6584 521 553 c
+521 541 l
+521 539.3416 522.3416 538 524 538 c
+h
+S
+BT /F3 8 Tf 9.6 TL ET
+.443137 .501961 .588235 rg
+BT 1 0 0 1 530.108 529 Tm (answer) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+BT /F2 10 Tf 12 TL ET
+n 97 565 m 152.75 591 264.25 591 312.7497 568.3813 c
+S
+n 320 565 m 314.229 571.5533 l 311.2704 565.2093 l h
+f*
+BT 1 0 0 1 198.63 594 Tm (+ 20) Tj T* ET
+n 320 565 m 375.75 591 487.25 591 535.7497 568.3813 c
+S
+n 543 565 m 537.229 571.5533 l 534.2704 565.2093 l h
+f*
+BT 1 0 0 1 424.41 594 Tm (+ 5) Tj T* ET
+Q
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 507 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 507 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 487 Tm (Jump backward to subtract. Fill in each box; the last box is your answer.) Tj T* ET
+0 0 0 rg
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 89 440 m 551 440 l S
+n 82 440 m 89 444 l 89 436 l h
+f*
+n 558 440 m 551 444 l 551 436 l h
+f*
+n 543 436 m 543 444 l S
+n 320 436 m 320 444 l S
+n 97 436 m 97 444 l S
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 536.884 423 Tm (72) Tj T* ET
+.290196 .333333 .407843 RG
+1 w
+n
+301 413 m
+339 413 l
+340.6584 413 342 414.3416 342 416 c
+342 428 l
+342 429.6584 340.6584 431 339 431 c
+301 431 l
+299.3416 431 298 429.6584 298 428 c
+298 416 l
+298 414.3416 299.3416 413 301 413 c
+h
+S
+n
+78 413 m
+116 413 l
+117.6584 413 119 414.3416 119 416 c
+119 428 l
+119 429.6584 117.6584 431 116 431 c
+78 431 l
+76.3416 431 75 429.6584 75 428 c
+75 416 l
+75 414.3416 76.3416 413 78 413 c
+h
+S
+BT /F3 8 Tf 9.6 TL ET
+.443137 .501961 .588235 rg
+BT 1 0 0 1 84.108 404 Tm (answer) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+BT /F2 10 Tf 12 TL ET
+n 543 440 m 487.25 466 375.75 466 327.2503 443.3813 c
+S
+n 320 440 m 328.7296 440.2093 l 325.771 446.5533 l h
+f*
+BT 1 0 0 1 421.805 469 Tm /F4 10 Tf 12 TL (-) Tj /F2 10 Tf 12 TL ( 20) Tj T* ET
+n 320 440 m 264.25 466 152.75 466 104.2503 443.3813 c
+S
+n 97 440 m 105.7296 440.2093 l 102.771 446.5533 l h
+f*
+BT 1 0 0 1 201.585 469 Tm /F4 10 Tf 12 TL (-) Tj /F2 10 Tf 12 TL ( 5) Tj T* ET
+Q
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Number Lines) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (Answer bank) Tj T* ET
+BT /F1 11 Tf 13.2 TL ET
+BT 1 0 0 1 54 662 Tm (Put each numbered tile in the slot whose letter matches the answer to its question. Shaded boxes are) Tj T* ET
+BT 1 0 0 1 54 649 Tm (not used.) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 578 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.668 626 Tm (A) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 578 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 626 Tm (B) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 578 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 259.668 626 Tm (C) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 578 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 343.668 626 Tm (D) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 578 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.998 626 Tm (E) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 578 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 626 Tm (F) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 534 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.332 520 Tm (G) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 534 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 171.104 551 Tm (72) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 520 Tm (H) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 534 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 262.332 520 Tm (I) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 534 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 339.104 551 Tm (47) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 344.664 520 Tm (J) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 534 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.668 520 Tm (K) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 534 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 520 Tm (L) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 318 432 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 358 432 40 40 re f*
+.941176 .745098 0 rg
+n 358 472 m 378 472 l 378 452 l 398 432 l 358 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 432 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 398 432 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 438 432 40 40 re f*
+0 .235294 .784314 rg
+n 438 472 m 458 472 l 458 452 l 478 432 l 438 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 432 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 478 432 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 432 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 518 432 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 432 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 318 392 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 392 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 358 392 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 392 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 398 392 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 392 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 438 392 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 392 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 478 392 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 392 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 518 392 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 392 40 40 re S
+Q
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 458 Tm (Close the case and flip it over. If every) Tj T* ET
+BT 1 0 0 1 54 443 Tm (answer is right, the back looks like this.) Tj T* ET
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Number Lines: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (47 + 25 = 72    \(H\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 658 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47    \(J\)) Tj T* ET
+

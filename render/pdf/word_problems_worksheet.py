@@ -4,8 +4,9 @@ page.
 
 The first page has the picture's instruction under its header. Each problem has its number and
 wording, a hint if the picture has one and hints aren't turned off, the picture, and an answer
-line. A text-only problem's picture is a box to show the work in. A sheet for the self-check
-tiles case has no answer lines, and ends with a page for the answer bank and pattern.
+line. A text-only problem's picture is a box to show the work in. A number line's last box is
+its answer, so it has no answer line. A sheet for the self-check tiles case has no answer lines,
+and ends with a page for the answer bank and pattern.
 """
 
 from collections.abc import Sequence
@@ -24,16 +25,24 @@ from core.basic_operations.representation import (
     equation,
     hint,
     instruction,
+    number_line_jumps,
     stem,
     strip_diagram,
 )
 from core.question import Question
-from render.pdf.diagrams import STRIP_HEIGHT, draw_equal_strip, draw_strip
+from render.pdf.diagrams import (
+    NUMBER_LINE_HEIGHT,
+    STRIP_HEIGHT,
+    draw_equal_strip,
+    draw_number_line,
+    draw_strip,
+)
 from render.pdf.page import (
     BOLD_FONT,
     CONTENT_WIDTH,
     FIRST_LINE_Y,
     FONT,
+    ITALIC_FONT,
     LINE_HEIGHT,
     MARGIN,
     TEXT_INDENT,
@@ -47,7 +56,6 @@ from render.pdf.page import (
 )
 from render.pdf.tiles import BANK_HEADING_HEIGHT, draw_tiles, tile_solutions
 
-ITALIC_FONT = "Helvetica-Oblique"  # same widths as FONT, so wrap measures it correctly
 INSTRUCTION_SIZE = 12
 INSTRUCTION_LINE_HEIGHT = 16
 INSTRUCTION_GAP = 10  # extra space between the instruction and the first problem
@@ -92,7 +100,7 @@ def render_word_problems_worksheet(
     questions, and their answers must be distinct. The answer key adds each answer's slot letter.
     """
     pdf = new_pdf(path, header.title)
-    answer_lines = slot_of is None
+    answer_lines = slot_of is None and picture is not Picture.NUMBER_LINE
 
     operations = {question.data.operation for question in questions}
     y = _draw_instruction(pdf, instruction(picture, operations), start_page(pdf, header))
@@ -183,7 +191,9 @@ def _picture_height(picture: Picture) -> float:
             return STRIP_HEIGHT
         case Picture.NONE:
             return WORK_BOX_HEIGHT
-        case Picture.NUMBER_LINE | Picture.BLOCKS:
+        case Picture.NUMBER_LINE:
+            return NUMBER_LINE_HEIGHT
+        case Picture.BLOCKS:
             raise NotImplementedError(f"The {picture} picture is not built yet.")
         case _:
             assert_never(picture)
@@ -205,7 +215,9 @@ def _draw_picture(
                     assert_never(diagram)
         case Picture.NONE:
             _draw_work_box(pdf, x, top)
-        case Picture.NUMBER_LINE | Picture.BLOCKS:
+        case Picture.NUMBER_LINE:
+            draw_number_line(pdf, x, top, data.operands[0], number_line_jumps(data))
+        case Picture.BLOCKS:
             raise NotImplementedError(f"The {picture} picture is not built yet.")
         case _:
             assert_never(picture)

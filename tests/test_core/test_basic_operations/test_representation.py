@@ -1,5 +1,6 @@
 """The wording of basic-operation questions: a missing-number equation, how the self-check tiles
-sheet shows a question, and a word problem's strip diagram, hint, instruction and sheet title."""
+sheet shows a question, and a word problem's strip diagram, number line jumps, hint, instruction
+and sheet title."""
 
 import pytest
 
@@ -19,6 +20,7 @@ from core.basic_operations.representation import (
     instruction,
     missing_number_equation,
     missing_number_tile_question,
+    number_line_jumps,
     operations_name,
     strip_diagram,
     word_problems_title,
@@ -138,6 +140,37 @@ def test_equal_strip_diagram_whole(strip: EqualStripDiagram, whole: int) -> None
 
 
 @pytest.mark.parametrize(
+    ("data", "expected"),
+    [
+        # addition jumps forward, by each place of the second operand
+        (BasicOperationQuestionData(Operation.ADD, (47, 25), 72), (20, 5)),
+        # subtraction jumps backward
+        (BasicOperationQuestionData(Operation.SUBTRACT, (72, 25), 47), (-20, -5)),
+        # three places, three jumps
+        (BasicOperationQuestionData(Operation.SUBTRACT, (347, 125), 222), (-100, -20, -5)),
+        # a place of 0 has no jump
+        (BasicOperationQuestionData(Operation.ADD, (35, 804), 839), (800, 4)),
+        (BasicOperationQuestionData(Operation.ADD, (81, 70), 151), (70,)),
+    ],
+)
+def test_number_line_jumps(data: BasicOperationQuestionData, expected: tuple[int, ...]) -> None:
+    assert number_line_jumps(data) == expected
+
+
+@pytest.mark.parametrize(
+    ("data", "message"),
+    [
+        (MULTIPLY, "A number line shows only addition and subtraction, not multiplication."),
+        (DIVIDE, "A number line shows only addition and subtraction, not division."),
+    ],
+)
+def test_number_line_jumps_errors(data: BasicOperationQuestionData, message: str) -> None:
+    with pytest.raises(ValueError) as error:
+        number_line_jumps(data)
+    assert str(error.value) == message
+
+
+@pytest.mark.parametrize(
     ("data", "picture", "expected"),
     [
         (ADD, Picture.STRIP, "Both parts are shown. Add the parts to find the whole."),
@@ -159,6 +192,16 @@ def test_equal_strip_diagram_whole(strip: EqualStripDiagram, whole: int) -> None
         # text only has no hints
         (ADD, Picture.NONE, None),
         (DIVIDE, Picture.NONE, None),
+        (
+            ADD,
+            Picture.NUMBER_LINE,
+            "Jump forward to add. Fill in each box; the last box is your answer.",
+        ),
+        (
+            SUBTRACT,
+            Picture.NUMBER_LINE,
+            "Jump backward to subtract. Fill in each box; the last box is your answer.",
+        ),
     ],
 )
 def test_hint(data: BasicOperationQuestionData, picture: Picture, expected: str | None) -> None:
@@ -224,6 +267,17 @@ def test_hint(data: BasicOperationQuestionData, picture: Picture, expected: str 
             Picture.NONE,
             [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
             "Read each problem. Show your work in the box.",
+        ),
+        # number line: the same for addition, subtraction or both
+        (
+            Picture.NUMBER_LINE,
+            [Operation.ADD, Operation.SUBTRACT],
+            "Use the number line. Start at the first number and jump by hundreds, tens, and ones.",
+        ),
+        (
+            Picture.NUMBER_LINE,
+            [Operation.SUBTRACT],
+            "Use the number line. Start at the first number and jump by hundreds, tens, and ones.",
         ),
     ],
 )

@@ -124,7 +124,11 @@ def test_the_tile_pattern_is_a_pair_of_radio_buttons_that_defaults_to_simple(
         (
             "/basic-operations/",
             "picture",
-            [(b"strip", b" selected", b"Strip Diagrams"), (b"none", b"", b"Text Only")],
+            [
+                (b"strip", b" selected", b"Strip Diagrams"),
+                (b"none", b"", b"Text Only"),
+                (b"number_line", b"", b"Number Lines"),
+            ],
         ),
         (
             "/place-value/",
@@ -279,6 +283,31 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
     assert (b"selfCheckTiles.checked ? 12 : problems.defaultValue" in content) is tiles_script
     assert (b'id="operation-titles"' in content) is titles_script
     assert (b'id="picture-titles"' in content) is picture_script
+
+
+@pytest.mark.parametrize(
+    ("url", "expected"),
+    [
+        (
+            "/basic-operations/",
+            b'<script id="picture-operations" type="application/json">'
+            b'{"strip": ["add", "subtract", "multiply", "divide"], '
+            b'"none": ["add", "subtract", "multiply", "divide"], '
+            b'"number_line": ["add", "subtract"], '
+            b'"blocks": ["add", "subtract"]}</script>',
+        ),
+        ("/place-value/", None),
+    ],
+)
+def test_the_picture_script_greys_out_the_operations_a_picture_cannot_show(
+    client: Client, url: str, expected: bytes | None
+) -> None:
+    """
+    The basic operations page has the operations each picture can show, for the picture script
+    to grey out the others. Whether the script works is checked manually in a browser.
+    """
+    found = re.search(rb'<script id="picture-operations".*?</script>', client.get(url).content)
+    assert (found.group() if found else None) == expected
 
 
 @pytest.mark.parametrize(

@@ -24,6 +24,7 @@ TEXT_INDENT = 28  # question text is indented past its number
 TEXT_WIDTH = PAGE_WIDTH - 2 * MARGIN - TEXT_INDENT
 FONT = "Helvetica"
 BOLD_FONT = "Helvetica-Bold"
+ITALIC_FONT = "Helvetica-Oblique"  # same widths as FONT, so wrap measures it correctly
 TEXT_SIZE = 14
 LINE_HEIGHT = 20
 FIRST_LINE_Y: float = PAGE_HEIGHT - MARGIN - 60
