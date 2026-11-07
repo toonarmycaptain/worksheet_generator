@@ -531,7 +531,7 @@ def generate_word_problems(
 
     Addition and subtraction draw their operands at random, as in ``_sum_or_difference``: every
     number in the problem, its answer included, is at most ``largest_number``, and the operands
-    are also at most ``largest_operand``, for a picture that can show only so much. Base-ten
+    are also at most ``largest_operand``, for a representation that can show only so much. Base-ten
     blocks, for example, show at most 599. Multiplication and division are equal groups, as in
     ``_equal_groups``, and ignore both limits. The wording comes from the word-problem bank, with
     its comparisons too if ``comparisons`` is set. The problems are answered in writing, so they

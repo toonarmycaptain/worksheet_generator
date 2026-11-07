@@ -15,8 +15,8 @@ from django.shortcuts import render
 
 from core.basic_operations.data import Operation
 from core.basic_operations.representation import (
-    PICTURE_OPERATIONS,
-    Picture,
+    REPRESENTATION_OPERATIONS,
+    Representation,
     operations_name,
     word_problems_title,
 )
@@ -136,12 +136,15 @@ def basic_operations(request: HttpRequest) -> HttpResponse:
             for size in range(1, len(Operation) + 1)
             for ticked in combinations(Operation, size)
         },
-        # each picture's value -> the title of word problems drawn with it
-        "picture_titles": {picture.value: word_problems_title(picture) for picture in Picture},
-        # each picture's value -> the values of the operations it can show
-        "picture_operations": {
-            picture.value: [operation.value for operation in Operation if operation in shown]
-            for picture, shown in PICTURE_OPERATIONS.items()
+        # each representation's value -> the title of word problems drawn with it
+        "representation_titles": {
+            representation.value: word_problems_title(representation)
+            for representation in Representation
+        },
+        # each representation's value -> the values of the operations it can show
+        "representation_operations": {
+            representation.value: [operation.value for operation in Operation if operation in shown]
+            for representation, shown in REPRESENTATION_OPERATIONS.items()
         },
     }
     return render(request, "worksheets/builder.html", context)

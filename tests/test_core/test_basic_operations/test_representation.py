@@ -13,7 +13,7 @@ from core.basic_operations.data import (
 from core.basic_operations.representation import (
     BlocksDiagram,
     EqualStripDiagram,
-    Picture,
+    Representation,
     StripDiagram,
     StripUnknown,
     basic_operation_tile_question,
@@ -226,132 +226,136 @@ def test_blocks_diagram_errors(data: BasicOperationQuestionData, message: str) -
 
 
 @pytest.mark.parametrize(
-    ("data", "picture", "expected"),
+    ("data", "representation", "expected"),
     [
-        (ADD, Picture.STRIP, "Both parts are shown. Add the parts to find the whole."),
+        (ADD, Representation.STRIP, "Both parts are shown. Add the parts to find the whole."),
         (
             SUBTRACT,
-            Picture.STRIP,
+            Representation.STRIP,
             "The whole and one part are shown. Subtract to find the missing part.",
         ),
         (
             MULTIPLY,
-            Picture.STRIP,
+            Representation.STRIP,
             "Equal groups are shown. Multiply the group size by the number of groups.",
         ),
         (
             DIVIDE,
-            Picture.STRIP,
+            Representation.STRIP,
             "The whole is split into equal groups. Divide to find the amount in each group.",
         ),
         # text only has no hints
-        (ADD, Picture.NONE, None),
-        (DIVIDE, Picture.NONE, None),
+        (ADD, Representation.NONE, None),
+        (DIVIDE, Representation.NONE, None),
         (
             ADD,
-            Picture.NUMBER_LINE,
+            Representation.NUMBER_LINE,
             "Jump forward to add. Fill in each box; the last box is your answer.",
         ),
         (
             SUBTRACT,
-            Picture.NUMBER_LINE,
+            Representation.NUMBER_LINE,
             "Jump backward to subtract. Fill in each box; the last box is your answer.",
         ),
-        (ADD, Picture.BLOCKS, "Combine the blocks to find the total."),
+        (ADD, Representation.BLOCKS, "Combine the blocks to find the total."),
         # the amount to cross out, the second number
-        (SUBTRACT, Picture.BLOCKS, "Cross out 25 to subtract."),
+        (SUBTRACT, Representation.BLOCKS, "Cross out 25 to subtract."),
     ],
 )
-def test_hint(data: BasicOperationQuestionData, picture: Picture, expected: str | None) -> None:
-    assert hint(data, picture) == expected
+def test_hint(
+    data: BasicOperationQuestionData, representation: Representation, expected: str | None
+) -> None:
+    assert hint(data, representation) == expected
 
 
 @pytest.mark.parametrize(
-    ("picture", "operations", "expected"),
+    ("representation", "operations", "expected"),
     [
         (
-            Picture.STRIP,
+            Representation.STRIP,
             [Operation.ADD, Operation.SUBTRACT],
             "Use the strip diagram (bar model): two parts make a whole. The ? shows what to find.",
         ),
         (
-            Picture.STRIP,
+            Representation.STRIP,
             [Operation.ADD],
             "Use the strip diagram (bar model): two parts make a whole. The ? shows what to find.",
         ),
         (
-            Picture.STRIP,
+            Representation.STRIP,
             [Operation.SUBTRACT],
             "Use the strip diagram (bar model): two parts make a whole. The ? shows what to find.",
         ),
         (
-            Picture.STRIP,
+            Representation.STRIP,
             [Operation.MULTIPLY, Operation.DIVIDE],
             "Use the strip diagram (bar model): equal groups make a whole. "
             "The ? shows what to find.",
         ),
         (
-            Picture.STRIP,
+            Representation.STRIP,
             [Operation.MULTIPLY],
             "Use the strip diagram (bar model): equal groups make a whole. "
             "The ? shows what to find.",
         ),
         (
-            Picture.STRIP,
+            Representation.STRIP,
             [Operation.DIVIDE],
             "Use the strip diagram (bar model): equal groups make a whole. "
             "The ? shows what to find.",
         ),
         # one of each kind is enough for both
         (
-            Picture.STRIP,
+            Representation.STRIP,
             [Operation.SUBTRACT, Operation.MULTIPLY],
             "Use the strip diagram (bar model): parts or equal groups make a whole. "
             "The ? shows what to find.",
         ),
         (
-            Picture.STRIP,
+            Representation.STRIP,
             [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
             "Use the strip diagram (bar model): parts or equal groups make a whole. "
             "The ? shows what to find.",
         ),
         # text only: the same for any operations
         (
-            Picture.NONE,
+            Representation.NONE,
             [Operation.ADD, Operation.SUBTRACT],
             "Read each problem. Show your work in the box.",
         ),
         (
-            Picture.NONE,
+            Representation.NONE,
             [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
             "Read each problem. Show your work in the box.",
         ),
         # number line: the same for addition, subtraction or both
         (
-            Picture.NUMBER_LINE,
+            Representation.NUMBER_LINE,
             [Operation.ADD, Operation.SUBTRACT],
             "Use the number line. Start at the first number and jump by hundreds, tens, and ones.",
         ),
         (
-            Picture.NUMBER_LINE,
+            Representation.NUMBER_LINE,
             [Operation.SUBTRACT],
             "Use the number line. Start at the first number and jump by hundreds, tens, and ones.",
         ),
         # base-ten blocks: the same for addition, subtraction or both
         (
-            Picture.BLOCKS,
+            Representation.BLOCKS,
             [Operation.ADD, Operation.SUBTRACT],
             "Use the base-ten blocks to help you solve each problem.",
         ),
         (
-            Picture.BLOCKS,
+            Representation.BLOCKS,
             [Operation.ADD],
             "Use the base-ten blocks to help you solve each problem.",
         ),
     ],
 )
-def test_instruction(picture: Picture, operations: list[Operation], expected: str) -> None:
-    assert instruction(picture, operations) == expected
+def test_instruction(
+    representation: Representation, operations: list[Operation], expected: str
+) -> None:
+    assert instruction(representation, operations) == expected
 
 
 @pytest.mark.parametrize(
@@ -370,14 +374,14 @@ def test_operations_name(operations: list[Operation], expected: str) -> None:
 
 
 @pytest.mark.parametrize(
-    ("picture", "expected"),
+    ("representation", "expected"),
     [
-        (Picture.STRIP, "Word Problems — Strip Diagrams"),
-        # text only: no picture to name
-        (Picture.NONE, "Word Problems"),
-        (Picture.NUMBER_LINE, "Word Problems — Number Lines"),
-        (Picture.BLOCKS, "Word Problems — Base-Ten Blocks"),
+        (Representation.STRIP, "Word Problems — Strip Diagrams"),
+        # text only: no representation to name
+        (Representation.NONE, "Word Problems"),
+        (Representation.NUMBER_LINE, "Word Problems — Number Lines"),
+        (Representation.BLOCKS, "Word Problems — Base-Ten Blocks"),
     ],
 )
-def test_word_problems_title(picture: Picture, expected: str) -> None:
-    assert word_problems_title(picture) == expected
+def test_word_problems_title(representation: Representation, expected: str) -> None:
+    assert word_problems_title(representation) == expected
