@@ -25,6 +25,7 @@ from core.basic_operations.data import (
 )
 from core.basic_operations.generator import MAXIMUM_OPERAND
 from tests.helpers import (
+    choices_in_turn,
     pdf_text,
     randint_returns,
     refused,
@@ -39,7 +40,7 @@ from tests.helpers import (
     ("url", "drawn", "status", "expected_json", "pdf_data", "filename"),
     [
         (
-            "/api/worksheets/basic_operations.pdf?operation=add&problems=2&sheet=1ab2c3",
+            "/api/worksheets/basic_operations.pdf?operations=add&problems=2&sheet=1ab2c3",
             [3, 4, 5, 6],
             200,
             None,
@@ -57,7 +58,7 @@ from tests.helpers import (
             "basic_operations-sheet-a.pdf",
         ),
         (
-            "/api/worksheets/basic_operations.pdf?operation=add&problems=2&name_line=true&sheet=1ab2c3",
+            "/api/worksheets/basic_operations.pdf?operations=add&problems=2&name_line=true&sheet=1ab2c3",
             [3, 4, 5, 6],
             200,
             None,
@@ -75,7 +76,7 @@ from tests.helpers import (
             "basic_operations-sheet-a.pdf",
         ),
         (
-            "/api/worksheets/basic_operations.pdf?operation=subtract&problems=2&answer_key=true"
+            "/api/worksheets/basic_operations.pdf?operations=subtract&problems=2&answer_key=true"
             "&sheet=1ab2c3",
             [7, 3, 9, 2],
             200,
@@ -94,7 +95,7 @@ from tests.helpers import (
             "basic_operations-sheet-a.pdf",
         ),
         (
-            "/api/worksheets/basic_operations.pdf?operation=multiply&problems=2&title=Tables&label=Day+2"
+            "/api/worksheets/basic_operations.pdf?operations=multiply&problems=2&title=Tables&label=Day+2"
             "&sheet=1ab2c3",
             [6, 7, 2, 8],
             200,
@@ -164,18 +165,99 @@ from tests.helpers import (
             },
             "basic_operations-sheet-a.pdf",
         ),
+        (
+            # Two operations take turns, and the title names both. Each question's wrong answers
+            # come from the top of its own operation's range.
+            "/api/worksheets/basic_operations.pdf?operations=add&operations=subtract&problems=2"
+            "&sheet=1ab2c3",
+            [3, 4, 7, 3],
+            200,
+            None,
+            {
+                "render": render_basic_operations,
+                "cases": [
+                    (BasicOperationQuestionData(Operation.ADD, (3, 4), 7), (18, 19, 20)),
+                    (BasicOperationQuestionData(Operation.SUBTRACT, (7, 3), 4), (8, 9, 10)),
+                ],
+                "title": "Addition and Subtraction",
+                "label": "Sheet A",
+                "name_line": False,
+                "answer_key": False,
+            },
+            "basic_operations-sheet-a.pdf",
+        ),
+        (
+            # All four: division draws a divisor of 1 to 10, then a quotient for a dividend of up
+            # to 100, while the others' operands are up to 10.
+            "/api/worksheets/basic_operations.pdf?operations=add&operations=subtract"
+            "&operations=multiply&operations=divide&problems=4&sheet=1ab2c3",
+            [3, 4, 7, 3, 2, 6, 4, 7],
+            200,
+            None,
+            {
+                "render": render_basic_operations,
+                "cases": [
+                    (BasicOperationQuestionData(Operation.ADD, (3, 4), 7), (18, 19, 20)),
+                    (BasicOperationQuestionData(Operation.SUBTRACT, (7, 3), 4), (8, 9, 10)),
+                    (BasicOperationQuestionData(Operation.MULTIPLY, (2, 6), 12), (98, 99, 100)),
+                    (BasicOperationQuestionData(Operation.DIVIDE, (28, 4), 7), (98, 99, 100)),
+                ],
+                "title": "Mixed Operations",
+                "label": "Sheet A",
+                "name_line": False,
+                "answer_key": False,
+            },
+            "basic_operations-sheet-a.pdf",
+        ),
         # Options that are not allowed are refused before anything is drawn, and before the
         # redirect, so these URLs have no token.
         (
+            "/api/worksheets/basic_operations.pdf?operations=add&operations=divide"
+            "&missing_number=divisor",
+            [],
+            422,
+            refused("missing_number: only division by itself has a missing dividend or divisor"),
+            None,
+            None,
+        ),
+        (
+            # Any operation may get every question, so multiplication up to 1, with only 3
+            # different questions, limits the sheet. Raising division's limits can't help.
+            "/api/worksheets/basic_operations.pdf?operations=multiply&operations=divide"
+            "&max_number=1&problems=4",
+            [],
+            422,
+            refused(
+                "problems: at most 3 without repeats for that largest number, dividend and "
+                "divisor. Lower problems to 3, or raise the largest number to 2."
+            ),
+            None,
+            None,
+        ),
+        (
+            # With tiles, subtraction up to 5 has only 6 different answers.
+            "/api/worksheets/basic_operations.pdf?self_check_tiles=true&operations=add"
+            "&operations=subtract&max_number=5&problems=12",
+            [],
+            422,
+            refused(
+                "problems: at most 6 without repeated answers for that largest number. Lower "
+                "problems to 6, or raise the largest number to 11."
+            ),
+            None,
+            None,
+        ),
+        (
             # not an operation the sheet has
-            "/api/worksheets/basic_operations.pdf?operation=power",
+            "/api/worksheets/basic_operations.pdf?operations=power",
             [],
             422,
             {
                 "detail": [
                     {
                         "type": "literal_error",
-                        "loc": ["query", "operation"],
+                        # the list's first entry
+                        "loc": ["query", "options", "operations", 0],
                         "msg": "Input should be 'add', 'subtract', 'multiply' or 'divide'",
                         "ctx": {"expected": "'add', 'subtract', 'multiply' or 'divide'"},
                     },
@@ -271,7 +353,7 @@ from tests.helpers import (
         ),
         (
             # no title: the operation's name
-            "/api/worksheets/basic_operations.pdf?operation=multiply&problems=1&sheet=1ab2c3",
+            "/api/worksheets/basic_operations.pdf?operations=multiply&problems=1&sheet=1ab2c3",
             [6, 7],
             200,
             None,
@@ -316,7 +398,7 @@ from tests.helpers import (
         (
             # division: a divisor, then a quotient, with the wrong answers up to the largest
             # dividend, 100 by default
-            "/api/worksheets/basic_operations.pdf?operation=divide&problems=2&sheet=1ab2c3",
+            "/api/worksheets/basic_operations.pdf?operations=divide&problems=2&sheet=1ab2c3",
             [4, 7, 3, 5],
             200,
             None,
@@ -335,7 +417,7 @@ from tests.helpers import (
         ),
         (
             # largest_dividend=20 lowers the top of the wrong answers to 20
-            "/api/worksheets/basic_operations.pdf?operation=divide&problems=1&largest_dividend=20"
+            "/api/worksheets/basic_operations.pdf?operations=divide&problems=1&largest_dividend=20"
             "&largest_divisor=5&sheet=1ab2c3",
             [4, 5],
             200,
@@ -354,7 +436,7 @@ from tests.helpers import (
         ),
         (
             # division ignores the largest number
-            "/api/worksheets/basic_operations.pdf?operation=divide&problems=1&max_number=5&sheet=1ab2c3",
+            "/api/worksheets/basic_operations.pdf?operations=divide&problems=1&max_number=5&sheet=1ab2c3",
             [4, 7],
             200,
             None,
@@ -371,7 +453,7 @@ from tests.helpers import (
             "basic_operations-sheet-a.pdf",
         ),
         (
-            "/api/worksheets/basic_operations.pdf?operation=add&missing_number=dividend",
+            "/api/worksheets/basic_operations.pdf?operations=add&missing_number=dividend",
             [],
             422,
             refused("missing_number: only division has a missing dividend or divisor"),
@@ -380,7 +462,7 @@ from tests.helpers import (
         ),
         (
             # dividing by 1, 2 and 3 into dividends up to 3 makes only 8 different questions
-            "/api/worksheets/basic_operations.pdf?operation=divide&problems=20&largest_dividend=3"
+            "/api/worksheets/basic_operations.pdf?operations=divide&problems=20&largest_dividend=3"
             "&largest_divisor=3",
             [],
             422,
@@ -394,7 +476,7 @@ from tests.helpers import (
         (
             # dividends and divisors up to 10 make 15 fact families. Raising the largest divisor
             # alone adds none, since no divisor can be larger than the dividend.
-            "/api/worksheets/basic_operations.pdf?operation=divide&missing_number=divisor&problems=20"
+            "/api/worksheets/basic_operations.pdf?operations=divide&missing_number=divisor&problems=20"
             "&largest_dividend=10&largest_divisor=10",
             [],
             422,
@@ -406,7 +488,7 @@ from tests.helpers import (
             None,
         ),
         (
-            "/api/worksheets/basic_operations.pdf?operation=divide&largest_dividend=0",
+            "/api/worksheets/basic_operations.pdf?operations=divide&largest_dividend=0",
             [],
             422,
             {
@@ -423,7 +505,7 @@ from tests.helpers import (
             None,
         ),
         (
-            "/api/worksheets/basic_operations.pdf?operation=divide"
+            "/api/worksheets/basic_operations.pdf?operations=divide"
             f"&largest_divisor={MAXIMUM_OPERAND + 1}",
             [],
             422,
@@ -442,7 +524,7 @@ from tests.helpers import (
         ),
         # a missing dividend or divisor: equations to fill in, drawn as a divisor then a quotient
         (
-            "/api/worksheets/basic_operations.pdf?operation=divide&missing_number=dividend&problems=2"
+            "/api/worksheets/basic_operations.pdf?operations=divide&missing_number=dividend&problems=2"
             "&sheet=1ab2c3",
             [4, 7, 3, 5],
             200,
@@ -461,7 +543,7 @@ from tests.helpers import (
             "basic_operations-sheet-a.pdf",
         ),
         (
-            "/api/worksheets/basic_operations.pdf?operation=divide&missing_number=divisor&problems=2"
+            "/api/worksheets/basic_operations.pdf?operations=divide&missing_number=divisor&problems=2"
             "&answer_key=true&title=Find+the+Divisor&label=Day+2&sheet=1ab2c3",
             [4, 7, 3, 5],
             200,
@@ -481,7 +563,7 @@ from tests.helpers import (
         ),
         (
             # mixed: the missing divisor is made first, then the sheet is reversed
-            "/api/worksheets/basic_operations.pdf?operation=divide&missing_number=mixed&problems=2"
+            "/api/worksheets/basic_operations.pdf?operations=divide&missing_number=mixed&problems=2"
             "&sheet=1ab2c3",
             [4, 7, 3, 5],
             200,
@@ -502,7 +584,7 @@ from tests.helpers import (
         (
             # limits above the defaults reach the generator: with the default largest divisor
             # of 10, the divisor 20 could not be drawn
-            "/api/worksheets/basic_operations.pdf?operation=divide&missing_number=dividend&problems=1"
+            "/api/worksheets/basic_operations.pdf?operations=divide&missing_number=dividend&problems=1"
             "&largest_dividend=500&largest_divisor=20&sheet=1ab2c3",
             [20, 25],
             200,
@@ -534,8 +616,9 @@ def test_basic_operations_pdf(
     """
     A request receives the PDF for its options, or the error identifying the invalid option.
 
-    ``randint`` supplies the operands, or a divisor then a quotient, and rejects any value outside
-    the requested range, as the real one never returns one. ``sample`` takes the top of the
+    ``choices`` gives the ticked operations in turn. ``randint`` supplies the operands, or a
+    divisor then a quotient, and rejects any value outside the requested range, as the real one
+    never returns one. ``sample`` takes the top of the
     wrong answers, and ``shuffle`` reverses the options, or a missing-number sheet's equations.
     The PDF therefore also reflects the operation's and ``max_number``'s limits, and a URL option
     that is dropped, ignored or misrouted changes the drawn text or fails a draw.
@@ -548,6 +631,7 @@ def test_basic_operations_pdf(
     PDF URLs carry a ``sheet`` token, since without one the endpoint only redirects.
     """
     randint_returns(monkeypatch, drawn)
+    choices_in_turn(monkeypatch)
     sample_last(monkeypatch)
     reverse_shuffle(monkeypatch)
 

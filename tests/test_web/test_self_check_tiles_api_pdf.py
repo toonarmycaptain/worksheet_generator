@@ -128,7 +128,7 @@ from tests.helpers import (
         ),
         (
             # the larger number goes first, and 0 to 11 are the 12 differences
-            "/api/worksheets/basic_operations.pdf?self_check_tiles=true&problems=12&operation=subtract"
+            "/api/worksheets/basic_operations.pdf?self_check_tiles=true&problems=12&operations=subtract"
             "&tile_pattern=complex&max_number=11&answer_key=true&sheet=1ab2c3",
             [0, 0, 1, 0, 0, 2, 3, 0, 0, 4, 5, 0, 0, 6, 7, 0, 0, 8, 9, 0, 0, 10, 11, 0],
             200,
@@ -159,7 +159,7 @@ from tests.helpers import (
         ),
         (
             # twelve different products, from 0 to 15
-            "/api/worksheets/basic_operations.pdf?self_check_tiles=true&problems=12&operation=multiply"
+            "/api/worksheets/basic_operations.pdf?self_check_tiles=true&problems=12&operations=multiply"
             "&tile_pattern=complex&max_number=5&title=Tables&label=Day+2&sheet=1ab2c3",
             [0, 5, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 2, 3, 2, 4, 3, 3, 2, 5, 3, 4, 3, 5],
             200,
@@ -237,7 +237,7 @@ from tests.helpers import (
         # with tiles are generated differently: sample takes the first divisors and choice the
         # largest quotient whose family is free.
         (
-            "/api/worksheets/basic_operations.pdf?operation=divide&self_check_tiles=true"
+            "/api/worksheets/basic_operations.pdf?operations=divide&self_check_tiles=true"
             "&tile_pattern=complex&problems=3&sheet=1ab2c3",
             [4, 7, 3, 5, 2, 6],
             200,
@@ -260,7 +260,7 @@ from tests.helpers import (
         (
             # Every divisor from 1 to 10, which drawing one at a time could deadlock on. From 10
             # down, each divisor takes its largest quotient whose fact family is still free.
-            "/api/worksheets/basic_operations.pdf?operation=divide&missing_number=divisor"
+            "/api/worksheets/basic_operations.pdf?operations=divide&missing_number=divisor"
             "&self_check_tiles=true&tile_pattern=complex&problems=10&largest_dividend=10"
             "&largest_divisor=10&sheet=1ab2c3",
             [],
@@ -291,7 +291,7 @@ from tests.helpers import (
         (
             # mixed: the missing divisor 1 (100 ÷ □ = 100) rules out the answer 1, so □ ÷ 1 = 1
             # is drawn again
-            "/api/worksheets/basic_operations.pdf?operation=divide&missing_number=mixed"
+            "/api/worksheets/basic_operations.pdf?operations=divide&missing_number=mixed"
             "&self_check_tiles=true&tile_pattern=complex&problems=2&answer_key=true"
             "&sheet=1ab2c3",
             [1, 1, 4, 7],
@@ -335,7 +335,7 @@ from tests.helpers import (
             None,
         ),
         (
-            "/api/worksheets/basic_operations.pdf?self_check_tiles=true&problems=12&operation=subtract"
+            "/api/worksheets/basic_operations.pdf?self_check_tiles=true&problems=12&operations=subtract"
             "&max_number=10",
             [],
             422,
@@ -347,7 +347,7 @@ from tests.helpers import (
             None,
         ),
         (
-            "/api/worksheets/basic_operations.pdf?self_check_tiles=true&problems=11&operation=multiply"
+            "/api/worksheets/basic_operations.pdf?self_check_tiles=true&problems=11&operations=multiply"
             "&max_number=4",
             [],
             422,
@@ -359,7 +359,7 @@ from tests.helpers import (
             None,
         ),
         (
-            "/api/worksheets/basic_operations.pdf?operation=divide&missing_number=dividend"
+            "/api/worksheets/basic_operations.pdf?operations=divide&missing_number=dividend"
             "&self_check_tiles=true&problems=13",
             [],
             422,
@@ -369,7 +369,7 @@ from tests.helpers import (
         ),
         # The default largest divisor, 10, gives 10 different divisors to miss.
         (
-            "/api/worksheets/basic_operations.pdf?operation=divide&missing_number=divisor"
+            "/api/worksheets/basic_operations.pdf?operations=divide&missing_number=divisor"
             "&self_check_tiles=true&problems=12",
             [],
             422,
@@ -382,7 +382,7 @@ from tests.helpers import (
         ),
         # With a largest dividend of 10 as well, raising either limit alone adds no divisor.
         (
-            "/api/worksheets/basic_operations.pdf?operation=divide&missing_number=divisor"
+            "/api/worksheets/basic_operations.pdf?operations=divide&missing_number=divisor"
             "&self_check_tiles=true&problems=12&largest_dividend=10&largest_divisor=10",
             [],
             422,
@@ -395,7 +395,7 @@ from tests.helpers import (
         ),
         # the quotients 0 to 10
         (
-            "/api/worksheets/basic_operations.pdf?operation=divide&self_check_tiles=true&problems=12"
+            "/api/worksheets/basic_operations.pdf?operations=divide&self_check_tiles=true&problems=12"
             "&largest_dividend=10",
             [],
             422,
@@ -408,7 +408,7 @@ from tests.helpers import (
         ),
         # Mixed: 4 missing divisors can use up 8 of the 10 dividends, too many to leave 4.
         (
-            "/api/worksheets/basic_operations.pdf?operation=divide&missing_number=mixed"
+            "/api/worksheets/basic_operations.pdf?operations=divide&missing_number=mixed"
             "&self_check_tiles=true&problems=8&largest_dividend=10&largest_divisor=10",
             [],
             422,

@@ -7,12 +7,14 @@ registry: the React front end replaces these pages.
 """
 
 from collections.abc import Mapping
+from itertools import combinations
 from typing import Any
 
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
-from core.basic_operations.representation import OPERATION_NAMES
+from core.basic_operations.data import Operation
+from core.basic_operations.representation import operations_name
 from core.self_check_tiles import SLOTS
 from core.wrong_answers import WRONG_ANSWER_COUNT
 
@@ -58,6 +60,11 @@ LIMITS = {"minimum": "min", "maximum": "max", "minLength": "minlength", "maxLeng
 def _field(name: str, schema: dict[str, Any]) -> dict[str, Any]:
     """Return the template context for one option's input, from its JSON schema entry."""
     field = {"name": name, "label": schema["title"], "value": schema["default"]}
+    if schema.get("type") == "array":
+        # A list of choices renders as a checkbox for each, and the page sends those ticked.
+        labels = schema.get("labels", {})
+        choices = [(choice, labels.get(choice, choice)) for choice in schema["items"]["enum"]]
+        return field | {"input": "checkboxes", "choices": choices}
     if "const" in schema:
         # A Literal of one value has a const instead of an enum: a select with one choice.
         schema = schema | {"enum": [schema["const"]]}
@@ -101,14 +108,16 @@ def home(request: HttpRequest) -> HttpResponse:
 def basic_operations(request: HttpRequest) -> HttpResponse:
     context = {
         "page_title": "Basic Operations",
-        "intro": "Pick the operation and the size of the numbers. The PDF opens in a new tab, "
+        "intro": "Tick the operations and pick the size of the numbers. With more than one "
+        "ticked, each question's operation is picked at random. The PDF opens in a new tab, "
         "where you can print or save it. Every click makes a new sheet. Tick Self-check tile "
         "answers to swap the choices for an answer bank and a picture to match against the "
         f"flipped case. That sets the questions to {SLOTS}, one for each tile: ask for fewer, "
-        "such as 2 or 4, and the other tiles go unused. For division, Missing number can leave "
-        "out the dividend or the divisor instead of the answer, as a square to write it in. "
-        "Division uses the largest dividend and divisor instead of the largest number. The word "
-        "problems below use 2- and 3-digit numbers, for TEKS 3.5(A). Each has a strip diagram "
+        "such as 2 or 4, and the other tiles go unused. With division by itself, Missing number "
+        "can leave out the dividend or the divisor instead of the answer, as a square to write "
+        "it in. Division uses the largest dividend and divisor instead of the largest number. "
+        "The word problems below use 2- and 3-digit numbers, for TEKS 3.5(A). Each has a strip "
+        "diagram "
         "(bar model) of its two parts and the whole, with a ? for the number to find. Tick Leave "
         "out the hints to drop the hint under each problem. Self-check tiles work the same way "
         f"here, setting the problems to {SLOTS}: the problems have no answer lines, and the "
@@ -120,7 +129,12 @@ def basic_operations(request: HttpRequest) -> HttpResponse:
             }
         ),
         "self_check_tiles_problems": SLOTS,
-        "operation_titles": {op.value: name for op, name in OPERATION_NAMES.items()},
+        # each combination of ticked operations, as their values joined by commas -> its title
+        "operation_titles": {
+            ",".join(operation.value for operation in ticked): operations_name(ticked)
+            for size in range(1, len(Operation) + 1)
+            for ticked in combinations(Operation, size)
+        },
     }
     return render(request, "worksheets/builder.html", context)
 
