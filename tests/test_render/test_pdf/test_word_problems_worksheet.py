@@ -53,6 +53,42 @@ SPLITS_AT_THEIR_LIMITS = [
     ),
 ]
 
+# Equal-groups strips: 3 parts of 4 with the whole to find, and 12 in 3 parts of unknown size
+MULTIPLY_AND_DIVIDE = [
+    BasicOperationQuestionData(
+        Operation.MULTIPLY,
+        (3, 4),
+        12,
+        "Maria has 3 bags with 4 stickers in each bag. How many stickers are there in all?",
+    ),
+    BasicOperationQuestionData(
+        Operation.DIVIDE,
+        (12, 3),
+        4,
+        "Jamal shares 12 marbles equally among 3 friends. How many marbles does each friend get?",
+    ),
+]
+
+# The most and fewest parts of an equal-groups strip: 6 groups of the largest size, 20, and 2
+# groups of the smallest, 2.
+GROUPS_AT_THEIR_LIMITS = [
+    BasicOperationQuestionData(
+        Operation.MULTIPLY,
+        (6, 20),
+        120,
+        "There are 6 boxes. Each box holds 20 crayons. How many crayons altogether?",
+    ),
+    BasicOperationQuestionData(
+        Operation.DIVIDE,
+        (4, 2),
+        2,
+        "4 beads are put into 2 equal groups. How many beads are in each group?",
+    ),
+]
+
+# Both kinds of strip on one sheet, with the instruction for both
+ALL_FOUR = ADD_AND_SUBTRACT + MULTIPLY_AND_DIVIDE
+
 # Four problems of two lines each fill the first page, so the fifth starts a second.
 FIVE_PROBLEMS = [
     BasicOperationQuestionData(
@@ -94,6 +130,28 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "Sheet A",
         ),
         ("five_problems", FIVE_PROBLEMS, Picture.STRIP, True, None, False, TITLE, "Sheet A"),
+        (
+            "multiply_and_divide",
+            MULTIPLY_AND_DIVIDE,
+            Picture.STRIP,
+            True,
+            None,
+            False,
+            TITLE,
+            "Sheet A",
+        ),
+        (
+            "groups_at_their_limits",
+            GROUPS_AT_THEIR_LIMITS,
+            Picture.STRIP,
+            True,
+            None,
+            False,
+            TITLE,
+            "Sheet A",
+        ),
+        # the key has each operation's equation
+        ("all_four_answer_key", ALL_FOUR, Picture.STRIP, True, None, True, TITLE, "Sheet A"),
         # no answer lines, and the bank and pattern on a page of their own; the key has letters
         (
             "self_check_tiles_answer_key",
@@ -130,9 +188,9 @@ def test_pdf_draws_the_expected_text(
     """
     The decoded PDF matches this case's section of ``word_problems_worksheet_pdf_expecteds.txt``.
 
-    One comparison covers the instruction, the wording, the hints, the strips and their splits,
-    the answer lines or the answer bank and pattern, the answer key, the page breaks, and the
-    title and label.
+    One comparison covers the instruction, the wording, the hints, the strips and their splits
+    or equal parts, the answer lines or the answer bank and pattern, the answer key, the page
+    breaks, and the title and label.
     """
     actual = pdf_text(
         render_word_problems(questions, picture, hints, slot_of, answer_key, title, label)

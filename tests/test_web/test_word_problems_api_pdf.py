@@ -152,23 +152,90 @@ ADD = BasicOperationQuestionData(
             None,
         ),
         (
-            # only the operations built are accepted
-            "/api/worksheets/word_problems.pdf?operations=multiply",
-            [],
-            [],
-            422,
+            # multiplication only: 3 groups of 4
+            "/api/worksheets/word_problems.pdf?operations=multiply&problems=1&sheet=1ab2c3",
+            [Operation.MULTIPLY],
+            [3, 4],
+            200,
+            None,
             {
-                "detail": [
-                    {
-                        "type": "literal_error",
-                        "loc": ["query", "options", "operations", 0],
-                        "msg": "Input should be 'add' or 'subtract'",
-                        "ctx": {"expected": "'add' or 'subtract'"},
-                    },
+                "questions": [
+                    BasicOperationQuestionData(
+                        Operation.MULTIPLY,
+                        (3, 4),
+                        12,
+                        "3 friends each have 4 cards. How many cards do they have together?",
+                    ),
                 ],
+                "hints": True,
+                "slot_of": None,
+                "answer_key": False,
+                "title": "Word Problems — Strip Diagrams",
+                "label": "Sheet A",
+                "name_line": False,
             },
+            "word_problems-sheet-a.pdf",
+        ),
+        (
+            # all four ticked: division, then addition with the one size, 2 and 2 digits
+            "/api/worksheets/word_problems.pdf?operations=add&operations=subtract"
+            "&operations=multiply&operations=divide&problems=2&answer_key=true&sheet=1ab2c3",
+            [Operation.DIVIDE, Operation.ADD],
+            [3, 4, 47, 25],
+            200,
             None,
+            {
+                "questions": [
+                    BasicOperationQuestionData(
+                        Operation.DIVIDE,
+                        (12, 3),
+                        4,
+                        "Maria divides 12 cards into 3 equal piles. "
+                        "How many cards are in each pile?",
+                    ),
+                    ADD,
+                ],
+                "hints": True,
+                "slot_of": None,
+                "answer_key": True,
+                "title": "Word Problems — Strip Diagrams",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        (
+            # division with tiles: 3 groups of 4, then 5 groups of 6, with the last two templates
+            "/api/worksheets/word_problems.pdf?operations=divide&self_check_tiles=true&problems=2"
+            "&sheet=1ab2c3",
+            [Operation.DIVIDE, Operation.DIVIDE],
+            [3, 4, 5, 6],
+            200,
             None,
+            {
+                "questions": [
+                    BasicOperationQuestionData(
+                        Operation.DIVIDE,
+                        (12, 3),
+                        4,
+                        "Maria divides 12 cards into 3 equal piles. "
+                        "How many cards are in each pile?",
+                    ),
+                    BasicOperationQuestionData(
+                        Operation.DIVIDE,
+                        (30, 5),
+                        6,
+                        "30 cards are placed in 5 equal rows. How many cards are in each row?",
+                    ),
+                ],
+                "hints": True,
+                "slot_of": (7, 9),
+                "answer_key": False,
+                "title": "Word Problems — Strip Diagrams",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
         ),
         (
             # only the pictures that can be drawn are accepted

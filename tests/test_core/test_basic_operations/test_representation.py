@@ -10,6 +10,7 @@ from core.basic_operations.data import (
     Unknown,
 )
 from core.basic_operations.representation import (
+    EqualStripDiagram,
     Picture,
     StripDiagram,
     StripUnknown,
@@ -72,6 +73,8 @@ def test_missing_number_tile_question(
 
 ADD = BasicOperationQuestionData(Operation.ADD, (47, 25), 72)
 SUBTRACT = BasicOperationQuestionData(Operation.SUBTRACT, (72, 25), 47)
+MULTIPLY = BasicOperationQuestionData(Operation.MULTIPLY, (3, 4), 12)  # 3 groups of 4
+DIVIDE = BasicOperationQuestionData(Operation.DIVIDE, (12, 3), 4)  # 12 shared into 3 groups
 
 
 @pytest.mark.parametrize(
@@ -110,10 +113,27 @@ def test_basic_operation_tile_question(
         (ADD, StripDiagram((47, 25), 72, StripUnknown.WHOLE)),
         # subtraction: the whole and the left part are shown, and the right part is to find
         (SUBTRACT, StripDiagram((25, 47), 72, StripUnknown.RIGHT)),
+        # multiplication: 3 equal parts of 4 are shown, and the whole is to find
+        (MULTIPLY, EqualStripDiagram(3, 4, StripUnknown.WHOLE)),
+        # division: the whole is split into 3 equal parts, and their size is to find
+        (DIVIDE, EqualStripDiagram(3, 4, StripUnknown.SIZE)),
     ],
 )
-def test_strip_diagram(data: BasicOperationQuestionData, expected: StripDiagram) -> None:
+def test_strip_diagram(
+    data: BasicOperationQuestionData, expected: StripDiagram | EqualStripDiagram
+) -> None:
     assert strip_diagram(data) == expected
+
+
+@pytest.mark.parametrize(
+    ("strip", "whole"),
+    [
+        (EqualStripDiagram(3, 4, StripUnknown.WHOLE), 12),
+        (EqualStripDiagram(6, 20, StripUnknown.SIZE), 120),
+    ],
+)
+def test_equal_strip_diagram_whole(strip: EqualStripDiagram, whole: int) -> None:
+    assert strip.whole == whole
 
 
 @pytest.mark.parametrize(
@@ -125,6 +145,16 @@ def test_strip_diagram(data: BasicOperationQuestionData, expected: StripDiagram)
             Picture.STRIP,
             "The whole and one part are shown. Subtract to find the missing part.",
         ),
+        (
+            MULTIPLY,
+            Picture.STRIP,
+            "Equal groups are shown. Multiply the group size by the number of groups.",
+        ),
+        (
+            DIVIDE,
+            Picture.STRIP,
+            "The whole is split into equal groups. Divide to find the amount in each group.",
+        ),
     ],
 )
 def test_hint(data: BasicOperationQuestionData, picture: Picture, expected: str) -> None:
@@ -132,16 +162,58 @@ def test_hint(data: BasicOperationQuestionData, picture: Picture, expected: str)
 
 
 @pytest.mark.parametrize(
-    ("picture", "expected"),
+    ("picture", "operations", "expected"),
     [
         (
             Picture.STRIP,
+            [Operation.ADD, Operation.SUBTRACT],
             "Use the strip diagram (bar model): two parts make a whole. The ? shows what to find.",
+        ),
+        (
+            Picture.STRIP,
+            [Operation.ADD],
+            "Use the strip diagram (bar model): two parts make a whole. The ? shows what to find.",
+        ),
+        (
+            Picture.STRIP,
+            [Operation.SUBTRACT],
+            "Use the strip diagram (bar model): two parts make a whole. The ? shows what to find.",
+        ),
+        (
+            Picture.STRIP,
+            [Operation.MULTIPLY, Operation.DIVIDE],
+            "Use the strip diagram (bar model): equal groups make a whole. "
+            "The ? shows what to find.",
+        ),
+        (
+            Picture.STRIP,
+            [Operation.MULTIPLY],
+            "Use the strip diagram (bar model): equal groups make a whole. "
+            "The ? shows what to find.",
+        ),
+        (
+            Picture.STRIP,
+            [Operation.DIVIDE],
+            "Use the strip diagram (bar model): equal groups make a whole. "
+            "The ? shows what to find.",
+        ),
+        # one of each kind is enough for both
+        (
+            Picture.STRIP,
+            [Operation.SUBTRACT, Operation.MULTIPLY],
+            "Use the strip diagram (bar model): parts or equal groups make a whole. "
+            "The ? shows what to find.",
+        ),
+        (
+            Picture.STRIP,
+            [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
+            "Use the strip diagram (bar model): parts or equal groups make a whole. "
+            "The ? shows what to find.",
         ),
     ],
 )
-def test_instruction(picture: Picture, expected: str) -> None:
-    assert instruction(picture) == expected
+def test_instruction(picture: Picture, operations: list[Operation], expected: str) -> None:
+    assert instruction(picture, operations) == expected
 
 
 @pytest.mark.parametrize(
