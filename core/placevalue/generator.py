@@ -3,7 +3,7 @@
 import random
 
 from core.placevalue.data import PlaceValueForm, PlaceValueQuestionData
-from core.placevalue.representation import LARGEST_NUMBER
+from core.placevalue.representation import LARGEST_NUMBER, WRITTEN_FORMS
 from core.question import Question
 from core.wrong_answers import random_wrong_answers
 
@@ -23,7 +23,7 @@ def generate_place_value_question(
     """
     Generate a question whose number is drawn at random from ``low`` to ``high``.
 
-    A form of ``None`` is mixed: it is chosen at random for this question and never equals the
+    A form of ``None`` is mixed: a written form is chosen at random for this question, never the
     other form, so a question never asks for the form it shows. When both are ``None``, the
     given form is chosen first.
 
@@ -86,8 +86,8 @@ def _question(
 ) -> Question[PlaceValueQuestionData]:
     """Build the question for ``number``, choosing any mixed forms and its wrong answers."""
     if given is None:
-        given = random.choice([form for form in PlaceValueForm if form != asked])
+        given = random.choice([form for form in WRITTEN_FORMS if form != asked])
     if asked is None:
-        asked = random.choice([form for form in PlaceValueForm if form != given])
+        asked = random.choice([form for form in WRITTEN_FORMS if form != given])
     wrong_answers = random_wrong_answers(number, count=wrong_answer_count, low=low, high=high)
     return Question(PlaceValueQuestionData(number, given, asked), wrong_answers)

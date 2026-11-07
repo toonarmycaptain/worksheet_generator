@@ -21,6 +21,13 @@ from typing import Annotated, Any, BinaryIO, Literal, Self
 from ninja import Field, Schema
 from pydantic import JsonValue, model_validator
 
+from core.base_ten_blocks import (
+    BLOCKS_QUESTION_NAMES,
+    DEFAULT_SMALLEST_BLOCKS_NUMBER,
+    BlocksQuestionType,
+    count_possible_blocks_questions,
+    generate_blocks_questions,
+)
 from core.basic_operations.data import Operation, Unknown
 from core.basic_operations.generator import (
     DEFAULT_LARGEST_DIVIDEND,
@@ -36,6 +43,7 @@ from core.basic_operations.generator import (
     generate_missing_number_questions,
     generate_word_problems,
 )
+from core.basic_operations.regrouping import REGROUPING_NAMES, Regrouping
 from core.basic_operations.representation import (
     LARGEST_BLOCKS_OPERAND,
     OPERATION_NAMES,
@@ -53,9 +61,15 @@ from core.placevalue.generator import (
     DEFAULT_SMALLEST_NUMBER,
     generate_place_value_questions,
 )
-from core.placevalue.representation import FORM_NAMES, LARGEST_NUMBER, place_value_tile_question
+from core.placevalue.representation import (
+    FORM_NAMES,
+    LARGEST_BLOCKS_NUMBER,
+    LARGEST_NUMBER,
+    place_value_tile_question,
+)
 from core.self_check_tiles import SLOTS, TileQuestion, conventional_slot_of, random_slot_of
 from core.wrong_answers import WRONG_ANSWER_COUNT
+from render.pdf.base_ten_blocks_worksheet import render_base_ten_blocks_worksheet
 from render.pdf.basic_operations_worksheet import (
     render_basic_operations_worksheet,
     render_missing_number_worksheet,
@@ -103,6 +117,16 @@ FORM_CHOICE_LABELS: dict[str, JsonValue] = {
 # Representation dropdown labels: each representation's name
 REPRESENTATION_LABELS: dict[str, JsonValue] = {
     representation.value: name for representation, name in REPRESENTATION_NAMES.items()
+}
+BlocksQuestionChoice = Literal["write_number", "add", "subtract"]  # a BlocksQuestionType value
+# Base-ten blocks questions checkbox labels: each type's name
+BLOCKS_QUESTION_LABELS: dict[str, JsonValue] = {
+    question_type.value: name for question_type, name in BLOCKS_QUESTION_NAMES.items()
+}
+RegroupingChoice = Literal["never", "mixed", "always"]  # a Regrouping value
+# Regrouping radio button labels: each choice's name
+REGROUPING_LABELS: dict[str, JsonValue] = {
+    regrouping.value: name for regrouping, name in REGROUPING_NAMES.items()
 }
 AnswerKey = Annotated[bool, Field(title="Add an answer key page")]
 NameDateLine = Annotated[bool, Field(title="Add Name/Date blanks")]
@@ -439,6 +463,101 @@ class WordProblemOptions(HeaderOptions):
         raise _too_many_problems(possible, repeats, limits, {"largest number": raise_to})
 
 
+class BaseTenBlocksOptions(HeaderOptions):
+    """
+    Options for the base-ten blocks kind, built on the core. There is no seed: every sheet is new.
+    """
+
+    title: Title = "Base-Ten Blocks"
+    problems: Problems = 6
+    # The problems are shared evenly among the ticked questions, then shuffled.
+    questions: list[BlocksQuestionChoice] = Field(
+        ["write_number", "add", "subtract"],
+        min_length=1,
+        title="Questions",
+        json_schema_extra={"labels": BLOCKS_QUESTION_LABELS},
+    )
+    # Every number on the sheet, answers included. Blocks are drawn for numbers up to
+    # LARGEST_BLOCKS_OPERAND, so the smallest can be no more.
+    min_number: int = Field(
+        DEFAULT_SMALLEST_BLOCKS_NUMBER, ge=1, le=LARGEST_BLOCKS_OPERAND, title="Smallest number"
+    )
+    max_number: int = Field(
+        LARGEST_BLOCKS_NUMBER, ge=1, le=LARGEST_BLOCKS_NUMBER, title="Largest number"
+    )
+    # Addition and subtraction only
+    regrouping: RegroupingChoice = Field(
+        "mixed",
+        title="Regrouping",
+        json_schema_extra={"input": "radio", "labels": REGROUPING_LABELS},
+    )
+    black_and_white: bool = Field(False, title="Black and white blocks")  # for photocopying
+    answer_key: AnswerKey = False
+    # Tiles replace the answer boxes with an answer bank page.
+    self_check_tiles: SelfCheckTiles = False
+    tile_pattern: TilePattern = "simple"
+
+    @model_validator(mode="after")
+    def _enough_different_questions(self) -> Self:
+        if self.self_check_tiles:
+            _at_most_one_question_per_tile(self.problems)
+        if self.min_number > self.max_number:
+            raise ValueError("min_number: must not be more than the largest number")
+        # The problems are shared evenly among the types, and with tiles each tile needs a
+        # distinct answer.
+        types = _blocks_question_types(self.questions)
+        regrouping = Regrouping(self.regrouping)
+
+        def possible_with(largest: int, types: Sequence[BlocksQuestionType] = types) -> int:
+            return count_possible_blocks_questions(
+                types,
+                smallest=self.min_number,
+                largest=largest,
+                regrouping=regrouping,
+                distinct_answers=self.self_check_tiles,
+                up_to=self.problems,
+            )
+
+        possible = possible_with(self.max_number)
+        if self.problems <= possible:
+            return self
+        raise_to = _smallest_raise(
+            possible_with, self.problems, self.max_number, LARGEST_BLOCKS_NUMBER
+        )
+        if possible == 0:
+            # Fewer problems can't help: a ticked question can't be made at all.
+            stuck = [kind for kind in types if possible_with(self.max_number, [kind]) == 0]
+            stuck_names = [BLOCKS_QUESTION_NAMES[kind].lower() for kind in stuck]
+            names = " or ".join(stuck_names)
+            which = {
+                Regrouping.MIXED: "",
+                Regrouping.ALWAYS: " that regroup",
+                Regrouping.NEVER: " without regrouping",
+            }[regrouping]
+            fixes = []
+            if self.min_number > 1:
+                fixes.append("lower the smallest number")
+            if raise_to is not None:
+                fixes.append(f"raise the largest number to {raise_to:,}")
+            if regrouping is not Regrouping.MIXED:
+                fixes.append("change the regrouping")
+            fixes.append("untick " + " and ".join(stuck_names))
+            raise ValueError(
+                f"min_number: no {names} questions{which} fit numbers from {self.min_number:,} "
+                f"to {self.max_number:,}. {', or '.join(fixes).capitalize()}."
+            )
+        repeats = "repeated answers" if self.self_check_tiles else "repeats"
+        limits = "range of numbers"
+        if regrouping is not Regrouping.MIXED and types != [BlocksQuestionType.WRITE_NUMBER]:
+            limits += " and regrouping"
+        raise _too_many_problems(possible, repeats, limits, {"largest number": raise_to})
+
+
+def _blocks_question_types(ticked: Sequence[str]) -> list[BlocksQuestionType]:
+    """Return the ticked question types, each once, in the order of ``BlocksQuestionType``."""
+    return [question_type for question_type in BlocksQuestionType if question_type.value in ticked]
+
+
 class BlockOptions(Options):
     title: Title = "Base-Ten Block Word Problems"
     label: Label = "Sheet A"
@@ -607,7 +726,9 @@ def _render_tiles(
     )
 
 
-def _tile_slots(o: BasicOperationOptions | PlaceValueOptions | WordProblemOptions) -> Sequence[int]:
+def _tile_slots(
+    o: BasicOperationOptions | PlaceValueOptions | WordProblemOptions | BaseTenBlocksOptions,
+) -> Sequence[int]:
     """Return the slot of each question's answer, for the requested tile pattern."""
     make_slots = conventional_slot_of if o.tile_pattern == "simple" else random_slot_of
     return make_slots(o.problems)
@@ -631,6 +752,24 @@ def _word_problems(o: WordProblemOptions, out: BinaryIO) -> None:
         answer_key=o.answer_key,
         representation=representation,
         hints=not o.no_hints,
+        slot_of=_tile_slots(o) if o.self_check_tiles else None,
+        black_and_white=o.black_and_white,
+    )
+
+
+def _base_ten_blocks(o: BaseTenBlocksOptions, out: BinaryIO) -> None:
+    render_base_ten_blocks_worksheet(
+        questions=generate_blocks_questions(
+            o.problems,
+            _blocks_question_types(o.questions),
+            smallest=o.min_number,
+            largest=o.max_number,
+            regrouping=Regrouping(o.regrouping),
+            distinct_answers=o.self_check_tiles,
+        ),
+        path=out,
+        header=o.header(),
+        answer_key=o.answer_key,
         slot_of=_tile_slots(o) if o.self_check_tiles else None,
         black_and_white=o.black_and_white,
     )
@@ -807,4 +946,5 @@ CORE_KINDS: dict[str, CoreKind[Any]] = {
     "basic_operations": CoreKind(BasicOperationOptions, _basic_operations),
     "place_value": CoreKind(PlaceValueOptions, _place_value),
     "word_problems": CoreKind(WordProblemOptions, _word_problems),
+    "base_ten_blocks": CoreKind(BaseTenBlocksOptions, _base_ten_blocks),
 }

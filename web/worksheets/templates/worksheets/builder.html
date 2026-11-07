@@ -216,6 +216,24 @@
   {% endif %}
 
   <script type="module">
+    // Regrouping is for addition and subtraction, so on a form with questions to tick, it shows
+    // only while one of them is ticked, and is disabled otherwise, so it isn't sent.
+    for (const form of document.querySelectorAll("form:has(input[name=regrouping])")) {
+      const radios = [...form.querySelectorAll("input[name=regrouping]")];
+      const boxes = [...form.querySelectorAll("input[name=questions]")];
+      function showRegrouping() {
+        const show = boxes.some((box) => box.checked && ["add", "subtract"].includes(box.value));
+        for (const radio of radios) radio.disabled = !show;
+        radios[0].closest("[role=radiogroup]").style.display = show ? "" : "none";
+      }
+      for (const box of boxes) box.addEventListener("change", showRegrouping);
+      // also when the browser restores the choices, going back to the page
+      window.addEventListener("pageshow", showRegrouping);
+      showRegrouping();
+    }
+  </script>
+
+  <script type="module">
     // A group of checkboxes, such as the operations, needs at least one ticked: while none is,
     // the form's button is greyed out, with a note saying why. A group of more than two has an
     // All box, which ticks or clears them all, and is ticked while they all are. A box that is

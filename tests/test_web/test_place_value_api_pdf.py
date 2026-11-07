@@ -17,8 +17,8 @@ import pytest
 from django.test import Client
 from worksheets.registry import FormChoice
 
-from core.placevalue.data import PlaceValueForm, PlaceValueQuestionData
-from core.placevalue.representation import place_value_tile_question
+from core.placevalue.data import PlaceValueQuestionData
+from core.placevalue.representation import WRITTEN_FORMS, place_value_tile_question
 from tests.data import EXPANDED, EXPANDED_NOTATION, REAL_CASE_SLOTS, STANDARD, WORD
 from tests.helpers import (
     choose_last,
@@ -433,10 +433,12 @@ def test_the_numbers_come_from_the_range_asked_for(
     assert drawn_from[0] == expected
 
 
-def test_the_form_choices_are_every_form_and_mixed() -> None:
+def test_the_form_choices_are_every_written_form_and_mixed() -> None:
     """
-    ``FormChoice`` lists every ``PlaceValueForm`` in order, followed by mixed.
+    ``FormChoice`` lists every written ``PlaceValueForm`` in order, followed by mixed. Base-ten
+    blocks are drawn, on base-ten blocks sheets, so the page doesn't offer them.
 
-    It is written out by hand, so a form added to ``PlaceValueForm`` must be added to it too.
+    It is written out by hand, so a written form added to ``PlaceValueForm`` must be added to it
+    too.
     """
-    assert get_args(FormChoice) == (*(form.value for form in PlaceValueForm), "mixed")
+    assert get_args(FormChoice) == (*(form.value for form in WRITTEN_FORMS), "mixed")

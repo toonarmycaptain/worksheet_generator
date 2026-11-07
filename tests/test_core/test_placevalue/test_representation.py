@@ -149,15 +149,24 @@ def test_place_value_terms_errors(number: int, message: str) -> None:
 
 
 @pytest.mark.parametrize(
-    ("number", "message"),
+    ("number", "form", "message"),
     [
-        (0, "Place-value forms are written for 1 to 999,999, not 0."),
-        (-1, "Place-value forms are written for 1 to 999,999, not -1."),
-        (1_000_000, "Place-value forms are written for 1 to 999,999, not 1,000,000."),
+        (0, PlaceValueForm.STANDARD, "Place-value forms are written for 1 to 999,999, not 0."),
+        (-1, PlaceValueForm.STANDARD, "Place-value forms are written for 1 to 999,999, not -1."),
+        (
+            1_000_000,
+            PlaceValueForm.STANDARD,
+            "Place-value forms are written for 1 to 999,999, not 1,000,000.",
+        ),
+        # blocks are drawn, so there is no text to write
+        (352, PlaceValueForm.BLOCKS, "Base-ten blocks are drawn, not written."),
     ],
 )
-def test_format_number_errors(number: int, message: str) -> None:
-    """Numbers outside the range raise ``ValueError`` rather than producing an incorrect form."""
+def test_format_number_errors(number: int, form: PlaceValueForm, message: str) -> None:
+    """
+    Numbers outside the range raise ``ValueError`` rather than producing an incorrect form, and
+    so do base-ten blocks, which are drawn rather than written.
+    """
     with pytest.raises(ValueError) as error:
-        format_number(number, PlaceValueForm.STANDARD)
+        format_number(number, form)
     assert str(error.value) == message

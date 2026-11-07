@@ -32,7 +32,11 @@ def test_pages(client: Client) -> None:
     [
         (
             "/basic-operations/",
-            [b"/api/worksheets/basic_operations.pdf", b"/api/worksheets/word_problems.pdf"],
+            [
+                b"/api/worksheets/basic_operations.pdf",
+                b"/api/worksheets/word_problems.pdf",
+                b"/api/worksheets/base_ten_blocks.pdf",
+            ],
             [
                 b"title",
                 b"label",
@@ -62,6 +66,24 @@ def test_pages(client: Client) -> None:
                 b"max_number",
                 b"representation",
                 b"no_hints",
+                b"black_and_white",
+                b"answer_key",
+                b"self_check_tiles",
+                b"tile_pattern",
+                b"tile_pattern",
+                # the base-ten blocks form
+                b"title",
+                b"label",
+                b"name_line",
+                b"problems",
+                b"questions",  # a checkbox for each type of question
+                b"questions",
+                b"questions",
+                b"min_number",
+                b"max_number",
+                b"regrouping",  # a radio button for each choice
+                b"regrouping",
+                b"regrouping",
                 b"black_and_white",
                 b"answer_key",
                 b"self_check_tiles",
@@ -104,19 +126,55 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
     assert get_links(content) == ["/"]
 
 
-def test_the_tile_pattern_is_a_pair_of_radio_buttons_that_defaults_to_simple(
-    client: Client,
+@pytest.mark.parametrize(
+    ("url", "name", "expected"),
+    [
+        # simple by default, on each form with tiles
+        (
+            "/basic-operations/",
+            "tile_pattern",
+            [
+                (b"simple", b" checked", b"simple"),
+                (b"complex", b"", b"complex"),
+                # the word problems form
+                (b"simple", b" checked", b"simple"),
+                (b"complex", b"", b"complex"),
+                # the base-ten blocks form
+                (b"simple", b" checked", b"simple"),
+                (b"complex", b"", b"complex"),
+            ],
+        ),
+        (
+            "/place-value/",
+            "tile_pattern",
+            [(b"simple", b" checked", b"simple"), (b"complex", b"", b"complex")],
+        ),
+        # none, some, all, with mixed by default
+        (
+            "/basic-operations/",
+            "regrouping",
+            [
+                (b"never", b"", b"Never"),
+                (b"mixed", b" checked", b"Mixed"),
+                (b"always", b"", b"Always"),
+            ],
+        ),
+    ],
+)
+def test_radio_buttons_send_each_choice_s_id_and_show_its_name(
+    url: str, name: str, expected: list[tuple[bytes, bytes, bytes]], client: Client
 ) -> None:
-    content = client.get("/basic-operations/").content
-    assert re.findall(
-        rb'<input type="radio" name="tile_pattern" value="(\w+)"( checked)?>', content
-    ) == [
-        (b"simple", b" checked"),
-        (b"complex", b""),
-        # the word problems form
-        (b"simple", b" checked"),
-        (b"complex", b""),
-    ]
+    """Each radio button sends its ID when chosen and displays its name, with the default chosen."""
+    content = client.get(url).content
+    assert (
+        re.findall(
+            rb'<input type="radio" name="'
+            + name.encode()
+            + rb'" value="(\w+)"( checked)?> ([^<]+)<',
+            content,
+        )
+        == expected
+    )
 
 
 @pytest.mark.parametrize(
@@ -205,6 +263,18 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
                 (b"subtract", b" checked", b"Subtraction"),
                 (b"multiply", b"", b"Multiplication"),
                 (b"divide", b"", b"Division"),
+            ],
+            True,
+        ),
+        # every type of question by default, with an All box for the three
+        (
+            "/basic-operations/",
+            b"/api/worksheets/base_ten_blocks.pdf",
+            "questions",
+            [
+                (b"write_number", b" checked", b"Write the number"),
+                (b"add", b" checked", b"Add"),
+                (b"subtract", b" checked", b"Subtract"),
             ],
             True,
         ),
@@ -323,6 +393,7 @@ def test_the_representation_script_greys_out_the_operations_a_representation_can
             [
                 (b"/api/worksheets/basic_operations.pdf", b" data-check-first"),
                 (b"/api/worksheets/word_problems.pdf", b" data-check-first"),
+                (b"/api/worksheets/base_ten_blocks.pdf", b" data-check-first"),
             ],
         ),
         ("/place-value/", [(b"/api/worksheets/place_value.pdf", b" data-check-first")]),
@@ -383,6 +454,16 @@ def test_each_field_carries_its_label_for_the_check_first_messages(client: Clien
         (b"max_number", b"Largest number"),
         (b"representation", b"Representation"),
         (b"no_hints", b"Leave out the hints"),
+        (b"black_and_white", b"Black and white blocks"),
+        (b"answer_key", b"Add an answer key page"),
+        (b"self_check_tiles", b"Self-check tile answers"),
+        # the base-ten blocks form
+        (b"title", b"Title"),
+        (b"label", b"Label"),
+        (b"name_line", b"Add Name/Date blanks"),
+        (b"problems", b"Problems"),
+        (b"min_number", b"Smallest number"),
+        (b"max_number", b"Largest number"),
         (b"black_and_white", b"Black and white blocks"),
         (b"answer_key", b"Add an answer key page"),
         (b"self_check_tiles", b"Self-check tile answers"),

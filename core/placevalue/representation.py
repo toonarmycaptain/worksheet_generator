@@ -28,6 +28,9 @@ FORM_NAMES = {
     PlaceValueForm.WORD: "word form",
 }
 
+# The forms ``format_number`` writes: every form but base-ten blocks, which are drawn
+WRITTEN_FORMS = tuple(form for form in PlaceValueForm if form is not PlaceValueForm.BLOCKS)
+
 # The name of each place, from the ones up. More than one adds an "s": "3 ten thousands".
 _PLACE_NAMES = ("one", "ten", "hundred", "thousand", "ten thousand", "hundred thousand")
 
@@ -106,10 +109,13 @@ def format_number(number: int, form: PlaceValueForm) -> str:
       comma after "thousand" and never "and", which is reserved for the decimal point
 
     ``number`` must be from 1 to 999,999, which covers the numbers up to 100,000 in TEKS 3.2(A);
-    otherwise ``ValueError`` is raised.
+    otherwise ``ValueError`` is raised. Base-ten blocks are drawn, not written, so
+    ``PlaceValueForm.BLOCKS`` raises ``ValueError`` too.
     """
     _check_in_range(number)
     match form:
+        case PlaceValueForm.BLOCKS:
+            raise ValueError("Base-ten blocks are drawn, not written.")
         case PlaceValueForm.STANDARD:
             return f"{number:,}"
         case PlaceValueForm.EXPANDED:
