@@ -27,6 +27,7 @@ from core.base_ten_blocks import (
 from core.basic_operations.data import BasicOperationQuestionData, Operation
 from core.basic_operations.regrouping import Regrouping
 from core.placevalue.data import PlaceValueQuestionData
+from core.question import FreeResponse, Question
 from core.self_check_tiles import TileQuestion
 from tests.data import BLOCKS, STANDARD
 from tests.helpers import randint_returns, reverse_shuffle, sample_last
@@ -503,9 +504,7 @@ def test_blocks_questions_from_scripted_draws(
     )
 
     assert drawn_from == bounds
-    assert [(question.data, question.wrong_answers) for question in questions] == [
-        (data, ()) for data in expected
-    ]
+    assert questions == [Question(data, FreeResponse()) for data in expected]
 
 
 @pytest.mark.parametrize(

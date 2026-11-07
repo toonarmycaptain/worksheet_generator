@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from enum import StrEnum
 
-from core.question import QuestionData
+from core.question import FreeResponse, MultipleChoice, Question, QuestionData
 
 
 class Operation(StrEnum):
@@ -16,7 +16,7 @@ class Operation(StrEnum):
 
 
 @dataclass(frozen=True)
-class BasicOperationQuestionData(QuestionData):
+class BasicOperationQuestionData(QuestionData[int]):
     """
     An arithmetic question: ``operation`` applied to ``operands`` gives ``answer``.
 
@@ -43,7 +43,7 @@ class Unknown(StrEnum):
 
 
 @dataclass(frozen=True)
-class MissingNumberQuestionData(QuestionData):
+class MissingNumberQuestionData(QuestionData[int]):
     """
     An equation with one operand missing: ``unknown`` identifies it and ``answer`` is its value.
 
@@ -56,3 +56,11 @@ class MissingNumberQuestionData(QuestionData):
     known: int
     result: int
     answer: int
+
+
+# An arithmetic question as presented: chosen from lettered numbers
+type BasicOperationMultipleChoiceQuestion = Question[
+    BasicOperationQuestionData, MultipleChoice[int]
+]
+# A missing-number equation as presented: the number written in its square
+type MissingNumberFreeResponseQuestion = Question[MissingNumberQuestionData, FreeResponse]

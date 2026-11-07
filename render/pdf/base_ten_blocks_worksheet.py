@@ -27,7 +27,7 @@ from core.base_ten_blocks import (
 )
 from core.basic_operations.data import BasicOperationQuestionData
 from core.placevalue.data import PlaceValueQuestionData
-from core.question import Question
+from core.question import FreeResponse, Question
 from render.pdf.diagrams import (
     BLOCKS_KEY_HEIGHT,
     COLOUR_BLOCKS,
@@ -72,7 +72,7 @@ ANSWER_DROP = 34  # from the rule down to the bottom of the box
 
 
 def render_base_ten_blocks_worksheet(
-    questions: Sequence[Question[BlocksQuestionData]],
+    questions: Sequence[Question[BlocksQuestionData, FreeResponse]],
     path: str | BinaryIO,
     header: Header,
     answer_key: bool,

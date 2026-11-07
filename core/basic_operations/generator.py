@@ -8,13 +8,15 @@ from itertools import accumulate
 from typing import Literal, assert_never
 
 from core.basic_operations.data import (
+    BasicOperationMultipleChoiceQuestion,
     BasicOperationQuestionData,
+    MissingNumberFreeResponseQuestion,
     MissingNumberQuestionData,
     Operation,
     Unknown,
 )
 from core.basic_operations.word_problems import word_problem_texts
-from core.question import Question
+from core.question import FreeResponse, Question, multiple_choice
 from core.wrong_answers import WRONG_ANSWER_COUNT, random_wrong_answers
 
 DEFAULT_LARGEST_OPERAND = 10  # the default for ``high``, the largest operand or dividend
@@ -41,7 +43,7 @@ def generate_basic_operation_question(
     high: int = DEFAULT_LARGEST_OPERAND,
     largest_divisor: int | None = None,
     wrong_answer_count: int = WRONG_ANSWER_COUNT,
-) -> Question[BasicOperationQuestionData]:
+) -> BasicOperationMultipleChoiceQuestion:
     """
     Generate a random question with whole-number operands from ``low`` to ``high``.
 
@@ -58,7 +60,7 @@ def generate_basic_operation_question(
         wrong_answers = random_wrong_answers(
             quotient, count=wrong_answer_count, high=max(high, wrong_answer_count)
         )
-        return Question(data, wrong_answers)
+        return Question(data, multiple_choice((quotient,), wrong_answers))
 
     first = random.randint(low, high)
     second = random.randint(low, high)
@@ -80,7 +82,7 @@ def generate_basic_operation_question(
     wrong_answers = random_wrong_answers(
         answer, count=wrong_answer_count, high=max(largest_answer, wrong_answer_count)
     )
-    return Question(data, wrong_answers)
+    return Question(data, multiple_choice((answer,), wrong_answers))
 
 
 def count_possible_answers(
@@ -201,7 +203,7 @@ def generate_basic_operation_questions(
     largest_divisor: int | None = None,
     wrong_answer_count: int = WRONG_ANSWER_COUNT,
     distinct_answers: bool = False,
-) -> list[Question[BasicOperationQuestionData]]:
+) -> list[BasicOperationMultipleChoiceQuestion]:
     """
     Generate ``count`` questions, each with an operation from ``operations``.
 
@@ -250,7 +252,7 @@ def generate_basic_operation_questions(
     else:
         question_operations = random.choices(operations, k=count)
 
-    questions: list[Question[BasicOperationQuestionData]] = []
+    questions: list[BasicOperationMultipleChoiceQuestion] = []
     seen_pairs: set[tuple[Operation, tuple[int, ...]]] = set()
     seen_answers: set[int] = set()
     for operation in question_operations:
@@ -342,7 +344,7 @@ def generate_missing_number_question(
     low: int = 0,
     high: int = DEFAULT_LARGEST_OPERAND,
     largest_divisor: int | None = None,
-) -> Question[MissingNumberQuestionData]:
+) -> MissingNumberFreeResponseQuestion:
     """
     Generate an equation with its ``unknown`` operand left blank, to be filled in.
 
@@ -369,7 +371,7 @@ def generate_missing_number_question(
             raise NotImplementedError("Missing numbers are built for division only.")
         case _:
             assert_never(operation)
-    return Question(data, ())
+    return Question(data, FreeResponse())
 
 
 def count_possible_missing_number_questions(
@@ -422,7 +424,7 @@ def generate_missing_number_questions(
     high: int = DEFAULT_LARGEST_OPERAND,
     largest_divisor: int | None = None,
     distinct_answers: bool = False,
-) -> list[Question[MissingNumberQuestionData]]:
+) -> list[MissingNumberFreeResponseQuestion]:
     """
     Generate ``count`` equations, no two from the same fact family, whichever number is missing.
 
@@ -451,7 +453,7 @@ def generate_missing_number_questions(
         unknowns = [Unknown.SECOND] * (count // 2) + [Unknown.FIRST] * (count - count // 2)
     else:
         unknowns = [unknown] * count
-    questions: list[Question[MissingNumberQuestionData]] = []
+    questions: list[MissingNumberFreeResponseQuestion] = []
     if distinct_answers:
         # Drawing missing divisors with distinct answers one at a time can deadlock, so they are
         # generated together first; see _distinct_missing_divisors.
@@ -525,7 +527,7 @@ def generate_word_problems(
     comparisons: bool = False,
     largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
     largest_operand: int = LARGEST_WORD_PROBLEM_NUMBER,
-) -> list[Question[BasicOperationQuestionData]]:
+) -> list[Question[BasicOperationQuestionData, FreeResponse]]:
     """
     Generate ``count`` word problems, each with an operation drawn at random from ``operations``.
 
@@ -573,7 +575,7 @@ def generate_word_problems(
         unworded.append(data)
     texts = word_problem_texts(unworded, comparisons=comparisons)
     return [
-        Question(replace(data, question_text=text), ())
+        Question(replace(data, question_text=text), FreeResponse())
         for data, text in zip(unworded, texts, strict=True)
     ]
 
@@ -631,7 +633,7 @@ def _equal_groups(
 
 def _distinct_missing_divisors(
     count: int, low: int, high: int, largest_divisor: int | None
-) -> list[Question[MissingNumberQuestionData]]:
+) -> list[MissingNumberFreeResponseQuestion]:
     """
     Generate ``count`` missing-divisor equations with distinct divisors and fact families.
 
@@ -645,7 +647,7 @@ def _distinct_missing_divisors(
     """
     smallest_quotient = max(low, 1)
     divisors = random.sample(_divisors(low, high, largest_divisor, smallest_quotient), count)
-    questions: list[Question[MissingNumberQuestionData]] = []
+    questions: list[MissingNumberFreeResponseQuestion] = []
     families: set[tuple[int, int]] = set()
     for divisor in sorted(divisors, reverse=True):
         candidates = [
@@ -657,7 +659,7 @@ def _distinct_missing_divisors(
         free = [candidate for candidate in candidates if _fact_family(candidate) not in families]
         data = random.choice(free)
         families.add(_fact_family(data))
-        questions.append(Question(data, ()))
+        questions.append(Question(data, FreeResponse()))
     return questions
 
 

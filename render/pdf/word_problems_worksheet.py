@@ -31,7 +31,7 @@ from core.basic_operations.representation import (
     stem,
     strip_diagram,
 )
-from core.question import Question
+from core.question import FreeResponse, Question
 from render.pdf.diagrams import (
     BLOCKS_KEY_HEIGHT,
     COLOUR_BLOCKS,
@@ -87,7 +87,7 @@ WORK_BOX_LABEL_DROP = 12  # from the box's top down to the label's baseline
 
 
 def render_word_problems_worksheet(
-    questions: Sequence[Question[BasicOperationQuestionData]],
+    questions: Sequence[Question[BasicOperationQuestionData, FreeResponse]],
     path: str | BinaryIO,
     header: Header,
     answer_key: bool,

@@ -7,8 +7,8 @@ Standard form is the number itself, with commas between groups of three digits.
 
 from typing import assert_never
 
-from core.placevalue.data import PlaceValueForm, PlaceValueQuestionData
-from core.question import Question
+from core.placevalue.data import PlaceValueForm, PlaceValueQuestion, PlaceValueQuestionData
+from core.question import FreeResponse, MultipleChoice
 from core.self_check_tiles import TileQuestion
 
 LARGEST_NUMBER = 999_999  # the forms have place names up to the hundred thousands
@@ -111,10 +111,18 @@ def in_asked_form(data: PlaceValueQuestionData) -> str:
     return format_number(data.answer, data.asked)
 
 
-def instruction(question: Question[PlaceValueQuestionData]) -> str:
+def instruction(
+    question: PlaceValueQuestion,
+) -> str:
     """Return what the question asks: to write its number in the asked form, or to choose it."""
     form = FORM_NAMES[question.data.asked]
-    return f"Which is this number in {form}?" if question.wrong_answers else f"Write in {form}:"
+    match question.response:
+        case FreeResponse():
+            return f"Write in {form}:"
+        case MultipleChoice():
+            return f"Which is this number in {form}?"
+        case _:
+            assert_never(question.response)
 
 
 def place_value_tile_question(data: PlaceValueQuestionData) -> TileQuestion:

@@ -12,11 +12,10 @@ from reportlab.lib.utils import simpleSplit
 from reportlab.pdfgen.canvas import Canvas
 
 from core.basic_operations.data import (
-    BasicOperationQuestionData,
-    MissingNumberQuestionData,
+    BasicOperationMultipleChoiceQuestion,
+    MissingNumberFreeResponseQuestion,
 )
 from core.basic_operations.representation import equation, missing_number_equation, stem
-from core.question import Question
 from render.pdf.page import (
     FONT,
     LINE_HEIGHT,
@@ -41,7 +40,7 @@ FILL_IN_COLUMNS = 2
 
 
 def render_basic_operations_worksheet(
-    questions: Sequence[Question[BasicOperationQuestionData]],
+    questions: Sequence[BasicOperationMultipleChoiceQuestion],
     path: str | BinaryIO,
     header: Header,
     answer_key: bool,
@@ -68,7 +67,7 @@ def render_basic_operations_worksheet(
 
 
 def render_missing_number_worksheet(
-    questions: Sequence[Question[MissingNumberQuestionData]],
+    questions: Sequence[MissingNumberFreeResponseQuestion],
     path: str | BinaryIO,
     header: Header,
     answer_key: bool,
@@ -107,15 +106,17 @@ def render_missing_number_worksheet(
     pdf.save()
 
 
-def _solution(question: Question[BasicOperationQuestionData]) -> str:
-    letter = ascii_uppercase[question.options.index(question.data.answer)]
-    return f"{equation(question.data)} = {question.data.answer}    ({letter})"
+def _solution(question: BasicOperationMultipleChoiceQuestion) -> str:
+    letters = ", ".join(
+        ascii_uppercase[index] for index in sorted(question.response.correct_indexes)
+    )
+    return f"{equation(question.data)} = {question.data.answer}    ({letters})"
 
 
 def _draw_question(
     pdf: Canvas,
     number: int,
-    question: Question[BasicOperationQuestionData],
+    question: BasicOperationMultipleChoiceQuestion,
     lines: list[str],
     y: float,
 ) -> float:
@@ -126,8 +127,8 @@ def _draw_question(
         pdf.drawString(MARGIN + TEXT_INDENT, y, line)
         y -= LINE_HEIGHT
 
-    column_width = TEXT_WIDTH / len(question.options)
-    for column, value in enumerate(question.options):
+    column_width = TEXT_WIDTH / len(question.response.options)
+    for column, value in enumerate(question.response.options):
         x = MARGIN + TEXT_INDENT + column * column_width
         pdf.drawString(x, y - 6, f"{ascii_uppercase[column]}) {value}")
     return y - OPTIONS_HEIGHT
