@@ -32,9 +32,12 @@ from core.basic_operations.generator import (
     count_possible_questions,
     generate_basic_operation_questions,
     generate_missing_number_questions,
+    generate_word_problems,
 )
 from core.basic_operations.representation import (
     OPERATION_NAMES,
+    PICTURE_NAMES,
+    Picture,
     basic_operation_tile_question,
     missing_number_tile_question,
 )
@@ -54,6 +57,7 @@ from render.pdf.basic_operations_worksheet import (
 from render.pdf.page import Header
 from render.pdf.place_value_worksheet import render_place_value_worksheet
 from render.pdf.self_check_tiles_worksheet import render_self_check_tiles_worksheet
+from render.pdf.word_problems_worksheet import render_word_problems_worksheet
 from worksheet_generator._imported import generate_block_word_problems as block
 from worksheet_generator._imported import generate_data_graph_mc_word_problems as data_graph_mc
 from worksheet_generator._imported import generate_data_graph_word_problems as data_graph
@@ -88,6 +92,10 @@ OPERATION_LABELS: dict[str, JsonValue] = {
 FORM_CHOICE_LABELS: dict[str, JsonValue] = {
     **{form.value: name for form, name in FORM_NAMES.items()},
     "mixed": "mixed",
+}
+# Picture dropdown labels: each picture's name
+PICTURE_LABELS: dict[str, JsonValue] = {
+    picture.value: name for picture, name in PICTURE_NAMES.items()
 }
 AnswerKey = Annotated[bool, Field(title="Add an answer key page")]
 NameDateLine = Annotated[bool, Field(title="Add Name/Date blanks")]
@@ -322,6 +330,30 @@ class PlaceValueOptions(HeaderOptions):
         return self
 
 
+class WordProblemOptions(HeaderOptions):
+    """
+    Options for the word problems kind, built on the core. There is no seed: every sheet is new.
+    """
+
+    title: Title = f"Word Problems — {PICTURE_NAMES[Picture.STRIP]}"
+    problems: Problems = 4
+    # Only the pictures that can be drawn so far
+    picture: Literal["strip"] = Field(
+        "strip", title="Picture", json_schema_extra={"labels": PICTURE_LABELS}
+    )
+    no_hints: bool = Field(False, title="Leave out the hints")
+    answer_key: AnswerKey = False
+    # Tiles replace the answer lines with an answer bank page.
+    self_check_tiles: SelfCheckTiles = False
+    tile_pattern: TilePattern = "simple"
+
+    @model_validator(mode="after")
+    def _a_tile_for_each_problem(self) -> Self:
+        if self.self_check_tiles:
+            _at_most_one_question_per_tile(self.problems)
+        return self
+
+
 class BlockOptions(Options):
     title: Title = "Base-Ten Block Word Problems"
     label: Label = "Sheet A"
@@ -478,13 +510,30 @@ def _render_tiles(
     o: BasicOperationOptions | PlaceValueOptions, questions: Sequence[TileQuestion], out: BinaryIO
 ) -> None:
     """Render a self-check tiles sheet for ``questions``, with slots for the requested pattern."""
-    make_slots = conventional_slot_of if o.tile_pattern == "simple" else random_slot_of
     render_self_check_tiles_worksheet(
         questions=questions,
-        slot_of=make_slots(o.problems),
+        slot_of=_tile_slots(o),
         path=out,
         header=o.header(),
         answer_key=o.answer_key,
+    )
+
+
+def _tile_slots(o: BasicOperationOptions | PlaceValueOptions | WordProblemOptions) -> Sequence[int]:
+    """Return the slot of each question's answer, for the requested tile pattern."""
+    make_slots = conventional_slot_of if o.tile_pattern == "simple" else random_slot_of
+    return make_slots(o.problems)
+
+
+def _word_problems(o: WordProblemOptions, out: BinaryIO) -> None:
+    render_word_problems_worksheet(
+        questions=generate_word_problems(o.problems, distinct_answers=o.self_check_tiles),
+        path=out,
+        header=o.header(),
+        answer_key=o.answer_key,
+        picture=Picture(o.picture),
+        hints=not o.no_hints,
+        slot_of=_tile_slots(o) if o.self_check_tiles else None,
     )
 
 
@@ -658,4 +707,5 @@ LEGACY_KINDS: dict[str, Kind[Any]] = {
 CORE_KINDS: dict[str, CoreKind[Any]] = {
     "basic_operations": CoreKind(BasicOperationOptions, _basic_operations),
     "place_value": CoreKind(PlaceValueOptions, _place_value),
+    "word_problems": CoreKind(WordProblemOptions, _word_problems),
 }

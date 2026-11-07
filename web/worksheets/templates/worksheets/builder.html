@@ -42,21 +42,22 @@
   {# Each script is a module, so its names are its own: two can both have a const form. #}
   {% if self_check_tiles_problems %}
   <script type="module">
-    // Ticking self-check tiles defaults to 12 questions (eg 1 per tile, max is 12).
-    // Unticking puts back the normal default and limit, and leftover tiles go unused.
-    const selfCheckTiles = document.querySelector("input[name=self_check_tiles]");
-    const problems = selfCheckTiles.form.elements.problems;
-    const normalMax = problems.max;
-    function limitProblems() {
-      problems.max = selfCheckTiles.checked ? {{ self_check_tiles_problems }} : normalMax;
+    // On each form with self-check tiles, ticking them defaults to 12 questions (eg 1 per tile,
+    // max is 12). Unticking puts back the normal default and limit, and leftover tiles go unused.
+    for (const selfCheckTiles of document.querySelectorAll("input[name=self_check_tiles]")) {
+      const problems = selfCheckTiles.form.elements.problems;
+      const normalMax = problems.max;
+      const limitProblems = () => {
+        problems.max = selfCheckTiles.checked ? {{ self_check_tiles_problems }} : normalMax;
+      };
+      selfCheckTiles.addEventListener("change", () => {
+        problems.value = selfCheckTiles.checked ? {{ self_check_tiles_problems }} : problems.defaultValue;
+        limitProblems();
+      });
+      // also when the browser restores the choices, going back to the page: only the limit, as
+      // the browser has put back the number of problems too
+      window.addEventListener("pageshow", limitProblems);
     }
-    selfCheckTiles.addEventListener("change", () => {
-      problems.value = selfCheckTiles.checked ? {{ self_check_tiles_problems }} : problems.defaultValue;
-      limitProblems();
-    });
-    // also when the browser restores the choices, going back to the page: only the limit, as
-    // the browser has put back the number of problems too
-    window.addEventListener("pageshow", limitProblems);
   </script>
   {% endif %}
 

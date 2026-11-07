@@ -1,12 +1,24 @@
-"""The wording of basic-operation questions: a missing-number equation, and how the self-check
-tiles sheet shows one."""
+"""The wording of basic-operation questions: a missing-number equation, how the self-check tiles
+sheet shows a question, and a word problem's strip diagram, hint and instruction."""
 
 import pytest
 
-from core.basic_operations.data import MissingNumberQuestionData, Operation, Unknown
+from core.basic_operations.data import (
+    BasicOperationQuestionData,
+    MissingNumberQuestionData,
+    Operation,
+    Unknown,
+)
 from core.basic_operations.representation import (
+    Picture,
+    StripDiagram,
+    StripUnknown,
+    basic_operation_tile_question,
+    hint,
+    instruction,
     missing_number_equation,
     missing_number_tile_question,
+    strip_diagram,
 )
 from core.question import BLANK
 from core.self_check_tiles import TileQuestion
@@ -55,3 +67,77 @@ def test_missing_number_tile_question(
     """On the tiles sheet the prompt has the square, the bank shows the missing number, and the
     key has the whole equation."""
     assert missing_number_tile_question(data) == expected
+
+
+ADD = BasicOperationQuestionData(Operation.ADD, (47, 25), 72)
+SUBTRACT = BasicOperationQuestionData(Operation.SUBTRACT, (72, 25), 47)
+
+
+@pytest.mark.parametrize(
+    ("data", "expected"),
+    [
+        (
+            BasicOperationQuestionData(Operation.ADD, (3, 4), 7),
+            TileQuestion("3 + 4 = ?", "7", "3 + 4 = 7"),
+        ),
+        # a word problem: the prompt is its wording, and the key still has the equation
+        (
+            BasicOperationQuestionData(
+                Operation.SUBTRACT,
+                (72, 25),
+                47,
+                "Maria had 72 cards and used 25. How many are left?",
+            ),
+            TileQuestion(
+                "Maria had 72 cards and used 25. How many are left?",
+                "47",
+                "72 \N{MINUS SIGN} 25 = 47",
+            ),
+        ),
+    ],
+)
+def test_basic_operation_tile_question(
+    data: BasicOperationQuestionData, expected: TileQuestion
+) -> None:
+    assert basic_operation_tile_question(data) == expected
+
+
+@pytest.mark.parametrize(
+    ("data", "expected"),
+    [
+        # addition: both parts are shown, and the whole is to find
+        (ADD, StripDiagram((47, 25), 72, StripUnknown.WHOLE)),
+        # subtraction: the whole and the left part are shown, and the right part is to find
+        (SUBTRACT, StripDiagram((25, 47), 72, StripUnknown.RIGHT)),
+    ],
+)
+def test_strip_diagram(data: BasicOperationQuestionData, expected: StripDiagram) -> None:
+    assert strip_diagram(data) == expected
+
+
+@pytest.mark.parametrize(
+    ("data", "picture", "expected"),
+    [
+        (ADD, Picture.STRIP, "Both parts are shown. Add the parts to find the whole."),
+        (
+            SUBTRACT,
+            Picture.STRIP,
+            "The whole and one part are shown. Subtract to find the missing part.",
+        ),
+    ],
+)
+def test_hint(data: BasicOperationQuestionData, picture: Picture, expected: str) -> None:
+    assert hint(data, picture) == expected
+
+
+@pytest.mark.parametrize(
+    ("picture", "expected"),
+    [
+        (
+            Picture.STRIP,
+            "Use the strip diagram (bar model): two parts make a whole. The ? shows what to find.",
+        ),
+    ],
+)
+def test_instruction(picture: Picture, expected: str) -> None:
+    assert instruction(picture) == expected

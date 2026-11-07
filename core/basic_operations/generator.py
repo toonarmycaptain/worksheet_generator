@@ -1,7 +1,8 @@
-"""Random generation of arithmetic questions and missing-number equations."""
+"""Random generation of arithmetic questions, missing-number equations and word problems."""
 
 import random
 from collections.abc import Iterator
+from dataclasses import replace
 from typing import assert_never
 
 from core.basic_operations.data import (
@@ -10,6 +11,7 @@ from core.basic_operations.data import (
     Operation,
     Unknown,
 )
+from core.basic_operations.word_problems import word_problem_texts
 from core.question import Question
 from core.wrong_answers import WRONG_ANSWER_COUNT, random_wrong_answers
 
@@ -17,6 +19,13 @@ DEFAULT_LARGEST_OPERAND = 10  # the default for ``high``, the largest operand or
 DEFAULT_LARGEST_DIVIDEND = 100  # a division sheet's default ``high``
 DEFAULT_LARGEST_DIVISOR = 10  # a division sheet's default ``largest_divisor``
 MAXIMUM_OPERAND = 999  # the most a sheet allows for ``high`` and ``largest_divisor``
+
+# The operand sizes of a sheet's word problems, in digits (first, second), used in turn
+WORD_PROBLEM_DIGITS = ((2, 2), (2, 3), (3, 2), (3, 3))
+# Number of digits -> the smallest and largest operand of that size in a word problem
+WORD_PROBLEM_RANGES = {2: (11, 99), 3: (100, 999)}
+LARGEST_WORD_PROBLEM_SUM = 999
+SMALLEST_WORD_PROBLEM_DIFFERENCE = 10
 
 
 def generate_basic_operation_question(
@@ -317,6 +326,66 @@ def generate_missing_number_questions(
         questions.append(question)
     random.shuffle(questions)
     return questions
+
+
+def generate_word_problems(
+    count: int, *, distinct_answers: bool = False
+) -> list[Question[BasicOperationQuestionData]]:
+    """
+    Generate ``count`` addition and subtraction word problems, to answer in writing.
+
+    Half the problems, rounded up, are addition and the rest subtraction, in random order. Their
+    operand sizes take ``WORD_PROBLEM_DIGITS`` in turn, also in random order: 2-digit operands
+    are 11 to 99 and 3-digit operands 100 to 999. A sum is at most 999, and a difference at least
+    10, with the larger operand first. The wording comes from the word-problem bank. As
+    free-response questions, they have no wrong answers.
+
+    With ``distinct_answers``, no two problems share an answer: a problem whose answer is taken
+    is drawn again. Every operation and size allows at least 79 answers (2-digit differences
+    from 10 to 88), so this ends quickly for any sheet.
+    """
+    operations = [Operation.ADD] * ((count + 1) // 2) + [Operation.SUBTRACT] * (count // 2)
+    random.shuffle(operations)
+    digits = [WORD_PROBLEM_DIGITS[index % len(WORD_PROBLEM_DIGITS)] for index in range(count)]
+    random.shuffle(digits)
+    unworded: list[BasicOperationQuestionData] = []
+    answers: set[int] = set()
+    for operation, sizes in zip(operations, digits, strict=True):
+        data = _word_problem(operation, sizes)
+        while distinct_answers and data.answer in answers:
+            data = _word_problem(operation, sizes)
+        answers.add(data.answer)
+        unworded.append(data)
+    texts = word_problem_texts(unworded)
+    return [
+        Question(replace(data, question_text=text), ())
+        for data, text in zip(unworded, texts, strict=True)
+    ]
+
+
+def _word_problem(operation: Operation, digits: tuple[int, int]) -> BasicOperationQuestionData:
+    """
+    Draw operands with ``digits`` digits, redrawing until they meet the word-problem limits.
+
+    At least 39% of draws meet them (the hardest case is two 3-digit operands with a sum of at
+    most 999), so the chance of needing more than 30 draws is below one in a million.
+    """
+    first_digits, second_digits = digits
+    while True:
+        first = random.randint(*WORD_PROBLEM_RANGES[first_digits])
+        second = random.randint(*WORD_PROBLEM_RANGES[second_digits])
+        match operation:
+            case Operation.ADD:
+                if first + second <= LARGEST_WORD_PROBLEM_SUM:
+                    return BasicOperationQuestionData(operation, (first, second), first + second)
+            case Operation.SUBTRACT:
+                first, second = max(first, second), min(first, second)
+                if first - second >= SMALLEST_WORD_PROBLEM_DIFFERENCE:
+                    return BasicOperationQuestionData(operation, (first, second), first - second)
+            case Operation.MULTIPLY | Operation.DIVIDE:
+                raise NotImplementedError("Word problems are built for + and - only.")
+            case _:
+                assert_never(operation)
 
 
 def _distinct_missing_divisors(

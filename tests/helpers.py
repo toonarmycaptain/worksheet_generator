@@ -23,6 +23,7 @@ from typing import Any
 import pytest
 
 from core.basic_operations.data import BasicOperationQuestionData, MissingNumberQuestionData
+from core.basic_operations.representation import Picture
 from core.placevalue.data import PlaceValueQuestionData
 from core.question import Question, QuestionData
 from core.self_check_tiles import TileQuestion
@@ -33,6 +34,7 @@ from render.pdf.basic_operations_worksheet import (
 from render.pdf.page import Header
 from render.pdf.place_value_worksheet import render_place_value_worksheet
 from render.pdf.self_check_tiles_worksheet import render_self_check_tiles_worksheet
+from render.pdf.word_problems_worksheet import render_word_problems_worksheet
 
 GOLDENS = Path(__file__).parent / "goldens"
 
@@ -219,6 +221,30 @@ def render_tiles[Data: QuestionData](
         path=out,
         header=Header(title=title, label=label, name_line=name_line),
         answer_key=answer_key,
+    )
+    return out.getvalue()
+
+
+def render_word_problems(
+    questions: list[BasicOperationQuestionData],
+    picture: Picture,
+    hints: bool,
+    slot_of: tuple[int, ...] | None,
+    answer_key: bool,
+    title: str,
+    label: str,
+    name_line: bool = True,
+) -> bytes:
+    """Render the word problems sheet, each question free response, with no wrong answers."""
+    out = BytesIO()
+    render_word_problems_worksheet(
+        questions=[Question(data, ()) for data in questions],
+        path=out,
+        header=Header(title=title, label=label, name_line=name_line),
+        answer_key=answer_key,
+        picture=picture,
+        hints=hints,
+        slot_of=slot_of,
     )
     return out.getvalue()
 

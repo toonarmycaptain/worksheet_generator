@@ -28,11 +28,11 @@ def test_pages(client: Client) -> None:
 
 
 @pytest.mark.parametrize(
-    ("url", "action", "fields"),
+    ("url", "actions", "fields"),
     [
         (
             "/basic-operations/",
-            b"/api/worksheets/basic_operations.pdf",
+            [b"/api/worksheets/basic_operations.pdf", b"/api/worksheets/word_problems.pdf"],
             [
                 b"title",
                 b"label",
@@ -47,11 +47,22 @@ def test_pages(client: Client) -> None:
                 b"self_check_tiles",
                 b"tile_pattern",  # a radio button for each pattern
                 b"tile_pattern",
+                # the word problems form
+                b"title",
+                b"label",
+                b"name_line",
+                b"problems",
+                b"picture",
+                b"no_hints",
+                b"answer_key",
+                b"self_check_tiles",
+                b"tile_pattern",
+                b"tile_pattern",
             ],
         ),
         (
             "/place-value/",
-            b"/api/worksheets/place_value.pdf",
+            [b"/api/worksheets/place_value.pdf"],
             [
                 b"title",
                 b"label",
@@ -70,16 +81,16 @@ def test_pages(client: Client) -> None:
         ),
     ],
 )
-def test_builder_page(url: str, action: bytes, fields: list[bytes], client: Client) -> None:
+def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], client: Client) -> None:
     """
-    A builder page has one form, a link home and no seed field.
+    A builder page has a form for each of its kinds, a link home and no seed field.
 
-    The form targets the kind's PDF endpoint, with a field for each option in order and none
+    Each form targets its kind's PDF endpoint, with a field for each option in order and none
     for a seed, since every sheet of a core kind is new.
     """
     content = client.get(url).content
 
-    assert re.findall(rb'action="([^"]+)"', content) == [action]
+    assert re.findall(rb'action="([^"]+)"', content) == actions
     assert re.findall(rb'<(?:input|select) [^>]*?name="([^"]+)"', content) == fields
     assert get_links(content) == ["/"]
 
@@ -90,7 +101,13 @@ def test_the_tile_pattern_is_a_pair_of_radio_buttons_that_defaults_to_simple(
     content = client.get("/basic-operations/").content
     assert re.findall(
         rb'<input type="radio" name="tile_pattern" value="(\w+)"( checked)?>', content
-    ) == [(b"simple", b" checked"), (b"complex", b"")]
+    ) == [
+        (b"simple", b" checked"),
+        (b"complex", b""),
+        # the word problems form
+        (b"simple", b" checked"),
+        (b"complex", b""),
+    ]
 
 
 @pytest.mark.parametrize(
@@ -106,6 +123,8 @@ def test_the_tile_pattern_is_a_pair_of_radio_buttons_that_defaults_to_simple(
                 (b"divide", b"", b"Division"),
             ],
         ),
+        # a Literal of one value, the only picture drawn so far, is still a dropdown
+        ("/basic-operations/", "picture", [(b"strip", b" selected", b"Strip Diagrams")]),
         (
             "/place-value/",
             "given",
@@ -200,7 +219,13 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
 @pytest.mark.parametrize(
     ("url", "forms"),
     [
-        ("/basic-operations/", [(b"/api/worksheets/basic_operations.pdf", b" data-check-first")]),
+        (
+            "/basic-operations/",
+            [
+                (b"/api/worksheets/basic_operations.pdf", b" data-check-first"),
+                (b"/api/worksheets/word_problems.pdf", b" data-check-first"),
+            ],
+        ),
         ("/place-value/", [(b"/api/worksheets/place_value.pdf", b" data-check-first")]),
         (
             "/legacy/",
@@ -249,6 +274,15 @@ def test_each_field_carries_its_label_for_the_check_first_messages(client: Clien
         (b"max_number", b"Largest number"),
         (b"largest_dividend", b"Largest dividend"),
         (b"largest_divisor", b"Largest divisor"),
+        (b"answer_key", b"Add an answer key page"),
+        (b"self_check_tiles", b"Self-check tile answers"),
+        # the word problems form
+        (b"title", b"Title"),
+        (b"label", b"Label"),
+        (b"name_line", b"Add Name/Date blanks"),
+        (b"problems", b"Problems"),
+        (b"picture", b"Picture"),
+        (b"no_hints", b"Leave out the hints"),
         (b"answer_key", b"Add an answer key page"),
         (b"self_check_tiles", b"Self-check tile answers"),
     ]

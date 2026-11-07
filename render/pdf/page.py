@@ -19,6 +19,7 @@ from core.question import BLANK
 
 PAGE_WIDTH, PAGE_HEIGHT = letter
 MARGIN = 54
+CONTENT_WIDTH = PAGE_WIDTH - 2 * MARGIN
 TEXT_INDENT = 28  # question text is indented past its number
 TEXT_WIDTH = PAGE_WIDTH - 2 * MARGIN - TEXT_INDENT
 FONT = "Helvetica"
