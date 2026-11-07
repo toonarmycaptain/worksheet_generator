@@ -1,6 +1,6 @@
 """The wording of basic-operation questions: a missing-number equation, how the self-check tiles
-sheet shows a question, and a word problem's strip diagram, number line jumps, hint, instruction
-and sheet title."""
+sheet shows a question, and a word problem's strip diagram, number line jumps, base-ten blocks,
+hint, instruction and sheet title."""
 
 import pytest
 
@@ -11,11 +11,13 @@ from core.basic_operations.data import (
     Unknown,
 )
 from core.basic_operations.representation import (
+    BlocksDiagram,
     EqualStripDiagram,
     Picture,
     StripDiagram,
     StripUnknown,
     basic_operation_tile_question,
+    blocks_diagram,
     hint,
     instruction,
     missing_number_equation,
@@ -25,6 +27,7 @@ from core.basic_operations.representation import (
     strip_diagram,
     word_problems_title,
 )
+from core.placevalue.representation import BaseTenBlocks
 from core.question import BLANK
 from core.self_check_tiles import TileQuestion
 
@@ -171,6 +174,58 @@ def test_number_line_jumps_errors(data: BasicOperationQuestionData, message: str
 
 
 @pytest.mark.parametrize(
+    ("data", "expected"),
+    [
+        # addition: both numbers, to combine
+        (
+            ADD,
+            BlocksDiagram(
+                numbers=(
+                    BaseTenBlocks(hundreds=0, tens=4, ones=7),
+                    BaseTenBlocks(hundreds=0, tens=2, ones=5),
+                ),
+                cross_out=None,
+            ),
+        ),
+        (
+            BasicOperationQuestionData(Operation.ADD, (450, 380), 830),
+            BlocksDiagram(
+                numbers=(
+                    BaseTenBlocks(hundreds=4, tens=5, ones=0),
+                    BaseTenBlocks(hundreds=3, tens=8, ones=0),
+                ),
+                cross_out=None,
+            ),
+        ),
+        # subtraction: the first number, with the second to cross out
+        (
+            SUBTRACT,
+            BlocksDiagram(numbers=(BaseTenBlocks(hundreds=0, tens=7, ones=2),), cross_out=25),
+        ),
+        (
+            BasicOperationQuestionData(Operation.SUBTRACT, (504, 208), 296),
+            BlocksDiagram(numbers=(BaseTenBlocks(hundreds=5, tens=0, ones=4),), cross_out=208),
+        ),
+    ],
+)
+def test_blocks_diagram(data: BasicOperationQuestionData, expected: BlocksDiagram) -> None:
+    assert blocks_diagram(data) == expected
+
+
+@pytest.mark.parametrize(
+    ("data", "message"),
+    [
+        (MULTIPLY, "Base-ten blocks show only addition and subtraction, not multiplication."),
+        (DIVIDE, "Base-ten blocks show only addition and subtraction, not division."),
+    ],
+)
+def test_blocks_diagram_errors(data: BasicOperationQuestionData, message: str) -> None:
+    with pytest.raises(ValueError) as error:
+        blocks_diagram(data)
+    assert str(error.value) == message
+
+
+@pytest.mark.parametrize(
     ("data", "picture", "expected"),
     [
         (ADD, Picture.STRIP, "Both parts are shown. Add the parts to find the whole."),
@@ -202,6 +257,9 @@ def test_number_line_jumps_errors(data: BasicOperationQuestionData, message: str
             Picture.NUMBER_LINE,
             "Jump backward to subtract. Fill in each box; the last box is your answer.",
         ),
+        (ADD, Picture.BLOCKS, "Combine the blocks to find the total."),
+        # the amount to cross out, the second number
+        (SUBTRACT, Picture.BLOCKS, "Cross out 25 to subtract."),
     ],
 )
 def test_hint(data: BasicOperationQuestionData, picture: Picture, expected: str | None) -> None:
@@ -278,6 +336,17 @@ def test_hint(data: BasicOperationQuestionData, picture: Picture, expected: str 
             Picture.NUMBER_LINE,
             [Operation.SUBTRACT],
             "Use the number line. Start at the first number and jump by hundreds, tens, and ones.",
+        ),
+        # base-ten blocks: the same for addition, subtraction or both
+        (
+            Picture.BLOCKS,
+            [Operation.ADD, Operation.SUBTRACT],
+            "Use the base-ten blocks to help you solve each problem.",
+        ),
+        (
+            Picture.BLOCKS,
+            [Operation.ADD],
+            "Use the base-ten blocks to help you solve each problem.",
         ),
     ],
 )

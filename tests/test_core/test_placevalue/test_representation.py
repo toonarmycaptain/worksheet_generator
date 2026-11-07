@@ -1,9 +1,14 @@
-"""Tests for writing a number in each place-value form, omitting places whose digit is 0."""
+"""
+Tests for writing a number in each place-value form, omitting places whose digit is 0, and for
+the base-ten blocks that show a number.
+"""
 
 import pytest
 
 from core.placevalue.data import PlaceValueForm, PlaceValueQuestionData
 from core.placevalue.representation import (
+    BaseTenBlocks,
+    base_ten_blocks,
     format_number,
     in_asked_form,
     in_given_form,
@@ -31,6 +36,37 @@ def test_terms_are_the_values_of_the_digits_that_are_not_0(
 ) -> None:
     """The largest place comes first, and a digit of 0 contributes no term."""
     assert place_value_terms(number) == expected
+
+
+@pytest.mark.parametrize(
+    ("number", "expected"),
+    [
+        (347, BaseTenBlocks(hundreds=3, tens=4, ones=7)),
+        # a digit of 0 has no blocks
+        (305, BaseTenBlocks(hundreds=3, tens=0, ones=5)),
+        (47, BaseTenBlocks(hundreds=0, tens=4, ones=7)),
+        (1, BaseTenBlocks(hundreds=0, tens=0, ones=1)),
+        (0, BaseTenBlocks(hundreds=0, tens=0, ones=0)),
+        (999, BaseTenBlocks(hundreds=9, tens=9, ones=9)),
+    ],
+)
+def test_base_ten_blocks(number: int, expected: BaseTenBlocks) -> None:
+    """The fewest blocks: one flat, rod or unit for each unit of each digit."""
+    assert base_ten_blocks(number) == expected
+
+
+@pytest.mark.parametrize(
+    ("number", "message"),
+    [
+        (-1, "Base-ten blocks show numbers from 0 to 999, not -1."),
+        (1000, "Base-ten blocks show numbers from 0 to 999, not 1000."),
+    ],
+)
+def test_base_ten_blocks_errors(number: int, message: str) -> None:
+    """There is no block for a thousand, so 1,000 raises ``ValueError`` rather than 10 flats."""
+    with pytest.raises(ValueError) as error:
+        base_ten_blocks(number)
+    assert str(error.value) == message
 
 
 @pytest.mark.parametrize(

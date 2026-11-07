@@ -22,12 +22,12 @@ DEFAULT_LARGEST_DIVIDEND = 100  # a division sheet's default ``high``
 DEFAULT_LARGEST_DIVISOR = 10  # a division sheet's default ``largest_divisor``
 MAXIMUM_OPERAND = 999  # the most a sheet allows for ``high`` and ``largest_divisor``
 
-# The operand sizes of a sheet's word problems, in digits (first, second), used in turn
-WORD_PROBLEM_DIGITS = ((2, 2), (2, 3), (3, 2), (3, 3))
-# Number of digits -> the smallest and largest operand of that size in a word problem
-WORD_PROBLEM_RANGES = {2: (11, 99), 3: (100, 999)}
-LARGEST_WORD_PROBLEM_SUM = 999
-SMALLEST_WORD_PROBLEM_DIFFERENCE = 10
+# The smallest operand of an addition or subtraction word problem. The bank's templates make
+# their words agree with 1: "1 sticker", "There was 1".
+SMALLEST_WORD_PROBLEM_NUMBER = 1
+# The default and the most for a word problem's largest number, which caps every number in an
+# addition or subtraction problem, its answer included
+LARGEST_WORD_PROBLEM_NUMBER = 999
 # The number of equal groups in a multiplication or division word problem, smallest and largest;
 # six is as many as a strip diagram has room for
 WORD_PROBLEM_GROUPS = (2, 6)
@@ -476,25 +476,36 @@ def generate_missing_number_questions(
 
 
 def count_possible_word_problems(
-    operations: Sequence[Operation], *, distinct_answers: bool = False, up_to: int
+    operations: Sequence[Operation],
+    *,
+    distinct_answers: bool = False,
+    up_to: int,
+    largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
+    largest_operand: int = LARGEST_WORD_PROBLEM_NUMBER,
 ) -> int:
     """
-    Count the word problems ``generate_word_problems`` can produce for ``operations``.
+    Count the word problems ``generate_word_problems`` can produce for ``operations``, with its
+    ``largest_number`` and ``largest_operand``.
 
     As in ``count_possible_sheet_questions``, any one operation may be drawn for every problem,
     so the count is the smallest that any one operation allows by itself: its distinct answers
-    with ``distinct_answers``, and otherwise its distinct problems. For addition and subtraction
-    this is the fewest answers at any operand size, the 79 differences of two 2-digit operands,
-    from 10 to 88. The count is capped at ``up_to``.
+    with ``distinct_answers``, and otherwise its distinct problems. Addition and subtraction
+    count their answers either way, which are fewer than their problems: every sum and every
+    difference from the smallest to the largest the limits allow. The count is capped at
+    ``up_to``.
     """
     groups = range(WORD_PROBLEM_GROUPS[0], WORD_PROBLEM_GROUPS[1] + 1)
     sizes = range(WORD_PROBLEM_GROUP_SIZES[0], WORD_PROBLEM_GROUP_SIZES[1] + 1)
+    smallest = SMALLEST_WORD_PROBLEM_NUMBER
+    largest = min(largest_number, largest_operand)
     counts = [up_to]
     for operation in operations:
         match operation:
-            case Operation.ADD | Operation.SUBTRACT:
-                smallest, largest = WORD_PROBLEM_RANGES[2]
-                counts.append(largest - smallest - SMALLEST_WORD_PROBLEM_DIFFERENCE + 1)
+            case Operation.ADD:
+                # from smallest + smallest
+                counts.append(max(min(largest_number, 2 * largest) - 2 * smallest + 1, 0))
+            case Operation.SUBTRACT:
+                counts.append(max(largest - smallest, 0))  # from 1
             case Operation.MULTIPLY if distinct_answers:
                 counts.append(len({number * size for number in groups for size in sizes}))
             case Operation.DIVIDE if distinct_answers:
@@ -512,16 +523,19 @@ def generate_word_problems(
     *,
     distinct_answers: bool = False,
     comparisons: bool = False,
+    largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
+    largest_operand: int = LARGEST_WORD_PROBLEM_NUMBER,
 ) -> list[Question[BasicOperationQuestionData]]:
     """
     Generate ``count`` word problems, each with an operation drawn at random from ``operations``.
 
-    Addition and subtraction take the operand sizes in ``WORD_PROBLEM_DIGITS`` in turn, in random
-    order: 2-digit operands are 11 to 99 and 3-digit operands 100 to 999. A sum is at most 999,
-    and a difference at least 10, with the larger operand first. Multiplication and division are
-    equal groups, as in ``_equal_groups``. The wording comes from the word-problem bank, with its
-    comparisons too if ``comparisons`` is set. The problems are answered in writing, so they have
-    no wrong answers.
+    Addition and subtraction draw their operands at random, as in ``_sum_or_difference``: every
+    number in the problem, its answer included, is at most ``largest_number``, and the operands
+    are also at most ``largest_operand``, for a picture that can show only so much. Base-ten
+    blocks, for example, show at most 599. Multiplication and division are equal groups, as in
+    ``_equal_groups``, and ignore both limits. The wording comes from the word-problem bank, with
+    its comparisons too if ``comparisons`` is set. The problems are answered in writing, so they
+    have no wrong answers.
 
     No two problems of the same operation have the same operands, and with ``distinct_answers``
     no two problems share an answer either: a problem that breaks either rule is drawn again.
@@ -530,29 +544,23 @@ def generate_word_problems(
     by ``count_possible_word_problems``.
     """
     possible = count_possible_word_problems(
-        operations, distinct_answers=distinct_answers, up_to=count
+        operations,
+        distinct_answers=distinct_answers,
+        up_to=count,
+        largest_number=largest_number,
+        largest_operand=largest_operand,
     )
     if count > possible:
         kind = "problems with different answers" if distinct_answers else "different problems"
         raise ValueError(f"Cannot make {count} {kind}: only {possible} possible.")
 
-    chosen = random.choices(operations, k=count)
-    sums_and_differences = sum(
-        operation in (Operation.ADD, Operation.SUBTRACT) for operation in chosen
-    )
-    digits = [
-        WORD_PROBLEM_DIGITS[index % len(WORD_PROBLEM_DIGITS)]
-        for index in range(sums_and_differences)
-    ]
-    random.shuffle(digits)
-    next_digits = iter(digits)
     unworded: list[BasicOperationQuestionData] = []
     seen: set[tuple[Operation, tuple[int, int]]] = set()
     answers: set[int] = set()
-    for operation in chosen:
+    for operation in random.choices(operations, k=count):
         match operation:
             case Operation.ADD | Operation.SUBTRACT:
-                draw = partial(_sum_or_difference, operation, next(next_digits))
+                draw = partial(_sum_or_difference, operation, largest_number, largest_operand)
             case Operation.MULTIPLY | Operation.DIVIDE:
                 draw = partial(_equal_groups, operation)
             case _:
@@ -571,25 +579,29 @@ def generate_word_problems(
 
 
 def _sum_or_difference(
-    operation: Literal[Operation.ADD, Operation.SUBTRACT], digits: tuple[int, int]
+    operation: Literal[Operation.ADD, Operation.SUBTRACT], largest_number: int, largest_operand: int
 ) -> BasicOperationQuestionData:
     """
-    Draw operands with ``digits`` digits, redrawing until they meet the word-problem limits.
+    Draw two operands at random from ``SMALLEST_WORD_PROBLEM_NUMBER`` to the smaller of
+    ``largest_number`` and ``largest_operand``, redrawing until they meet the word-problem
+    limits: a sum is at most ``largest_number``, and a difference is at least 1, with the larger
+    operand first.
 
-    At least 39% of draws meet them (the hardest case is two 3-digit operands with a sum of at
-    most 999), so the chance of needing more than 30 draws is below one in a million.
+    The caller checks first that the limits allow a problem, as ``count_possible_word_problems``
+    does. Then about half of all draws meet them, and even the tightest limits meet one draw in
+    four, so the redraws end quickly.
     """
-    first_digits, second_digits = digits
+    largest = min(largest_number, largest_operand)
     while True:
-        first = random.randint(*WORD_PROBLEM_RANGES[first_digits])
-        second = random.randint(*WORD_PROBLEM_RANGES[second_digits])
+        first = random.randint(SMALLEST_WORD_PROBLEM_NUMBER, largest)
+        second = random.randint(SMALLEST_WORD_PROBLEM_NUMBER, largest)
         match operation:
             case Operation.ADD:
-                if first + second <= LARGEST_WORD_PROBLEM_SUM:
+                if first + second <= largest_number:
                     return BasicOperationQuestionData(operation, (first, second), first + second)
             case Operation.SUBTRACT:
                 first, second = max(first, second), min(first, second)
-                if first - second >= SMALLEST_WORD_PROBLEM_DIFFERENCE:
+                if first > second:
                     return BasicOperationQuestionData(operation, (first, second), first - second)
             case _:
                 assert_never(operation)

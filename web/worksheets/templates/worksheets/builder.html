@@ -171,6 +171,18 @@
     window.addEventListener("pageshow", showNoHints);
     showNoHints();
 
+    // Only base-ten blocks have colours to leave out, so the black and white box is hidden, and
+    // disabled, for the other pictures.
+    function showBlackAndWhite() {
+      const show = picture.value === "blocks";
+      form.elements.black_and_white.disabled = !show;
+      // the page's CSS shows labels as blocks, which would win over the hidden attribute
+      form.elements.black_and_white.closest("label").style.display = show ? "" : "none";
+    }
+    picture.addEventListener("change", showBlackAndWhite);
+    window.addEventListener("pageshow", showBlackAndWhite);
+    showBlackAndWhite();
+
     // The operations the picture can't show, such as multiplication on a number line, are greyed
     // out, so they aren't sent. Their ticks come back with a picture that can show them.
     const shown = JSON.parse(document.getElementById("picture-operations").textContent);
@@ -185,6 +197,20 @@
     picture.addEventListener("change", greyOutOperations);
     window.addEventListener("pageshow", greyOutOperations);
     greyOutOperations();
+
+    // The largest number is for addition and subtraction, so it shows only while one of them is
+    // ticked, and is disabled otherwise, so it isn't sent.
+    function showLargestNumber() {
+      const show = operations.some(
+        (box) => box.checked && !box.disabled && ["add", "subtract"].includes(box.value),
+      );
+      form.elements.max_number.disabled = !show;
+      // the page's CSS shows labels as blocks, which would win over the hidden attribute
+      form.elements.max_number.closest("label").style.display = show ? "" : "none";
+    }
+    for (const box of operations) box.addEventListener("change", showLargestNumber);
+    window.addEventListener("pageshow", showLargestNumber);
+    showLargestNumber();
   </script>
   {% endif %}
 
