@@ -28,6 +28,7 @@ urlpatterns = [
     path("", views.home, name="home"),
     path("basic-operations/", views.basic_operations, name="basic_operations"),
     path("place-value/", views.place_value, name="place_value"),
+    path("data-and-graphs/", views.data_graphs, name="data_graphs"),
     path("legacy/", views.legacy, name="legacy"),
     path("admin/", admin.site.urls),
     path("api/", api.urls),
