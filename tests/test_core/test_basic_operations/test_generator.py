@@ -705,22 +705,28 @@ def test_distinct_answers_from_scripted_draws(
 
 
 @pytest.mark.parametrize(
-    ("operation", "count", "high"),
+    ("operations", "count", "high"),
     [
-        (Operation.ADD, 11, 5),  # the sums 0 to 10, each once
-        (Operation.SUBTRACT, 11, 10),  # the differences 0 to 10
-        (Operation.MULTIPLY, 15, 5),  # 0 1 2 3 4 5 6 8 9 10 12 15 16 20 25
-        (Operation.ADD, 12, 10),
-        (Operation.DIVIDE, 11, 10),  # the quotients 0 to 10
-        (Operation.DIVIDE, 12, 11),  # 0 to 11, where 6 to 11 come only from dividing by 1
+        ([Operation.ADD], 11, 5),  # the sums 0 to 10, each once
+        ([Operation.SUBTRACT], 11, 10),  # the differences 0 to 10
+        ([Operation.MULTIPLY], 15, 5),  # 0 1 2 3 4 5 6 8 9 10 12 15 16 20 25
+        ([Operation.ADD], 12, 10),
+        ([Operation.DIVIDE], 11, 10),  # the quotients 0 to 10
+        ([Operation.DIVIDE], 12, 11),  # 0 to 11, where 6 to 11 come only from dividing by 1
+        # every answer from 0 to 10, 5 of them differences up to 5
+        ([Operation.ADD, Operation.SUBTRACT], 11, 5),
+        # every answer from 0 to 4
+        ([Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY], 5, 2),
+        # 3 each: subtraction and division have only 11 answers, too few for 12 drawn at random
+        ([Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE], 12, 10),
     ],
 )
 def test_random_questions_have_distinct_answers(
-    operation: Operation, count: int, high: int
+    operations: list[Operation], count: int, high: int
 ) -> None:
     """A sheet is produced even when it needs every possible answer, with no answer repeated."""
     questions = generate_basic_operation_questions(
-        count, [operation], high=high, wrong_answer_count=0, distinct_answers=True
+        count, operations, high=high, wrong_answer_count=0, distinct_answers=True
     )
     answers = [question.data.answer for question in questions]
     assert len(answers) == count
@@ -728,16 +734,7 @@ def test_random_questions_have_distinct_answers(
 
 
 @pytest.mark.parametrize(
-    (
-        "operations",
-        "picks",
-        "largest_dividend",
-        "largest_divisor",
-        "distinct_answers",
-        "drawn",
-        "bounds",
-        "expected",
-    ),
+    ("operations", "picks", "largest_dividend", "largest_divisor", "drawn", "bounds", "expected"),
     [
         # 3 + 4 and 4 - 3 share a pair, but not an operation, so both are kept
         (
@@ -745,26 +742,11 @@ def test_random_questions_have_distinct_answers(
             [Operation.ADD, Operation.SUBTRACT],
             None,
             None,
-            False,
             [3, 4, 4, 3],
             [(0, 10), (0, 10), (0, 10), (0, 10)],
             [
                 BasicOperationQuestionData(Operation.ADD, (3, 4), 7),
                 BasicOperationQuestionData(Operation.SUBTRACT, (4, 3), 1),
-            ],
-        ),
-        # with distinct answers, 10 - 3 is redrawn: 3 + 4 already has its answer, 7
-        (
-            [Operation.ADD, Operation.SUBTRACT],
-            [Operation.ADD, Operation.SUBTRACT],
-            None,
-            None,
-            True,
-            [3, 4, 10, 3, 9, 3],
-            [(0, 10), (0, 10), (0, 10), (0, 10), (0, 10), (0, 10)],
-            [
-                BasicOperationQuestionData(Operation.ADD, (3, 4), 7),
-                BasicOperationQuestionData(Operation.SUBTRACT, (9, 3), 6),
             ],
         ),
         # addition's operands are up to 10, and division's dividend up to 20: a divisor of 1 to
@@ -774,7 +756,6 @@ def test_random_questions_have_distinct_answers(
             [Operation.ADD, Operation.DIVIDE],
             20,
             5,
-            False,
             [3, 4, 4, 5],
             [(0, 10), (0, 10), (1, 5), (0, 5)],
             [
@@ -789,7 +770,6 @@ def test_mixed_questions_from_scripted_draws(
     picks: list[Operation],
     largest_dividend: int | None,
     largest_divisor: int | None,
-    distinct_answers: bool,
     drawn: list[int],
     bounds: list[tuple[int, int]],
     expected: list[BasicOperationQuestionData],
@@ -810,10 +790,76 @@ def test_mixed_questions_from_scripted_draws(
         largest_dividend=largest_dividend,
         largest_divisor=largest_divisor,
         wrong_answer_count=0,
-        distinct_answers=distinct_answers,
     )
 
     assert drawn_from == bounds
+    assert [question.data for question in questions] == expected
+
+
+@pytest.mark.parametrize(
+    ("operations", "high", "drawn", "expected"),
+    [
+        # 10 - 3 is redrawn: 3 + 4 already has its answer, 7
+        (
+            [Operation.ADD, Operation.SUBTRACT],
+            10,
+            [3, 4, 10, 3, 9, 3],
+            [
+                BasicOperationQuestionData(Operation.SUBTRACT, (9, 3), 6),
+                BasicOperationQuestionData(Operation.ADD, (3, 4), 7),
+            ],
+        ),
+        # subtraction up to 1 has 2 answers to addition's 3, so it is generated first, and
+        # addition takes the extra question
+        (
+            [Operation.ADD, Operation.SUBTRACT],
+            1,
+            [1, 0, 1, 1, 0, 0],
+            [
+                BasicOperationQuestionData(Operation.ADD, (0, 0), 0),
+                BasicOperationQuestionData(Operation.ADD, (1, 1), 2),
+                BasicOperationQuestionData(Operation.SUBTRACT, (1, 0), 1),
+            ],
+        ),
+        # all three have the 4 answers needed, a tie, so they keep the sampled order, and the
+        # extra question goes to the last, multiplication
+        (
+            [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY],
+            10,
+            [3, 4, 9, 5, 2, 3, 5, 1],
+            [
+                BasicOperationQuestionData(Operation.MULTIPLY, (5, 1), 5),
+                BasicOperationQuestionData(Operation.MULTIPLY, (2, 3), 6),
+                BasicOperationQuestionData(Operation.SUBTRACT, (9, 5), 4),
+                BasicOperationQuestionData(Operation.ADD, (3, 4), 7),
+            ],
+        ),
+    ],
+)
+def test_dealt_questions_from_scripted_draws(
+    operations: list[Operation],
+    high: int,
+    drawn: list[int],
+    expected: list[BasicOperationQuestionData],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """
+    With ``distinct_answers``, the operations are dealt out evenly instead of drawn.
+
+    They are generated from fewest possible answers to most, then the sheet is shuffled.
+    ``sample`` keeps the operations' order, which decides between equal counts, and ``shuffle``
+    reverses the sheet. No wrong answers are requested, so only operands are drawn, and every
+    scripted draw must be made, from 0 to ``high``.
+    """
+    bounds = randint_returns(monkeypatch, drawn)
+    sample_first(monkeypatch)
+    reverse_shuffle(monkeypatch)
+
+    questions = generate_basic_operation_questions(
+        len(expected), operations, high=high, wrong_answer_count=0, distinct_answers=True
+    )
+
+    assert bounds == [(0, high)] * len(drawn)
     assert [question.data for question in questions] == expected
 
 
@@ -824,8 +870,22 @@ def test_mixed_questions_from_scripted_draws(
         ([Operation.ADD], 10, None, False, 100, 66),
         # the fewer of addition's 66 and the 8 division facts with dividends up to 3
         ([Operation.ADD, Operation.DIVIDE], 10, 3, False, 100, 8),
-        # the fewer of addition's 11 answers (0 to 10) and subtraction's 6 (0 to 5)
-        ([Operation.ADD, Operation.SUBTRACT], 5, None, True, 100, 6),
+        # dealt 5 and 6: subtraction has 6 answers (0 to 5), and addition 11 (0 to 10) for all
+        ([Operation.ADD, Operation.SUBTRACT], 5, None, True, 100, 11),
+        # dealt 2 and 3: subtraction's 2 answers (0 and 1) allow no more, so division takes the
+        # extra question
+        ([Operation.SUBTRACT, Operation.DIVIDE], 1, 100, True, 100, 5),
+        # every answer from 0 to 4: subtraction has 3, multiplication 4 and addition 5
+        ([Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY], 2, None, True, 100, 5),
+        # the defaults with tiles: 3 each, though subtraction has only 11 answers
+        (
+            [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
+            10,
+            100,
+            True,
+            12,
+            12,
+        ),
         # capped
         ([Operation.ADD, Operation.SUBTRACT], 10, None, False, 4, 4),
     ],
@@ -838,7 +898,10 @@ def test_count_possible_sheet_questions(
     up_to: int,
     expected: int,
 ) -> None:
-    """Any one operation may be drawn for every question, so the count is the least of theirs."""
+    """
+    Without distinct answers, any one operation may be drawn for every question, so the count
+    is the least of theirs. With them, it is the most questions that can be dealt out evenly.
+    """
     possible = count_possible_sheet_questions(
         operations,
         high=high,
