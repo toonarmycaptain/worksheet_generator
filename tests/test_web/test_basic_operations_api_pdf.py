@@ -235,14 +235,15 @@ from tests.helpers import (
             None,
         ),
         (
-            # With tiles, subtraction up to 5 has only 6 different answers.
+            # With tiles, 12 problems are dealt 6 to subtraction and 6 to addition. Subtraction up
+            # to 5 has 6 answers (0 to 5), but the two together need 12 of addition's 11.
             "/api/worksheets/basic_operations.pdf?self_check_tiles=true&operations=add"
             "&operations=subtract&max_number=5&problems=12",
             [],
             422,
             refused(
-                "problems: at most 6 without repeated answers for that largest number. Lower "
-                "problems to 6, or raise the largest number to 11."
+                "problems: at most 11 without repeated answers for that largest number. Lower "
+                "problems to 11, or raise the largest number to 6."
             ),
             None,
             None,
