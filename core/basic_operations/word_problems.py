@@ -5,6 +5,9 @@ Every template takes the same slots: ``{n1}`` and ``{n2}``, two different names;
 plural object; and ``{a}`` and ``{b}``, the operands in presentation order. A template may use any
 of them. A new template is one more string in its operation's tuple, and a new operation is one
 more entry in ``TEMPLATES``.
+
+Comparisons, which ask how many more one has than another, are kept apart in
+``COMPARISON_TEMPLATES``: a part-part-whole picture, such as the strip diagram, can't show them.
 """
 
 import random
@@ -60,6 +63,9 @@ OBJECTS = (
 
 TEMPLATES: dict[Operation, tuple[str, ...]] = {
     Operation.ADD: (
+        "The library had {a} books. It received {b} more books. "
+        "How many books does the library have now?",
+        "A farm picked {a} apples and then picked {b} more. How many apples were picked in all?",
         "{n1} collected {a} {obj}. {n2} collected {b} {obj}. "
         "How many {obj} did they collect altogether?",
         "There were {a} {obj} in the bin. {n1} put in {b} more. How many {obj} are in the bin now?",
@@ -97,20 +103,32 @@ TEMPLATES: dict[Operation, tuple[str, ...]] = {
     ),
 }
 
+# How many more {n1} has than {n2}: {a} is the larger amount
+COMPARISON_TEMPLATES: dict[Operation, tuple[str, ...]] = {
+    Operation.SUBTRACT: (
+        "{n1} has {a} {obj} and {n2} has {b} {obj}. How many more {obj} does {n1} have than {n2}?",
+    ),
+}
 
-def word_problem_texts(questions: Sequence[BasicOperationQuestionData]) -> list[str]:
+
+def word_problem_texts(
+    questions: Sequence[BasicOperationQuestionData], *, comparisons: bool = False
+) -> list[str]:
     """
     Word each question with a template for its operation, two different names and an object.
 
-    No template is used twice for the same operation until all of that operation's templates
-    have been used.
+    With ``comparisons``, an operation's ``COMPARISON_TEMPLATES`` join its templates. No template
+    is used twice for the same operation until all of that operation's templates have been used.
     """
     unused: dict[Operation, list[str]] = {}
     texts = []
     for data in questions:
         templates = unused.setdefault(data.operation, [])
         if not templates:
-            templates += random.sample(TEMPLATES[data.operation], len(TEMPLATES[data.operation]))
+            pool = TEMPLATES[data.operation]
+            if comparisons:
+                pool += COMPARISON_TEMPLATES.get(data.operation, ())
+            templates += random.sample(pool, len(pool))
         first_name, second_name = random.sample(NAMES, 2)
         first, second = data.operands
         text = templates.pop().format(

@@ -57,6 +57,7 @@ ADD = BasicOperationQuestionData(
             None,
             {
                 "questions": [SUBTRACT, ADD],
+                "picture": Picture.STRIP,
                 "hints": True,
                 "slot_of": None,
                 "answer_key": False,
@@ -76,6 +77,7 @@ ADD = BasicOperationQuestionData(
             None,
             {
                 "questions": [ADD],
+                "picture": Picture.STRIP,
                 "hints": False,
                 "slot_of": None,
                 "answer_key": True,
@@ -95,6 +97,7 @@ ADD = BasicOperationQuestionData(
             None,
             {
                 "questions": [SUBTRACT, ADD],
+                "picture": Picture.STRIP,
                 "hints": True,
                 "slot_of": (7, 9),
                 "answer_key": False,
@@ -113,6 +116,7 @@ ADD = BasicOperationQuestionData(
             None,
             {
                 "questions": [SUBTRACT, ADD],
+                "picture": Picture.STRIP,
                 "hints": True,
                 "slot_of": (11, 10),
                 "answer_key": True,
@@ -167,6 +171,7 @@ ADD = BasicOperationQuestionData(
                         "3 friends each have 4 cards. How many cards do they have together?",
                     ),
                 ],
+                "picture": Picture.STRIP,
                 "hints": True,
                 "slot_of": None,
                 "answer_key": False,
@@ -195,6 +200,7 @@ ADD = BasicOperationQuestionData(
                     ),
                     ADD,
                 ],
+                "picture": Picture.STRIP,
                 "hints": True,
                 "slot_of": None,
                 "answer_key": True,
@@ -228,10 +234,68 @@ ADD = BasicOperationQuestionData(
                         "30 cards are placed in 5 equal rows. How many cards are in each row?",
                     ),
                 ],
+                "picture": Picture.STRIP,
                 "hints": True,
                 "slot_of": (7, 9),
                 "answer_key": False,
                 "title": "Word Problems — Strip Diagrams",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        (
+            # Text only, with the title "Word Problems", since none is given. The hints are on,
+            # but text only has none. Subtraction is worded with its comparison, the last of its
+            # templates on a text-only sheet.
+            "/api/worksheets/word_problems.pdf?picture=none&problems=2&sheet=1ab2c3",
+            [Operation.SUBTRACT, Operation.ADD],
+            [40, 150, 47, 25],
+            200,
+            None,
+            {
+                "questions": [
+                    BasicOperationQuestionData(
+                        Operation.SUBTRACT,
+                        (150, 40),
+                        110,
+                        "Maria has 150 cards and Jamal has 40 cards. "
+                        "How many more cards does Maria have than Jamal?",
+                    ),
+                    ADD,
+                ],
+                "picture": Picture.NONE,
+                "hints": True,
+                "slot_of": None,
+                "answer_key": False,
+                "title": "Word Problems",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        (
+            # text only with multiplication, and a title given, which is kept
+            "/api/worksheets/word_problems.pdf?picture=none&operations=multiply&problems=1"
+            "&title=Story+Problems&sheet=1ab2c3",
+            [Operation.MULTIPLY],
+            [3, 4],
+            200,
+            None,
+            {
+                "questions": [
+                    BasicOperationQuestionData(
+                        Operation.MULTIPLY,
+                        (3, 4),
+                        12,
+                        "3 friends each have 4 cards. How many cards do they have together?",
+                    ),
+                ],
+                "picture": Picture.NONE,
+                "hints": True,
+                "slot_of": None,
+                "answer_key": False,
+                "title": "Story Problems",
                 "label": "Sheet A",
                 "name_line": False,
             },
@@ -248,8 +312,8 @@ ADD = BasicOperationQuestionData(
                     {
                         "type": "literal_error",
                         "loc": ["query", "picture"],
-                        "msg": "Input should be 'strip'",
-                        "ctx": {"expected": "'strip'"},
+                        "msg": "Input should be 'strip' or 'none'",
+                        "ctx": {"expected": "'strip' or 'none'"},
                     },
                 ],
             },
@@ -296,7 +360,7 @@ def test_word_problems_pdf(
         assert pdf_text(response.content) == pdf_text(
             render_word_problems(
                 questions=pdf_data["questions"],
-                picture=Picture.STRIP,
+                picture=pdf_data["picture"],
                 hints=pdf_data["hints"],
                 slot_of=pdf_data["slot_of"],
                 answer_key=pdf_data["answer_key"],

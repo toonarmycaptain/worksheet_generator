@@ -6,9 +6,10 @@ wrong answers.
 
 Each case's output is stored as text decoded from the PDF, in one file with a section per case:
 ``goldens/word_problems_worksheet_pdf_expecteds.txt``. The text includes the instruction, every
-problem's wording and hint, its picture, the answer lines or the answer bank and pattern, the
-answer key and the page breaks. To regenerate sections after an intended change, uncomment the
-``write_section`` lines in ``test_pdf_draws_the_expected_text`` and run it (``-k`` selects cases).
+problem's wording and hint, its picture or work box, the answer lines or the answer bank and
+pattern, the answer key and the page breaks. To regenerate sections after an intended change,
+uncomment the ``write_section`` lines in ``test_pdf_draws_the_expected_text`` and run it (``-k``
+selects cases).
 """
 
 import pytest
@@ -19,6 +20,7 @@ from tests.data import REAL_CASE_SLOTS
 from tests.helpers import GOLDENS, pdf_text, read_sections, render_word_problems
 
 TITLE = "Word Problems — Strip Diagrams"
+TEXT_ONLY_TITLE = "Word Problems"
 
 ADD_AND_SUBTRACT = [
     BasicOperationQuestionData(
@@ -172,6 +174,40 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             False,
             "Story Problems",
             "Day 2",
+        ),
+        # Text only: a box to show the work in, and no hints even with hints on. The key has
+        # each operation's equation.
+        (
+            "text_only_all_four_answer_key",
+            ALL_FOUR,
+            Picture.NONE,
+            True,
+            None,
+            True,
+            TEXT_ONLY_TITLE,
+            "Sheet A",
+        ),
+        # four boxed problems of two lines each fill the first page, so the fifth starts a second
+        (
+            "text_only_five_problems",
+            FIVE_PROBLEMS,
+            Picture.NONE,
+            True,
+            None,
+            False,
+            TEXT_ONLY_TITLE,
+            "Sheet A",
+        ),
+        # tiles: the boxes stay, and only the answer lines go
+        (
+            "text_only_self_check_tiles_answer_key",
+            ADD_AND_SUBTRACT,
+            Picture.NONE,
+            True,
+            REAL_CASE_SLOTS[:2],
+            True,
+            TEXT_ONLY_TITLE,
+            "Sheet A",
         ),
     ],
 )

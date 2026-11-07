@@ -1,5 +1,5 @@
 """The wording of basic-operation questions: a missing-number equation, how the self-check tiles
-sheet shows a question, and a word problem's strip diagram, hint and instruction."""
+sheet shows a question, and a word problem's strip diagram, hint, instruction and sheet title."""
 
 import pytest
 
@@ -21,6 +21,7 @@ from core.basic_operations.representation import (
     missing_number_tile_question,
     operations_name,
     strip_diagram,
+    word_problems_title,
 )
 from core.question import BLANK
 from core.self_check_tiles import TileQuestion
@@ -155,9 +156,12 @@ def test_equal_strip_diagram_whole(strip: EqualStripDiagram, whole: int) -> None
             Picture.STRIP,
             "The whole is split into equal groups. Divide to find the amount in each group.",
         ),
+        # text only has no hints
+        (ADD, Picture.NONE, None),
+        (DIVIDE, Picture.NONE, None),
     ],
 )
-def test_hint(data: BasicOperationQuestionData, picture: Picture, expected: str) -> None:
+def test_hint(data: BasicOperationQuestionData, picture: Picture, expected: str | None) -> None:
     assert hint(data, picture) == expected
 
 
@@ -210,6 +214,17 @@ def test_hint(data: BasicOperationQuestionData, picture: Picture, expected: str)
             "Use the strip diagram (bar model): parts or equal groups make a whole. "
             "The ? shows what to find.",
         ),
+        # text only: the same for any operations
+        (
+            Picture.NONE,
+            [Operation.ADD, Operation.SUBTRACT],
+            "Read each problem. Show your work in the box.",
+        ),
+        (
+            Picture.NONE,
+            [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
+            "Read each problem. Show your work in the box.",
+        ),
     ],
 )
 def test_instruction(picture: Picture, operations: list[Operation], expected: str) -> None:
@@ -229,3 +244,17 @@ def test_instruction(picture: Picture, operations: list[Operation], expected: st
 )
 def test_operations_name(operations: list[Operation], expected: str) -> None:
     assert operations_name(operations) == expected
+
+
+@pytest.mark.parametrize(
+    ("picture", "expected"),
+    [
+        (Picture.STRIP, "Word Problems — Strip Diagrams"),
+        # text only: no picture to name
+        (Picture.NONE, "Word Problems"),
+        (Picture.NUMBER_LINE, "Word Problems — Number Lines"),
+        (Picture.BLOCKS, "Word Problems — Base-Ten Blocks"),
+    ],
+)
+def test_word_problems_title(picture: Picture, expected: str) -> None:
+    assert word_problems_title(picture) == expected
