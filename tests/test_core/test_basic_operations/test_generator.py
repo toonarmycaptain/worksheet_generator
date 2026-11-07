@@ -25,6 +25,7 @@ from core.basic_operations.generator import (
     generate_missing_number_questions,
     generate_word_problems,
 )
+from core.question import FreeResponse, MultipleChoice, Question
 from tests.helpers import (
     choices_returns,
     choose_last,
@@ -35,8 +36,8 @@ from tests.helpers import (
     sample_last,
 )
 
-# one question: (data, wrong answers, options)
-Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
+# one question: (data, response)
+Made = tuple[BasicOperationQuestionData, MultipleChoice[int]]
 
 
 @pytest.mark.parametrize(
@@ -49,7 +50,12 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             10,
             3,
             [3, 4],
-            [(BasicOperationQuestionData(Operation.ADD, (3, 4), 7), (18, 19, 20), (20, 19, 18, 7))],
+            [
+                (
+                    BasicOperationQuestionData(Operation.ADD, (3, 4), 7),
+                    MultipleChoice((20, 19, 18, 7), frozenset({3})),
+                )
+            ],
         ),
         (
             Operation.ADD,
@@ -57,7 +63,12 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             10,
             3,
             [4, 3],
-            [(BasicOperationQuestionData(Operation.ADD, (4, 3), 7), (18, 19, 20), (20, 19, 18, 7))],
+            [
+                (
+                    BasicOperationQuestionData(Operation.ADD, (4, 3), 7),
+                    MultipleChoice((20, 19, 18, 7), frozenset({3})),
+                )
+            ],
         ),
         (
             Operation.ADD,
@@ -65,7 +76,12 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             10,
             3,
             [0, 0],
-            [(BasicOperationQuestionData(Operation.ADD, (0, 0), 0), (18, 19, 20), (20, 19, 18, 0))],
+            [
+                (
+                    BasicOperationQuestionData(Operation.ADD, (0, 0), 0),
+                    MultipleChoice((20, 19, 18, 0), frozenset({3})),
+                )
+            ],
         ),
         # the correct answer 20 is left out of the wrong answers
         (
@@ -77,8 +93,7 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             [
                 (
                     BasicOperationQuestionData(Operation.ADD, (10, 10), 20),
-                    (17, 18, 19),
-                    (19, 18, 17, 20),
+                    MultipleChoice((19, 18, 17, 20), frozenset({3})),
                 )
             ],
         ),
@@ -91,8 +106,7 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             [
                 (
                     BasicOperationQuestionData(Operation.SUBTRACT, (7, 3), 4),
-                    (8, 9, 10),
-                    (10, 9, 8, 4),
+                    MultipleChoice((10, 9, 8, 4), frozenset({3})),
                 )
             ],
         ),
@@ -106,8 +120,7 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             [
                 (
                     BasicOperationQuestionData(Operation.SUBTRACT, (7, 3), 4),
-                    (8, 9, 10),
-                    (10, 9, 8, 4),
+                    MultipleChoice((10, 9, 8, 4), frozenset({3})),
                 )
             ],
         ),
@@ -120,8 +133,7 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             [
                 (
                     BasicOperationQuestionData(Operation.SUBTRACT, (5, 5), 0),
-                    (8, 9, 10),
-                    (10, 9, 8, 0),
+                    MultipleChoice((10, 9, 8, 0), frozenset({3})),
                 )
             ],
         ),
@@ -134,8 +146,7 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             [
                 (
                     BasicOperationQuestionData(Operation.SUBTRACT, (9, 0), 9),
-                    (7, 8, 10),
-                    (10, 8, 7, 9),
+                    MultipleChoice((10, 8, 7, 9), frozenset({3})),
                 )
             ],
         ),
@@ -148,8 +159,7 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             [
                 (
                     BasicOperationQuestionData(Operation.SUBTRACT, (9, 0), 9),
-                    (7, 8, 10),
-                    (10, 8, 7, 9),
+                    MultipleChoice((10, 8, 7, 9), frozenset({3})),
                 )
             ],
         ),
@@ -162,8 +172,7 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             [
                 (
                     BasicOperationQuestionData(Operation.MULTIPLY, (6, 7), 42),
-                    (98, 99, 100),
-                    (100, 99, 98, 42),
+                    MultipleChoice((100, 99, 98, 42), frozenset({3})),
                 ),
             ],
         ),
@@ -176,8 +185,7 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             [
                 (
                     BasicOperationQuestionData(Operation.MULTIPLY, (7, 6), 42),
-                    (98, 99, 100),
-                    (100, 99, 98, 42),
+                    MultipleChoice((100, 99, 98, 42), frozenset({3})),
                 ),
             ],
         ),
@@ -190,8 +198,7 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             [
                 (
                     BasicOperationQuestionData(Operation.MULTIPLY, (0, 9), 0),
-                    (98, 99, 100),
-                    (100, 99, 98, 0),
+                    MultipleChoice((100, 99, 98, 0), frozenset({3})),
                 ),
             ],
         ),
@@ -204,8 +211,7 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             [
                 (
                     BasicOperationQuestionData(Operation.MULTIPLY, (10, 10), 100),
-                    (97, 98, 99),
-                    (99, 98, 97, 100),
+                    MultipleChoice((99, 98, 97, 100), frozenset({3})),
                 ),
             ],
         ),
@@ -216,7 +222,12 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             10,
             1,
             [3, 4],
-            [(BasicOperationQuestionData(Operation.ADD, (3, 4), 7), (20,), (20, 7))],
+            [
+                (
+                    BasicOperationQuestionData(Operation.ADD, (3, 4), 7),
+                    MultipleChoice((20, 7), frozenset({1})),
+                )
+            ],
         ),
         (
             Operation.ADD,
@@ -227,8 +238,7 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             [
                 (
                     BasicOperationQuestionData(Operation.ADD, (3, 4), 7),
-                    (16, 17, 18, 19, 20),
-                    (20, 19, 18, 17, 16, 7),
+                    MultipleChoice((20, 19, 18, 17, 16, 7), frozenset({5})),
                 ),
             ],
         ),
@@ -240,7 +250,12 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             5,
             3,
             [3, 4],
-            [(BasicOperationQuestionData(Operation.ADD, (3, 4), 7), (8, 9, 10), (10, 9, 8, 7))],
+            [
+                (
+                    BasicOperationQuestionData(Operation.ADD, (3, 4), 7),
+                    MultipleChoice((10, 9, 8, 7), frozenset({3})),
+                )
+            ],
         ),
         (
             Operation.ADD,
@@ -251,8 +266,7 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             [
                 (
                     BasicOperationQuestionData(Operation.ADD, (7, 7), 14),
-                    (11, 12, 13),
-                    (13, 12, 11, 14),
+                    MultipleChoice((13, 12, 11, 14), frozenset({3})),
                 )
             ],
         ),
@@ -265,8 +279,7 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             [
                 (
                     BasicOperationQuestionData(Operation.ADD, (5, 8), 13),
-                    (22, 23, 24),
-                    (24, 23, 22, 13),
+                    MultipleChoice((24, 23, 22, 13), frozenset({3})),
                 )
             ],
         ),
@@ -276,7 +289,12 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             5,
             3,
             [5, 3],
-            [(BasicOperationQuestionData(Operation.SUBTRACT, (5, 3), 2), (3, 4, 5), (5, 4, 3, 2))],
+            [
+                (
+                    BasicOperationQuestionData(Operation.SUBTRACT, (5, 3), 2),
+                    MultipleChoice((5, 4, 3, 2), frozenset({3})),
+                )
+            ],
         ),
         (
             Operation.MULTIPLY,
@@ -287,8 +305,7 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             [
                 (
                     BasicOperationQuestionData(Operation.MULTIPLY, (3, 4), 12),
-                    (23, 24, 25),
-                    (25, 24, 23, 12),
+                    MultipleChoice((25, 24, 23, 12), frozenset({3})),
                 ),
             ],
         ),
@@ -301,8 +318,7 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             [
                 (
                     BasicOperationQuestionData(Operation.MULTIPLY, (2, 3), 6),
-                    (574, 575, 576),
-                    (576, 575, 574, 6),
+                    MultipleChoice((576, 575, 574, 6), frozenset({3})),
                 ),
             ],
         ),
@@ -313,7 +329,12 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             1,
             3,
             [1, 1],
-            [(BasicOperationQuestionData(Operation.ADD, (1, 1), 2), (0, 1, 3), (3, 1, 0, 2))],
+            [
+                (
+                    BasicOperationQuestionData(Operation.ADD, (1, 1), 2),
+                    MultipleChoice((3, 1, 0, 2), frozenset({3})),
+                )
+            ],
         ),
         (
             Operation.ADD,
@@ -321,7 +342,12 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             0,
             3,
             [0, 0],
-            [(BasicOperationQuestionData(Operation.ADD, (0, 0), 0), (1, 2, 3), (3, 2, 1, 0))],
+            [
+                (
+                    BasicOperationQuestionData(Operation.ADD, (0, 0), 0),
+                    MultipleChoice((3, 2, 1, 0), frozenset({3})),
+                )
+            ],
         ),
         (
             Operation.SUBTRACT,
@@ -329,7 +355,12 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             0,
             3,
             [0, 0],
-            [(BasicOperationQuestionData(Operation.SUBTRACT, (0, 0), 0), (1, 2, 3), (3, 2, 1, 0))],
+            [
+                (
+                    BasicOperationQuestionData(Operation.SUBTRACT, (0, 0), 0),
+                    MultipleChoice((3, 2, 1, 0), frozenset({3})),
+                )
+            ],
         ),
         (
             Operation.MULTIPLY,
@@ -337,7 +368,12 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             0,
             3,
             [0, 0],
-            [(BasicOperationQuestionData(Operation.MULTIPLY, (0, 0), 0), (1, 2, 3), (3, 2, 1, 0))],
+            [
+                (
+                    BasicOperationQuestionData(Operation.MULTIPLY, (0, 0), 0),
+                    MultipleChoice((3, 2, 1, 0), frozenset({3})),
+                )
+            ],
         ),
         # the answer 0 is not repeated as a wrong answer
         (
@@ -346,7 +382,12 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             1,
             3,
             [0, 1],
-            [(BasicOperationQuestionData(Operation.MULTIPLY, (0, 1), 0), (1, 2, 3), (3, 2, 1, 0))],
+            [
+                (
+                    BasicOperationQuestionData(Operation.MULTIPLY, (0, 1), 0),
+                    MultipleChoice((3, 2, 1, 0), frozenset({3})),
+                )
+            ],
         ),
         # a pair that was already used, in either order, is drawn again: 4 + 3 flips 3 + 4
         (
@@ -358,13 +399,11 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             [
                 (
                     BasicOperationQuestionData(Operation.ADD, (3, 4), 7),
-                    (18, 19, 20),
-                    (20, 19, 18, 7),
+                    MultipleChoice((20, 19, 18, 7), frozenset({3})),
                 ),
                 (
                     BasicOperationQuestionData(Operation.ADD, (5, 6), 11),
-                    (18, 19, 20),
-                    (20, 19, 18, 11),
+                    MultipleChoice((20, 19, 18, 11), frozenset({3})),
                 ),
             ],
         ),
@@ -378,13 +417,11 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             [
                 (
                     BasicOperationQuestionData(Operation.SUBTRACT, (7, 3), 4),
-                    (8, 9, 10),
-                    (10, 9, 8, 4),
+                    MultipleChoice((10, 9, 8, 4), frozenset({3})),
                 ),
                 (
                     BasicOperationQuestionData(Operation.SUBTRACT, (9, 2), 7),
-                    (8, 9, 10),
-                    (10, 9, 8, 7),
+                    MultipleChoice((10, 9, 8, 7), frozenset({3})),
                 ),
             ],
         ),
@@ -397,13 +434,11 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             [
                 (
                     BasicOperationQuestionData(Operation.MULTIPLY, (6, 7), 42),
-                    (98, 99, 100),
-                    (100, 99, 98, 42),
+                    MultipleChoice((100, 99, 98, 42), frozenset({3})),
                 ),
                 (
                     BasicOperationQuestionData(Operation.MULTIPLY, (2, 8), 16),
-                    (98, 99, 100),
-                    (100, 99, 98, 16),
+                    MultipleChoice((100, 99, 98, 16), frozenset({3})),
                 ),
             ],
         ),
@@ -417,13 +452,11 @@ Made = tuple[BasicOperationQuestionData, tuple[int, ...], tuple[int, ...]]
             [
                 (
                     BasicOperationQuestionData(Operation.ADD, (5, 5), 10),
-                    (18, 19, 20),
-                    (20, 19, 18, 10),
+                    MultipleChoice((20, 19, 18, 10), frozenset({3})),
                 ),
                 (
                     BasicOperationQuestionData(Operation.ADD, (1, 2), 3),
-                    (18, 19, 20),
-                    (20, 19, 18, 3),
+                    MultipleChoice((20, 19, 18, 3), frozenset({3})),
                 ),
             ],
         ),
@@ -443,8 +476,8 @@ def test_questions_from_scripted_draws(
 
     ``randint`` returns the scripted ``drawn`` operands and records the bounds of each call,
     ``sample`` takes the top of the wrong-answer pool, and ``shuffle`` reverses the options. The
-    sheet requests as many questions as ``expected`` has. Each question's data, wrong answers
-    and options must match exactly, and every draw must span ``low`` to ``high``; a generator
+    sheet requests as many questions as ``expected`` has. Each question's data and response
+    must match exactly, and every draw must span ``low`` to ``high``; a generator
     that drew more or fewer times than scripted records different bounds.
     """
     bounds = randint_returns(monkeypatch, drawn)
@@ -456,7 +489,7 @@ def test_questions_from_scripted_draws(
     )
 
     assert bounds == [(low, high)] * len(drawn)
-    assert [(q.data, q.wrong_answers, q.options) for q in questions] == expected
+    assert [(q.data, q.response) for q in questions] == expected
 
 
 def test_the_default_operands_are_0_to_10(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -953,8 +986,7 @@ def test_count_possible_answers(
             [
                 (
                     BasicOperationQuestionData(Operation.DIVIDE, (28, 4), 7),
-                    (98, 99, 100),
-                    (100, 99, 98, 7),
+                    MultipleChoice((100, 99, 98, 7), frozenset({3})),
                 )
             ],
         ),
@@ -968,8 +1000,7 @@ def test_count_possible_answers(
             [
                 (
                     BasicOperationQuestionData(Operation.DIVIDE, (0, 3), 0),
-                    (98, 99, 100),
-                    (100, 99, 98, 0),
+                    MultipleChoice((100, 99, 98, 0), frozenset({3})),
                 )
             ],
         ),
@@ -983,8 +1014,7 @@ def test_count_possible_answers(
             [
                 (
                     BasicOperationQuestionData(Operation.DIVIDE, (12, 12), 1),
-                    (10, 11, 12),
-                    (12, 11, 10, 1),
+                    MultipleChoice((12, 11, 10, 1), frozenset({3})),
                 )
             ],
         ),
@@ -998,8 +1028,7 @@ def test_count_possible_answers(
             [
                 (
                     BasicOperationQuestionData(Operation.DIVIDE, (6, 6), 1),
-                    (4, 5, 6),
-                    (6, 5, 4, 1),
+                    MultipleChoice((6, 5, 4, 1), frozenset({3})),
                 )
             ],
         ),
@@ -1013,8 +1042,7 @@ def test_count_possible_answers(
             [
                 (
                     BasicOperationQuestionData(Operation.DIVIDE, (20, 5), 4),
-                    (18, 19, 20),
-                    (20, 19, 18, 4),
+                    MultipleChoice((20, 19, 18, 4), frozenset({3})),
                 )
             ],
         ),
@@ -1028,13 +1056,11 @@ def test_count_possible_answers(
             [
                 (
                     BasicOperationQuestionData(Operation.DIVIDE, (28, 4), 7),
-                    (98, 99, 100),
-                    (100, 99, 98, 7),
+                    MultipleChoice((100, 99, 98, 7), frozenset({3})),
                 ),
                 (
                     BasicOperationQuestionData(Operation.DIVIDE, (6, 2), 3),
-                    (98, 99, 100),
-                    (100, 99, 98, 3),
+                    MultipleChoice((100, 99, 98, 3), frozenset({3})),
                 ),
             ],
         ),
@@ -1065,7 +1091,7 @@ def test_division_from_scripted_draws(
     )
 
     assert asked == bounds
-    assert [(q.data, q.wrong_answers, q.options) for q in questions] == expected
+    assert [(q.data, q.response) for q in questions] == expected
 
 
 @pytest.mark.parametrize(
@@ -1778,9 +1804,7 @@ def test_word_problems_from_scripted_draws(
     )
 
     assert drawn_from == bounds
-    assert [(question.data, question.wrong_answers) for question in questions] == [
-        (data, ()) for data in expected
-    ]
+    assert questions == [Question(data, FreeResponse()) for data in expected]
 
 
 @pytest.mark.parametrize(

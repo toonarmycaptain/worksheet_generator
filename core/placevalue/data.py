@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from enum import StrEnum
 
-from core.question import QuestionData
+from core.question import FreeResponse, MultipleChoice, Question, QuestionData
 
 
 class PlaceValueForm(StrEnum):
@@ -21,7 +21,7 @@ class PlaceValueForm(StrEnum):
 
 
 @dataclass(frozen=True)
-class PlaceValueQuestionData(QuestionData):
+class PlaceValueQuestionData(QuestionData[int]):
     """
     A place-value question: write ``answer``, shown in the ``given`` form, in the ``asked`` form.
 
@@ -36,3 +36,7 @@ class PlaceValueQuestionData(QuestionData):
     answer: int
     given: PlaceValueForm
     asked: PlaceValueForm
+
+
+# A place-value question as presented: written in, or chosen from numbers in the asked form
+type PlaceValueQuestion = Question[PlaceValueQuestionData, FreeResponse | MultipleChoice[int]]

@@ -19,7 +19,7 @@ from core.basic_operations.regrouping import Regrouping, fits_regrouping
 from core.basic_operations.representation import OPERATION_NAMES, equation
 from core.placevalue.data import PlaceValueForm, PlaceValueQuestionData
 from core.placevalue.representation import format_number
-from core.question import Question
+from core.question import FreeResponse, Question
 from core.self_check_tiles import TileQuestion
 
 LARGEST_BLOCKS_NUMBER = 999  # base-ten blocks go up to the hundreds' flats
@@ -228,7 +228,7 @@ def generate_blocks_questions(
     largest: int = LARGEST_BLOCKS_NUMBER,
     regrouping: Regrouping = Regrouping.MIXED,
     distinct_answers: bool = False,
-) -> list[Question[BlocksQuestionData]]:
+) -> list[Question[BlocksQuestionData, FreeResponse]]:
     """
     Generate ``count`` questions shown with base-ten blocks, shared as evenly as possible among
     ``types`` and then shuffled. When ``count`` doesn't divide evenly, the extra questions go to
@@ -269,7 +269,7 @@ def generate_blocks_questions(
     given_extra = random.sample(range(len(order)), extra)
     seen: set[BlocksQuestionData] = set()
     answers: set[int] = set()
-    questions: list[Question[BlocksQuestionData]] = []
+    questions: list[Question[BlocksQuestionData, FreeResponse]] = []
     for index, question_type in enumerate(order):
         for _ in range(share + 1 if index in given_extra else share):
             data = _draw(question_type, smallest, largest, regrouping)
@@ -277,7 +277,7 @@ def generate_blocks_questions(
                 data = _draw(question_type, smallest, largest, regrouping)
             seen.add(data)
             answers.add(data.answer)
-            questions.append(Question(data, ()))
+            questions.append(Question(data, FreeResponse()))
     random.shuffle(questions)
     return questions
 

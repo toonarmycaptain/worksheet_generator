@@ -11,9 +11,9 @@ from typing import BinaryIO
 
 from reportlab.pdfgen.canvas import Canvas
 
-from core.placevalue.data import PlaceValueQuestionData
+from core.placevalue.data import PlaceValueQuestion
 from core.placevalue.representation import format_number, in_asked_form, in_given_form, instruction
-from core.question import Question
+from core.question import FreeResponse
 from render.pdf.page import (
     FONT,
     LINE_HEIGHT,
@@ -35,7 +35,7 @@ CHOICES_GAP = 18  # gap between a question's last option and the next question
 
 
 def render_place_value_worksheet(
-    questions: Sequence[Question[PlaceValueQuestionData]],
+    questions: Sequence[PlaceValueQuestion],
     path: str | BinaryIO,
     header: Header,
     answer_key: bool,
@@ -44,8 +44,8 @@ def render_place_value_worksheet(
     Render place-value questions, and the answer key if requested, to ``path``.
 
     Each question states the form to write the number in, followed by the number in its given
-    form on its own line. A question with wrong answers is multiple choice, with lettered options
-    in the asked form listed below it; one without has an answer line. The answer key gives each
+    form on its own line. A multiple-choice question has its lettered options in the asked form
+    listed below it; a free-response one has an answer line. The answer key gives each
     number in the asked form, prefixed by the correct letter for a multiple-choice question.
     ``path`` is a filename or a binary file-like object.
     """
@@ -67,21 +67,26 @@ def render_place_value_worksheet(
     pdf.save()
 
 
-def _question_lines(question: Question[PlaceValueQuestionData]) -> list[str]:
+def _question_lines(
+    question: PlaceValueQuestion,
+) -> list[str]:
     """Return the instruction line, followed by the number in its given form, wrapped."""
     return [instruction(question), *wrap(in_given_form(question.data), TEXT_SIZE, TEXT_WIDTH)]
 
 
-def _choice_lines(question: Question[PlaceValueQuestionData]) -> list[tuple[str, str]]:
+def _choice_lines(
+    question: PlaceValueQuestion,
+) -> list[tuple[str, str]]:
     """
     Return each option's lines as (letter, text) pairs; continuation lines have no letter.
 
-    A question with no wrong answers has no options, and is drawn with an answer line instead.
+    A free-response question has no options, and is drawn with an answer line instead.
     """
-    if not question.wrong_answers:
+    response = question.response
+    if isinstance(response, FreeResponse):
         return []
     lines: list[tuple[str, str]] = []
-    for index, option in enumerate(question.options):
+    for index, option in enumerate(response.options):
         text = format_number(option, question.data.asked)
         first, *more = wrap(text, TEXT_SIZE, TEXT_WIDTH - CHOICE_INDENT)
         lines.append((f"{ascii_uppercase[index]})", first))
@@ -89,12 +94,15 @@ def _choice_lines(question: Question[PlaceValueQuestionData]) -> list[tuple[str,
     return lines
 
 
-def _solution(question: Question[PlaceValueQuestionData]) -> str:
-    data = question.data
-    answer = in_asked_form(data)
-    if not question.wrong_answers:
+def _solution(
+    question: PlaceValueQuestion,
+) -> str:
+    answer = in_asked_form(question.data)
+    response = question.response
+    if isinstance(response, FreeResponse):
         return answer
-    return f"{ascii_uppercase[question.options.index(data.answer)]}) {answer}"
+    letters = ", ".join(ascii_uppercase[index] for index in sorted(response.correct_indexes))
+    return f"{letters}) {answer}"
 
 
 def _draw_question(
