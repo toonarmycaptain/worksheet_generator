@@ -38,7 +38,10 @@ def test_pages(client: Client) -> None:
                 b"label",
                 b"name_line",
                 b"problems",
-                b"operation",
+                b"operations",  # a checkbox for each operation
+                b"operations",
+                b"operations",
+                b"operations",
                 b"missing_number",
                 b"max_number",
                 b"largest_dividend",
@@ -52,6 +55,8 @@ def test_pages(client: Client) -> None:
                 b"label",
                 b"name_line",
                 b"problems",
+                b"operations",  # addition and subtraction
+                b"operations",
                 b"picture",
                 b"no_hints",
                 b"answer_key",
@@ -113,16 +118,6 @@ def test_the_tile_pattern_is_a_pair_of_radio_buttons_that_defaults_to_simple(
 @pytest.mark.parametrize(
     ("url", "name", "expected"),
     [
-        (
-            "/basic-operations/",
-            "operation",
-            [
-                (b"add", b" selected", b"Addition"),
-                (b"subtract", b"", b"Subtraction"),
-                (b"multiply", b"", b"Multiplication"),
-                (b"divide", b"", b"Division"),
-            ],
-        ),
         # a Literal of one value, the only picture drawn so far, is still a dropdown
         ("/basic-operations/", "picture", [(b"strip", b" selected", b"Strip Diagrams")]),
         (
@@ -157,8 +152,8 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
     """
     Each dropdown option sends its ID and displays its name, with the expected default selected.
 
-    Operation defaults to addition. From defaults to standard and To to expanded, and each also
-    offers mixed.
+    Picture offers only strip diagrams. From defaults to standard and To to expanded, and each
+    also offers mixed.
     """
     content = client.get(url).content
     select = re.search(
@@ -170,6 +165,63 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
         re.findall(rb'<option value="(\w+)"( selected)?>([^<]+)</option>', select.group(1))
         == expected
     )
+
+
+@pytest.mark.parametrize(
+    ("url", "action", "name", "expected", "all_box"),
+    [
+        # addition by default, with an All box for the four
+        (
+            "/basic-operations/",
+            b"/api/worksheets/basic_operations.pdf",
+            "operations",
+            [
+                (b"add", b" checked", b"Addition"),
+                (b"subtract", b"", b"Subtraction"),
+                (b"multiply", b"", b"Multiplication"),
+                (b"divide", b"", b"Division"),
+            ],
+            True,
+        ),
+        # both by default, and no All box for two
+        (
+            "/basic-operations/",
+            b"/api/worksheets/word_problems.pdf",
+            "operations",
+            [(b"add", b" checked", b"Addition"), (b"subtract", b" checked", b"Subtraction")],
+            False,
+        ),
+    ],
+)
+def test_a_checkbox_group_sends_each_ticked_choice_s_id_and_shows_its_name(
+    url: str,
+    action: bytes,
+    name: str,
+    expected: list[tuple[bytes, bytes, bytes]],
+    all_box: bool,
+    client: Client,
+) -> None:
+    """
+    Each checkbox in a group sends its ID when ticked and displays its name, with the defaults
+    ticked.
+
+    A group of more than two also has an All box, which has no name, so it is never sent.
+    Whether its script works is checked manually in a browser.
+    """
+    content = client.get(url).content
+    form = re.search(rb'<form [^>]*?action="' + action + rb'".*?</form>', content, re.S)
+
+    assert form is not None
+    assert (
+        re.findall(
+            rb'<input type="checkbox" name="'
+            + name.encode()
+            + rb'" value="(\w+)"( checked)?> ([^<]+)<',
+            form.group(),
+        )
+        == expected
+    )
+    assert (b"data-all" in form.group()) is all_box
 
 
 @pytest.mark.parametrize(
@@ -261,7 +313,8 @@ def test_each_field_carries_its_label_for_the_check_first_messages(client: Clien
     """
     Each field's data-label supplies the label that begins a rejected option's message.
 
-    The tile pattern's radio buttons have none, as no message names them.
+    The tile pattern's radio buttons and the operations' checkboxes have none, as no message
+    names them.
     """
     content = client.get("/basic-operations/").content
     assert re.findall(rb'name="(\w+)" data-label="([^"]+)"', content) == [
@@ -269,7 +322,6 @@ def test_each_field_carries_its_label_for_the_check_first_messages(client: Clien
         (b"label", b"Label"),
         (b"name_line", b"Add Name/Date blanks"),
         (b"problems", b"Problems"),
-        (b"operation", b"Operation"),
         (b"missing_number", b"Missing number"),
         (b"max_number", b"Largest number"),
         (b"largest_dividend", b"Largest dividend"),

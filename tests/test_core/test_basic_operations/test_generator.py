@@ -19,11 +19,13 @@ from core.basic_operations.generator import (
     count_possible_answers,
     count_possible_missing_number_questions,
     count_possible_questions,
+    count_possible_sheet_questions,
     generate_basic_operation_questions,
     generate_missing_number_questions,
     generate_word_problems,
 )
 from tests.helpers import (
+    choices_returns,
     choose_last,
     randint_returns,
     randint_returns_low,
@@ -449,7 +451,7 @@ def test_questions_from_scripted_draws(
     reverse_shuffle(monkeypatch)
 
     questions = generate_basic_operation_questions(
-        len(expected), operation, low=low, high=high, wrong_answer_count=wrong_answer_count
+        len(expected), [operation], low=low, high=high, wrong_answer_count=wrong_answer_count
     )
 
     assert bounds == [(low, high)] * len(drawn)
@@ -464,7 +466,7 @@ def test_the_default_operands_are_0_to_10(monkeypatch: pytest.MonkeyPatch) -> No
     whose columns always pass the limits.
     """
     bounds = randint_returns_low(monkeypatch)
-    generate_basic_operation_questions(1, Operation.ADD)
+    generate_basic_operation_questions(1, [Operation.ADD])
     assert bounds == [(0, 10), (0, 10)]
 
 
@@ -491,7 +493,7 @@ def test_random_questions_have_no_repeats_even_when_flipped(
     This uses real random draws, including sheets that need every possible pair and so finish
     only once the last unused pair is drawn.
     """
-    questions = generate_basic_operation_questions(count, operation, low=low, high=high)
+    questions = generate_basic_operation_questions(count, [operation], low=low, high=high)
     pairs = [tuple(sorted(question.data.operands)) for question in questions]
     assert len(questions) == count
     assert len(set(pairs)) == count
@@ -624,7 +626,7 @@ def test_basic_operation_sheet_errors(
     with pytest.raises(ValueError) as error:
         generate_basic_operation_questions(
             count,
-            operation,
+            [operation],
             low=low,
             high=high,
             largest_divisor=largest_divisor,
@@ -694,7 +696,7 @@ def test_distinct_answers_from_scripted_draws(
     bounds = randint_returns(monkeypatch, drawn)
 
     questions = generate_basic_operation_questions(
-        len(expected), operation, high=high, wrong_answer_count=0, distinct_answers=True
+        len(expected), [operation], high=high, wrong_answer_count=0, distinct_answers=True
     )
 
     assert bounds == [(0, high)] * len(drawn)
@@ -717,11 +719,133 @@ def test_random_questions_have_distinct_answers(
 ) -> None:
     """A sheet is produced even when it needs every possible answer, with no answer repeated."""
     questions = generate_basic_operation_questions(
-        count, operation, high=high, wrong_answer_count=0, distinct_answers=True
+        count, [operation], high=high, wrong_answer_count=0, distinct_answers=True
     )
     answers = [question.data.answer for question in questions]
     assert len(answers) == count
     assert len(set(answers)) == count
+
+
+@pytest.mark.parametrize(
+    (
+        "operations",
+        "picks",
+        "largest_dividend",
+        "largest_divisor",
+        "distinct_answers",
+        "drawn",
+        "bounds",
+        "expected",
+    ),
+    [
+        # 3 + 4 and 4 - 3 share a pair, but not an operation, so both are kept
+        (
+            [Operation.ADD, Operation.SUBTRACT],
+            [Operation.ADD, Operation.SUBTRACT],
+            None,
+            None,
+            False,
+            [3, 4, 4, 3],
+            [(0, 10), (0, 10), (0, 10), (0, 10)],
+            [
+                BasicOperationQuestionData(Operation.ADD, (3, 4), 7),
+                BasicOperationQuestionData(Operation.SUBTRACT, (4, 3), 1),
+            ],
+        ),
+        # with distinct answers, 10 - 3 is redrawn: 3 + 4 already has its answer, 7
+        (
+            [Operation.ADD, Operation.SUBTRACT],
+            [Operation.ADD, Operation.SUBTRACT],
+            None,
+            None,
+            True,
+            [3, 4, 10, 3, 9, 3],
+            [(0, 10), (0, 10), (0, 10), (0, 10), (0, 10), (0, 10)],
+            [
+                BasicOperationQuestionData(Operation.ADD, (3, 4), 7),
+                BasicOperationQuestionData(Operation.SUBTRACT, (9, 3), 6),
+            ],
+        ),
+        # addition's operands are up to 10, and division's dividend up to 20: a divisor of 1 to
+        # 5, then a quotient of up to 20 over it
+        (
+            [Operation.ADD, Operation.DIVIDE],
+            [Operation.ADD, Operation.DIVIDE],
+            20,
+            5,
+            False,
+            [3, 4, 4, 5],
+            [(0, 10), (0, 10), (1, 5), (0, 5)],
+            [
+                BasicOperationQuestionData(Operation.ADD, (3, 4), 7),
+                BasicOperationQuestionData(Operation.DIVIDE, (20, 4), 5),
+            ],
+        ),
+    ],
+)
+def test_mixed_questions_from_scripted_draws(
+    operations: list[Operation],
+    picks: list[Operation],
+    largest_dividend: int | None,
+    largest_divisor: int | None,
+    distinct_answers: bool,
+    drawn: list[int],
+    bounds: list[tuple[int, int]],
+    expected: list[BasicOperationQuestionData],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """
+    Each question's operation is drawn from those given, and its operands are drawn for it.
+
+    ``picks`` are the operations drawn. No wrong answers are requested, so only operands are
+    drawn, and every scripted draw must be made, within ``bounds``.
+    """
+    drawn_from = randint_returns(monkeypatch, drawn)
+    choices_returns(monkeypatch, picks)
+
+    questions = generate_basic_operation_questions(
+        len(expected),
+        operations,
+        largest_dividend=largest_dividend,
+        largest_divisor=largest_divisor,
+        wrong_answer_count=0,
+        distinct_answers=distinct_answers,
+    )
+
+    assert drawn_from == bounds
+    assert [question.data for question in questions] == expected
+
+
+@pytest.mark.parametrize(
+    ("operations", "high", "largest_dividend", "distinct_answers", "up_to", "expected"),
+    [
+        # every pair from 0 to 10, as in count_possible_questions
+        ([Operation.ADD], 10, None, False, 100, 66),
+        # the fewer of addition's 66 and the 8 division facts with dividends up to 3
+        ([Operation.ADD, Operation.DIVIDE], 10, 3, False, 100, 8),
+        # the fewer of addition's 11 answers (0 to 10) and subtraction's 6 (0 to 5)
+        ([Operation.ADD, Operation.SUBTRACT], 5, None, True, 100, 6),
+        # capped
+        ([Operation.ADD, Operation.SUBTRACT], 10, None, False, 4, 4),
+    ],
+)
+def test_count_possible_sheet_questions(
+    operations: list[Operation],
+    high: int,
+    largest_dividend: int | None,
+    distinct_answers: bool,
+    up_to: int,
+    expected: int,
+) -> None:
+    """Any one operation may be drawn for every question, so the count is the least of theirs."""
+    possible = count_possible_sheet_questions(
+        operations,
+        high=high,
+        largest_dividend=largest_dividend,
+        distinct_answers=distinct_answers,
+        up_to=up_to,
+    )
+    assert possible == expected
 
 
 @pytest.mark.parametrize(
@@ -873,7 +997,7 @@ def test_division_from_scripted_draws(
     reverse_shuffle(monkeypatch)
 
     questions = generate_basic_operation_questions(
-        len(expected), Operation.DIVIDE, low=low, high=high, largest_divisor=largest_divisor
+        len(expected), [Operation.DIVIDE], low=low, high=high, largest_divisor=largest_divisor
     )
 
     assert asked == bounds
@@ -1230,11 +1354,13 @@ THREE_DIGITS = (100, 999)
 
 
 @pytest.mark.parametrize(
-    ("count", "distinct_answers", "drawn", "bounds", "expected"),
+    ("count", "operations", "picks", "distinct_answers", "drawn", "bounds", "expected"),
     [
         # one problem: addition of two 2-digit numbers
         (
             1,
+            [Operation.ADD],
+            [Operation.ADD],
             False,
             [11, 99],
             [TWO_DIGITS, TWO_DIGITS],
@@ -1248,12 +1374,14 @@ THREE_DIGITS = (100, 999)
                 ),
             ],
         ),
-        # The default 4, one of each size. Reversed, subtraction comes first, with 3 and 3 digits
-        # then 3 and 2, and addition gets 2 and 3 then 2 and 2. 305 - 300 is redrawn, as its
+        # The default 4, one of each size. The sizes are reversed: subtraction gets 3 and 3
+        # digits then 3 and 2, and addition 2 and 3 then 2 and 2. 305 - 300 is redrawn, as its
         # difference is under 10, and 300 and 645 are swapped. 60 + 950 is redrawn, as its sum
         # is over 999.
         (
             4,
+            [Operation.ADD, Operation.SUBTRACT],
+            [Operation.SUBTRACT, Operation.SUBTRACT, Operation.ADD, Operation.ADD],
             False,
             [305, 300, 300, 645, 512, 48, 60, 950, 47, 925, 99, 99],
             [
@@ -1302,6 +1430,8 @@ THREE_DIGITS = (100, 999)
         # without distinct answers, 150 - 40 and 55 + 55 can both be 110
         (
             2,
+            [Operation.ADD, Operation.SUBTRACT],
+            [Operation.SUBTRACT, Operation.ADD],
             False,
             [40, 150, 55, 55],
             [TWO_DIGITS, THREE_DIGITS, TWO_DIGITS, TWO_DIGITS],
@@ -1325,6 +1455,8 @@ THREE_DIGITS = (100, 999)
         # with them, 55 + 55 is redrawn
         (
             2,
+            [Operation.ADD, Operation.SUBTRACT],
+            [Operation.SUBTRACT, Operation.ADD],
             True,
             [40, 150, 55, 55, 47, 25],
             [TWO_DIGITS, THREE_DIGITS, TWO_DIGITS, TWO_DIGITS, TWO_DIGITS, TWO_DIGITS],
@@ -1349,6 +1481,8 @@ THREE_DIGITS = (100, 999)
 )
 def test_word_problems_from_scripted_draws(
     count: int,
+    operations: list[Operation],
+    picks: list[Operation],
     distinct_answers: bool,
     drawn: list[int],
     bounds: list[tuple[int, int]],
@@ -1358,16 +1492,17 @@ def test_word_problems_from_scripted_draws(
     """
     Each problem's operands are drawn at its size, and redrawn until they meet the limits.
 
-    ``reverse_shuffle`` reverses the operations and the sizes, and the wording is scripted as in
-    ``test_word_problems``. Every scripted draw must be made, within ``bounds``. The problems
-    are free response, with no wrong answers.
+    ``picks`` are the operations drawn, ``reverse_shuffle`` reverses the sizes, and the wording
+    is scripted as in ``test_word_problems``. Every scripted draw must be made, within
+    ``bounds``. The problems are free response, with no wrong answers.
     """
     drawn_from = randint_returns(monkeypatch, drawn)
+    choices_returns(monkeypatch, picks)
     reverse_shuffle(monkeypatch)
     sample_first(monkeypatch)
     choose_last(monkeypatch)
 
-    questions = generate_word_problems(count, distinct_answers=distinct_answers)
+    questions = generate_word_problems(count, operations, distinct_answers=distinct_answers)
 
     assert drawn_from == bounds
     assert [(question.data, question.wrong_answers) for question in questions] == [
@@ -1377,5 +1512,7 @@ def test_word_problems_from_scripted_draws(
 
 def test_random_word_problems_have_distinct_answers() -> None:
     """A sheet of the most problems allowed, 20, is produced with no answer repeated."""
-    questions = generate_word_problems(20, distinct_answers=True)
+    questions = generate_word_problems(
+        20, [Operation.ADD, Operation.SUBTRACT], distinct_answers=True
+    )
     assert len({question.data.answer for question in questions}) == 20
