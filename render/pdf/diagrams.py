@@ -266,15 +266,16 @@ def draw_blocks(
     diagram: BlocksDiagram,
     colours: BlockColours,
     note: bool,
-) -> None:
+) -> float:
     """
     Draw ``diagram``'s numbers as base-ten blocks in ``colours``, one under another, with the
-    top-left corner at (``x``, ``top``), ``blocks_height(diagram)`` high.
+    top-left corner at (``x``, ``top``), ``blocks_height(diagram)`` high, and return the x of
+    the right edge of the last number's blocks.
 
-    When none are crossed out, a plus sign sits beside the last number, in the problem number's
-    column left of ``x``. Otherwise there is no sign, because the one number drawn is the starting
+    When some are crossed out, there is no sign, because the one number drawn is the starting
     amount, not the amount taken away; with ``note``, the amount to cross out is written right of
-    it, "(cross out 25)".
+    it, "(cross out 25)". Otherwise, when there are two numbers, a plus sign sits beside the
+    second, in the problem number's column left of ``x``. A single number has no sign.
     """
     pdf.saveState()
     bottom = top + BLOCKS_NUMBER_GAP
@@ -284,16 +285,19 @@ def draw_blocks(
         right = _draw_number(pdf, x, bottom, blocks, colours)
 
     middle = bottom + height / 2
-    if diagram.cross_out is None:
+    if diagram.cross_out is not None:
+        if note:
+            pdf.setFillColor(BLOCKS_NOTE_COLOUR)
+            pdf.setFont(FONT, 12)
+            note_text = BLOCKS_NOTE.format(diagram.cross_out)
+            pdf.drawString(right + BLOCKS_NOTE_GAP, middle - 4, note_text)
+    elif len(diagram.numbers) > 1:
         pdf.setFillColor(OUTLINE_COLOUR)
         pdf.setFont(BOLD_FONT, BLOCKS_SIGN_SIZE)
         pdf.drawString(x - TEXT_INDENT + BLOCKS_SIGN_INSET, middle - 6, SYMBOLS[Operation.ADD])
-    elif note:
-        pdf.setFillColor(BLOCKS_NOTE_COLOUR)
-        pdf.setFont(FONT, 12)
-        pdf.drawString(right + BLOCKS_NOTE_GAP, middle - 4, BLOCKS_NOTE.format(diagram.cross_out))
 
     pdf.restoreState()
+    return right
 
 
 def draw_blocks_key(pdf: Canvas, x: float, top: float, colours: BlockColours) -> None:

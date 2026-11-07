@@ -2,7 +2,7 @@
 
 from core.placevalue.data import PlaceValueForm
 
-STANDARD, EXPANDED, UNIT, EXPANDED_NOTATION, WORD = PlaceValueForm  # in the enum's order
+STANDARD, EXPANDED, UNIT, EXPANDED_NOTATION, WORD, BLOCKS = PlaceValueForm  # in the enum's order
 
 TIMES = "\N{MULTIPLICATION SIGN}"
 

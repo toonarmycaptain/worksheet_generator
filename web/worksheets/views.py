@@ -47,6 +47,7 @@ HEADINGS = {
     "basic_operations": "Addition, Subtraction, Multiplication and Division",
     "place_value": "Write the Number in Another Form",
     "word_problems": "Word Problems",
+    "base_ten_blocks": "Base-Ten Blocks",
 }
 LEGACY_HEADINGS = {
     "block": "Addition & Subtraction Word Problems — Base-Ten Blocks",
@@ -127,6 +128,7 @@ def basic_operations(request: HttpRequest) -> HttpResponse:
             {
                 "basic_operations": CORE_KINDS["basic_operations"],
                 "word_problems": CORE_KINDS["word_problems"],
+                "base_ten_blocks": CORE_KINDS["base_ten_blocks"],
             }
         ),
         "self_check_tiles_problems": SLOTS,

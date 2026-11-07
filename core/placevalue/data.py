@@ -7,13 +7,17 @@ from core.question import QuestionData
 
 
 class PlaceValueForm(StrEnum):
-    """A written form of a number. Values are stable identifiers for the API and storage."""
+    """
+    A form of a number: written, or drawn as base-ten blocks. Values are stable identifiers for
+    the API and storage.
+    """
 
     STANDARD = "standard"  # 35,043
     EXPANDED = "expanded"  # 30,000 + 5,000 + 40 + 3
     UNIT = "unit"  # 3 ten thousands 5 thousands 4 tens 3 ones
     EXPANDED_NOTATION = "expanded_notation"  # (3 x 10,000) + (5 x 1,000) + (4 x 10) + (3 x 1)
     WORD = "word"  # thirty-five thousand, forty-three
+    BLOCKS = "blocks"  # 352 as 3 flats, 5 rods and 2 units, drawn rather than written
 
 
 @dataclass(frozen=True)

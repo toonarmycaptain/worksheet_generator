@@ -22,11 +22,13 @@ from typing import Any
 
 import pytest
 
+from core.base_ten_blocks import BlocksQuestionData
 from core.basic_operations.data import BasicOperationQuestionData, MissingNumberQuestionData
 from core.basic_operations.representation import Representation
 from core.placevalue.data import PlaceValueQuestionData
 from core.question import Question, QuestionData
 from core.self_check_tiles import TileQuestion
+from render.pdf.base_ten_blocks_worksheet import render_base_ten_blocks_worksheet
 from render.pdf.basic_operations_worksheet import (
     render_basic_operations_worksheet,
     render_missing_number_worksheet,
@@ -274,6 +276,28 @@ def render_word_problems(
         answer_key=answer_key,
         representation=representation,
         hints=hints,
+        slot_of=slot_of,
+        black_and_white=black_and_white,
+    )
+    return out.getvalue()
+
+
+def render_base_ten_blocks(
+    questions: list[BlocksQuestionData],
+    slot_of: tuple[int, ...] | None,
+    black_and_white: bool,
+    answer_key: bool,
+    title: str,
+    label: str,
+    name_line: bool = True,
+) -> bytes:
+    """Render the base-ten blocks sheet, each question free response, with no wrong answers."""
+    out = BytesIO()
+    render_base_ten_blocks_worksheet(
+        questions=[Question(data, ()) for data in questions],
+        path=out,
+        header=Header(title=title, label=label, name_line=name_line),
+        answer_key=answer_key,
         slot_of=slot_of,
         black_and_white=black_and_white,
     )
