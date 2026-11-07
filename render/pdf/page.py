@@ -155,13 +155,14 @@ def draw_answer_key(pdf: Canvas, header: Header, solutions: Iterable[str]) -> No
     """
     Draw the answer key, starting on a new page, with each solution numbered and wrapped.
 
-    A solution that would run past the bottom margin starts on the next page.
+    A newline in a solution starts a new line. A solution that would run past the bottom margin
+    starts on the next page.
     """
     key_header = replace(header, title=f"{header.title}: Answer Key", name_line=False)
     pdf.showPage()
     y = start_page(pdf, key_header)
     for number, solution in enumerate(solutions, start=1):
-        lines = wrap(solution, TEXT_SIZE, TEXT_WIDTH)
+        lines = [line for row in solution.split("\n") for line in wrap(row, TEXT_SIZE, TEXT_WIDTH)]
         if y - (len(lines) - 1) * LINE_HEIGHT < MARGIN + LINE_HEIGHT:
             pdf.showPage()
             y = start_page(pdf, key_header)

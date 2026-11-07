@@ -41,6 +41,12 @@ BUILDERS = [
         "notation, from another of those forms.",
         "url_name": "place_value",
     },
+    {
+        "title": "Data and Graphs",
+        "description": "Read data in a table, graph or list, complete another display of the "
+        "same data, then solve problems about it.",
+        "url_name": "data_graphs",
+    },
 ]
 
 HEADINGS = {
@@ -48,6 +54,7 @@ HEADINGS = {
     "place_value": "Write the Number in Another Form",
     "word_problems": "Word Problems",
     "base_ten_blocks": "Base-Ten Blocks",
+    "data_graphs": "Read, Complete, Solve",
 }
 LEGACY_HEADINGS = {
     "block": "Addition & Subtraction Word Problems — Base-Ten Blocks",
@@ -167,6 +174,16 @@ def place_value(request: HttpRequest) -> HttpResponse:
         "forms": _forms({"place_value": CORE_KINDS["place_value"]}),
         "self_check_tiles_problems": SLOTS,
         "distinct_forms": True,
+    }
+    return render(request, "worksheets/builder.html", context)
+
+
+def data_graphs(request: HttpRequest) -> HttpResponse:
+    context = {
+        "page_title": "Data and Graphs",
+        "intro": "Pick how many problems. The PDF opens in a new tab, where you can print or "
+        "save it. Every click makes a new sheet.",
+        "forms": _forms({"data_graphs": CORE_KINDS["data_graphs"]}),
     }
     return render(request, "worksheets/builder.html", context)
 

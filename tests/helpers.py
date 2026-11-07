@@ -25,6 +25,12 @@ import pytest
 from core.base_ten_blocks import BlocksQuestionData
 from core.basic_operations.data import BasicOperationQuestionData, MissingNumberQuestionData
 from core.basic_operations.representation import Representation
+from core.discrete_data.data import (
+    CategoricalDataProblemData,
+    DiscreteDataProblem,
+    NumericalDataProblemData,
+    SummarizeDataQuestionData,
+)
 from core.placevalue.data import PlaceValueQuestionData
 from core.question import FreeResponse, Question, QuestionData, multiple_choice
 from core.self_check_tiles import TileQuestion
@@ -33,6 +39,8 @@ from render.pdf.basic_operations_worksheet import (
     render_basic_operations_worksheet,
     render_missing_number_worksheet,
 )
+from render.pdf.data_displays import NumberListStyle
+from render.pdf.data_graphs_worksheet import render_data_graphs_worksheet
 from render.pdf.page import Header
 from render.pdf.place_value_worksheet import render_place_value_worksheet
 from render.pdf.self_check_tiles_worksheet import render_self_check_tiles_worksheet
@@ -128,6 +136,47 @@ def choices_in_turn(monkeypatch: pytest.MonkeyPatch) -> None:
 def choose_last(monkeypatch: pytest.MonkeyPatch) -> None:
     """Make ``random.choice`` return the last item."""
     monkeypatch.setattr(random, "choice", lambda items: items[-1])
+
+
+def choice_returns(monkeypatch: pytest.MonkeyPatch, picks: list[Any]) -> None:
+    """
+    Make ``random.choice`` return ``picks`` in order.
+
+    A pick that is not among its call's items raises ``ValueError``, as the real ``choice`` never
+    returns one, so a pick also shows that the code offered it.
+    """
+    values = iter(picks)
+
+    def choice(items: Sequence[Any]) -> Any:
+        pick = next(values)
+        if pick not in items:
+            raise ValueError(f"{pick} is not one of {items}")
+        return pick
+
+    monkeypatch.setattr(random, "choice", choice)
+
+
+def random_returns(monkeypatch: pytest.MonkeyPatch, drawn: list[float]) -> None:
+    """Make ``random.random`` return ``drawn`` in order."""
+    values = iter(drawn)
+    monkeypatch.setattr(random, "random", lambda: next(values))
+
+
+def randrange_returns(monkeypatch: pytest.MonkeyPatch, drawn: list[int]) -> None:
+    """
+    Make ``random.randrange(stop)`` return ``drawn`` in order.
+
+    A value outside the range raises ``ValueError``, as the real ``randrange`` never returns one.
+    """
+    values = iter(drawn)
+
+    def randrange(stop: int) -> int:
+        value = next(values)
+        if not 0 <= value < stop:
+            raise ValueError(f"{value} is not in range({stop})")
+        return value
+
+    monkeypatch.setattr(random, "randrange", randrange)
 
 
 def conventional_slot_of_returns(monkeypatch: pytest.MonkeyPatch, slots: tuple[int, ...]) -> None:
@@ -303,6 +352,39 @@ def render_base_ten_blocks(
         answer_key=answer_key,
         slot_of=slot_of,
         black_and_white=black_and_white,
+    )
+    return out.getvalue()
+
+
+def discrete_data_problem(
+    summarize: SummarizeDataQuestionData,
+    one_step: CategoricalDataProblemData | NumericalDataProblemData,
+    two_step: CategoricalDataProblemData | NumericalDataProblemData,
+) -> DiscreteDataProblem:
+    """Make a data set's problem from its three questions' data, each free response."""
+    return DiscreteDataProblem(
+        summarize=Question(summarize, FreeResponse()),
+        one_step=Question(one_step, FreeResponse()),
+        two_step=Question(two_step, FreeResponse()),
+    )
+
+
+def render_data_graphs(
+    problems: list[DiscreteDataProblem],
+    list_style: NumberListStyle,
+    answer_key: bool,
+    title: str,
+    label: str,
+    name_line: bool = True,
+) -> bytes:
+    """Render the data and graphs sheet."""
+    out = BytesIO()
+    render_data_graphs_worksheet(
+        problems=problems,
+        path=out,
+        header=Header(title=title, label=label, name_line=name_line),
+        answer_key=answer_key,
+        list_style=list_style,
     )
     return out.getvalue()
 

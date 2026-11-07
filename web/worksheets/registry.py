@@ -56,6 +56,7 @@ from core.basic_operations.representation import (
     operations_name,
     word_problems_title,
 )
+from core.discrete_data.generator import generate_discrete_data_problems
 from core.placevalue.data import PlaceValueForm
 from core.placevalue.generator import (
     DEFAULT_LARGEST_NUMBER,
@@ -74,6 +75,8 @@ from render.pdf.basic_operations_worksheet import (
     render_basic_operations_worksheet,
     render_missing_number_worksheet,
 )
+from render.pdf.data_displays import NumberListStyle
+from render.pdf.data_graphs_worksheet import render_data_graphs_worksheet
 from render.pdf.page import Header
 from render.pdf.place_value_worksheet import render_place_value_worksheet
 from render.pdf.self_check_tiles_worksheet import render_self_check_tiles_worksheet
@@ -128,6 +131,9 @@ RegroupingChoice = Literal["never", "mixed", "always"]  # a Regrouping value
 REGROUPING_LABELS: dict[str, JsonValue] = {
     regrouping.value: name for regrouping, name in REGROUPING_NAMES.items()
 }
+NumberListStyleChoice = Literal["grid", "commas"]  # a NumberListStyle value
+NUMBER_LIST_STYLE_LABELS: dict[str, JsonValue] = {"grid": "Grid", "commas": "Commas"}
+MOST_DATA_GRAPHS_PROBLEMS = 8  # each problem takes about half a page
 AnswerKey = Annotated[bool, Field(title="Add an answer key page")]
 NameDateLine = Annotated[bool, Field(title="Add Name/Date blanks")]
 SelfCheckTiles = Annotated[bool, Field(title="Self-check tile answers")]
@@ -558,6 +564,21 @@ def _blocks_question_types(ticked: Sequence[str]) -> list[BlocksQuestionType]:
     return [question_type for question_type in BlocksQuestionType if question_type.value in ticked]
 
 
+class DataGraphsOptions(HeaderOptions):
+    """
+    Options for the data and graphs kind, built on the core. There is no seed: every sheet is new.
+    """
+
+    title: Title = "Data and Graphs — Read, Complete, Solve"
+    problems: int = Field(4, ge=1, le=MOST_DATA_GRAPHS_PROBLEMS, title="Problems")
+    list_style: NumberListStyleChoice = Field(
+        "grid",
+        title="Show lists of numbers as",
+        json_schema_extra={"input": "radio", "labels": NUMBER_LIST_STYLE_LABELS},
+    )
+    answer_key: AnswerKey = False
+
+
 class BlockOptions(Options):
     title: Title = "Base-Ten Block Word Problems"
     label: Label = "Sheet A"
@@ -775,6 +796,16 @@ def _base_ten_blocks(o: BaseTenBlocksOptions, out: BinaryIO) -> None:
     )
 
 
+def _data_graphs(o: DataGraphsOptions, out: BinaryIO) -> None:
+    render_data_graphs_worksheet(
+        problems=generate_discrete_data_problems(o.problems),
+        path=out,
+        header=o.header(),
+        answer_key=o.answer_key,
+        list_style=NumberListStyle(o.list_style),
+    )
+
+
 def _block(o: BlockOptions, seed: int, out: BinaryIO) -> None:
     problems = block.build_problems(random.Random(seed), o.problems)
     block.render(
@@ -947,4 +978,5 @@ CORE_KINDS: dict[str, CoreKind[Any]] = {
     "place_value": CoreKind(PlaceValueOptions, _place_value),
     "word_problems": CoreKind(WordProblemOptions, _word_problems),
     "base_ten_blocks": CoreKind(BaseTenBlocksOptions, _base_ten_blocks),
+    "data_graphs": CoreKind(DataGraphsOptions, _data_graphs),
 }
