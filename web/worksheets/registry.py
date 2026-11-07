@@ -26,7 +26,9 @@ from core.basic_operations.generator import (
     DEFAULT_LARGEST_DIVIDEND,
     DEFAULT_LARGEST_DIVISOR,
     DEFAULT_LARGEST_OPERAND,
+    LARGEST_WORD_PROBLEM_NUMBER,
     MAXIMUM_OPERAND,
+    SMALLEST_WORD_PROBLEM_NUMBER,
     count_possible_missing_number_questions,
     count_possible_sheet_questions,
     count_possible_word_problems,
@@ -35,6 +37,7 @@ from core.basic_operations.generator import (
     generate_word_problems,
 )
 from core.basic_operations.representation import (
+    LARGEST_BLOCKS_OPERAND,
     OPERATION_NAMES,
     PICTURE_NAMES,
     PICTURE_OPERATIONS,
@@ -357,15 +360,30 @@ class WordProblemOptions(HeaderOptions):
         title="Operations",
         json_schema_extra={"labels": OPERATION_LABELS},
     )
-    # Only the pictures that can be drawn so far
-    picture: Literal["strip", "none", "number_line"] = Field(
+    # Addition and subtraction only: every number in the problem, its answer included. It's at
+    # least the smallest sum, which leaves room for a subtraction too.
+    max_number: int = Field(
+        LARGEST_WORD_PROBLEM_NUMBER,
+        ge=2 * SMALLEST_WORD_PROBLEM_NUMBER,
+        le=LARGEST_WORD_PROBLEM_NUMBER,
+        title="Largest number",
+    )
+    picture: Literal["strip", "none", "number_line", "blocks"] = Field(
         "strip", title="Picture", json_schema_extra={"labels": PICTURE_LABELS}
     )
     no_hints: bool = Field(False, title="Leave out the hints")  # text only has none
+    black_and_white: bool = Field(False, title="Black and white blocks")  # for photocopying
     answer_key: AnswerKey = False
     # Tiles replace the answer lines with an answer bank page.
     self_check_tiles: SelfCheckTiles = False
     tile_pattern: TilePattern = "simple"
+
+    @property
+    def largest_operand(self) -> int:
+        """The largest operand the picture can show: base-ten blocks show at most 599."""
+        if Picture(self.picture) is Picture.BLOCKS:
+            return LARGEST_BLOCKS_OPERAND
+        return LARGEST_WORD_PROBLEM_NUMBER
 
     @model_validator(mode="after")
     def _title_follows_the_picture(self) -> Self:
@@ -389,16 +407,33 @@ class WordProblemOptions(HeaderOptions):
         if self.self_check_tiles:
             _at_most_one_question_per_tile(self.problems)
         # Any one operation may be drawn for every problem, and with tiles each tile needs a
-        # distinct answer. There are no number limits to raise.
-        possible = count_possible_word_problems(
-            _operations(self.operations),
-            distinct_answers=self.self_check_tiles,
-            up_to=self.problems,
-        )
-        if self.problems > possible:
-            repeats = "repeated answers" if self.self_check_tiles else "repeats"
+        # distinct answer.
+        operations = _operations(self.operations)
+
+        def possible_with(largest: int) -> int:
+            return count_possible_word_problems(
+                operations,
+                distinct_answers=self.self_check_tiles,
+                up_to=self.problems,
+                largest_number=largest,
+                largest_operand=self.largest_operand,
+            )
+
+        possible = possible_with(self.max_number)
+        if self.problems <= possible:
+            return self
+        repeats = "repeated answers" if self.self_check_tiles else "repeats"
+        if {Operation.ADD, Operation.SUBTRACT}.isdisjoint(operations):
+            # Multiplication and division have no number limits to raise.
             raise _too_many_problems(possible, repeats, "choice of operations", {})
-        return self
+        raise_to = _smallest_raise(
+            possible_with, self.problems, self.max_number, LARGEST_WORD_PROBLEM_NUMBER
+        )
+        if {Operation.ADD, Operation.SUBTRACT}.issuperset(operations):
+            limits = "largest number"
+        else:
+            limits = "choice of operations and largest number"
+        raise _too_many_problems(possible, repeats, limits, {"largest number": raise_to})
 
 
 class BlockOptions(Options):
@@ -582,8 +617,11 @@ def _word_problems(o: WordProblemOptions, out: BinaryIO) -> None:
             o.problems,
             _operations(o.operations),
             distinct_answers=o.self_check_tiles,
-            # no comparisons on strip sheets: a strip shows parts making a whole
-            comparisons=picture is not Picture.STRIP,
+            # No comparisons on strip or blocks sheets: a strip shows parts making a whole, and
+            # blocks show the first number with the second crossed out, taken away.
+            comparisons=picture not in (Picture.STRIP, Picture.BLOCKS),
+            largest_number=o.max_number,
+            largest_operand=o.largest_operand,
         ),
         path=out,
         header=o.header(),
@@ -591,6 +629,7 @@ def _word_problems(o: WordProblemOptions, out: BinaryIO) -> None:
         picture=picture,
         hints=not o.no_hints,
         slot_of=_tile_slots(o) if o.self_check_tiles else None,
+        black_and_white=o.black_and_white,
     )
 
 

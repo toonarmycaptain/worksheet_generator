@@ -258,6 +258,7 @@ def render_word_problems(
     questions: list[BasicOperationQuestionData],
     picture: Picture,
     hints: bool,
+    black_and_white: bool,
     slot_of: tuple[int, ...] | None,
     answer_key: bool,
     title: str,
@@ -274,6 +275,7 @@ def render_word_problems(
         picture=picture,
         hints=hints,
         slot_of=slot_of,
+        black_and_white=black_and_white,
     )
     return out.getvalue()
 

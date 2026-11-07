@@ -59,8 +59,10 @@ def test_pages(client: Client) -> None:
                 b"operations",
                 b"operations",
                 b"operations",
+                b"max_number",
                 b"picture",
                 b"no_hints",
+                b"black_and_white",
                 b"answer_key",
                 b"self_check_tiles",
                 b"tile_pattern",
@@ -120,7 +122,6 @@ def test_the_tile_pattern_is_a_pair_of_radio_buttons_that_defaults_to_simple(
 @pytest.mark.parametrize(
     ("url", "name", "expected"),
     [
-        # the pictures drawn so far
         (
             "/basic-operations/",
             "picture",
@@ -128,6 +129,7 @@ def test_the_tile_pattern_is_a_pair_of_radio_buttons_that_defaults_to_simple(
                 (b"strip", b" selected", b"Strip Diagrams"),
                 (b"none", b"", b"Text Only"),
                 (b"number_line", b"", b"Number Lines"),
+                (b"blocks", b"", b"Base-Ten Blocks"),
             ],
         ),
         (
@@ -375,8 +377,10 @@ def test_each_field_carries_its_label_for_the_check_first_messages(client: Clien
         (b"label", b"Label"),
         (b"name_line", b"Add Name/Date blanks"),
         (b"problems", b"Problems"),
+        (b"max_number", b"Largest number"),
         (b"picture", b"Picture"),
         (b"no_hints", b"Leave out the hints"),
+        (b"black_and_white", b"Black and white blocks"),
         (b"answer_key", b"Add an answer key page"),
         (b"self_check_tiles", b"Self-check tile answers"),
     ]

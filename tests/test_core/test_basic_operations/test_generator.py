@@ -1413,56 +1413,66 @@ def test_missing_number_sheet_errors(
     assert str(error.value) == message
 
 
-TWO_DIGITS = (11, 99)  # a word problem's 2-digit operands
-THREE_DIGITS = (100, 999)
 GROUPS = (2, 6)  # a multiplication or division word problem's number of groups
 GROUP_SIZES = (2, 20)  # and the size of each group
 
 
 @pytest.mark.parametrize(
-    ("count", "operations", "picks", "distinct_answers", "drawn", "bounds", "expected"),
+    (
+        "count",
+        "operations",
+        "picks",
+        "distinct_answers",
+        "largest_number",
+        "largest_operand",
+        "drawn",
+        "bounds",
+        "expected",
+    ),
     [
-        # one problem: addition of two 2-digit numbers
+        # one addition, with the default limits: operands from 1 to 999
         (
             1,
             [Operation.ADD],
             [Operation.ADD],
             False,
-            [11, 99],
-            [TWO_DIGITS, TWO_DIGITS],
+            999,
+            999,
+            [1, 99],
+            [(1, 999), (1, 999)],
             [
                 BasicOperationQuestionData(
                     Operation.ADD,
-                    (11, 99),
-                    110,
-                    "A basket held 11 cards. Maria added 99 more. "
+                    (1, 99),
+                    100,
+                    "A basket held 1 card. Maria added 99 more. "
                     "How many cards are in the basket now?",
                 ),
             ],
         ),
-        # The default 4, one of each size. The sizes are reversed: subtraction gets 3 and 3
-        # digits then 3 and 2, and addition 2 and 3 then 2 and 2. 305 - 300 is redrawn, as its
-        # difference is under 10, and 300 and 645 are swapped. 60 + 950 is redrawn, as its sum
-        # is over 999.
+        # The default 4. 305 - 305 is redrawn, as its difference is 0, and 300 and 645 are
+        # swapped. 600 + 950 is redrawn, as its sum is over 999.
         (
             4,
             [Operation.ADD, Operation.SUBTRACT],
             [Operation.SUBTRACT, Operation.SUBTRACT, Operation.ADD, Operation.ADD],
             False,
-            [305, 300, 300, 645, 512, 48, 60, 950, 47, 925, 99, 99],
+            999,
+            999,
+            [305, 305, 300, 645, 512, 48, 600, 950, 47, 925, 99, 99],
             [
-                THREE_DIGITS,
-                THREE_DIGITS,
-                THREE_DIGITS,
-                THREE_DIGITS,
-                THREE_DIGITS,
-                TWO_DIGITS,
-                TWO_DIGITS,
-                THREE_DIGITS,
-                TWO_DIGITS,
-                THREE_DIGITS,
-                TWO_DIGITS,
-                TWO_DIGITS,
+                (1, 999),
+                (1, 999),
+                (1, 999),
+                (1, 999),
+                (1, 999),
+                (1, 999),
+                (1, 999),
+                (1, 999),
+                (1, 999),
+                (1, 999),
+                (1, 999),
+                (1, 999),
             ],
             [
                 BasicOperationQuestionData(
@@ -1493,14 +1503,85 @@ GROUP_SIZES = (2, 20)  # and the size of each group
                 ),
             ],
         ),
+        # A largest number of 99 caps the operands, and the sum too: 60 + 50 is redrawn. A
+        # difference is within the first operand already.
+        (
+            2,
+            [Operation.ADD, Operation.SUBTRACT],
+            [Operation.ADD, Operation.SUBTRACT],
+            False,
+            99,
+            999,
+            [60, 50, 47, 25, 25, 72],
+            [(1, 99), (1, 99), (1, 99), (1, 99), (1, 99), (1, 99)],
+            [
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (47, 25),
+                    72,
+                    "A basket held 47 cards. Maria added 25 more. "
+                    "How many cards are in the basket now?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.SUBTRACT,
+                    (72, 25),
+                    47,
+                    "Maria needs 72 cards in all and has 25 so far. "
+                    "How many more cards are needed?",
+                ),
+            ],
+        ),
+        # Base-ten blocks: the operands stay within the largest operand, 599, but the sum can go
+        # up to the largest number.
+        (
+            1,
+            [Operation.ADD],
+            [Operation.ADD],
+            False,
+            999,
+            599,
+            [450, 380],
+            [(1, 599), (1, 599)],
+            [
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (450, 380),
+                    830,
+                    "A basket held 450 cards. Maria added 380 more. "
+                    "How many cards are in the basket now?",
+                ),
+            ],
+        ),
+        # the operands are drawn up to the smaller of the two limits
+        (
+            1,
+            [Operation.SUBTRACT],
+            [Operation.SUBTRACT],
+            False,
+            99,
+            599,
+            [25, 72],
+            [(1, 99), (1, 99)],
+            [
+                BasicOperationQuestionData(
+                    Operation.SUBTRACT,
+                    (72, 25),
+                    47,
+                    "Maria needs 72 cards in all and has 25 so far. "
+                    "How many more cards are needed?",
+                ),
+            ],
+        ),
         # without distinct answers, 150 - 40 and 55 + 55 can both be 110
         (
             2,
             [Operation.ADD, Operation.SUBTRACT],
             [Operation.SUBTRACT, Operation.ADD],
             False,
+            999,
+            999,
             [40, 150, 55, 55],
-            [TWO_DIGITS, THREE_DIGITS, TWO_DIGITS, TWO_DIGITS],
+            [(1, 999), (1, 999), (1, 999), (1, 999)],
             [
                 BasicOperationQuestionData(
                     Operation.SUBTRACT,
@@ -1524,8 +1605,10 @@ GROUP_SIZES = (2, 20)  # and the size of each group
             [Operation.ADD, Operation.SUBTRACT],
             [Operation.SUBTRACT, Operation.ADD],
             True,
+            999,
+            999,
             [40, 150, 55, 55, 47, 25],
-            [TWO_DIGITS, THREE_DIGITS, TWO_DIGITS, TWO_DIGITS, TWO_DIGITS, TWO_DIGITS],
+            [(1, 999), (1, 999), (1, 999), (1, 999), (1, 999), (1, 999)],
             [
                 BasicOperationQuestionData(
                     Operation.SUBTRACT,
@@ -1549,6 +1632,8 @@ GROUP_SIZES = (2, 20)  # and the size of each group
             [Operation.MULTIPLY],
             [Operation.MULTIPLY],
             False,
+            999,
+            999,
             [3, 4],
             [GROUPS, GROUP_SIZES],
             [
@@ -1566,6 +1651,8 @@ GROUP_SIZES = (2, 20)  # and the size of each group
             [Operation.DIVIDE],
             [Operation.DIVIDE],
             False,
+            999,
+            999,
             [3, 4],
             [GROUPS, GROUP_SIZES],
             [
@@ -1584,6 +1671,8 @@ GROUP_SIZES = (2, 20)  # and the size of each group
             [Operation.MULTIPLY],
             [Operation.MULTIPLY, Operation.MULTIPLY],
             False,
+            999,
+            999,
             [3, 4, 3, 4, 4, 3],
             [GROUPS, GROUP_SIZES, GROUPS, GROUP_SIZES, GROUPS, GROUP_SIZES],
             [
@@ -1607,6 +1696,8 @@ GROUP_SIZES = (2, 20)  # and the size of each group
             [Operation.MULTIPLY, Operation.DIVIDE],
             [Operation.MULTIPLY, Operation.DIVIDE],
             True,
+            999,
+            999,
             [2, 2, 3, 4, 3, 5],
             [GROUPS, GROUP_SIZES, GROUPS, GROUP_SIZES, GROUPS, GROUP_SIZES],
             [
@@ -1624,34 +1715,29 @@ GROUP_SIZES = (2, 20)  # and the size of each group
                 ),
             ],
         ),
-        # The sizes go to the additions only: two sizes, reversed, so 2 and 3 digits then 2 and
-        # 2. The multiplication between them takes none.
+        # the largest number is for addition and subtraction: 6 groups of 20 goes past 20
         (
-            3,
+            2,
             [Operation.ADD, Operation.MULTIPLY],
-            [Operation.ADD, Operation.MULTIPLY, Operation.ADD],
+            [Operation.ADD, Operation.MULTIPLY],
             False,
-            [47, 925, 3, 4, 99, 99],
-            [TWO_DIGITS, THREE_DIGITS, GROUPS, GROUP_SIZES, TWO_DIGITS, TWO_DIGITS],
+            20,
+            999,
+            [7, 9, 6, 20],
+            [(1, 20), (1, 20), GROUPS, GROUP_SIZES],
             [
                 BasicOperationQuestionData(
                     Operation.ADD,
-                    (47, 925),
-                    972,
-                    "A basket held 47 cards. Maria added 925 more. "
+                    (7, 9),
+                    16,
+                    "A basket held 7 cards. Maria added 9 more. "
                     "How many cards are in the basket now?",
                 ),
                 BasicOperationQuestionData(
                     Operation.MULTIPLY,
-                    (3, 4),
-                    12,
-                    "3 friends each have 4 cards. How many cards do they have together?",
-                ),
-                BasicOperationQuestionData(
-                    Operation.ADD,
-                    (99, 99),
-                    198,
-                    "Maria scored 99 points, then scored 99 more points. How many points in all?",
+                    (6, 20),
+                    120,
+                    "6 friends each have 20 cards. How many cards do they have together?",
                 ),
             ],
         ),
@@ -1662,6 +1748,8 @@ def test_word_problems_from_scripted_draws(
     operations: list[Operation],
     picks: list[Operation],
     distinct_answers: bool,
+    largest_number: int,
+    largest_operand: int,
     drawn: list[int],
     bounds: list[tuple[int, int]],
     expected: list[BasicOperationQuestionData],
@@ -1669,20 +1757,25 @@ def test_word_problems_from_scripted_draws(
 ) -> None:
     """
     Each problem's numbers are drawn, and redrawn until they meet the limits and repeat no
-    problem: an addition's or subtraction's operands at its size, and a multiplication's or
-    division's groups and size of each.
+    problem: an addition's or subtraction's operands, and a multiplication's or division's groups
+    and size of each.
 
-    ``picks`` are the operations drawn, ``reverse_shuffle`` reverses the sizes, and the wording
-    is scripted as in ``test_word_problems``. Every scripted draw must be made, within
-    ``bounds``. The problems are free response, with no wrong answers.
+    ``picks`` are the operations drawn, and the wording is scripted as in ``test_word_problems``.
+    Every scripted draw must be made, within ``bounds``. The problems are free response, with no
+    wrong answers.
     """
     drawn_from = randint_returns(monkeypatch, drawn)
     choices_returns(monkeypatch, picks)
-    reverse_shuffle(monkeypatch)
     sample_first(monkeypatch)
     choose_last(monkeypatch)
 
-    questions = generate_word_problems(count, operations, distinct_answers=distinct_answers)
+    questions = generate_word_problems(
+        count,
+        operations,
+        distinct_answers=distinct_answers,
+        largest_number=largest_number,
+        largest_operand=largest_operand,
+    )
 
     assert drawn_from == bounds
     assert [(question.data, question.wrong_answers) for question in questions] == [
@@ -1691,78 +1784,140 @@ def test_word_problems_from_scripted_draws(
 
 
 @pytest.mark.parametrize(
-    ("operations", "count"),
+    ("operations", "count", "largest_number", "largest_operand"),
     [
         # the most problems allowed, 20
-        ([Operation.ADD, Operation.SUBTRACT], 20),
+        ([Operation.ADD, Operation.SUBTRACT], 20, 999, 999),
         # the most division allows, with its 19 answers, 2 to 20
-        ([Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE], 19),
+        ([Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE], 19, 999, 999),
+        # The most a largest number of 15 allows: 14 sums, 2 to 15, and 14 differences, 1 to 14.
+        # Every answer is used, so the last problems are found by redrawing.
+        ([Operation.ADD, Operation.SUBTRACT], 14, 15, 999),
+        # base-ten blocks
+        ([Operation.ADD, Operation.SUBTRACT], 20, 999, 599),
     ],
 )
 def test_random_word_problems_have_distinct_answers(
-    operations: list[Operation], count: int
+    operations: list[Operation], count: int, largest_number: int, largest_operand: int
 ) -> None:
-    """A sheet of the most problems the operations allow is produced with no answer repeated."""
-    questions = generate_word_problems(count, operations, distinct_answers=True)
+    """A sheet of the most problems the limits allow is produced with no answer repeated."""
+    questions = generate_word_problems(
+        count,
+        operations,
+        distinct_answers=True,
+        largest_number=largest_number,
+        largest_operand=largest_operand,
+    )
     assert len({question.data.answer for question in questions}) == count
 
 
 @pytest.mark.parametrize(
-    ("operations", "distinct_answers", "up_to", "expected"),
+    ("operations", "distinct_answers", "up_to", "largest_number", "largest_operand", "expected"),
     [
-        # the fewest answers of any size: the differences of two 2-digit numbers, 10 to 88
-        ([Operation.ADD], False, 100, 79),
-        ([Operation.ADD, Operation.SUBTRACT], True, 100, 79),
+        # addition's answers, the sums from 1 + 1 to 999
+        ([Operation.ADD], False, 1000, 999, 999, 998),
+        ([Operation.ADD], True, 1000, 999, 999, 998),
+        # subtraction's, the differences from 1 to 999 - 1
+        ([Operation.SUBTRACT], True, 1000, 999, 999, 998),
+        # with a largest number of 20
+        ([Operation.ADD], True, 100, 20, 999, 19),
+        ([Operation.SUBTRACT], True, 100, 20, 999, 19),
+        # base-ten blocks: the operands stop at 599, but a sum can still reach 999
+        ([Operation.ADD], True, 1000, 999, 599, 998),
+        ([Operation.SUBTRACT], True, 1000, 999, 599, 598),
+        # the smallest largest number with a sum, 1 + 1, and a difference, 2 - 1
+        ([Operation.ADD], True, 100, 2, 999, 1),
+        ([Operation.SUBTRACT], True, 100, 2, 999, 1),
+        # below that, none
+        ([Operation.ADD], True, 100, 1, 999, 0),
+        ([Operation.SUBTRACT], True, 100, 1, 999, 0),
         # 5 group counts (2 to 6) times 19 sizes (2 to 20)
-        ([Operation.MULTIPLY], False, 100, 95),
-        ([Operation.DIVIDE], False, 100, 95),
+        ([Operation.MULTIPLY], False, 100, 999, 999, 95),
+        ([Operation.DIVIDE], False, 100, 999, 999, 95),
         # the distinct products of those
-        ([Operation.MULTIPLY], True, 100, 59),
+        ([Operation.MULTIPLY], True, 100, 999, 999, 59),
         # a division's answer is the size of each group
-        ([Operation.DIVIDE], True, 100, 19),
+        ([Operation.DIVIDE], True, 100, 999, 999, 19),
+        # multiplication and division ignore the largest number
+        ([Operation.DIVIDE], True, 100, 20, 999, 19),
         # the least of the operations'
-        ([Operation.ADD, Operation.DIVIDE], True, 100, 19),
+        ([Operation.ADD, Operation.DIVIDE], True, 100, 999, 999, 19),
+        ([Operation.ADD, Operation.DIVIDE], True, 100, 10, 999, 9),
         # capped
-        ([Operation.MULTIPLY, Operation.DIVIDE], False, 12, 12),
+        ([Operation.MULTIPLY, Operation.DIVIDE], False, 12, 999, 999, 12),
     ],
 )
 def test_count_possible_word_problems(
-    operations: list[Operation], distinct_answers: bool, up_to: int, expected: int
+    operations: list[Operation],
+    distinct_answers: bool,
+    up_to: int,
+    largest_number: int,
+    largest_operand: int,
+    expected: int,
 ) -> None:
-    """Any one operation may be drawn for every problem, so the count is the least of theirs."""
+    """
+    Any one operation may be drawn for every problem, so the count is the least of theirs.
+    Addition and subtraction count their answers, with distinct answers or not.
+    """
     possible = count_possible_word_problems(
-        operations, distinct_answers=distinct_answers, up_to=up_to
+        operations,
+        distinct_answers=distinct_answers,
+        up_to=up_to,
+        largest_number=largest_number,
+        largest_operand=largest_operand,
     )
     assert possible == expected
 
 
 @pytest.mark.parametrize(
-    ("operations", "distinct_answers", "count", "message"),
+    ("operations", "distinct_answers", "count", "largest_number", "message"),
     [
         (
             [Operation.DIVIDE],
             True,
             20,
+            999,
             "Cannot make 20 problems with different answers: only 19 possible.",
         ),
         (
             [Operation.ADD, Operation.SUBTRACT],
             True,
-            80,
-            "Cannot make 80 problems with different answers: only 79 possible.",
+            15,
+            15,
+            "Cannot make 15 problems with different answers: only 14 possible.",
         ),
-        ([Operation.MULTIPLY], False, 96, "Cannot make 96 different problems: only 95 possible."),
+        (
+            [Operation.ADD],
+            False,
+            1,
+            1,
+            "Cannot make 1 different problems: only 0 possible.",
+        ),
+        (
+            [Operation.MULTIPLY],
+            False,
+            96,
+            999,
+            "Cannot make 96 different problems: only 95 possible.",
+        ),
     ],
 )
 def test_word_problem_sheet_errors(
-    operations: list[Operation], distinct_answers: bool, count: int, message: str
+    operations: list[Operation],
+    distinct_answers: bool,
+    count: int,
+    largest_number: int,
+    message: str,
 ) -> None:
     """
-    Requesting more problems than the operations allow raises ``ValueError`` saying how many.
+    Requesting more problems than the operations and limits allow raises ``ValueError`` saying
+    how many.
 
     Without that check, generation would loop forever looking for an answer or a problem that
     does not exist.
     """
     with pytest.raises(ValueError) as error:
-        generate_word_problems(count, operations, distinct_answers=distinct_answers)
+        generate_word_problems(
+            count, operations, distinct_answers=distinct_answers, largest_number=largest_number
+        )
     assert str(error.value) == message

@@ -2,8 +2,7 @@
 Tests for the word problems endpoint: its options reach the core and the renderer intact.
 
 The tests script ``random``. ``choices`` returns the operations listed as picks, ``randint``
-the operands listed, and ``shuffle`` reverses, so the sizes come in reverse order and the
-complex tile pattern runs from L to A.
+the operands listed, and ``shuffle`` reverses, so the complex tile pattern runs from L to A.
 The wording takes the first two names, the last object and each operation's last template.
 ``conventional_slot_of`` gives the slots of a real case. The PDF must then match what the
 renderer draws for the same questions. Disallowed options get Ninja's JSON error. The renderer's
@@ -30,7 +29,7 @@ from tests.helpers import (
     sample_first,
 )
 
-# drawn as 40 and 150: 2 and 3 digits, swapped so the larger is first
+# drawn as 40 and 150, swapped so the larger is first
 SUBTRACT = BasicOperationQuestionData(
     Operation.SUBTRACT,
     (150, 40),
@@ -59,6 +58,7 @@ ADD = BasicOperationQuestionData(
                 "questions": [SUBTRACT, ADD],
                 "picture": Picture.STRIP,
                 "hints": True,
+                "black_and_white": False,
                 "slot_of": None,
                 "answer_key": False,
                 "title": "Word Problems — Strip Diagrams",
@@ -79,6 +79,7 @@ ADD = BasicOperationQuestionData(
                 "questions": [ADD],
                 "picture": Picture.STRIP,
                 "hints": False,
+                "black_and_white": False,
                 "slot_of": None,
                 "answer_key": True,
                 "title": "Story Problems",
@@ -99,6 +100,7 @@ ADD = BasicOperationQuestionData(
                 "questions": [SUBTRACT, ADD],
                 "picture": Picture.STRIP,
                 "hints": True,
+                "black_and_white": False,
                 "slot_of": (7, 9),
                 "answer_key": False,
                 "title": "Word Problems — Strip Diagrams",
@@ -118,6 +120,7 @@ ADD = BasicOperationQuestionData(
                 "questions": [SUBTRACT, ADD],
                 "picture": Picture.STRIP,
                 "hints": True,
+                "black_and_white": False,
                 "slot_of": (11, 10),
                 "answer_key": True,
                 "title": "Word Problems — Strip Diagrams",
@@ -173,6 +176,7 @@ ADD = BasicOperationQuestionData(
                 ],
                 "picture": Picture.STRIP,
                 "hints": True,
+                "black_and_white": False,
                 "slot_of": None,
                 "answer_key": False,
                 "title": "Word Problems — Strip Diagrams",
@@ -202,6 +206,7 @@ ADD = BasicOperationQuestionData(
                 ],
                 "picture": Picture.STRIP,
                 "hints": True,
+                "black_and_white": False,
                 "slot_of": None,
                 "answer_key": True,
                 "title": "Word Problems — Strip Diagrams",
@@ -236,6 +241,7 @@ ADD = BasicOperationQuestionData(
                 ],
                 "picture": Picture.STRIP,
                 "hints": True,
+                "black_and_white": False,
                 "slot_of": (7, 9),
                 "answer_key": False,
                 "title": "Word Problems — Strip Diagrams",
@@ -266,6 +272,7 @@ ADD = BasicOperationQuestionData(
                 ],
                 "picture": Picture.NONE,
                 "hints": True,
+                "black_and_white": False,
                 "slot_of": None,
                 "answer_key": False,
                 "title": "Word Problems",
@@ -293,6 +300,7 @@ ADD = BasicOperationQuestionData(
                 ],
                 "picture": Picture.NONE,
                 "hints": True,
+                "black_and_white": False,
                 "slot_of": None,
                 "answer_key": False,
                 "title": "Story Problems",
@@ -322,6 +330,7 @@ ADD = BasicOperationQuestionData(
                 ],
                 "picture": Picture.NUMBER_LINE,
                 "hints": True,
+                "black_and_white": False,
                 "slot_of": None,
                 "answer_key": False,
                 "title": "Word Problems — Number Lines",
@@ -351,6 +360,7 @@ ADD = BasicOperationQuestionData(
                 ],
                 "picture": Picture.NUMBER_LINE,
                 "hints": True,
+                "black_and_white": False,
                 "slot_of": (7, 9),
                 "answer_key": True,
                 "title": "Word Problems — Number Lines",
@@ -380,18 +390,166 @@ ADD = BasicOperationQuestionData(
             None,
         ),
         (
-            # only the pictures that can be drawn are accepted
-            "/api/worksheets/word_problems.pdf?picture=blocks",
+            # Base-ten blocks, with their title, since none is given. Subtraction has no
+            # comparison on a blocks sheet, so it is worded with the last of its other templates.
+            "/api/worksheets/word_problems.pdf?picture=blocks&problems=2&sheet=1ab2c3",
+            [Operation.SUBTRACT, Operation.ADD],
+            [40, 150, 47, 25],
+            200,
+            None,
+            {
+                "questions": [SUBTRACT, ADD],
+                "picture": Picture.BLOCKS,
+                "hints": True,
+                "black_and_white": False,
+                "slot_of": None,
+                "answer_key": False,
+                "title": "Word Problems — Base-Ten Blocks",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        (
+            # black and white blocks, without the hints or the note saying what to cross out
+            "/api/worksheets/word_problems.pdf?picture=blocks&operations=subtract&problems=1"
+            "&black_and_white=true&no_hints=true&sheet=1ab2c3",
+            [Operation.SUBTRACT],
+            [40, 150],
+            200,
+            None,
+            {
+                "questions": [SUBTRACT],
+                "picture": Picture.BLOCKS,
+                "hints": False,
+                "black_and_white": True,
+                "slot_of": None,
+                "answer_key": False,
+                "title": "Word Problems — Base-Ten Blocks",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        (
+            # base-ten blocks show only addition and subtraction
+            "/api/worksheets/word_problems.pdf?picture=blocks&operations=multiply",
+            [],
+            [],
+            422,
+            refused("operations: Base-Ten Blocks show only addition and subtraction"),
+            None,
+            None,
+        ),
+        (
+            # a largest number of 99 caps the sum too, so 60 + 50 is redrawn
+            "/api/worksheets/word_problems.pdf?operations=add&problems=1&max_number=99"
+            "&sheet=1ab2c3",
+            [Operation.ADD],
+            [60, 50, 47, 25],
+            200,
+            None,
+            {
+                "questions": [ADD],
+                "picture": Picture.STRIP,
+                "hints": True,
+                "black_and_white": False,
+                "slot_of": None,
+                "answer_key": False,
+                "title": "Word Problems — Strip Diagrams",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        (
+            # 12 tiles need 12 answers, and a largest number of 10 allows 9: 2 to 10 for
+            # addition, and 1 to 9 for subtraction
+            "/api/worksheets/word_problems.pdf?self_check_tiles=true&problems=12&max_number=10",
+            [],
+            [],
+            422,
+            refused(
+                "problems: at most 9 without repeated answers for that largest number. "
+                "Lower problems to 9, or raise the largest number to 13."
+            ),
+            None,
+            None,
+        ),
+        (
+            # with multiplication too, raising the largest number helps only the addition
+            "/api/worksheets/word_problems.pdf?operations=add&operations=multiply&problems=4"
+            "&max_number=3",
+            [],
+            [],
+            422,
+            refused(
+                "problems: at most 2 without repeats for that choice of operations and largest "
+                "number. Lower problems to 2, or raise the largest number to 5."
+            ),
+            None,
+            None,
+        ),
+        (
+            # the largest number is for addition and subtraction: 120 shared into 6 goes past 2
+            "/api/worksheets/word_problems.pdf?operations=divide&problems=1&max_number=2"
+            "&sheet=1ab2c3",
+            [Operation.DIVIDE],
+            [6, 20],
+            200,
+            None,
+            {
+                "questions": [
+                    BasicOperationQuestionData(
+                        Operation.DIVIDE,
+                        (120, 6),
+                        20,
+                        "Maria divides 120 cards into 6 equal piles. "
+                        "How many cards are in each pile?",
+                    ),
+                ],
+                "picture": Picture.STRIP,
+                "hints": True,
+                "black_and_white": False,
+                "slot_of": None,
+                "answer_key": False,
+                "title": "Word Problems — Strip Diagrams",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        (
+            # the largest number is at least 1 + 1
+            "/api/worksheets/word_problems.pdf?max_number=1",
             [],
             [],
             422,
             {
                 "detail": [
                     {
-                        "type": "literal_error",
-                        "loc": ["query", "picture"],
-                        "msg": "Input should be 'strip', 'none' or 'number_line'",
-                        "ctx": {"expected": "'strip', 'none' or 'number_line'"},
+                        "type": "greater_than_equal",
+                        "loc": ["query", "max_number"],
+                        "msg": "Input should be greater than or equal to 2",
+                        "ctx": {"ge": 2},
+                    },
+                ],
+            },
+            None,
+            None,
+        ),
+        (
+            "/api/worksheets/word_problems.pdf?max_number=1000",
+            [],
+            [],
+            422,
+            {
+                "detail": [
+                    {
+                        "type": "less_than_equal",
+                        "loc": ["query", "max_number"],
+                        "msg": "Input should be less than or equal to 999",
+                        "ctx": {"le": 999},
                     },
                 ],
             },
@@ -440,6 +598,7 @@ def test_word_problems_pdf(
                 questions=pdf_data["questions"],
                 picture=pdf_data["picture"],
                 hints=pdf_data["hints"],
+                black_and_white=pdf_data["black_and_white"],
                 slot_of=pdf_data["slot_of"],
                 answer_key=pdf_data["answer_key"],
                 title=pdf_data["title"],
