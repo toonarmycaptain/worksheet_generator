@@ -144,6 +144,7 @@
 
   {% if picture_titles %}
   {{ picture_titles|json_script:"picture-titles" }}
+  {{ picture_operations|json_script:"picture-operations" }}
   <script type="module">
     // The word problems form: the only one with a picture.
     const picture = document.querySelector("select[name=picture]");
@@ -169,33 +170,50 @@
     // also when the browser restores the choices, going back to the page
     window.addEventListener("pageshow", showNoHints);
     showNoHints();
+
+    // The operations the picture can't show, such as multiplication on a number line, are greyed
+    // out, so they aren't sent. Their ticks come back with a picture that can show them.
+    const shown = JSON.parse(document.getElementById("picture-operations").textContent);
+    const operations = [...form.querySelectorAll("input[name=operations]")];
+    function greyOutOperations() {
+      for (const box of operations) {
+        box.disabled = !shown[picture.value].includes(box.value);
+        // the checkboxes script counts only the boxes that aren't greyed out
+        box.dispatchEvent(new Event("change"));
+      }
+    }
+    picture.addEventListener("change", greyOutOperations);
+    window.addEventListener("pageshow", greyOutOperations);
+    greyOutOperations();
   </script>
   {% endif %}
 
   <script type="module">
     // A group of checkboxes, such as the operations, needs at least one ticked: while none is,
     // the form's button is greyed out, with a note saying why. A group of more than two has an
-    // All box, which ticks or clears them all, and is ticked while they all are.
+    // All box, which ticks or clears them all, and is ticked while they all are. A box that is
+    // greyed out isn't sent, so it doesn't count, and All leaves it alone.
     for (const group of document.querySelectorAll("[data-checkboxes]")) {
       const boxes = [...group.querySelectorAll("input[name]")];
+      const usable = () => boxes.filter((box) => !box.disabled);
       const all = group.querySelector("input[data-all]");
       const button = group.closest("form").querySelector("button");
       const note = document.createElement("span");
       note.textContent = ` Tick at least one of the ${group.dataset.checkboxes.toLowerCase()}.`;
       button.after(note);
       const update = () => {
-        const count = boxes.filter((box) => box.checked).length;
+        const count = usable().filter((box) => box.checked).length;
         button.disabled = count === 0;
         note.hidden = count > 0;
-        if (all) all.checked = count === boxes.length;
+        if (all) all.checked = count === usable().length;
       };
       for (const box of boxes) box.addEventListener("change", update);
       all?.addEventListener("change", () => {
         // Set every box first: each change event runs update, which would untick All partway.
         const tick = all.checked;
-        for (const box of boxes) box.checked = tick;
+        for (const box of usable()) box.checked = tick;
         // setting checked doesn't fire change, which the other scripts listen for
-        for (const box of boxes) box.dispatchEvent(new Event("change"));
+        for (const box of usable()) box.dispatchEvent(new Event("change"));
       });
       // also when the browser restores the choices, going back to the page
       window.addEventListener("pageshow", update);
