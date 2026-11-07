@@ -4,6 +4,7 @@ import random
 from collections.abc import Iterator, Sequence
 from dataclasses import replace
 from functools import partial
+from itertools import accumulate
 from typing import Literal, assert_never
 
 from core.basic_operations.data import (
@@ -156,25 +157,38 @@ def count_possible_sheet_questions(
     """
     Count the questions ``generate_basic_operation_questions`` can produce for ``operations``.
 
-    Each question's operation is drawn at random, so any one operation may be drawn for every
-    question. The count is therefore the smallest that any one operation allows by itself: its
-    distinct answers with ``distinct_answers``, as in ``count_possible_answers``, and otherwise
-    its distinct questions, as in ``count_possible_questions``. That many are always possible
-    with distinct answers across operations too: each operation has at least that many answers,
-    and the other questions take at most one fewer. The count is capped at ``up_to``.
+    Without ``distinct_answers``, each question's operation is drawn at random, so any one
+    operation may be drawn for every question. The count is therefore the smallest number of
+    distinct questions that any one operation allows by itself, as in
+    ``count_possible_questions``.
+
+    With ``distinct_answers``, the questions are dealt out evenly among the operations, as in
+    ``_shares``, and generated from the operation with the fewest possible answers, as in
+    ``count_possible_answers``, to the one with the most. An operation's questions always find
+    a free answer if it has at least as many answers as the questions dealt to it and to the
+    operations before it, since those questions take at most one fewer. The count is the most
+    questions for which that holds for every operation.
+
+    The count is capped at ``up_to``.
     """
-    counts = []
-    for operation in operations:
-        largest = _largest_operand(operation, high, largest_dividend)
-        if distinct_answers:
-            counts.append(count_possible_answers(operation, low=low, high=largest, up_to=up_to))
-        else:
-            counts.append(
-                count_possible_questions(
-                    operation, low=low, high=largest, largest_divisor=largest_divisor, up_to=up_to
-                )
-            )
-    return min(counts)
+    if distinct_answers:
+        ranked = _rank_by_answers(
+            operations, low=low, high=high, largest_dividend=largest_dividend, up_to=up_to
+        )
+        possible = 0
+        while possible < up_to and _can_deal(possible + 1, ranked):
+            possible += 1
+        return possible
+    return min(
+        count_possible_questions(
+            operation,
+            low=low,
+            high=_largest_operand(operation, high, largest_dividend),
+            largest_divisor=largest_divisor,
+            up_to=up_to,
+        )
+        for operation in operations
+    )
 
 
 def generate_basic_operation_questions(
@@ -189,11 +203,14 @@ def generate_basic_operation_questions(
     distinct_answers: bool = False,
 ) -> list[Question[BasicOperationQuestionData]]:
     """
-    Generate ``count`` questions, each with an operation drawn at random from ``operations``.
+    Generate ``count`` questions, each with an operation from ``operations``.
 
-    No two questions of the same operation have the same operand pair, in either order. With
-    ``distinct_answers``, no two questions share an answer either, whatever their operations, so
-    3 + 4 excludes 2 + 5 and 10 - 3. Operands are from ``low`` to ``high``, except that a
+    Each question's operation is drawn at random. No two questions of the same operation have
+    the same operand pair, in either order. With ``distinct_answers``, no two questions share an
+    answer either, whatever their operations, so 3 + 4 excludes 2 + 5 and 10 - 3. The
+    operations are then dealt out as evenly as possible instead of drawn, with any extra
+    questions going to the operations with the most possible answers, and the questions are
+    returned in random order. Operands are from ``low`` to ``high``, except that a
     division's dividend is at most ``largest_dividend`` (``high`` when ``None``) and its divisor
     at most ``largest_divisor``, as in ``generate_basic_operation_question``.
 
@@ -213,10 +230,30 @@ def generate_basic_operation_questions(
         kind = "questions with different answers" if distinct_answers else "different questions"
         raise ValueError(f"Cannot make {count} {kind}: only {possible} possible.")
 
+    if distinct_answers:
+        # Generated fewest possible answers first, as count_possible_sheet_questions requires.
+        # Shuffling first breaks ties at random, so operations with equal counts share the
+        # extra questions.
+        ranked = _rank_by_answers(
+            random.sample(operations, k=len(operations)),
+            low=low,
+            high=high,
+            largest_dividend=largest_dividend,
+            up_to=count,
+        )
+        shares = _shares(count, len(ranked))
+        question_operations = [
+            operation
+            for (operation, _), share in zip(ranked, shares, strict=True)
+            for _ in range(share)
+        ]
+    else:
+        question_operations = random.choices(operations, k=count)
+
     questions: list[Question[BasicOperationQuestionData]] = []
     seen_pairs: set[tuple[Operation, tuple[int, ...]]] = set()
     seen_answers: set[int] = set()
-    for operation in random.choices(operations, k=count):
+    for operation in question_operations:
         while True:
             question = generate_basic_operation_question(
                 operation,
@@ -232,6 +269,9 @@ def generate_basic_operation_questions(
         seen_pairs.add(pair)
         seen_answers.add(answer)
         questions.append(question)
+    if distinct_answers and len(operations) > 1:
+        # Dealt questions are grouped by operation. One operation's are already in random order.
+        random.shuffle(questions)
     return questions
 
 
@@ -240,6 +280,59 @@ def _largest_operand(operation: Operation, high: int, largest_dividend: int | No
     if operation is Operation.DIVIDE and largest_dividend is not None:
         return largest_dividend
     return high
+
+
+def _rank_by_answers(
+    operations: Sequence[Operation],
+    *,
+    low: int,
+    high: int,
+    largest_dividend: int | None,
+    up_to: int,
+) -> list[tuple[Operation, int]]:
+    """
+    Pair each operation with its count of possible answers, fewest first.
+
+    The counts are as in ``count_possible_answers``, capped at ``up_to``. The sort is stable,
+    so operations with equal counts keep their order.
+    """
+    counts = [
+        (
+            operation,
+            count_possible_answers(
+                operation,
+                low=low,
+                high=_largest_operand(operation, high, largest_dividend),
+                up_to=up_to,
+            ),
+        )
+        for operation in operations
+    ]
+    return sorted(counts, key=lambda pair: pair[1])
+
+
+def _shares(count: int, operations: int) -> list[int]:
+    """
+    Split ``count`` questions among ``operations`` as evenly as possible.
+
+    The shares are in the order of ``_rank_by_answers``: when ``count`` does not divide evenly,
+    the extra questions go to the last operations, those with the most possible answers.
+    """
+    share, extra = divmod(count, operations)
+    return [share + 1 if index >= operations - extra else share for index in range(operations)]
+
+
+def _can_deal(count: int, ranked: Sequence[tuple[Operation, int]]) -> bool:
+    """
+    Return whether ``count`` questions with distinct answers can be dealt to ``ranked``.
+
+    ``ranked`` is as returned by ``_rank_by_answers``. Each operation needs at least as many
+    possible answers as the questions dealt to it and to the operations before it.
+    """
+    shares = _shares(count, len(ranked))
+    return all(
+        dealt <= answers for dealt, (_, answers) in zip(accumulate(shares), ranked, strict=True)
+    )
 
 
 def generate_missing_number_question(

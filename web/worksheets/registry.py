@@ -184,7 +184,8 @@ class BasicOperationOptions(HeaderOptions):
 
     title: Title = OPERATION_NAMES[Operation.ADD]  # the chosen operations' name by default
     problems: Problems = 8
-    # Each question's operation is drawn at random from those ticked.
+    # Each question's operation is drawn at random from those ticked, or with tiles, dealt out
+    # evenly among them.
     operations: list[OperationChoice] = Field(
         ["add"], min_length=1, title="Operations", json_schema_extra={"labels": OPERATION_LABELS}
     )
@@ -243,8 +244,9 @@ class BasicOperationOptions(HeaderOptions):
                     distinct_answers=self.self_check_tiles,
                     up_to=self.problems,
                 )
-            # Any one operation may be drawn for every question. A reversed pair counts as a
-            # repeat, and with tiles each tile needs a distinct answer.
+            # A reversed pair counts as a repeat. Without tiles, any one operation may be drawn
+            # for every question. With tiles, each tile needs a distinct answer, and the
+            # operations are dealt out evenly.
             return count_possible_sheet_questions(
                 operations,
                 high=largest,
