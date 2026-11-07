@@ -15,6 +15,7 @@ from core.basic_operations.data import (
     Operation,
     Unknown,
 )
+from core.placevalue.representation import place_value_terms
 from core.question import BLANK
 from core.self_check_tiles import TileQuestion
 
@@ -105,6 +106,15 @@ PICTURE_NAMES = {
 }
 WORD_PROBLEMS_NAME = "Word Problems"
 
+# The operations each picture can show. A number line jumps forward or back, and base-ten blocks
+# are joined or crossed out, so they show only addition and subtraction.
+PICTURE_OPERATIONS = {
+    Picture.STRIP: frozenset(Operation),
+    Picture.NONE: frozenset(Operation),
+    Picture.NUMBER_LINE: frozenset({Operation.ADD, Operation.SUBTRACT}),
+    Picture.BLOCKS: frozenset({Operation.ADD, Operation.SUBTRACT}),
+}
+
 
 def word_problems_title(picture: Picture) -> str:
     """
@@ -192,6 +202,34 @@ def strip_diagram(data: BasicOperationQuestionData) -> StripDiagram | EqualStrip
             assert_never(data.operation)
 
 
+_NUMBER_LINE_HINTS = {
+    Operation.ADD: "Jump forward to add. Fill in each box; the last box is your answer.",
+    Operation.SUBTRACT: "Jump backward to subtract. Fill in each box; the last box is your answer.",
+}
+
+
+def number_line_jumps(data: BasicOperationQuestionData) -> tuple[int, ...]:
+    """
+    Return the jumps along a question's number line, which starts at its first operand.
+
+    The jumps are the place-value terms of the second operand, largest first: positive for
+    addition and negative for subtraction. 347 - 125 jumps ``(-100, -20, -5)``, landing on 247,
+    227 and 222. A number line shows only addition and subtraction, so any other operation
+    raises ``ValueError``.
+    """
+    terms = place_value_terms(data.operands[1])
+    match data.operation:
+        case Operation.ADD:
+            return terms
+        case Operation.SUBTRACT:
+            return tuple(-term for term in terms)
+        case Operation.MULTIPLY | Operation.DIVIDE:
+            name = OPERATION_NAMES[data.operation].lower()
+            raise ValueError(f"A number line shows only addition and subtraction, not {name}.")
+        case _:
+            assert_never(data.operation)
+
+
 def instruction(picture: Picture, operations: Collection[Operation]) -> str:
     """
     Return the instruction printed under a word-problem sheet's header, for its picture and the
@@ -210,7 +248,12 @@ def instruction(picture: Picture, operations: Collection[Operation]) -> str:
             return f"Use the strip diagram (bar model): {makes}. The ? shows what to find."
         case Picture.NONE:
             return "Read each problem. Show your work in the box."
-        case Picture.NUMBER_LINE | Picture.BLOCKS:
+        case Picture.NUMBER_LINE:
+            return (
+                "Use the number line. Start at the first number and jump by hundreds, tens, and "
+                "ones."
+            )
+        case Picture.BLOCKS:
             raise NotImplementedError(f"The {picture} picture is not built yet.")
         case _:
             assert_never(picture)
@@ -226,7 +269,9 @@ def hint(data: BasicOperationQuestionData, picture: Picture) -> str | None:
             return _STRIP_HINTS[data.operation]
         case Picture.NONE:
             return None
-        case Picture.NUMBER_LINE | Picture.BLOCKS:
+        case Picture.NUMBER_LINE:
+            return _NUMBER_LINE_HINTS[data.operation]
+        case Picture.BLOCKS:
             raise NotImplementedError(f"The {picture} picture is not built yet.")
         case _:
             assert_never(picture)
