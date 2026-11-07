@@ -15,7 +15,7 @@ from core.basic_operations.data import (
     Operation,
     Unknown,
 )
-from core.placevalue.representation import place_value_terms
+from core.placevalue.representation import BaseTenBlocks, base_ten_blocks, place_value_terms
 from core.question import BLANK
 from core.self_check_tiles import TileQuestion
 
@@ -114,6 +114,9 @@ PICTURE_OPERATIONS = {
     Picture.NUMBER_LINE: frozenset({Operation.ADD, Operation.SUBTRACT}),
     Picture.BLOCKS: frozenset({Operation.ADD, Operation.SUBTRACT}),
 }
+# The largest operand of a word problem drawn with base-ten blocks. A number has at most 5 flats,
+# so they fit in one row.
+LARGEST_BLOCKS_OPERAND = 599
 
 
 def word_problems_title(picture: Picture) -> str:
@@ -230,6 +233,47 @@ def number_line_jumps(data: BasicOperationQuestionData) -> tuple[int, ...]:
             assert_never(data.operation)
 
 
+_BLOCKS_HINTS = {
+    Operation.ADD: "Combine the blocks to find the total.",
+    Operation.SUBTRACT: "Cross out {b} to subtract.",
+}
+
+
+@dataclass(frozen=True)
+class BlocksDiagram:
+    """
+    Base-ten blocks for a word problem: ``numbers`` drawn as blocks, one under another, and the
+    amount to cross out of the last of them, or None if none is crossed out.
+
+    47 + 25 is ``((BaseTenBlocks(0, 4, 7), BaseTenBlocks(0, 2, 5)), None)``, and 72 - 25 is
+    ``((BaseTenBlocks(0, 7, 2),), 25)``.
+    """
+
+    numbers: tuple[BaseTenBlocks, ...]
+    cross_out: int | None
+
+
+def blocks_diagram(data: BasicOperationQuestionData) -> BlocksDiagram:
+    """
+    Return the base-ten blocks for a question.
+
+    Addition shows both operands, to combine. Subtraction shows its first operand, with its
+    second as the amount to cross out. Base-ten blocks show only addition and subtraction, so any
+    other operation raises ``ValueError``.
+    """
+    first, second = data.operands
+    match data.operation:
+        case Operation.ADD:
+            return BlocksDiagram((base_ten_blocks(first), base_ten_blocks(second)), None)
+        case Operation.SUBTRACT:
+            return BlocksDiagram((base_ten_blocks(first),), second)
+        case Operation.MULTIPLY | Operation.DIVIDE:
+            name = OPERATION_NAMES[data.operation].lower()
+            raise ValueError(f"Base-ten blocks show only addition and subtraction, not {name}.")
+        case _:
+            assert_never(data.operation)
+
+
 def instruction(picture: Picture, operations: Collection[Operation]) -> str:
     """
     Return the instruction printed under a word-problem sheet's header, for its picture and the
@@ -254,7 +298,7 @@ def instruction(picture: Picture, operations: Collection[Operation]) -> str:
                 "ones."
             )
         case Picture.BLOCKS:
-            raise NotImplementedError(f"The {picture} picture is not built yet.")
+            return "Use the base-ten blocks to help you solve each problem."
         case _:
             assert_never(picture)
 
@@ -272,6 +316,6 @@ def hint(data: BasicOperationQuestionData, picture: Picture) -> str | None:
         case Picture.NUMBER_LINE:
             return _NUMBER_LINE_HINTS[data.operation]
         case Picture.BLOCKS:
-            raise NotImplementedError(f"The {picture} picture is not built yet.")
+            return _BLOCKS_HINTS[data.operation].format(b=data.operands[1])
         case _:
             assert_never(picture)

@@ -5,11 +5,11 @@ The question generator is not used. Questions are built by hand, with their word
 wrong answers.
 
 Each case's output is stored as text decoded from the PDF, in one file with a section per case:
-``goldens/word_problems_worksheet_pdf_expecteds.txt``. The text includes the instruction, every
-problem's wording and hint, its picture or work box, the answer lines or the answer bank and
-pattern, the answer key and the page breaks. To regenerate sections after an intended change,
-uncomment the ``write_section`` lines in ``test_pdf_draws_the_expected_text`` and run it (``-k``
-selects cases).
+``goldens/word_problems_worksheet_pdf_expecteds.txt``. The text includes the instruction, the
+key to base-ten blocks, every problem's wording and hint, its picture or work box, the answer
+lines or the answer bank and pattern, the answer key and the page breaks. To regenerate sections
+after an intended change, uncomment the ``write_section`` lines in
+``test_pdf_draws_the_expected_text`` and run it (``-k`` selects cases).
 """
 
 import pytest
@@ -22,6 +22,7 @@ from tests.helpers import GOLDENS, pdf_text, read_sections, render_word_problems
 TITLE = "Word Problems — Strip Diagrams"
 TEXT_ONLY_TITLE = "Word Problems"
 NUMBER_LINE_TITLE = "Word Problems — Number Lines"
+BLOCKS_TITLE = "Word Problems — Base-Ten Blocks"
 
 ADD_AND_SUBTRACT = [
     BasicOperationQuestionData(
@@ -112,6 +113,40 @@ JUMPS = [
     ),
 ]
 
+# Base-ten blocks of every kind: a flat, rods, and units in two rows. Addition shows both
+# numbers, and subtraction shows the first, with the amount to cross out beside it.
+BLOCKS = [
+    BasicOperationQuestionData(
+        Operation.ADD,
+        (147, 25),
+        172,
+        "Maria collected 147 stickers. Jamal collected 25 stickers. "
+        "How many stickers did they collect altogether?",
+    ),
+    BasicOperationQuestionData(
+        Operation.SUBTRACT,
+        (304, 128),
+        176,
+        "There were 304 cards on the shelf. 128 of them were sold. How many cards are left?",
+    ),
+]
+
+# The most blocks a number has, 5 flats in one row, 9 rods and 9 units, and the fewest, 1 unit
+BLOCKS_AT_THEIR_LIMITS = [
+    BasicOperationQuestionData(
+        Operation.SUBTRACT,
+        (599, 1),
+        598,
+        "Maria had 599 cards and used 1. How many cards are left?",
+    ),
+    BasicOperationQuestionData(
+        Operation.ADD,
+        (1, 1),
+        2,
+        "Maria had 1 card and found 1 more. How many cards does Maria have now?",
+    ),
+]
+
 # Both kinds of strip on one sheet, with the instruction for both
 ALL_FOUR = ADD_AND_SUBTRACT + MULTIPLY_AND_DIVIDE
 
@@ -132,13 +167,34 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
 
 
 @pytest.mark.parametrize(
-    ("case_name", "questions", "picture", "hints", "slot_of", "answer_key", "title", "label"),
+    (
+        "case_name",
+        "questions",
+        "picture",
+        "hints",
+        "black_and_white",
+        "slot_of",
+        "answer_key",
+        "title",
+        "label",
+    ),
     [
-        ("add_and_subtract", ADD_AND_SUBTRACT, Picture.STRIP, True, None, False, TITLE, "Sheet A"),
+        (
+            "add_and_subtract",
+            ADD_AND_SUBTRACT,
+            Picture.STRIP,
+            True,
+            False,
+            None,
+            False,
+            TITLE,
+            "Sheet A",
+        ),
         (
             "add_and_subtract_no_hints_answer_key",
             ADD_AND_SUBTRACT,
             Picture.STRIP,
+            False,
             False,
             None,
             True,
@@ -150,17 +206,19 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             SPLITS_AT_THEIR_LIMITS,
             Picture.STRIP,
             True,
+            False,
             None,
             False,
             TITLE,
             "Sheet A",
         ),
-        ("five_problems", FIVE_PROBLEMS, Picture.STRIP, True, None, False, TITLE, "Sheet A"),
+        ("five_problems", FIVE_PROBLEMS, Picture.STRIP, True, False, None, False, TITLE, "Sheet A"),
         (
             "multiply_and_divide",
             MULTIPLY_AND_DIVIDE,
             Picture.STRIP,
             True,
+            False,
             None,
             False,
             TITLE,
@@ -171,19 +229,21 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             GROUPS_AT_THEIR_LIMITS,
             Picture.STRIP,
             True,
+            False,
             None,
             False,
             TITLE,
             "Sheet A",
         ),
         # the key has each operation's equation
-        ("all_four_answer_key", ALL_FOUR, Picture.STRIP, True, None, True, TITLE, "Sheet A"),
+        ("all_four_answer_key", ALL_FOUR, Picture.STRIP, True, False, None, True, TITLE, "Sheet A"),
         # no answer lines, and the bank and pattern on a page of their own; the key has letters
         (
             "self_check_tiles_answer_key",
             ADD_AND_SUBTRACT,
             Picture.STRIP,
             True,
+            False,
             REAL_CASE_SLOTS[:2],
             True,
             TITLE,
@@ -194,6 +254,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             ADD_AND_SUBTRACT,
             Picture.STRIP,
             True,
+            False,
             None,
             False,
             "Story Problems",
@@ -206,6 +267,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             ALL_FOUR,
             Picture.NONE,
             True,
+            False,
             None,
             True,
             TEXT_ONLY_TITLE,
@@ -217,6 +279,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             FIVE_PROBLEMS,
             Picture.NONE,
             True,
+            False,
             None,
             False,
             TEXT_ONLY_TITLE,
@@ -228,6 +291,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             ADD_AND_SUBTRACT,
             Picture.NONE,
             True,
+            False,
             REAL_CASE_SLOTS[:2],
             True,
             TEXT_ONLY_TITLE,
@@ -240,6 +304,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             ADD_AND_SUBTRACT,
             Picture.NUMBER_LINE,
             True,
+            False,
             None,
             False,
             NUMBER_LINE_TITLE,
@@ -249,6 +314,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "number_line_jumps_no_hints_answer_key",
             JUMPS,
             Picture.NUMBER_LINE,
+            False,
             False,
             None,
             True,
@@ -261,6 +327,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             FIVE_PROBLEMS,
             Picture.NUMBER_LINE,
             True,
+            False,
             None,
             False,
             NUMBER_LINE_TITLE,
@@ -272,9 +339,82 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             ADD_AND_SUBTRACT,
             Picture.NUMBER_LINE,
             True,
+            False,
             REAL_CASE_SLOTS[:2],
             True,
             NUMBER_LINE_TITLE,
+            "Sheet A",
+        ),
+        # Base-ten blocks: the key under the instruction, "+" beside an addition's second
+        # number, and a note beside a subtraction's blocks saying what to cross out
+        (
+            "blocks_add_and_subtract",
+            BLOCKS,
+            Picture.BLOCKS,
+            True,
+            False,
+            None,
+            False,
+            BLOCKS_TITLE,
+            "Sheet A",
+        ),
+        # without the hints, the note goes too
+        (
+            "blocks_no_hints_answer_key",
+            BLOCKS,
+            Picture.BLOCKS,
+            False,
+            False,
+            None,
+            True,
+            BLOCKS_TITLE,
+            "Sheet A",
+        ),
+        # grey blocks, in the key too
+        (
+            "blocks_black_and_white",
+            BLOCKS,
+            Picture.BLOCKS,
+            True,
+            True,
+            None,
+            False,
+            BLOCKS_TITLE,
+            "Sheet A",
+        ),
+        (
+            "blocks_at_their_limits",
+            BLOCKS_AT_THEIR_LIMITS,
+            Picture.BLOCKS,
+            True,
+            False,
+            None,
+            False,
+            BLOCKS_TITLE,
+            "Sheet A",
+        ),
+        # two additions fill the first page, under the key, and two more each later page
+        (
+            "blocks_five_problems",
+            FIVE_PROBLEMS,
+            Picture.BLOCKS,
+            True,
+            False,
+            None,
+            False,
+            BLOCKS_TITLE,
+            "Sheet A",
+        ),
+        # tiles: no answer lines, then the bank and pattern
+        (
+            "blocks_self_check_tiles_answer_key",
+            BLOCKS,
+            Picture.BLOCKS,
+            True,
+            False,
+            REAL_CASE_SLOTS[:2],
+            True,
+            BLOCKS_TITLE,
             "Sheet A",
         ),
     ],
@@ -284,6 +424,7 @@ def test_pdf_draws_the_expected_text(
     questions: list[BasicOperationQuestionData],
     picture: Picture,
     hints: bool,
+    black_and_white: bool,
     slot_of: tuple[int, ...] | None,
     answer_key: bool,
     title: str,
@@ -293,11 +434,14 @@ def test_pdf_draws_the_expected_text(
     The decoded PDF matches this case's section of ``word_problems_worksheet_pdf_expecteds.txt``.
 
     One comparison covers the instruction, the wording, the hints, the strips and their splits
-    or equal parts, the number lines and their jumps, the answer lines or the answer bank and
-    pattern, the answer key, the page breaks, and the title and label.
+    or equal parts, the number lines and their jumps, the base-ten blocks, their key and colours,
+    the answer lines or the answer bank and pattern, the answer key, the page breaks, and the
+    title and label.
     """
     actual = pdf_text(
-        render_word_problems(questions, picture, hints, slot_of, answer_key, title, label)
+        render_word_problems(
+            questions, picture, hints, black_and_white, slot_of, answer_key, title, label
+        )
     )
 
     # to regenerate, uncomment:

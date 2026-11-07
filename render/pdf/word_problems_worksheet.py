@@ -2,11 +2,12 @@
 PDF worksheets of word problems, each drawn with the sheet's picture, with an optional answer key
 page.
 
-The first page has the picture's instruction under its header. Each problem has its number and
-wording, a hint if the picture has one and hints aren't turned off, the picture, and an answer
-line. A text-only problem's picture is a box to show the work in. A number line's last box is
-its answer, so it has no answer line. A sheet for the self-check tiles case has no answer lines,
-and ends with a page for the answer bank and pattern.
+The first page has the picture's instruction under its header, and for base-ten blocks a key to
+the blocks. Each problem has its number and wording, a hint if the picture has one and hints
+aren't turned off, the picture, and an answer line. A text-only problem's picture is a box to
+show the work in. A number line's last box is its answer, so it has no answer line. A sheet for
+the self-check tiles case has no answer lines, and ends with a page for the answer bank and
+pattern.
 """
 
 from collections.abc import Sequence
@@ -22,6 +23,7 @@ from core.basic_operations.representation import (
     Picture,
     StripDiagram,
     basic_operation_tile_question,
+    blocks_diagram,
     equation,
     hint,
     instruction,
@@ -31,8 +33,15 @@ from core.basic_operations.representation import (
 )
 from core.question import Question
 from render.pdf.diagrams import (
+    BLOCKS_KEY_HEIGHT,
+    COLOUR_BLOCKS,
+    GREY_BLOCKS,
     NUMBER_LINE_HEIGHT,
     STRIP_HEIGHT,
+    BlockColours,
+    blocks_height,
+    draw_blocks,
+    draw_blocks_key,
     draw_equal_strip,
     draw_number_line,
     draw_strip,
@@ -85,14 +94,17 @@ def render_word_problems_worksheet(
     picture: Picture,
     hints: bool,
     slot_of: Sequence[int] | None,
+    black_and_white: bool = False,
 ) -> None:
     """
     Render word problems, each drawn with ``picture``, and the answer key if requested, to
     ``path``.
 
-    Each problem's hint is left out when ``hints`` is False. A problem that would run past the
-    bottom margin starts on the next page. The answer key gives each problem's equation and
-    answer. ``path`` is a filename or a binary file-like object.
+    Each problem's hint is left out when ``hints`` is False, and so is the note beside base-ten
+    blocks saying how many to cross out. Base-ten blocks are grey when ``black_and_white`` is
+    set. A problem that would run past the bottom margin starts on the next page. The answer key
+    gives each problem's equation and answer. ``path`` is a filename or a binary file-like
+    object.
 
     With ``slot_of``, the sheet is for the self-check tiles case: the problems have no answer
     lines, and the answer bank and pattern follow on a page of their own. ``slot_of[i]`` is the
@@ -101,9 +113,14 @@ def render_word_problems_worksheet(
     """
     pdf = new_pdf(path, header.title)
     answer_lines = slot_of is None and picture is not Picture.NUMBER_LINE
+    colours = GREY_BLOCKS if black_and_white else COLOUR_BLOCKS
 
     operations = {question.data.operation for question in questions}
     y = _draw_instruction(pdf, instruction(picture, operations), start_page(pdf, header))
+    if picture is Picture.BLOCKS:
+        top = y + PICTURE_RAISE
+        draw_blocks_key(pdf, MARGIN, top, colours)
+        y = top - BLOCKS_KEY_HEIGHT - PROBLEM_GAP
     for number, question in enumerate(questions, start=1):
         lines = wrap(stem(question.data), TEXT_SIZE, TEXT_WIDTH)
         hint_text = hint(question.data, picture) if hints else None
@@ -112,13 +129,24 @@ def render_word_problems_worksheet(
             len(lines) * LINE_HEIGHT
             + len(hint_lines) * HINT_LINE_HEIGHT
             - PICTURE_RAISE
-            + _picture_height(picture)
+            + _picture_height(question.data, picture)
             + (ANSWER_DROP if answer_lines else 0)
         )
         if y - height < MARGIN:
             pdf.showPage()
             y = start_page(pdf, header)
-        y = _draw_problem(pdf, number, question.data, lines, hint_lines, picture, answer_lines, y)
+        y = _draw_problem(
+            pdf,
+            number,
+            question.data,
+            lines,
+            hint_lines,
+            picture,
+            answer_lines,
+            hints,
+            colours,
+            y,
+        )
 
     if slot_of is None:
         solutions = [
@@ -154,11 +182,16 @@ def _draw_problem(
     hint_lines: list[str],
     picture: Picture,
     answer_line: bool,
+    hints: bool,
+    colours: BlockColours,
     y: float,
 ) -> float:
     """
     Draw one problem, from its number down to its picture, followed by an answer line if
     ``answer_line`` is set, and return the y below it.
+
+    ``hints`` and ``colours`` are for base-ten blocks: whether to write the note saying how many
+    to cross out, and the blocks' colours.
     """
     pdf.setFont(FONT, TEXT_SIZE)
     pdf.drawString(MARGIN, y, f"{number}.")
@@ -173,9 +206,9 @@ def _draw_problem(
     pdf.setFillColor("black")
 
     top = y + PICTURE_RAISE
-    _draw_picture(pdf, data, picture, MARGIN + TEXT_INDENT, top)
+    _draw_picture(pdf, data, picture, MARGIN + TEXT_INDENT, top, hints, colours)
 
-    bottom = top - _picture_height(picture)
+    bottom = top - _picture_height(data, picture)
     if answer_line:
         bottom -= ANSWER_DROP
         pdf.setFont(BOLD_FONT, TEXT_SIZE)
@@ -185,7 +218,7 @@ def _draw_problem(
     return bottom - PROBLEM_GAP
 
 
-def _picture_height(picture: Picture) -> float:
+def _picture_height(data: BasicOperationQuestionData, picture: Picture) -> float:
     match picture:
         case Picture.STRIP:
             return STRIP_HEIGHT
@@ -194,15 +227,24 @@ def _picture_height(picture: Picture) -> float:
         case Picture.NUMBER_LINE:
             return NUMBER_LINE_HEIGHT
         case Picture.BLOCKS:
-            raise NotImplementedError(f"The {picture} picture is not built yet.")
+            return blocks_height(blocks_diagram(data))
         case _:
             assert_never(picture)
 
 
 def _draw_picture(
-    pdf: Canvas, data: BasicOperationQuestionData, picture: Picture, x: float, top: float
+    pdf: Canvas,
+    data: BasicOperationQuestionData,
+    picture: Picture,
+    x: float,
+    top: float,
+    hints: bool,
+    colours: BlockColours,
 ) -> None:
-    """Draw the problem's picture with its top-left corner at (``x``, ``top``)."""
+    """
+    Draw the problem's picture with its top-left corner at (``x``, ``top``). ``hints`` and
+    ``colours`` are for base-ten blocks, as in ``_draw_problem``.
+    """
     match picture:
         case Picture.STRIP:
             diagram = strip_diagram(data)
@@ -218,7 +260,7 @@ def _draw_picture(
         case Picture.NUMBER_LINE:
             draw_number_line(pdf, x, top, data.operands[0], number_line_jumps(data))
         case Picture.BLOCKS:
-            raise NotImplementedError(f"The {picture} picture is not built yet.")
+            draw_blocks(pdf, x, top, blocks_diagram(data), colours, note=hints)
         case _:
             assert_never(picture)
 
