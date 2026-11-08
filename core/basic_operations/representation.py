@@ -251,7 +251,9 @@ def _operation_strip(
             assert_never(operation)
 
 
-STRIP_CHOICE_NAME = "Pick the Strip Diagram"  # a strip-choice sheet's title unless one is given
+STRIP_CHOICE_NAME = (
+    "Strip Diagram multiple choice"  # a strip-choice sheet's title unless one is given
+)
 STRIP_CHOICE_INSTRUCTION = (
     "Choose the strip diagram that matches each problem. The ? shows what to find."
 )
