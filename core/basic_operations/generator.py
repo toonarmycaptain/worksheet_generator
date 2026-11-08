@@ -1,7 +1,7 @@
 """Random generation of arithmetic questions, missing-number equations and word problems."""
 
 import random
-from collections.abc import Iterator, Sequence
+from collections.abc import Collection, Iterator, Sequence
 from dataclasses import replace
 from functools import partial
 from itertools import accumulate
@@ -15,6 +15,7 @@ from core.basic_operations.data import (
     Operation,
     Unknown,
 )
+from core.basic_operations.representation import StripChoiceQuestion, strip_choices
 from core.basic_operations.word_problems import word_problem_texts
 from core.question import FreeResponse, Question, multiple_choice
 from core.wrong_answers import WRONG_ANSWER_COUNT, random_wrong_answers
@@ -34,6 +35,12 @@ LARGEST_WORD_PROBLEM_NUMBER = 999
 # six is as many as a strip diagram has room for
 WORD_PROBLEM_GROUPS = (2, 6)
 WORD_PROBLEM_GROUP_SIZES = (2, 20)  # the number in each of those groups, smallest and largest
+STRIP_CHOICE_LARGEST_NUMBER = 100  # a strip-choice sheet's default largest number
+# The most equal groups on a strip-choice sheet: as many as a choice's strip has room for, with a
+# 2-digit number in each
+STRIP_CHOICE_LARGEST_GROUPS = 12
+# 2 + 2 and 2 groups of 2 draw the same strip, so a strip-choice sheet leaves them out
+STRIP_CHOICE_EXCLUDED_OPERANDS = frozenset({(2, 2)})
 
 
 def generate_basic_operation_question(
@@ -317,8 +324,8 @@ def _shares(count: int, operations: int) -> list[int]:
     """
     Split ``count`` questions among ``operations`` as evenly as possible.
 
-    The shares are in the order of ``_rank_by_answers``: when ``count`` does not divide evenly,
-    the extra questions go to the last operations, those with the most possible answers.
+    When ``count`` does not divide evenly, the extra questions go to the last operations: in the
+    order of ``_rank_by_answers``, those with the most possible answers.
     """
     share, extra = divmod(count, operations)
     return [share + 1 if index >= operations - extra else share for index in range(operations)]
@@ -484,39 +491,53 @@ def count_possible_word_problems(
     up_to: int,
     largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
     largest_operand: int = LARGEST_WORD_PROBLEM_NUMBER,
+    largest_smaller_operand: int | None = None,
+    largest_groups: int = WORD_PROBLEM_GROUPS[1],
+    largest_whole: int | None = None,
+    excluded_operands: Collection[tuple[int, int]] = (),
+    split_evenly: bool = False,
 ) -> int:
     """
     Count the word problems ``generate_word_problems`` can produce for ``operations``, with its
-    ``largest_number`` and ``largest_operand``.
+    limits and ``excluded_operands``.
 
     As in ``count_possible_sheet_questions``, any one operation may be drawn for every problem,
     so the count is the smallest that any one operation allows by itself: its distinct answers
     with ``distinct_answers``, and otherwise its distinct problems. Addition and subtraction
     count their answers either way, which are fewer than their problems: every sum and every
-    difference from the smallest to the largest the limits allow. The count is capped at
-    ``up_to``.
+    difference from the smallest to the largest the limits allow. An excluded pair is taken to
+    leave its answer to another pair, as 2 + 2 leaves 4 to 1 + 3. Multiplication and division
+    leave out the excluded pairs.
+
+    With ``split_evenly`` and without ``distinct_answers``, each operation needs only enough for
+    its share, at most one more than an even split, so the count is that smallest count for each
+    operation. The count is capped at ``up_to``.
     """
-    groups = range(WORD_PROBLEM_GROUPS[0], WORD_PROBLEM_GROUPS[1] + 1)
-    sizes = range(WORD_PROBLEM_GROUP_SIZES[0], WORD_PROBLEM_GROUP_SIZES[1] + 1)
     smallest = SMALLEST_WORD_PROBLEM_NUMBER
     largest = min(largest_number, largest_operand)
-    counts = [up_to]
+    smaller = largest if largest_smaller_operand is None else min(largest_smaller_operand, largest)
+    counts = []
     for operation in operations:
         match operation:
             case Operation.ADD:
                 # from smallest + smallest
-                counts.append(max(min(largest_number, 2 * largest) - 2 * smallest + 1, 0))
+                counts.append(max(min(largest_number, largest + smaller) - 2 * smallest + 1, 0))
             case Operation.SUBTRACT:
-                counts.append(max(largest - smallest, 0))  # from 1
-            case Operation.MULTIPLY if distinct_answers:
-                counts.append(len({number * size for number in groups for size in sizes}))
-            case Operation.DIVIDE if distinct_answers:
-                counts.append(len(sizes))  # the answer is the size of each group
+                counts.append(max(largest - smallest, 0))  # from 1, with 1 taken away
             case Operation.MULTIPLY | Operation.DIVIDE:
-                counts.append(len(groups) * len(sizes))
+                problems = [
+                    data
+                    for data in _all_equal_groups(operation, largest_groups, largest_whole)
+                    if data.operands not in excluded_operands
+                ]
+                answers = {data.answer for data in problems}
+                counts.append(len(answers) if distinct_answers else len(problems))
             case _:
                 assert_never(operation)
-    return min(counts)
+    possible = min(counts, default=up_to)
+    if split_evenly and not distinct_answers:
+        possible *= len(operations)
+    return min(possible, up_to)
 
 
 def generate_word_problems(
@@ -527,20 +548,33 @@ def generate_word_problems(
     comparisons: bool = False,
     largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
     largest_operand: int = LARGEST_WORD_PROBLEM_NUMBER,
+    largest_smaller_operand: int | None = None,
+    largest_groups: int = WORD_PROBLEM_GROUPS[1],
+    largest_whole: int | None = None,
+    excluded_operands: Collection[tuple[int, int]] = (),
+    split_evenly: bool = False,
 ) -> list[Question[BasicOperationQuestionData, FreeResponse]]:
     """
     Generate ``count`` word problems, each with an operation drawn at random from ``operations``.
+    With ``split_evenly``, the operations are dealt out as evenly as possible instead, as in
+    ``_shares``, with any extra problems going to operations chosen at random, and the problems
+    are shuffled.
 
     Addition and subtraction draw their operands at random, as in ``_sum_or_difference``: every
     number in the problem, its answer included, is at most ``largest_number``, and the operands
     are also at most ``largest_operand``, for a representation that can show only so much. Base-ten
-    blocks, for example, show at most 599. Multiplication and division are equal groups, as in
-    ``_equal_groups``, and ignore both limits. The wording comes from the word-problem bank, with
+    blocks, for example, show at most 599. With ``largest_smaller_operand``, the smaller operand is
+    at most that too. Multiplication and division are equal groups, as in ``_equal_groups``, with
+    at most ``largest_groups`` groups and, if given, a whole (the product, or the dividend) of at
+    most ``largest_whole``. They ignore the other limits. The wording comes from the
+    word-problem bank, with
     its comparisons too if ``comparisons`` is set. The problems are answered in writing, so they
     have no wrong answers.
 
     No two problems of the same operation have the same operands, and with ``distinct_answers``
     no two problems share an answer either: a problem that breaks either rule is drawn again.
+    Neither does any problem have operands in ``excluded_operands``, for a representation that
+    can't tell them apart.
 
     Raises ``ValueError`` if the operations allow fewer than ``count`` such problems, as counted
     by ``count_possible_word_problems``.
@@ -551,6 +585,11 @@ def generate_word_problems(
         up_to=count,
         largest_number=largest_number,
         largest_operand=largest_operand,
+        largest_smaller_operand=largest_smaller_operand,
+        largest_groups=largest_groups,
+        largest_whole=largest_whole,
+        excluded_operands=excluded_operands,
+        split_evenly=split_evenly,
     )
     if count > possible:
         kind = "problems with different answers" if distinct_answers else "different problems"
@@ -559,16 +598,37 @@ def generate_word_problems(
     unworded: list[BasicOperationQuestionData] = []
     seen: set[tuple[Operation, tuple[int, int]]] = set()
     answers: set[int] = set()
-    for operation in random.choices(operations, k=count):
+    if split_evenly:
+        # shuffled first, so that the extra problems go to operations at random
+        dealt = random.sample(operations, k=len(operations))
+        problem_operations = [
+            operation
+            for operation, share in zip(dealt, _shares(count, len(dealt)), strict=True)
+            for _ in range(share)
+        ]
+        random.shuffle(problem_operations)
+    else:
+        problem_operations = random.choices(operations, k=count)
+    for operation in problem_operations:
         match operation:
             case Operation.ADD | Operation.SUBTRACT:
-                draw = partial(_sum_or_difference, operation, largest_number, largest_operand)
+                draw = partial(
+                    _sum_or_difference,
+                    operation,
+                    largest_number,
+                    largest_operand,
+                    largest_smaller_operand,
+                )
             case Operation.MULTIPLY | Operation.DIVIDE:
-                draw = partial(_equal_groups, operation)
+                draw = partial(_equal_groups, operation, largest_groups, largest_whole)
             case _:
                 assert_never(operation)
         data = draw()
-        while (operation, data.operands) in seen or (distinct_answers and data.answer in answers):
+        while (
+            data.operands in excluded_operands
+            or (operation, data.operands) in seen
+            or (distinct_answers and data.answer in answers)
+        ):
             data = draw()
         seen.add((operation, data.operands))
         answers.add(data.answer)
@@ -580,25 +640,86 @@ def generate_word_problems(
     ]
 
 
+def count_possible_strip_choice_problems(
+    operations: Sequence[Operation],
+    *,
+    up_to: int,
+    largest_number: int = STRIP_CHOICE_LARGEST_NUMBER,
+    largest_groups: int = STRIP_CHOICE_LARGEST_GROUPS,
+) -> int:
+    """
+    Count the problems ``generate_strip_choice_problems`` can produce, as
+    ``count_possible_word_problems`` counts them.
+    """
+    return count_possible_word_problems(
+        operations,
+        up_to=up_to,
+        largest_number=largest_number,
+        largest_smaller_operand=largest_groups,
+        largest_groups=largest_groups,
+        largest_whole=largest_number,
+        excluded_operands=STRIP_CHOICE_EXCLUDED_OPERANDS,
+        split_evenly=True,
+    )
+
+
+def generate_strip_choice_problems(
+    count: int,
+    operations: Sequence[Operation],
+    *,
+    largest_number: int = STRIP_CHOICE_LARGEST_NUMBER,
+    largest_groups: int = STRIP_CHOICE_LARGEST_GROUPS,
+) -> list[StripChoiceQuestion]:
+    """
+    Generate ``count`` word problems as ``generate_word_problems`` does, without comparisons, each
+    with its strip diagram to choose from those of ``strip_choices``. The operations are split
+    evenly, and ``largest_number`` caps every number, a multiplication's product and a
+    division's dividend included.
+
+    No strip has more than ``largest_groups`` equal groups. A multiplication has at most that
+    many groups, and a division shares into at most that many. An addition's or subtraction's
+    wrong choices multiply and divide by its smaller number, so that is at most
+    ``largest_groups`` too. No problem's operands are in ``STRIP_CHOICE_EXCLUDED_OPERANDS``.
+    """
+    problems = generate_word_problems(
+        count,
+        operations,
+        largest_number=largest_number,
+        largest_smaller_operand=largest_groups,
+        largest_groups=largest_groups,
+        largest_whole=largest_number,
+        excluded_operands=STRIP_CHOICE_EXCLUDED_OPERANDS,
+        split_evenly=True,
+    )
+    return [Question(problem.data, strip_choices(problem.data)) for problem in problems]
+
+
 def _sum_or_difference(
-    operation: Literal[Operation.ADD, Operation.SUBTRACT], largest_number: int, largest_operand: int
+    operation: Literal[Operation.ADD, Operation.SUBTRACT],
+    largest_number: int,
+    largest_operand: int,
+    largest_smaller_operand: int | None = None,
 ) -> BasicOperationQuestionData:
     """
     Draw two operands at random from ``SMALLEST_WORD_PROBLEM_NUMBER`` to the smaller of
     ``largest_number`` and ``largest_operand``, redrawing until they meet the word-problem
     limits: a sum is at most ``largest_number``, and a difference is at least 1, with the larger
-    operand first.
+    operand first. With ``largest_smaller_operand``, the second operand is drawn no larger than
+    that, and then an addition's operands are put in random order.
 
     The caller checks first that the limits allow a problem, as ``count_possible_word_problems``
     does. Then about half of all draws meet them, and even the tightest limits meet one draw in
     four, so the redraws end quickly.
     """
     largest = min(largest_number, largest_operand)
+    smaller = largest if largest_smaller_operand is None else min(largest_smaller_operand, largest)
     while True:
         first = random.randint(SMALLEST_WORD_PROBLEM_NUMBER, largest)
-        second = random.randint(SMALLEST_WORD_PROBLEM_NUMBER, largest)
+        second = random.randint(SMALLEST_WORD_PROBLEM_NUMBER, smaller)
         match operation:
             case Operation.ADD:
+                if smaller < largest:
+                    first, second = random.sample((first, second), 2)
                 if first + second <= largest_number:
                     return BasicOperationQuestionData(operation, (first, second), first + second)
             case Operation.SUBTRACT:
@@ -611,17 +732,49 @@ def _sum_or_difference(
 
 def _equal_groups(
     operation: Literal[Operation.MULTIPLY, Operation.DIVIDE],
+    largest_groups: int,
+    largest_whole: int | None = None,
 ) -> BasicOperationQuestionData:
     """
-    Draw an equal-groups problem: a number of groups from ``WORD_PROBLEM_GROUPS``, each of a
-    size from ``WORD_PROBLEM_GROUP_SIZES``.
+    Draw an equal-groups problem: a number of groups from the smallest of
+    ``WORD_PROBLEM_GROUPS`` to ``largest_groups``, each of a size from
+    ``WORD_PROBLEM_GROUP_SIZES``, as ``_equal_groups_problem`` makes it. With ``largest_whole``,
+    groups and size are drawn again until their whole is at most that.
+
+    The caller checks first that a problem is possible, as ``count_possible_word_problems``
+    does.
+    """
+    while True:
+        groups = random.randint(WORD_PROBLEM_GROUPS[0], largest_groups)
+        size = random.randint(*WORD_PROBLEM_GROUP_SIZES)
+        if largest_whole is None or groups * size <= largest_whole:
+            return _equal_groups_problem(operation, groups, size)
+
+
+def _all_equal_groups(
+    operation: Literal[Operation.MULTIPLY, Operation.DIVIDE],
+    largest_groups: int,
+    largest_whole: int | None = None,
+) -> list[BasicOperationQuestionData]:
+    """Return every equal-groups problem ``_equal_groups`` can draw."""
+    return [
+        _equal_groups_problem(operation, groups, size)
+        for groups in range(WORD_PROBLEM_GROUPS[0], largest_groups + 1)
+        for size in range(WORD_PROBLEM_GROUP_SIZES[0], WORD_PROBLEM_GROUP_SIZES[1] + 1)
+        if largest_whole is None or groups * size <= largest_whole
+    ]
+
+
+def _equal_groups_problem(
+    operation: Literal[Operation.MULTIPLY, Operation.DIVIDE], groups: int, size: int
+) -> BasicOperationQuestionData:
+    """
+    Return the equal-groups problem of ``groups`` groups, each of ``size``.
 
     Multiplication's operands are the groups and the size, so 3 groups of 4 is (3, 4), and the
     whole is to find. Division is partitive: its operands are the whole and the groups it is
     shared into, so 12 shared into 3 groups is (12, 3), and the size of each group is to find.
     """
-    groups = random.randint(*WORD_PROBLEM_GROUPS)
-    size = random.randint(*WORD_PROBLEM_GROUP_SIZES)
     match operation:
         case Operation.MULTIPLY:
             return BasicOperationQuestionData(operation, (groups, size), groups * size)

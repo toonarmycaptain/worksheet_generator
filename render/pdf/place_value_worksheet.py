@@ -6,7 +6,6 @@ from multiple-choice options.
 """
 
 from collections.abc import Sequence
-from string import ascii_uppercase
 from typing import BinaryIO
 
 from reportlab.pdfgen.canvas import Canvas
@@ -15,14 +14,17 @@ from core.placevalue.data import PlaceValueQuestion
 from core.placevalue.representation import format_number, in_asked_form, in_given_form, instruction
 from core.question import FreeResponse
 from render.pdf.page import (
-    FONT,
     LINE_HEIGHT,
     MARGIN,
     TEXT_INDENT,
     TEXT_SIZE,
     TEXT_WIDTH,
     Header,
+    choice_label,
+    correct_letters,
     draw_answer_key,
+    draw_numbered_lines,
+    make_room,
     new_pdf,
     start_page,
     wrap,
@@ -56,9 +58,7 @@ def render_place_value_worksheet(
         lines = _question_lines(question)
         choices = _choice_lines(question)
         space_under = CHOICES_GAP if choices else ANSWER_HEIGHT
-        if y - (len(lines) + len(choices)) * LINE_HEIGHT - space_under < MARGIN:
-            pdf.showPage()
-            y = start_page(pdf, header)
+        y = make_room(pdf, header, y, (len(lines) + len(choices)) * LINE_HEIGHT + space_under)
         y = _draw_question(pdf, number, lines, choices, y)
 
     if answer_key:
@@ -89,7 +89,7 @@ def _choice_lines(
     for index, option in enumerate(response.options):
         text = format_number(option, question.data.asked)
         first, *more = wrap(text, TEXT_SIZE, TEXT_WIDTH - CHOICE_INDENT)
-        lines.append((f"{ascii_uppercase[index]})", first))
+        lines.append((choice_label(index), first))
         lines += [("", line) for line in more]
     return lines
 
@@ -101,19 +101,14 @@ def _solution(
     response = question.response
     if isinstance(response, FreeResponse):
         return answer
-    letters = ", ".join(ascii_uppercase[index] for index in sorted(response.correct_indexes))
-    return f"{letters}) {answer}"
+    return f"{correct_letters(response)}) {answer}"
 
 
 def _draw_question(
     pdf: Canvas, number: int, lines: list[str], choices: list[tuple[str, str]], y: float
 ) -> float:
     """Draw one question, followed by its options or an answer line, and return the y below it."""
-    pdf.setFont(FONT, TEXT_SIZE)
-    pdf.drawString(MARGIN, y, f"{number}.")
-    for line in lines:
-        pdf.drawString(MARGIN + TEXT_INDENT, y, line)
-        y -= LINE_HEIGHT
+    y = draw_numbered_lines(pdf, number, lines, y)
     if not choices:
         line_y = y - ANSWER_LINE_DROP
         pdf.line(MARGIN + TEXT_INDENT, line_y, MARGIN + TEXT_INDENT + TEXT_WIDTH, line_y)

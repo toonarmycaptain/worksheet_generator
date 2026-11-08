@@ -5,7 +5,6 @@ Questions are either multiple choice or missing-number equations to fill in.
 """
 
 from collections.abc import Sequence
-from string import ascii_uppercase
 from typing import BinaryIO
 
 from reportlab.lib.utils import simpleSplit
@@ -15,7 +14,7 @@ from core.basic_operations.data import (
     BasicOperationMultipleChoiceQuestion,
     MissingNumberFreeResponseQuestion,
 )
-from core.basic_operations.representation import equation, missing_number_equation, stem
+from core.basic_operations.representation import missing_number_equation, solved_equation, stem
 from render.pdf.page import (
     FONT,
     LINE_HEIGHT,
@@ -25,8 +24,12 @@ from render.pdf.page import (
     TEXT_SIZE,
     TEXT_WIDTH,
     Header,
+    choice_label,
+    correct_letters,
     draw_answer_key,
+    draw_numbered_lines,
     draw_text,
+    make_room,
     new_pdf,
     start_page,
 )
@@ -55,9 +58,7 @@ def render_basic_operations_worksheet(
     y = start_page(pdf, header)
     for number, question in enumerate(questions, start=1):
         lines = simpleSplit(stem(question.data), FONT, TEXT_SIZE, TEXT_WIDTH)
-        if y - len(lines) * LINE_HEIGHT - OPTIONS_HEIGHT < MARGIN:
-            pdf.showPage()
-            y = start_page(pdf, header)
+        y = make_room(pdf, header, y, len(lines) * LINE_HEIGHT + OPTIONS_HEIGHT)
         y = _draw_question(pdf, number, question, lines, y)
 
     if answer_key:
@@ -107,10 +108,7 @@ def render_missing_number_worksheet(
 
 
 def _solution(question: BasicOperationMultipleChoiceQuestion) -> str:
-    letters = ", ".join(
-        ascii_uppercase[index] for index in sorted(question.response.correct_indexes)
-    )
-    return f"{equation(question.data)} = {question.data.answer}    ({letters})"
+    return f"{solved_equation(question.data)}    ({correct_letters(question.response)})"
 
 
 def _draw_question(
@@ -121,14 +119,10 @@ def _draw_question(
     y: float,
 ) -> float:
     """Draw one question with its lettered options in a row, and return the y below it."""
-    pdf.setFont(FONT, TEXT_SIZE)
-    pdf.drawString(MARGIN, y, f"{number}.")
-    for line in lines:
-        pdf.drawString(MARGIN + TEXT_INDENT, y, line)
-        y -= LINE_HEIGHT
+    y = draw_numbered_lines(pdf, number, lines, y)
 
     column_width = TEXT_WIDTH / len(question.response.options)
     for column, value in enumerate(question.response.options):
         x = MARGIN + TEXT_INDENT + column * column_width
-        pdf.drawString(x, y - 6, f"{ascii_uppercase[column]}) {value}")
+        pdf.drawString(x, y - 6, f"{choice_label(column)} {value}")
     return y - OPTIONS_HEIGHT
