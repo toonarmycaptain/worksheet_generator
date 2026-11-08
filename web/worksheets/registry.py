@@ -407,7 +407,7 @@ class WordProblemOptions(HeaderOptions):
     """
 
     # the representation's title by default
-    title: Title = word_problems_title(Representation.STRIP)
+    title: Title = word_problems_title(Representation.NONE)
     problems: Problems = 4
     # Each problem's operation is drawn at random from those ticked.
     operations: Operations = Field(["add", "subtract"])
@@ -415,7 +415,7 @@ class WordProblemOptions(HeaderOptions):
     # least the smallest sum, which leaves room for a subtraction too.
     max_number: WordProblemLargestNumber = LARGEST_WORD_PROBLEM_NUMBER
     representation: Literal["strip", "none", "number_line", "blocks"] = Field(
-        "strip", title="Representation", json_schema_extra={"labels": REPRESENTATION_LABELS}
+        "none", title="Representation", json_schema_extra={"labels": REPRESENTATION_LABELS}
     )
     no_hints: bool = Field(False, title="Leave out the hints")  # text only has none
     black_and_white: bool = Field(False, title="Black and white blocks")  # for photocopying

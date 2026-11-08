@@ -48,8 +48,8 @@ ADD = BasicOperationQuestionData(
     ("url", "picks", "drawn", "status", "expected_json", "pdf_data", "filename"),
     [
         (
-            # the defaults, with 2 problems: subtraction then addition, each with its hint
-            "/api/worksheets/word_problems.pdf?problems=2&sheet=1ab2c3",
+            # strip diagrams, with 2 problems: subtraction then addition, each with its hint
+            "/api/worksheets/word_problems.pdf?representation=strip&problems=2&sheet=1ab2c3",
             [Operation.SUBTRACT, Operation.ADD],
             [40, 150, 47, 25],
             200,
@@ -69,8 +69,9 @@ ADD = BasicOperationQuestionData(
         ),
         (
             # addition only
-            "/api/worksheets/word_problems.pdf?operations=add&problems=1&no_hints=true"
-            "&answer_key=true&title=Story+Problems&label=Day+2&name_line=true&sheet=1ab2c3",
+            "/api/worksheets/word_problems.pdf?representation=strip&operations=add&problems=1"
+            "&no_hints=true&answer_key=true&title=Story+Problems&label=Day+2&name_line=true"
+            "&sheet=1ab2c3",
             [Operation.ADD],
             [47, 25],
             200,
@@ -91,7 +92,8 @@ ADD = BasicOperationQuestionData(
         (
             # Tiles, with the simple pattern by default. Their answers must differ, so 55 + 55,
             # also 110, is redrawn.
-            "/api/worksheets/word_problems.pdf?self_check_tiles=true&problems=2&sheet=1ab2c3",
+            "/api/worksheets/word_problems.pdf?representation=strip&self_check_tiles=true"
+            "&problems=2&sheet=1ab2c3",
             [Operation.SUBTRACT, Operation.ADD],
             [40, 150, 55, 55, 47, 25],
             200,
@@ -110,8 +112,8 @@ ADD = BasicOperationQuestionData(
             "word_problems-sheet-a.pdf",
         ),
         (
-            "/api/worksheets/word_problems.pdf?self_check_tiles=true&tile_pattern=complex"
-            "&problems=2&answer_key=true&sheet=1ab2c3",
+            "/api/worksheets/word_problems.pdf?representation=strip&self_check_tiles=true"
+            "&tile_pattern=complex&problems=2&answer_key=true&sheet=1ab2c3",
             [Operation.SUBTRACT, Operation.ADD],
             [40, 150, 47, 25],
             200,
@@ -160,7 +162,8 @@ ADD = BasicOperationQuestionData(
         ),
         (
             # multiplication only: 3 groups of 4
-            "/api/worksheets/word_problems.pdf?operations=multiply&problems=1&sheet=1ab2c3",
+            "/api/worksheets/word_problems.pdf?representation=strip&operations=multiply&problems=1"
+            "&sheet=1ab2c3",
             [Operation.MULTIPLY],
             [3, 4],
             200,
@@ -187,8 +190,9 @@ ADD = BasicOperationQuestionData(
         ),
         (
             # all four ticked: division, then addition with the one size, 2 and 2 digits
-            "/api/worksheets/word_problems.pdf?operations=add&operations=subtract"
-            "&operations=multiply&operations=divide&problems=2&answer_key=true&sheet=1ab2c3",
+            "/api/worksheets/word_problems.pdf?representation=strip&operations=add"
+            "&operations=subtract&operations=multiply&operations=divide&problems=2"
+            "&answer_key=true&sheet=1ab2c3",
             [Operation.DIVIDE, Operation.ADD],
             [3, 4, 47, 25],
             200,
@@ -217,8 +221,8 @@ ADD = BasicOperationQuestionData(
         ),
         (
             # division with tiles: 3 groups of 4, then 5 groups of 6, with the last two templates
-            "/api/worksheets/word_problems.pdf?operations=divide&self_check_tiles=true&problems=2"
-            "&sheet=1ab2c3",
+            "/api/worksheets/word_problems.pdf?representation=strip&operations=divide"
+            "&self_check_tiles=true&problems=2&sheet=1ab2c3",
             [Operation.DIVIDE, Operation.DIVIDE],
             [3, 4, 5, 6],
             200,
@@ -251,10 +255,10 @@ ADD = BasicOperationQuestionData(
             "word_problems-sheet-a.pdf",
         ),
         (
-            # Text only, with the title "Word Problems", since none is given. The hints are on,
-            # but text only has none. Subtraction is worded with its comparison, the last of its
-            # templates on a text-only sheet.
-            "/api/worksheets/word_problems.pdf?representation=none&problems=2&sheet=1ab2c3",
+            # The defaults, with 2 problems: text only, with the title "Word Problems", since none
+            # is given. The hints are on, but text only has none. Subtraction is worded with its
+            # comparison, the last of its templates on a text-only sheet.
+            "/api/worksheets/word_problems.pdf?problems=2&sheet=1ab2c3",
             [Operation.SUBTRACT, Operation.ADD],
             [40, 150, 47, 25],
             200,
@@ -443,8 +447,8 @@ ADD = BasicOperationQuestionData(
         ),
         (
             # a largest number of 99 caps the sum too, so 60 + 50 is redrawn
-            "/api/worksheets/word_problems.pdf?operations=add&problems=1&max_number=99"
-            "&sheet=1ab2c3",
+            "/api/worksheets/word_problems.pdf?representation=strip&operations=add&problems=1"
+            "&max_number=99&sheet=1ab2c3",
             [Operation.ADD],
             [60, 50, 47, 25],
             200,
@@ -492,8 +496,8 @@ ADD = BasicOperationQuestionData(
         ),
         (
             # the largest number is for addition and subtraction: 120 shared into 6 goes past 2
-            "/api/worksheets/word_problems.pdf?operations=divide&problems=1&max_number=2"
-            "&sheet=1ab2c3",
+            "/api/worksheets/word_problems.pdf?representation=strip&operations=divide&problems=1"
+            "&max_number=2&sheet=1ab2c3",
             [Operation.DIVIDE],
             [6, 20],
             200,
