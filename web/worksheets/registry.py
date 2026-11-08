@@ -41,11 +41,13 @@ from core.basic_operations.generator import (
     STRIP_CHOICE_LARGEST_GROUPS,
     STRIP_CHOICE_LARGEST_NUMBER,
     WORD_PROBLEM_GROUPS,
+    count_possible_equation_choice_problems,
     count_possible_missing_number_questions,
     count_possible_sheet_questions,
     count_possible_strip_choice_problems,
     count_possible_word_problems,
     generate_basic_operation_questions,
+    generate_equation_choice_problems,
     generate_missing_number_questions,
     generate_strip_choice_problems,
     generate_word_problems,
@@ -58,6 +60,7 @@ from core.basic_operations.representation import (
     STRIP_CHOICE_NAME,
     Prompt,
     Representation,
+    WordProblemQuestion,
     basic_operation_tile_question,
     missing_number_tile_question,
     operations_name,
@@ -414,7 +417,7 @@ class WordProblemOptions(HeaderOptions):
     # Addition and subtraction only: every number in the problem, its answer included. It's at
     # least the smallest sum, which leaves room for a subtraction too.
     max_number: WordProblemLargestNumber = LARGEST_WORD_PROBLEM_NUMBER
-    representation: Literal["strip", "none", "number_line", "blocks"] = Field(
+    representation: Literal["strip", "none", "number_line", "blocks", "equation_choice"] = Field(
         "none", title="Representation", json_schema_extra={"labels": REPRESENTATION_LABELS}
     )
     no_hints: bool = Field(False, title="Leave out the hints")  # text only has none
@@ -452,6 +455,17 @@ class WordProblemOptions(HeaderOptions):
         return self
 
     @model_validator(mode="after")
+    def _tiles_are_available(self) -> Self:
+        # Not built for equation multiple choice: each choice's letter would need coding as a
+        # number. The page greys the tiles out.
+        representation = Representation(self.representation)
+        if self.self_check_tiles and representation is Representation.EQUATION_CHOICE:
+            raise ValueError(
+                f"self_check_tiles: not available with {REPRESENTATION_NAMES[representation]}"
+            )
+        return self
+
+    @model_validator(mode="after")
     def _enough_different_problems(self) -> Self:
         if self.self_check_tiles:
             _at_most_one_question_per_tile(self.problems)
@@ -460,6 +474,10 @@ class WordProblemOptions(HeaderOptions):
         operations = _operations(self.operations)
 
         def possible_with(largest: int) -> int:
+            if Representation(self.representation) is Representation.EQUATION_CHOICE:
+                return count_possible_equation_choice_problems(
+                    operations, up_to=self.problems, largest_number=largest
+                )
             return count_possible_word_problems(
                 operations,
                 distinct_answers=self.self_check_tiles,
@@ -836,8 +854,13 @@ def _tile_slots(
 
 def _word_problems(o: WordProblemOptions, out: BinaryIO) -> None:
     representation = Representation(o.representation)
-    render_word_problems_worksheet(
-        questions=generate_word_problems(
+    questions: Sequence[WordProblemQuestion]
+    if representation is Representation.EQUATION_CHOICE:
+        questions = generate_equation_choice_problems(
+            o.problems, _operations(o.operations), largest_number=o.max_number
+        )
+    else:
+        questions = generate_word_problems(
             o.problems,
             _operations(o.operations),
             distinct_answers=o.self_check_tiles,
@@ -846,7 +869,9 @@ def _word_problems(o: WordProblemOptions, out: BinaryIO) -> None:
             comparisons=representation not in (Representation.STRIP, Representation.BLOCKS),
             largest_number=o.max_number,
             largest_operand=o.largest_operand,
-        ),
+        )
+    render_word_problems_worksheet(
+        questions=questions,
         path=out,
         header=o.header(),
         answer_key=o.answer_key,

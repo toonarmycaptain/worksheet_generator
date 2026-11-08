@@ -5963,3 +5963,295 @@ BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 458 Tm (Close the case and flip it over. If every) Tj T* ET
 BT 1 0 0 1 54 443 Tm (answer is right, the back looks like this.) Tj T* ET
 
+=== equation_choice_all_four_answer_key ===
+title: Word Problems \204 Equation multiple choice
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Equation multiple choice) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (Choose the equation that matches each problem. The ) Tj T* ET
+n 343.488 673.8 16.8 16.8 re S
+BT 1 0 0 1 360.288 678 Tm ( shows what to find.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 652 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 652 Tm (Maria collected 47 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 632 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 606 Tm (A\) 47 \367 25 = ) Tj T* ET
+n 162.948 601.1 19.6 19.6 re S
+BT 1 0 0 1 182.548 606 Tm  T* ET
+BT 1 0 0 1 320 606 Tm (B\) 25 \327 47 = ) Tj T* ET
+n 400.948 601.1 19.6 19.6 re S
+BT 1 0 0 1 420.548 606 Tm  T* ET
+BT 1 0 0 1 82 580 Tm (C\) 47 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = ) Tj T* ET
+n 163.228 575.1 19.6 19.6 re S
+BT 1 0 0 1 182.828 580 Tm  T* ET
+BT 1 0 0 1 320 580 Tm (D\) 47 + 25 = ) Tj T* ET
+n 401.718 575.1 19.6 19.6 re S
+BT 1 0 0 1 421.318 580 Tm  T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 550 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 550 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 524 Tm (A\) 72 \367 25 = ) Tj T* ET
+n 162.948 519.1 19.6 19.6 re S
+BT 1 0 0 1 182.548 524 Tm  T* ET
+BT 1 0 0 1 320 524 Tm (B\) 25 \327 72 = ) Tj T* ET
+n 400.948 519.1 19.6 19.6 re S
+BT 1 0 0 1 420.548 524 Tm  T* ET
+BT 1 0 0 1 82 498 Tm (C\) 72 + 25 = ) Tj T* ET
+n 163.718 493.1 19.6 19.6 re S
+BT 1 0 0 1 183.318 498 Tm  T* ET
+BT 1 0 0 1 320 498 Tm (D\) 72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = ) Tj T* ET
+n 401.228 493.1 19.6 19.6 re S
+BT 1 0 0 1 420.828 498 Tm  T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 468 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 468 Tm (Maria has 3 bags with 4 stickers in each bag. How many stickers are there in) Tj T* ET
+BT 1 0 0 1 82 448 Tm (all?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 422 Tm (A\) 4 \367 3 = ) Tj T* ET
+n 147.38 417.1 19.6 19.6 re S
+BT 1 0 0 1 166.98 422 Tm  T* ET
+BT 1 0 0 1 320 422 Tm (B\) 4 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 3 = ) Tj T* ET
+n 384.89 417.1 19.6 19.6 re S
+BT 1 0 0 1 404.49 422 Tm  T* ET
+BT 1 0 0 1 82 396 Tm (C\) 3 + 4 = ) Tj T* ET
+n 148.15 391.1 19.6 19.6 re S
+BT 1 0 0 1 167.75 396 Tm  T* ET
+BT 1 0 0 1 320 396 Tm (D\) 3 \327 4 = ) Tj T* ET
+n 386.15 391.1 19.6 19.6 re S
+BT 1 0 0 1 405.75 396 Tm  T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 366 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 366 Tm (Jamal shares 12 marbles equally among 3 friends. How many marbles does) Tj T* ET
+BT 1 0 0 1 82 346 Tm (each friend get?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 320 Tm (A\) 3 \327 12 = ) Tj T* ET
+n 155.164 315.1 19.6 19.6 re S
+BT 1 0 0 1 174.764 320 Tm  T* ET
+BT 1 0 0 1 320 320 Tm (B\) 12 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 3 = ) Tj T* ET
+n 392.674 315.1 19.6 19.6 re S
+BT 1 0 0 1 412.274 320 Tm  T* ET
+BT 1 0 0 1 82 294 Tm (C\) 12 + 3 = ) Tj T* ET
+n 155.934 289.1 19.6 19.6 re S
+BT 1 0 0 1 175.534 294 Tm  T* ET
+BT 1 0 0 1 320 294 Tm (D\) 12 \367 3 = ) Tj T* ET
+n 393.934 289.1 19.6 19.6 re S
+BT 1 0 0 1 413.534 294 Tm  T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Equation multiple choice: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (47 + 25 = 72    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 658 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 638 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 638 Tm (3 \327 4 = 12    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 618 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 618 Tm (12 \367 3 = 4    \(D\)) Tj T* ET
+
+=== equation_choice_seven_problems ===
+title: Word Problems \204 Equation multiple choice
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Equation multiple choice) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (Choose the equation that matches each problem. The ) Tj T* ET
+n 343.488 673.8 16.8 16.8 re S
+BT 1 0 0 1 360.288 678 Tm ( shows what to find.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 652 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 652 Tm (Maria collected 11 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 632 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 606 Tm (A\) 25 \367 11 = ) Tj T* ET
+n 162.948 601.1 19.6 19.6 re S
+BT 1 0 0 1 182.548 606 Tm  T* ET
+BT 1 0 0 1 320 606 Tm (B\) 11 \327 25 = ) Tj T* ET
+n 400.948 601.1 19.6 19.6 re S
+BT 1 0 0 1 420.548 606 Tm  T* ET
+BT 1 0 0 1 82 580 Tm (C\) 25 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 11 = ) Tj T* ET
+n 163.228 575.1 19.6 19.6 re S
+BT 1 0 0 1 182.828 580 Tm  T* ET
+BT 1 0 0 1 320 580 Tm (D\) 11 + 25 = ) Tj T* ET
+n 401.718 575.1 19.6 19.6 re S
+BT 1 0 0 1 421.318 580 Tm  T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 550 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 550 Tm (Maria collected 22 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 530 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 504 Tm (A\) 25 \367 22 = ) Tj T* ET
+n 162.948 499.1 19.6 19.6 re S
+BT 1 0 0 1 182.548 504 Tm  T* ET
+BT 1 0 0 1 320 504 Tm (B\) 22 \327 25 = ) Tj T* ET
+n 400.948 499.1 19.6 19.6 re S
+BT 1 0 0 1 420.548 504 Tm  T* ET
+BT 1 0 0 1 82 478 Tm (C\) 25 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 22 = ) Tj T* ET
+n 163.228 473.1 19.6 19.6 re S
+BT 1 0 0 1 182.828 478 Tm  T* ET
+BT 1 0 0 1 320 478 Tm (D\) 22 + 25 = ) Tj T* ET
+n 401.718 473.1 19.6 19.6 re S
+BT 1 0 0 1 421.318 478 Tm  T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 448 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 448 Tm (Maria collected 33 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 428 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 402 Tm (A\) 33 \367 25 = ) Tj T* ET
+n 162.948 397.1 19.6 19.6 re S
+BT 1 0 0 1 182.548 402 Tm  T* ET
+BT 1 0 0 1 320 402 Tm (B\) 25 \327 33 = ) Tj T* ET
+n 400.948 397.1 19.6 19.6 re S
+BT 1 0 0 1 420.548 402 Tm  T* ET
+BT 1 0 0 1 82 376 Tm (C\) 33 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = ) Tj T* ET
+n 163.228 371.1 19.6 19.6 re S
+BT 1 0 0 1 182.828 376 Tm  T* ET
+BT 1 0 0 1 320 376 Tm (D\) 33 + 25 = ) Tj T* ET
+n 401.718 371.1 19.6 19.6 re S
+BT 1 0 0 1 421.318 376 Tm  T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 346 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 346 Tm (Maria collected 44 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 326 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 300 Tm (A\) 44 \367 25 = ) Tj T* ET
+n 162.948 295.1 19.6 19.6 re S
+BT 1 0 0 1 182.548 300 Tm  T* ET
+BT 1 0 0 1 320 300 Tm (B\) 25 \327 44 = ) Tj T* ET
+n 400.948 295.1 19.6 19.6 re S
+BT 1 0 0 1 420.548 300 Tm  T* ET
+BT 1 0 0 1 82 274 Tm (C\) 44 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = ) Tj T* ET
+n 163.228 269.1 19.6 19.6 re S
+BT 1 0 0 1 182.828 274 Tm  T* ET
+BT 1 0 0 1 320 274 Tm (D\) 44 + 25 = ) Tj T* ET
+n 401.718 269.1 19.6 19.6 re S
+BT 1 0 0 1 421.318 274 Tm  T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 244 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 244 Tm (Maria collected 55 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 224 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 198 Tm (A\) 55 \367 25 = ) Tj T* ET
+n 162.948 193.1 19.6 19.6 re S
+BT 1 0 0 1 182.548 198 Tm  T* ET
+BT 1 0 0 1 320 198 Tm (B\) 25 \327 55 = ) Tj T* ET
+n 400.948 193.1 19.6 19.6 re S
+BT 1 0 0 1 420.548 198 Tm  T* ET
+BT 1 0 0 1 82 172 Tm (C\) 55 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = ) Tj T* ET
+n 163.228 167.1 19.6 19.6 re S
+BT 1 0 0 1 182.828 172 Tm  T* ET
+BT 1 0 0 1 320 172 Tm (D\) 55 + 25 = ) Tj T* ET
+n 401.718 167.1 19.6 19.6 re S
+BT 1 0 0 1 421.318 172 Tm  T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 142 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 142 Tm (Maria collected 66 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 122 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 96 Tm (A\) 66 \367 25 = ) Tj T* ET
+n 162.948 91.1 19.6 19.6 re S
+BT 1 0 0 1 182.548 96 Tm  T* ET
+BT 1 0 0 1 320 96 Tm (B\) 25 \327 66 = ) Tj T* ET
+n 400.948 91.1 19.6 19.6 re S
+BT 1 0 0 1 420.548 96 Tm  T* ET
+BT 1 0 0 1 82 70 Tm (C\) 66 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = ) Tj T* ET
+n 163.228 65.1 19.6 19.6 re S
+BT 1 0 0 1 182.828 70 Tm  T* ET
+BT 1 0 0 1 320 70 Tm (D\) 66 + 25 = ) Tj T* ET
+n 401.718 65.1 19.6 19.6 re S
+BT 1 0 0 1 421.318 70 Tm  T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Equation multiple choice) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (7.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Maria collected 77 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 658 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 632 Tm (A\) 77 \367 25 = ) Tj T* ET
+n 162.948 627.1 19.6 19.6 re S
+BT 1 0 0 1 182.548 632 Tm  T* ET
+BT 1 0 0 1 320 632 Tm (B\) 25 \327 77 = ) Tj T* ET
+n 400.948 627.1 19.6 19.6 re S
+BT 1 0 0 1 420.548 632 Tm  T* ET
+BT 1 0 0 1 82 606 Tm (C\) 77 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = ) Tj T* ET
+n 163.228 601.1 19.6 19.6 re S
+BT 1 0 0 1 182.828 606 Tm  T* ET
+BT 1 0 0 1 320 606 Tm (D\) 77 + 25 = ) Tj T* ET
+n 401.718 601.1 19.6 19.6 re S
+BT 1 0 0 1 421.318 606 Tm  T* ET
+

@@ -24,7 +24,13 @@ import pytest
 
 from core.base_ten_blocks import BlocksQuestionData
 from core.basic_operations.data import BasicOperationQuestionData, MissingNumberQuestionData
-from core.basic_operations.representation import Prompt, Representation, strip_choices
+from core.basic_operations.representation import (
+    Prompt,
+    Representation,
+    WordProblemQuestion,
+    equation_choices,
+    strip_choices,
+)
 from core.discrete_data.data import (
     CategoricalDataProblemData,
     DiscreteDataProblem,
@@ -321,10 +327,19 @@ def render_word_problems(
     label: str,
     name_line: bool = True,
 ) -> bytes:
-    """Render the word problems sheet, each question free response, with no wrong answers."""
+    """
+    Render the word problems sheet, each question free response, with no wrong answers, or for
+    equation multiple choice with its choices made by ``equation_choices``.
+    """
     out = BytesIO()
+    made: list[WordProblemQuestion] = [
+        Question(data, equation_choices(data))
+        if representation is Representation.EQUATION_CHOICE
+        else Question(data, FreeResponse())
+        for data in questions
+    ]
     render_word_problems_worksheet(
-        questions=[Question(data, FreeResponse()) for data in questions],
+        questions=made,
         path=out,
         header=Header(title=title, label=label, name_line=name_line),
         answer_key=answer_key,

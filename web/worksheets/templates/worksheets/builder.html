@@ -158,10 +158,10 @@
       }
     });
 
-    // Text only has no hints, so the box to leave them out is hidden, and disabled so it isn't
-    // sent.
+    // Text only and equation multiple choice have no hints, so the box to leave them out is
+    // hidden, and disabled so it isn't sent.
     function showNoHints() {
-      const show = representation.value !== "none";
+      const show = !["none", "equation_choice"].includes(representation.value);
       form.elements.no_hints.disabled = !show;
       // the page's CSS shows labels as blocks, which would win over the hidden attribute
       form.elements.no_hints.closest("label").style.display = show ? "" : "none";
@@ -201,6 +201,25 @@
         form.elements.work_box.checked = false;
       }
     });
+
+    // Tiles aren't available for equation multiple choice: each choice's letter would need
+    // coding as a number. So the tiles box and pattern are greyed out, so they aren't sent, and
+    // ticked tiles are unticked, which puts back the normal number of problems.
+    const tiles = form.elements.self_check_tiles;
+    const patterns = [...form.querySelectorAll("input[name=tile_pattern]")];
+    function greyOutTiles() {
+      const available = representation.value !== "equation_choice";
+      if (!available && tiles.checked) {
+        tiles.checked = false;
+        // setting checked doesn't fire change, which the tiles script listens for
+        tiles.dispatchEvent(new Event("change"));
+      }
+      tiles.disabled = !available;
+      for (const radio of patterns) radio.disabled = !available;
+    }
+    representation.addEventListener("change", greyOutTiles);
+    window.addEventListener("pageshow", greyOutTiles);
+    greyOutTiles();
 
     // The operations the representation can't show, such as multiplication on a number line, are
     // greyed out, so they aren't sent. Their ticks come back with a representation that can show
