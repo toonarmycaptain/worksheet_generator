@@ -313,6 +313,7 @@ def render_word_problems(
     representation: Representation,
     hints: bool,
     black_and_white: bool,
+    work_box: bool,
     slot_of: tuple[int, ...] | None,
     answer_key: bool,
     title: str,
@@ -330,6 +331,7 @@ def render_word_problems(
         hints=hints,
         slot_of=slot_of,
         black_and_white=black_and_white,
+        work_box=work_box,
     )
     return out.getvalue()
 
