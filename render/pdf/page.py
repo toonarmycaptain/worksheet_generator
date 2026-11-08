@@ -29,7 +29,7 @@ BOLD_FONT = "Helvetica-Bold"
 ITALIC_FONT = "Helvetica-Oblique"  # same widths as FONT, so wrap measures it correctly
 TEXT_SIZE = 14
 LINE_HEIGHT = 20
-FIRST_LINE_Y: float = PAGE_HEIGHT - MARGIN - 60
+HEADER_ROW = 30  # from the title to the Name/Date line, and from either to the content
 INSTRUCTION_SIZE = 12
 INSTRUCTION_LINE_HEIGHT = 16
 INSTRUCTION_GAP = 10  # extra space between the instruction and the first problem
@@ -141,19 +141,24 @@ class Header:
 
 
 def start_page(pdf: Canvas, header: Header) -> float:
-    """Draw a new page's header and footer, and return the y at which content starts."""
+    """
+    Draw a new page's header and footer, and return the y at which content starts: one
+    ``HEADER_ROW`` below the last header line, so content moves up when there is no Name/Date line.
+    """
     pdf.setFillColor("black")
     pdf.setFont(BOLD_FONT, 18)
     pdf.drawString(MARGIN, PAGE_HEIGHT - MARGIN, header.title)
+    y = PAGE_HEIGHT - MARGIN - HEADER_ROW
     if header.name_line:
         pdf.setFont(FONT, TEXT_SIZE)
-        pdf.drawString(MARGIN, PAGE_HEIGHT - MARGIN - 30, "Name: " + "_" * 28)
-        pdf.drawString(PAGE_WIDTH / 2 + 40, PAGE_HEIGHT - MARGIN - 30, "Date: " + "_" * 16)
+        pdf.drawString(MARGIN, y, "Name: " + "_" * 28)
+        pdf.drawString(PAGE_WIDTH / 2 + 40, y, "Date: " + "_" * 16)
+        y -= HEADER_ROW
     pdf.setFont(FONT, 9)
     pdf.setFillColor(gray)
     pdf.drawString(MARGIN, MARGIN / 2, header.label)
     pdf.setFillColor("black")
-    return FIRST_LINE_Y
+    return y
 
 
 def make_room(pdf: Canvas, header: Header, y: float, height: float) -> float:
