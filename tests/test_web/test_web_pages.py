@@ -234,6 +234,7 @@ def test_radio_buttons_send_each_choice_s_id_and_show_its_name(
                 (b"none", b" selected", b"Text Only"),
                 (b"number_line", b"", b"Number Lines"),
                 (b"blocks", b"", b"Base-Ten Blocks"),
+                (b"equation_choice", b"", b"Equation multiple choice"),
             ],
         ),
         (
@@ -427,7 +428,8 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
             b'{"strip": ["add", "subtract", "multiply", "divide"], '
             b'"none": ["add", "subtract", "multiply", "divide"], '
             b'"number_line": ["add", "subtract"], '
-            b'"blocks": ["add", "subtract"]}</script>',
+            b'"blocks": ["add", "subtract"], '
+            b'"equation_choice": ["add", "subtract", "multiply", "divide"]}</script>',
         ),
         ("/place-value/", None),
         ("/data-and-graphs/", None),

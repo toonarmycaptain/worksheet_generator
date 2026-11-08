@@ -2,13 +2,14 @@
 Tests for the word problems worksheet PDFs, rendered from hand-built questions.
 
 The question generator is not used. Questions are built by hand, with their wording, and have no
-wrong answers.
+wrong answers, except on equation multiple choice sheets, whose choices are those of
+``equation_choices``. ``reverse_shuffle`` fixes their order by reversing them.
 
 Each case's output is stored as text decoded from the PDF, in one file with a section per case:
 ``goldens/word_problems_worksheet_pdf_expecteds.txt``. The text includes the instruction, the
-key to base-ten blocks, every problem's wording and hint, its representation or work box, the answer
-lines or the answer bank and pattern, the answer key and the page breaks. To regenerate sections
-after an intended change, uncomment the ``write_section`` lines in
+key to base-ten blocks, every problem's wording and hint, its representation or work box, its
+lettered equations, the answer lines or the answer bank and pattern, the answer key and the page
+breaks. To regenerate sections after an intended change, uncomment the ``write_section`` lines in
 ``test_pdf_draws_the_expected_text`` and run it (``-k`` selects cases).
 """
 
@@ -17,12 +18,13 @@ import pytest
 from core.basic_operations.data import BasicOperationQuestionData, Operation
 from core.basic_operations.representation import Representation
 from tests.data import REAL_CASE_SLOTS
-from tests.helpers import GOLDENS, pdf_text, read_sections, render_word_problems
+from tests.helpers import GOLDENS, pdf_text, read_sections, render_word_problems, reverse_shuffle
 
 TITLE = "Word Problems — Strip Diagrams"
 TEXT_ONLY_TITLE = "Word Problems"
 NUMBER_LINE_TITLE = "Word Problems — Number Lines"
 BLOCKS_TITLE = "Word Problems — Base-Ten Blocks"
+EQUATION_CHOICE_TITLE = "Word Problems — Equation multiple choice"
 
 ADD_AND_SUBTRACT = [
     BasicOperationQuestionData(
@@ -160,6 +162,19 @@ FIVE_PROBLEMS = [
         "How many stickers did they collect altogether?",
     )
     for first in (11, 22, 33, 44, 55)
+]
+
+# Six problems of two lines each, with their equations, fill the first page, so the seventh starts
+# a second.
+SEVEN_PROBLEMS = [
+    BasicOperationQuestionData(
+        Operation.ADD,
+        (first, 25),
+        first + 25,
+        f"Maria collected {first} stickers. Jamal collected 25 stickers. "
+        "How many stickers did they collect altogether?",
+    )
+    for first in (11, 22, 33, 44, 55, 66, 77)
 ]
 
 
@@ -500,6 +515,33 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             BLOCKS_TITLE,
             "Sheet A",
         ),
+        # Equation multiple choice: each problem's four equations in rows of two, with no hint
+        # even with hints on, and no box or answer line even with boxes on. The instruction's □
+        # is a square. The key has each equation and its letter.
+        (
+            "equation_choice_all_four_answer_key",
+            ALL_FOUR,
+            Representation.EQUATION_CHOICE,
+            True,
+            False,
+            True,
+            None,
+            True,
+            EQUATION_CHOICE_TITLE,
+            "Sheet A",
+        ),
+        (
+            "equation_choice_seven_problems",
+            SEVEN_PROBLEMS,
+            Representation.EQUATION_CHOICE,
+            True,
+            False,
+            True,
+            None,
+            False,
+            EQUATION_CHOICE_TITLE,
+            "Sheet A",
+        ),
     ],
 )
 def test_pdf_draws_the_expected_text(
@@ -513,15 +555,17 @@ def test_pdf_draws_the_expected_text(
     answer_key: bool,
     title: str,
     label: str,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """
     The decoded PDF matches this case's section of ``word_problems_worksheet_pdf_expecteds.txt``.
 
     One comparison covers the instruction, the wording, the hints, the strips and their splits
     or equal parts, the number lines and their jumps, the base-ten blocks, their key and colours,
-    the answer lines or the answer bank and pattern, the answer key, the page breaks, and the
-    title and label.
+    the lettered equations, the answer lines or the answer bank and pattern, the answer key, the
+    page breaks, and the title and label.
     """
+    reverse_shuffle(monkeypatch)
     actual = pdf_text(
         render_word_problems(
             questions,

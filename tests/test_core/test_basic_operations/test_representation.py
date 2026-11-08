@@ -1,7 +1,7 @@
 """The wording of basic-operation questions: a missing-number equation, how the self-check tiles
 sheet shows a question, and a word problem's strip diagram, number line jumps, hint, instruction
-and sheet title. Also the strip diagrams a problem's own is chosen from, and what each problem
-shows."""
+and sheet title. Also the equations and the strip diagrams a problem's own is chosen from, and
+what each problem shows."""
 
 import pytest
 
@@ -17,6 +17,7 @@ from core.basic_operations.representation import (
     Representation,
     StripDiagram,
     basic_operation_tile_question,
+    equation_choices,
     hint,
     instruction,
     missing_number_equation,
@@ -231,6 +232,103 @@ def test_strip_choices(
 
 
 @pytest.mark.parametrize(
+    ("data", "expected"),
+    [
+        # Addition: the wrong equations subtract, multiply and divide its numbers, with the
+        # smaller number as the groups. Subtracting and dividing put the larger number first.
+        (
+            BasicOperationQuestionData(Operation.ADD, (9, 4), 13),
+            MultipleChoice(
+                (
+                    f"9 \N{DIVISION SIGN} 4 = {BLANK}",
+                    f"4 \N{MULTIPLICATION SIGN} 9 = {BLANK}",
+                    f"9 \N{MINUS SIGN} 4 = {BLANK}",
+                    f"9 + 4 = {BLANK}",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # adding keeps the numbers' order, and the smaller is the groups when it's first too
+        (
+            BasicOperationQuestionData(Operation.ADD, (4, 9), 13),
+            MultipleChoice(
+                (
+                    f"9 \N{DIVISION SIGN} 4 = {BLANK}",
+                    f"4 \N{MULTIPLICATION SIGN} 9 = {BLANK}",
+                    f"9 \N{MINUS SIGN} 4 = {BLANK}",
+                    f"4 + 9 = {BLANK}",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        (
+            BasicOperationQuestionData(Operation.SUBTRACT, (13, 4), 9),
+            MultipleChoice(
+                (
+                    f"13 \N{DIVISION SIGN} 4 = {BLANK}",
+                    f"4 \N{MULTIPLICATION SIGN} 13 = {BLANK}",
+                    f"13 + 4 = {BLANK}",
+                    f"13 \N{MINUS SIGN} 4 = {BLANK}",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # multiplication's groups are its own, its first operand, and 4 ÷ 3 needn't be even
+        (
+            MULTIPLY,
+            MultipleChoice(
+                (
+                    f"4 \N{DIVISION SIGN} 3 = {BLANK}",
+                    f"4 \N{MINUS SIGN} 3 = {BLANK}",
+                    f"3 + 4 = {BLANK}",
+                    f"3 \N{MULTIPLICATION SIGN} 4 = {BLANK}",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # Even when its first operand is the larger: dividing shares 2 into 5 groups, as on the
+        # strip. Subtracting still takes the smaller from the larger.
+        (
+            BasicOperationQuestionData(Operation.MULTIPLY, (5, 2), 10),
+            MultipleChoice(
+                (
+                    f"2 \N{DIVISION SIGN} 5 = {BLANK}",
+                    f"5 \N{MINUS SIGN} 2 = {BLANK}",
+                    f"5 + 2 = {BLANK}",
+                    f"5 \N{MULTIPLICATION SIGN} 2 = {BLANK}",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # division's groups are its own, its second operand
+        (
+            DIVIDE,
+            MultipleChoice(
+                (
+                    f"3 \N{MULTIPLICATION SIGN} 12 = {BLANK}",
+                    f"12 \N{MINUS SIGN} 3 = {BLANK}",
+                    f"12 + 3 = {BLANK}",
+                    f"12 \N{DIVISION SIGN} 3 = {BLANK}",
+                ),
+                frozenset({3}),
+            ),
+        ),
+    ],
+)
+def test_equation_choices(
+    data: BasicOperationQuestionData, expected: MultipleChoice[str], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """
+    A problem's own equation is one choice, and the equations of the other three operations on its
+    numbers are the wrong ones, each the equation of that operation's strip in ``strip_choices``.
+    ``shuffle`` reverses, so the wrong equations come in the reverse of ``Operation``'s order, and
+    the problem's own is last.
+    """
+    reverse_shuffle(monkeypatch)
+    assert equation_choices(data) == expected
+
+
+@pytest.mark.parametrize(
     ("data", "prompt", "expected"),
     [
         (
@@ -344,6 +442,9 @@ def test_number_line_jumps_errors(data: BasicOperationQuestionData, message: str
         (ADD, Representation.BLOCKS, "Combine the blocks to find the total."),
         # the amount to cross out, the second number
         (SUBTRACT, Representation.BLOCKS, "Cross out 25 to subtract."),
+        # equation multiple choice has no hints
+        (ADD, Representation.EQUATION_CHOICE, None),
+        (DIVIDE, Representation.EQUATION_CHOICE, None),
     ],
 )
 def test_hint(
@@ -455,6 +556,19 @@ def test_hint(
             True,
             "Use the base-ten blocks to help you solve each problem.",
         ),
+        # equation multiple choice: the same for any operations
+        (
+            Representation.EQUATION_CHOICE,
+            [Operation.ADD, Operation.SUBTRACT],
+            False,
+            f"Choose the equation that matches each problem. The {BLANK} shows what to find.",
+        ),
+        (
+            Representation.EQUATION_CHOICE,
+            [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
+            False,
+            f"Choose the equation that matches each problem. The {BLANK} shows what to find.",
+        ),
     ],
 )
 def test_instruction(
@@ -486,6 +600,7 @@ def test_operations_name(operations: list[Operation], expected: str) -> None:
         (Representation.NONE, "Word Problems"),
         (Representation.NUMBER_LINE, "Word Problems — Number Lines"),
         (Representation.BLOCKS, "Word Problems — Base-Ten Blocks"),
+        (Representation.EQUATION_CHOICE, "Word Problems — Equation multiple choice"),
     ],
 )
 def test_word_problems_title(representation: Representation, expected: str) -> None:

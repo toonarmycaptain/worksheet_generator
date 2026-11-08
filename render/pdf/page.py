@@ -191,10 +191,13 @@ def correct_letters(response: MultipleChoice[Any]) -> str:
 
 
 def draw_instruction(pdf: Canvas, text: str, y: float) -> float:
-    """Draw a sheet's instruction from baseline ``y``, and return the first problem's baseline."""
+    """
+    Draw a sheet's instruction from baseline ``y``, rendering each ``BLANK`` as an empty square,
+    and return the first problem's baseline.
+    """
     pdf.setFont(FONT, INSTRUCTION_SIZE)
     for line in wrap(text, INSTRUCTION_SIZE, CONTENT_WIDTH):
-        pdf.drawString(MARGIN, y, line)
+        draw_text(pdf, MARGIN, y, line, INSTRUCTION_SIZE)
         y -= INSTRUCTION_LINE_HEIGHT
     return y - INSTRUCTION_GAP
 

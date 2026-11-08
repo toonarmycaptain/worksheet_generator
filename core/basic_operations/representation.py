@@ -1,8 +1,9 @@
 """
 Wording of basic-operation questions: each operation's symbol and name, the equations, and the
-questions as the self-check tiles sheet shows them. Also the representations drawn with word
-problems, with their sheet titles, instructions, hints and diagram descriptions, and the strip
-diagrams a problem's own is chosen from, with what each problem shows.
+questions as the self-check tiles sheet shows them. Also the representations drawn with, or chosen
+for, word problems, with their sheet titles, instructions, hints and diagram descriptions, the
+equations a problem's own is chosen from, and the strip diagrams a problem's own is chosen from,
+with what each problem shows.
 """
 
 from collections.abc import Collection, Sequence
@@ -17,7 +18,7 @@ from core.basic_operations.data import (
     Unknown,
 )
 from core.placevalue.representation import place_value_terms
-from core.question import BLANK, MultipleChoice, Question, multiple_choice
+from core.question import BLANK, FreeResponse, MultipleChoice, Question, multiple_choice
 from core.self_check_tiles import TileQuestion
 
 SYMBOLS = {
@@ -96,14 +97,15 @@ def missing_number_tile_question(data: MissingNumberQuestionData) -> TileQuestio
 
 class Representation(StrEnum):
     """
-    The representation drawn with each word problem on a sheet. Values are stable identifiers for
-    the API and storage.
+    The representation drawn with, or chosen for, each word problem on a sheet. Values are stable
+    identifiers for the API and storage.
     """
 
     STRIP = "strip"  # a part-part-whole strip diagram, or bar model
     NONE = "none"  # text only, with a box to show the work
     NUMBER_LINE = "number_line"  # jumps along an open number line
     BLOCKS = "blocks"  # base-ten blocks
+    EQUATION_CHOICE = "equation_choice"  # its equation, chosen from lettered equations
 
 
 # What each representation is called, in a sheet's title and on the web page
@@ -112,6 +114,7 @@ REPRESENTATION_NAMES = {
     Representation.NONE: "Text Only",
     Representation.NUMBER_LINE: "Number Lines",
     Representation.BLOCKS: "Base-Ten Blocks",
+    Representation.EQUATION_CHOICE: "Equation multiple choice",
 }
 WORD_PROBLEMS_NAME = "Word Problems"
 
@@ -122,6 +125,7 @@ REPRESENTATION_OPERATIONS = {
     Representation.NONE: frozenset(Operation),
     Representation.NUMBER_LINE: frozenset({Operation.ADD, Operation.SUBTRACT}),
     Representation.BLOCKS: frozenset({Operation.ADD, Operation.SUBTRACT}),
+    Representation.EQUATION_CHOICE: frozenset(Operation),
 }
 
 
@@ -223,21 +227,11 @@ def _operation_strip(
 
     Adding makes the numbers the parts, in presentation order. Subtracting makes the larger
     number the whole and the smaller a part. Multiplying makes equal groups, and dividing shares
-    into them. The number of groups is the question's own for multiplication (its first operand)
-    and division (its second), and the smaller number for addition and subtraction. The other
-    number is the size of each group when multiplying, and the whole when dividing.
+    into them, with the numbers ``_groups_and_other`` gives.
     """
     first, second = data.operands
     smaller, larger = sorted(data.operands)
-    match data.operation:
-        case Operation.MULTIPLY:
-            groups, other = first, second
-        case Operation.DIVIDE:
-            groups, other = second, first
-        case Operation.ADD | Operation.SUBTRACT:
-            groups, other = smaller, larger
-        case _:
-            assert_never(data.operation)
+    groups, other = _groups_and_other(data)
     match operation:
         case Operation.ADD:
             return StripDiagram((first, second), None)
@@ -249,6 +243,81 @@ def _operation_strip(
             return EqualStripDiagram(groups, None, other)
         case _:
             assert_never(operation)
+
+
+def _groups_and_other(data: BasicOperationQuestionData) -> tuple[int, int]:
+    """
+    Return the number of equal groups that multiplying or dividing the question's numbers makes,
+    and its other number.
+
+    The number of groups is the question's own for multiplication (its first operand) and
+    division (its second), and the smaller number for addition and subtraction. The other number
+    is the size of each group when multiplying, and the whole when dividing.
+    """
+    first, second = data.operands
+    match data.operation:
+        case Operation.MULTIPLY:
+            return first, second
+        case Operation.DIVIDE:
+            return second, first
+        case Operation.ADD | Operation.SUBTRACT:
+            smaller, larger = sorted(data.operands)
+            return smaller, larger
+        case _:
+            assert_never(data.operation)
+
+
+# A word problem as presented: its equation chosen from lettered equations
+type EquationChoiceQuestion = Question[BasicOperationQuestionData, MultipleChoice[str]]
+# A word problem as presented: answered in writing, or its equation chosen
+type WordProblemQuestion = (
+    Question[BasicOperationQuestionData, FreeResponse] | EquationChoiceQuestion
+)
+
+
+def equation_choices(data: BasicOperationQuestionData) -> MultipleChoice[str]:
+    """
+    Return the equations to choose from for a word problem: its own, and as the wrong choices the
+    equations of the other three operations on its numbers. Each has a ``BLANK`` for what to
+    find, as in 47 + 25 = □, and is the equation of the strip ``strip_choices`` gives for its
+    operation.
+
+    Operands of 2 and 2 give a wrong equation with the problem's answer (2 + 2 and 2 x 2 are
+    both 4), and so does a subtraction or division of 4 by 2 (4 - 2 and 4 ÷ 2 are both 2), so a
+    sheet of these choices leaves them out.
+    """
+    wrong = tuple(
+        _operation_equation(operation, data)
+        for operation in Operation
+        if operation is not data.operation
+    )
+    return multiple_choice((_operation_equation(data.operation, data),), wrong)
+
+
+def _operation_equation(operation: Operation, data: BasicOperationQuestionData) -> str:
+    """
+    Return the equation of ``operation`` on the question's numbers, with a ``BLANK`` for what to
+    find, which is the question's own equation when ``operation`` is its operation.
+
+    Adding keeps presentation order, and subtracting takes the smaller number from the larger.
+    Multiplying is the number of groups times the other number, and dividing is the other number
+    divided by the number of groups, with the numbers ``_groups_and_other`` gives.
+    """
+    first, second = data.operands
+    smaller, larger = sorted(data.operands)
+    groups, other = _groups_and_other(data)
+    match operation:
+        case Operation.ADD:
+            numbers = first, second
+        case Operation.SUBTRACT:
+            numbers = larger, smaller
+        case Operation.MULTIPLY:
+            numbers = groups, other
+        case Operation.DIVIDE:
+            numbers = other, groups
+        case _:
+            assert_never(operation)
+    return f"{numbers[0]} {SYMBOLS[operation]} {numbers[1]} = {BLANK}"
 
 
 STRIP_CHOICE_NAME = (
@@ -347,6 +416,8 @@ def instruction(
             )
         case Representation.BLOCKS:
             return "Use the base-ten blocks to help you solve each problem."
+        case Representation.EQUATION_CHOICE:
+            return f"Choose the equation that matches each problem. The {BLANK} shows what to find."
         case _:
             assert_never(representation)
 
@@ -365,5 +436,7 @@ def hint(data: BasicOperationQuestionData, representation: Representation) -> st
             return _NUMBER_LINE_HINTS[data.operation]
         case Representation.BLOCKS:
             return _BLOCKS_HINTS[data.operation].format(b=data.operands[1])
+        case Representation.EQUATION_CHOICE:
+            return None
         case _:
             assert_never(representation)
