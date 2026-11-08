@@ -9,18 +9,15 @@ it.
 from collections.abc import Mapping, Sequence
 from itertools import pairwise
 from math import ceil, hypot
+from typing import assert_never
 
 from reportlab.lib.colors import Color, HexColor
+from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.pdfgen.canvas import Canvas
 
 from core.base_ten_blocks import BLOCK_NAMES, BaseTenBlocks, BlocksDiagram
 from core.basic_operations.data import Operation
-from core.basic_operations.representation import (
-    SYMBOLS,
-    EqualStripDiagram,
-    StripDiagram,
-    StripUnknown,
-)
+from core.basic_operations.representation import SYMBOLS, EqualStripDiagram, StripDiagram
 from render.pdf.page import BOLD_FONT, FONT, ITALIC_FONT, TEXT_INDENT, TEXT_WIDTH
 
 UNKNOWN_LABEL = "?"
@@ -36,6 +33,8 @@ KNOWN_FILL = HexColor("#cfe3f7")  # light blue
 UNKNOWN_FILL = HexColor("#fef3c7")  # light yellow
 BRACKET_COLOUR = HexColor("#718096")
 OUTLINE_COLOUR = HexColor("#2d3748")
+PART_LABEL_SIZE = 12  # a part's number, unless the part is too narrow for it
+PART_LABEL_PADDING = 4  # the least room left beside a narrow part's number
 
 NUMBER_LINE_WIDTH = TEXT_WIDTH
 NUMBER_LINE_HEIGHT = 74  # from the top of the jump labels to the bottom of the answer caption
@@ -87,21 +86,41 @@ GREY_BLOCKS: BlockColours = {  # black and white, for photocopying
 }
 
 
-def draw_strip(pdf: Canvas, x: float, top: float, strip: StripDiagram) -> None:
+def draw_strip_diagram(
+    pdf: Canvas,
+    x: float,
+    top: float,
+    diagram: StripDiagram | EqualStripDiagram,
+    width: float = STRIP_WIDTH,
+) -> None:
+    """Draw ``diagram`` with ``draw_strip`` or ``draw_equal_strip``, whichever kind it is."""
+    match diagram:
+        case StripDiagram():
+            draw_strip(pdf, x, top, diagram, width)
+        case EqualStripDiagram():
+            draw_equal_strip(pdf, x, top, diagram, width)
+        case _:
+            assert_never(diagram)
+
+
+def draw_strip(
+    pdf: Canvas, x: float, top: float, strip: StripDiagram, width: float = STRIP_WIDTH
+) -> None:
     """
-    Draw ``strip`` with its top-left corner at (``x``, ``top``), ``STRIP_HEIGHT`` high.
+    Draw ``strip`` with its top-left corner at (``x``, ``top``), ``width`` wide and
+    ``STRIP_HEIGHT`` high.
 
     The whole is labelled above a bracket spanning the bar, and the bar is split into the two
     parts in proportion to their values, within ``SMALLEST_SPLIT`` and ``LARGEST_SPLIT``. The
     unknown value is shown as "?", and an unknown part is filled with ``UNKNOWN_FILL``.
     """
     left, right = strip.parts
-    split_x = x + STRIP_WIDTH * min(max(left / strip.whole, SMALLEST_SPLIT), LARGEST_SPLIT)
-    end_x = x + STRIP_WIDTH
-    whole_label = UNKNOWN_LABEL if strip.unknown is StripUnknown.WHOLE else str(strip.whole)
-    right_label = UNKNOWN_LABEL if strip.unknown is StripUnknown.RIGHT else str(right)
+    # An unknown whole is the parts' total.
+    whole = left + (right or 0) if strip.whole is None else strip.whole
+    split_x = x + width * min(max(left / whole, SMALLEST_SPLIT), LARGEST_SPLIT)
+    end_x = x + width
     pdf.saveState()
-    _draw_whole(pdf, x, top, whole_label)
+    _draw_whole(pdf, x, top, _label(strip.whole), width)
 
     # the two parts, side by side
     bottom = top - STRIP_HEIGHT
@@ -109,56 +128,64 @@ def draw_strip(pdf: Canvas, x: float, top: float, strip: StripDiagram) -> None:
     pdf.setLineWidth(1.2)
     pdf.setFillColor(KNOWN_FILL)
     pdf.rect(x, bottom, split_x - x, STRIP_BAR_HEIGHT, stroke=1, fill=1)
-    pdf.setFillColor(UNKNOWN_FILL if strip.unknown is StripUnknown.RIGHT else KNOWN_FILL)
+    pdf.setFillColor(UNKNOWN_FILL if right is None else KNOWN_FILL)
     pdf.rect(split_x, bottom, end_x - split_x, STRIP_BAR_HEIGHT, stroke=1, fill=1)
     pdf.setFillColor("black")
-    pdf.setFont(BOLD_FONT, 12)
-    label_y = bottom + STRIP_BAR_HEIGHT / 2 - 4
+    pdf.setFont(BOLD_FONT, PART_LABEL_SIZE)
+    label_y = bottom + STRIP_BAR_HEIGHT / 2 - PART_LABEL_SIZE / 3
     pdf.drawCentredString((x + split_x) / 2, label_y, str(left))
-    pdf.drawCentredString((split_x + end_x) / 2, label_y, right_label)
+    pdf.drawCentredString((split_x + end_x) / 2, label_y, _label(right))
 
     pdf.restoreState()
 
 
-def draw_equal_strip(pdf: Canvas, x: float, top: float, strip: EqualStripDiagram) -> None:
+def draw_equal_strip(
+    pdf: Canvas, x: float, top: float, strip: EqualStripDiagram, width: float = STRIP_WIDTH
+) -> None:
     """
-    Draw ``strip`` with its top-left corner at (``x``, ``top``), ``STRIP_HEIGHT`` high.
+    Draw ``strip`` with its top-left corner at (``x``, ``top``), ``width`` wide and
+    ``STRIP_HEIGHT`` high.
 
     The whole is labelled above a bracket spanning the bar, as in ``draw_strip``, and the bar is
-    split into ``strip.groups`` equal parts, each labelled with the size. An unknown whole is
-    shown as "?". An unknown size is shown as "?" in every part, and every part is filled with
-    ``UNKNOWN_FILL``.
+    split into ``strip.groups`` equal parts, each labelled with the size, smaller than
+    ``PART_LABEL_SIZE`` if a part is too narrow for it. An unknown whole is shown as "?". An
+    unknown size is shown as "?" in every part, and every part is filled with ``UNKNOWN_FILL``.
     """
-    whole_label = UNKNOWN_LABEL if strip.unknown is StripUnknown.WHOLE else str(strip.whole)
-    size_unknown = strip.unknown is StripUnknown.SIZE
-    part_label = UNKNOWN_LABEL if size_unknown else str(strip.size)
-    part_width = STRIP_WIDTH / strip.groups
+    part_label = _label(strip.size)
+    part_width = width / strip.groups
     pdf.saveState()
-    _draw_whole(pdf, x, top, whole_label)
+    _draw_whole(pdf, x, top, _label(strip.whole), width)
 
     # the equal parts, side by side
     bottom = top - STRIP_HEIGHT
     pdf.setStrokeColor(OUTLINE_COLOUR)
     pdf.setLineWidth(1.2)
-    pdf.setFillColor(UNKNOWN_FILL if size_unknown else KNOWN_FILL)
+    pdf.setFillColor(UNKNOWN_FILL if strip.size is None else KNOWN_FILL)
     for index in range(strip.groups):
         pdf.rect(x + index * part_width, bottom, part_width, STRIP_BAR_HEIGHT, stroke=1, fill=1)
     pdf.setFillColor("black")
-    pdf.setFont(BOLD_FONT, 12)
-    label_y = bottom + STRIP_BAR_HEIGHT / 2 - 4
+    full_width = stringWidth(part_label, BOLD_FONT, PART_LABEL_SIZE)
+    size = min(PART_LABEL_SIZE, PART_LABEL_SIZE * (part_width - PART_LABEL_PADDING) / full_width)
+    pdf.setFont(BOLD_FONT, size)
+    label_y = bottom + STRIP_BAR_HEIGHT / 2 - size / 3
     for index in range(strip.groups):
         pdf.drawCentredString(x + (index + 0.5) * part_width, label_y, part_label)
 
     pdf.restoreState()
 
 
-def _draw_whole(pdf: Canvas, x: float, top: float, label: str) -> None:
-    """Draw a strip's whole, labelled ``label``, above a bracket as wide as the strip."""
-    end_x = x + STRIP_WIDTH
+def _label(value: int | None) -> str:
+    """Return how a strip shows a value: the number, or "?" if it's unknown."""
+    return UNKNOWN_LABEL if value is None else str(value)
+
+
+def _draw_whole(pdf: Canvas, x: float, top: float, label: str, width: float) -> None:
+    """Draw a strip's whole, labelled ``label``, above a bracket ``width`` wide."""
+    end_x = x + width
     bracket_y = top - 12
     pdf.setFillColor("black")
     pdf.setFont(BOLD_FONT, 11)
-    pdf.drawCentredString(x + STRIP_WIDTH / 2, top - 8, f"whole: {label}")
+    pdf.drawCentredString(x + width / 2, top - 8, f"whole: {label}")
     pdf.setStrokeColor(BRACKET_COLOUR)
     pdf.setLineWidth(1)
     pdf.line(x, bracket_y, end_x, bracket_y)

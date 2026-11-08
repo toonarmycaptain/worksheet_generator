@@ -16,6 +16,7 @@ from django.shortcuts import render
 from core.basic_operations.data import Operation
 from core.basic_operations.representation import (
     REPRESENTATION_OPERATIONS,
+    STRIP_CHOICE_NAME,
     Representation,
     operations_name,
     word_problems_title,
@@ -53,6 +54,7 @@ HEADINGS = {
     "basic_operations": "Addition, Subtraction, Multiplication and Division",
     "place_value": "Write the Number in Another Form",
     "word_problems": "Word Problems",
+    "strip_choice": STRIP_CHOICE_NAME,
     "base_ten_blocks": "Base-Ten Blocks",
     "data_graphs": "Read, Complete, Solve",
 }
@@ -135,6 +137,7 @@ def basic_operations(request: HttpRequest) -> HttpResponse:
             {
                 "basic_operations": CORE_KINDS["basic_operations"],
                 "word_problems": CORE_KINDS["word_problems"],
+                "strip_choice": CORE_KINDS["strip_choice"],
                 "base_ten_blocks": CORE_KINDS["base_ten_blocks"],
             }
         ),
