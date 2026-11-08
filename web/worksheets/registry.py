@@ -38,11 +38,16 @@ from core.basic_operations.generator import (
     LARGEST_WORD_PROBLEM_NUMBER,
     MAXIMUM_OPERAND,
     SMALLEST_WORD_PROBLEM_NUMBER,
+    STRIP_CHOICE_LARGEST_GROUPS,
+    STRIP_CHOICE_LARGEST_NUMBER,
+    WORD_PROBLEM_GROUPS,
     count_possible_missing_number_questions,
     count_possible_sheet_questions,
+    count_possible_strip_choice_problems,
     count_possible_word_problems,
     generate_basic_operation_questions,
     generate_missing_number_questions,
+    generate_strip_choice_problems,
     generate_word_problems,
 )
 from core.basic_operations.regrouping import REGROUPING_NAMES, Regrouping
@@ -50,6 +55,8 @@ from core.basic_operations.representation import (
     OPERATION_NAMES,
     REPRESENTATION_NAMES,
     REPRESENTATION_OPERATIONS,
+    STRIP_CHOICE_NAME,
+    Prompt,
     Representation,
     basic_operation_tile_question,
     missing_number_tile_question,
@@ -80,6 +87,7 @@ from render.pdf.data_graphs_worksheet import render_data_graphs_worksheet
 from render.pdf.page import Header
 from render.pdf.place_value_worksheet import render_place_value_worksheet
 from render.pdf.self_check_tiles_worksheet import render_self_check_tiles_worksheet
+from render.pdf.strip_choice_worksheet import render_strip_choice_worksheet
 from render.pdf.word_problems_worksheet import render_word_problems_worksheet
 from worksheet_generator._imported import generate_block_word_problems as block
 from worksheet_generator._imported import generate_data_graph_mc_word_problems as data_graph_mc
@@ -112,6 +120,18 @@ FormChoice = Literal["standard", "expanded", "unit", "expanded_notation", "word"
 OPERATION_LABELS: dict[str, JsonValue] = {
     operation.value: name for operation, name in OPERATION_NAMES.items()
 }
+# A checkbox for each operation; each kind sets which are ticked
+Operations = Annotated[
+    list[OperationChoice],
+    Field(min_length=1, title="Operations", json_schema_extra={"labels": OPERATION_LABELS}),
+]
+# A word-problem sheet's largest number, at least the smallest sum; each kind sets its default
+WordProblemLargestNumber = Annotated[
+    int,
+    Field(
+        ge=2 * SMALLEST_WORD_PROBLEM_NUMBER, le=LARGEST_WORD_PROBLEM_NUMBER, title="Largest number"
+    ),
+]
 # From and To dropdown labels: each form's name, plus mixed
 FORM_CHOICE_LABELS: dict[str, JsonValue] = {
     **{form.value: name for form, name in FORM_NAMES.items()},
@@ -120,6 +140,13 @@ FORM_CHOICE_LABELS: dict[str, JsonValue] = {
 # Representation dropdown labels: each representation's name
 REPRESENTATION_LABELS: dict[str, JsonValue] = {
     representation.value: name for representation, name in REPRESENTATION_NAMES.items()
+}
+PromptChoice = Literal["word_problem", "equation", "both"]  # a Prompt value
+# Show radio labels
+PROMPT_LABELS: dict[str, JsonValue] = {
+    Prompt.WORD_PROBLEM.value: "Word problem",
+    Prompt.EQUATION.value: "Equation",
+    Prompt.BOTH.value: "Both",
 }
 BlocksQuestionChoice = Literal["write_number", "add", "subtract"]  # a BlocksQuestionType value
 # Base-ten blocks questions checkbox labels: each type's name
@@ -221,9 +248,7 @@ class BasicOperationOptions(HeaderOptions):
     problems: Problems = 8
     # Each question's operation is drawn at random from those ticked, or with tiles, dealt out
     # evenly among them.
-    operations: list[OperationChoice] = Field(
-        ["add"], min_length=1, title="Operations", json_schema_extra={"labels": OPERATION_LABELS}
-    )
+    operations: Operations = Field(["add"])
     # Division alone: any value but answer produces fill-in equations, such as □ ÷ 4 = 7
     missing_number: Literal["answer", "dividend", "divisor", "mixed"] = Field(
         "answer", title="Missing number"
@@ -385,20 +410,10 @@ class WordProblemOptions(HeaderOptions):
     title: Title = word_problems_title(Representation.STRIP)
     problems: Problems = 4
     # Each problem's operation is drawn at random from those ticked.
-    operations: list[OperationChoice] = Field(
-        ["add", "subtract"],
-        min_length=1,
-        title="Operations",
-        json_schema_extra={"labels": OPERATION_LABELS},
-    )
+    operations: Operations = Field(["add", "subtract"])
     # Addition and subtraction only: every number in the problem, its answer included. It's at
     # least the smallest sum, which leaves room for a subtraction too.
-    max_number: int = Field(
-        LARGEST_WORD_PROBLEM_NUMBER,
-        ge=2 * SMALLEST_WORD_PROBLEM_NUMBER,
-        le=LARGEST_WORD_PROBLEM_NUMBER,
-        title="Largest number",
-    )
+    max_number: WordProblemLargestNumber = LARGEST_WORD_PROBLEM_NUMBER
     representation: Literal["strip", "none", "number_line", "blocks"] = Field(
         "strip", title="Representation", json_schema_extra={"labels": REPRESENTATION_LABELS}
     )
@@ -467,6 +482,69 @@ class WordProblemOptions(HeaderOptions):
         else:
             limits = "choice of operations and largest number"
         raise _too_many_problems(possible, repeats, limits, {"largest number": raise_to})
+
+
+class StripChoiceOptions(HeaderOptions):
+    """
+    Options for the kind where each problem's strip diagram is chosen from lettered strips, built
+    on the core. There is no seed: every sheet is new.
+    """
+
+    title: Title = STRIP_CHOICE_NAME
+    problems: Problems = 4
+    # Each problem's operation is drawn at random from those ticked.
+    operations: Operations = Field(["add", "subtract", "multiply", "divide"])
+    # Every number in a problem, its answer included: a multiplication's product and a
+    # division's dividend too, unlike on word problems
+    max_number: WordProblemLargestNumber = STRIP_CHOICE_LARGEST_NUMBER
+    # Every strip's equal groups: a multiplication's, a division's, and the smaller number of an
+    # addition or subtraction, which its wrong choices multiply and divide by
+    max_groups: int = Field(
+        STRIP_CHOICE_LARGEST_GROUPS,
+        ge=WORD_PROBLEM_GROUPS[0],
+        le=STRIP_CHOICE_LARGEST_GROUPS,
+        title="Largest number of groups",
+    )
+    prompt: PromptChoice = Field(
+        Prompt.WORD_PROBLEM.value,
+        title="Show",
+        json_schema_extra={"input": "radio", "labels": PROMPT_LABELS},
+    )
+    answer_key: AnswerKey = False
+
+    @model_validator(mode="after")
+    def _enough_different_problems(self) -> Self:
+        # Any one operation may be drawn for every problem.
+        operations = _operations(self.operations)
+
+        def possible_with(largest: int, groups: int) -> int:
+            return count_possible_strip_choice_problems(
+                operations, up_to=self.problems, largest_number=largest, largest_groups=groups
+            )
+
+        possible = possible_with(self.max_number, self.max_groups)
+        if self.problems <= possible:
+            return self
+        # Every operation's count depends on the largest number, and all but subtraction's on the
+        # number of groups too.
+        limits = ["largest number"]
+        if not {Operation.SUBTRACT}.issuperset(operations):
+            limits.append("largest number of groups")
+        raises = {
+            "largest number": _smallest_raise(
+                lambda largest: possible_with(largest, self.max_groups),
+                self.problems,
+                self.max_number,
+                LARGEST_WORD_PROBLEM_NUMBER,
+            ),
+            "largest number of groups": _smallest_raise(
+                lambda groups: possible_with(self.max_number, groups),
+                self.problems,
+                self.max_groups,
+                STRIP_CHOICE_LARGEST_GROUPS,
+            ),
+        }
+        raise _too_many_problems(possible, "repeats", " and ".join(limits), raises)
 
 
 class BaseTenBlocksOptions(HeaderOptions):
@@ -778,6 +856,21 @@ def _word_problems(o: WordProblemOptions, out: BinaryIO) -> None:
     )
 
 
+def _strip_choice(o: StripChoiceOptions, out: BinaryIO) -> None:
+    render_strip_choice_worksheet(
+        questions=generate_strip_choice_problems(
+            o.problems,
+            _operations(o.operations),
+            largest_number=o.max_number,
+            largest_groups=o.max_groups,
+        ),
+        path=out,
+        header=o.header(),
+        answer_key=o.answer_key,
+        prompt=Prompt(o.prompt),
+    )
+
+
 def _base_ten_blocks(o: BaseTenBlocksOptions, out: BinaryIO) -> None:
     render_base_ten_blocks_worksheet(
         questions=generate_blocks_questions(
@@ -977,6 +1070,7 @@ CORE_KINDS: dict[str, CoreKind[Any]] = {
     "basic_operations": CoreKind(BasicOperationOptions, _basic_operations),
     "place_value": CoreKind(PlaceValueOptions, _place_value),
     "word_problems": CoreKind(WordProblemOptions, _word_problems),
+    "strip_choice": CoreKind(StripChoiceOptions, _strip_choice),
     "base_ten_blocks": CoreKind(BaseTenBlocksOptions, _base_ten_blocks),
     "data_graphs": CoreKind(DataGraphsOptions, _data_graphs),
 }

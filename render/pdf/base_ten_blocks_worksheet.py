@@ -40,7 +40,6 @@ from render.pdf.diagrams import (
 from render.pdf.page import (
     BOLD_FONT,
     FIRST_LINE_Y,
-    FONT,
     LINE_HEIGHT,
     MARGIN,
     TEXT_INDENT,
@@ -48,6 +47,8 @@ from render.pdf.page import (
     TEXT_WIDTH,
     Header,
     draw_answer_key,
+    draw_numbered_lines,
+    make_room,
     new_pdf,
     start_page,
     wrap,
@@ -102,9 +103,7 @@ def render_base_ten_blocks_worksheet(
         lines = wrap(blocks_prompt(question.data), TEXT_SIZE, TEXT_WIDTH)
         diagram = blocks_question_diagram(question.data)
         body = _body_height(question.data, diagram, boxes)
-        if y - (len(lines) * LINE_HEIGHT - BLOCKS_RAISE + body) < MARGIN:
-            pdf.showPage()
-            y = start_page(pdf, header)
+        y = make_room(pdf, header, y, len(lines) * LINE_HEIGHT - BLOCKS_RAISE + body)
         y = _draw_question(pdf, number, question.data, lines, diagram, boxes, colours, y)
 
     if slot_of is None:
@@ -153,11 +152,7 @@ def _draw_question(
     Draw one question from its number down, with its answer box if ``boxes`` is set, and return
     the next question's baseline.
     """
-    pdf.setFont(FONT, TEXT_SIZE)
-    pdf.drawString(MARGIN, y, f"{number}.")
-    for line in lines:
-        pdf.drawString(MARGIN + TEXT_INDENT, y, line)
-        y -= LINE_HEIGHT
+    y = draw_numbered_lines(pdf, number, lines, y)
 
     x = MARGIN + TEXT_INDENT
     top = y + BLOCKS_RAISE

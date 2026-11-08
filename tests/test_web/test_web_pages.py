@@ -35,6 +35,7 @@ def test_pages(client: Client) -> None:
             [
                 b"/api/worksheets/basic_operations.pdf",
                 b"/api/worksheets/word_problems.pdf",
+                b"/api/worksheets/strip_choice.pdf",
                 b"/api/worksheets/base_ten_blocks.pdf",
             ],
             [
@@ -71,6 +72,21 @@ def test_pages(client: Client) -> None:
                 b"self_check_tiles",
                 b"tile_pattern",
                 b"tile_pattern",
+                # the strip choice form
+                b"title",
+                b"label",
+                b"name_line",
+                b"problems",
+                b"operations",  # a checkbox for each operation
+                b"operations",
+                b"operations",
+                b"operations",
+                b"max_number",
+                b"max_groups",
+                b"prompt",  # a radio button for each choice
+                b"prompt",
+                b"prompt",
+                b"answer_key",
                 # the base-ten blocks form
                 b"title",
                 b"label",
@@ -415,6 +431,7 @@ def test_the_representation_script_greys_out_the_operations_a_representation_can
             [
                 (b"/api/worksheets/basic_operations.pdf", b" data-check-first"),
                 (b"/api/worksheets/word_problems.pdf", b" data-check-first"),
+                (b"/api/worksheets/strip_choice.pdf", b" data-check-first"),
                 (b"/api/worksheets/base_ten_blocks.pdf", b" data-check-first"),
             ],
         ),
@@ -480,6 +497,14 @@ def test_each_field_carries_its_label_for_the_check_first_messages(client: Clien
         (b"black_and_white", b"Black and white blocks"),
         (b"answer_key", b"Add an answer key page"),
         (b"self_check_tiles", b"Self-check tile answers"),
+        # the strip choice form
+        (b"title", b"Title"),
+        (b"label", b"Label"),
+        (b"name_line", b"Add Name/Date blanks"),
+        (b"problems", b"Problems"),
+        (b"max_number", b"Largest number"),
+        (b"max_groups", b"Largest number of groups"),
+        (b"answer_key", b"Add an answer key page"),
         # the base-ten blocks form
         (b"title", b"Title"),
         (b"label", b"Label"),

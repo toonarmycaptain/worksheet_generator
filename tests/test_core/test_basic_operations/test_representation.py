@@ -14,7 +14,6 @@ from core.basic_operations.representation import (
     EqualStripDiagram,
     Representation,
     StripDiagram,
-    StripUnknown,
     basic_operation_tile_question,
     hint,
     instruction,
@@ -113,30 +112,19 @@ def test_basic_operation_tile_question(
     ("data", "expected"),
     [
         # addition: both parts are shown, and the whole is to find
-        (ADD, StripDiagram((47, 25), 72, StripUnknown.WHOLE)),
+        (ADD, StripDiagram((47, 25), None)),
         # subtraction: the whole and the left part are shown, and the right part is to find
-        (SUBTRACT, StripDiagram((25, 47), 72, StripUnknown.RIGHT)),
+        (SUBTRACT, StripDiagram((25, None), 72)),
         # multiplication: 3 equal parts of 4 are shown, and the whole is to find
-        (MULTIPLY, EqualStripDiagram(3, 4, StripUnknown.WHOLE)),
+        (MULTIPLY, EqualStripDiagram(3, 4, None)),
         # division: the whole is split into 3 equal parts, and their size is to find
-        (DIVIDE, EqualStripDiagram(3, 4, StripUnknown.SIZE)),
+        (DIVIDE, EqualStripDiagram(3, None, 12)),
     ],
 )
 def test_strip_diagram(
     data: BasicOperationQuestionData, expected: StripDiagram | EqualStripDiagram
 ) -> None:
     assert strip_diagram(data) == expected
-
-
-@pytest.mark.parametrize(
-    ("strip", "whole"),
-    [
-        (EqualStripDiagram(3, 4, StripUnknown.WHOLE), 12),
-        (EqualStripDiagram(6, 20, StripUnknown.SIZE), 120),
-    ],
-)
-def test_equal_strip_diagram_whole(strip: EqualStripDiagram, whole: int) -> None:
-    assert strip.whole == whole
 
 
 @pytest.mark.parametrize(

@@ -20,14 +20,12 @@ from reportlab.pdfgen.canvas import Canvas
 from core.base_ten_blocks import blocks_diagram
 from core.basic_operations.data import BasicOperationQuestionData
 from core.basic_operations.representation import (
-    EqualStripDiagram,
     Representation,
-    StripDiagram,
     basic_operation_tile_question,
-    equation,
     hint,
     instruction,
     number_line_jumps,
+    solved_equation,
     stem,
     strip_diagram,
 )
@@ -42,15 +40,12 @@ from render.pdf.diagrams import (
     blocks_height,
     draw_blocks,
     draw_blocks_key,
-    draw_equal_strip,
     draw_number_line,
-    draw_strip,
+    draw_strip_diagram,
 )
 from render.pdf.page import (
     BOLD_FONT,
-    CONTENT_WIDTH,
     FIRST_LINE_Y,
-    FONT,
     ITALIC_FONT,
     LINE_HEIGHT,
     MARGIN,
@@ -59,15 +54,15 @@ from render.pdf.page import (
     TEXT_WIDTH,
     Header,
     draw_answer_key,
+    draw_instruction,
+    draw_numbered_lines,
+    make_room,
     new_pdf,
     start_page,
     wrap,
 )
 from render.pdf.tiles import BANK_HEADING_HEIGHT, draw_tiles, tile_solutions
 
-INSTRUCTION_SIZE = 12
-INSTRUCTION_LINE_HEIGHT = 16
-INSTRUCTION_GAP = 10  # extra space between the instruction and the first problem
 HINT_SIZE = 11
 HINT_LINE_HEIGHT = 15
 REPRESENTATION_RAISE = 6  # a representation's top is this far above the next text baseline
@@ -116,7 +111,7 @@ def render_word_problems_worksheet(
     colours = GREY_BLOCKS if black_and_white else COLOUR_BLOCKS
 
     operations = {question.data.operation for question in questions}
-    y = _draw_instruction(pdf, instruction(representation, operations), start_page(pdf, header))
+    y = draw_instruction(pdf, instruction(representation, operations), start_page(pdf, header))
     if representation is Representation.BLOCKS:
         top = y + REPRESENTATION_RAISE
         draw_blocks_key(pdf, MARGIN, top, colours)
@@ -132,9 +127,7 @@ def render_word_problems_worksheet(
             + _representation_height(question.data, representation)
             + (ANSWER_DROP if answer_lines else 0)
         )
-        if y - height < MARGIN:
-            pdf.showPage()
-            y = start_page(pdf, header)
+        y = make_room(pdf, header, y, height)
         y = _draw_problem(
             pdf,
             number,
@@ -149,9 +142,7 @@ def render_word_problems_worksheet(
         )
 
     if slot_of is None:
-        solutions = [
-            f"{equation(question.data)} = {question.data.answer}" for question in questions
-        ]
+        solutions = [solved_equation(question.data) for question in questions]
     else:
         tile_questions = [basic_operation_tile_question(question.data) for question in questions]
         pdf.showPage()
@@ -163,15 +154,6 @@ def render_word_problems_worksheet(
         draw_answer_key(pdf, header, solutions)
 
     pdf.save()
-
-
-def _draw_instruction(pdf: Canvas, text: str, y: float) -> float:
-    """Draw the sheet's instruction from baseline ``y``, and return the first problem's baseline."""
-    pdf.setFont(FONT, INSTRUCTION_SIZE)
-    for line in wrap(text, INSTRUCTION_SIZE, CONTENT_WIDTH):
-        pdf.drawString(MARGIN, y, line)
-        y -= INSTRUCTION_LINE_HEIGHT
-    return y - INSTRUCTION_GAP
 
 
 def _draw_problem(
@@ -193,11 +175,7 @@ def _draw_problem(
     ``hints`` and ``colours`` are for base-ten blocks: whether to write the note saying how many
     to cross out, and the blocks' colours.
     """
-    pdf.setFont(FONT, TEXT_SIZE)
-    pdf.drawString(MARGIN, y, f"{number}.")
-    for line in lines:
-        pdf.drawString(MARGIN + TEXT_INDENT, y, line)
-        y -= LINE_HEIGHT
+    y = draw_numbered_lines(pdf, number, lines, y)
     pdf.setFont(ITALIC_FONT, HINT_SIZE)
     pdf.setFillColor(gray)
     for line in hint_lines:
@@ -249,14 +227,7 @@ def _draw_representation(
     """
     match representation:
         case Representation.STRIP:
-            diagram = strip_diagram(data)
-            match diagram:
-                case StripDiagram():
-                    draw_strip(pdf, x, top, diagram)
-                case EqualStripDiagram():
-                    draw_equal_strip(pdf, x, top, diagram)
-                case _:
-                    assert_never(diagram)
+            draw_strip_diagram(pdf, x, top, strip_diagram(data))
         case Representation.NONE:
             _draw_work_box(pdf, x, top)
         case Representation.NUMBER_LINE:

@@ -1,7 +1,8 @@
 """
 Wording of basic-operation questions: each operation's symbol and name, the equations, and the
 questions as the self-check tiles sheet shows them. Also the representations drawn with word
-problems, with their sheet titles, instructions, hints and diagram descriptions.
+problems, with their sheet titles, instructions, hints and diagram descriptions, and the strip
+diagrams a problem's own is chosen from, with what each problem shows.
 """
 
 from collections.abc import Collection, Sequence
@@ -16,7 +17,7 @@ from core.basic_operations.data import (
     Unknown,
 )
 from core.placevalue.representation import place_value_terms
-from core.question import BLANK
+from core.question import BLANK, MultipleChoice, Question, multiple_choice
 from core.self_check_tiles import TileQuestion
 
 SYMBOLS = {
@@ -55,14 +56,22 @@ def stem(data: BasicOperationQuestionData) -> str:
     """Return the question's text: its word-problem wording, or its equation followed by "= ?"."""
     if data.question_text is not None:
         return data.question_text
+    return _equation_stem(data)
+
+
+def _equation_stem(data: BasicOperationQuestionData) -> str:
+    """Return the question's equation followed by "= ?", as in 47 + 25 = ?."""
     return f"{equation(data)} = ?"
+
+
+def solved_equation(data: BasicOperationQuestionData) -> str:
+    """Return the question's equation with its answer, as in 47 + 25 = 72."""
+    return f"{equation(data)} = {data.answer}"
 
 
 def basic_operation_tile_question(data: BasicOperationQuestionData) -> TileQuestion:
     """Convert the question to a ``TileQuestion`` for the self-check tiles sheet."""
-    return TileQuestion(
-        prompt=stem(data), answer=str(data.answer), solution=f"{equation(data)} = {data.answer}"
-    )
+    return TileQuestion(prompt=stem(data), answer=str(data.answer), solution=solved_equation(data))
 
 
 def missing_number_equation(data: MissingNumberQuestionData, missing: int | str = BLANK) -> str:
@@ -136,47 +145,41 @@ _STRIP_HINTS = {
 }
 
 
-class StripUnknown(StrEnum):
-    """The value of a strip diagram that is unknown, and shown as "?"."""
-
-    WHOLE = "whole"  # the total, labelled above the bar: an addition's sum, or a product
-    RIGHT = "right"  # the right-hand part: a subtraction's difference
-    SIZE = "size"  # every part of an equal-groups strip: a division's quotient
-
-
 @dataclass(frozen=True)
 class StripDiagram:
     """
     A part-part-whole strip diagram: a bar split into two ``parts``, which together make
     ``whole``.
 
-    Every value is stored, the unknown one included, so that a renderer can size the parts in
-    proportion. ``unknown`` identifies the value to show as "?". 47 + 25 is
-    ``((47, 25), 72, WHOLE)``, and 72 - 25 is ``((25, 47), 72, RIGHT)``.
+    The unknown value is ``None``, and shown as "?". 47 + 25 is ``((47, 25), None)``, and
+    72 - 25 is ``((25, None), 72)``. A wrong choice can be impossible: ``((47, None), 25)`` has
+    a part larger than the whole.
     """
 
-    parts: tuple[int, int]
-    whole: int
-    unknown: StripUnknown
+    parts: tuple[int, int | None]
+    whole: int | None
 
 
 @dataclass(frozen=True)
 class EqualStripDiagram:
     """
-    An equal-groups strip diagram: a bar split into ``groups`` equal parts, each of ``size``.
+    An equal-groups strip diagram: a bar split into ``groups`` equal parts, each of ``size``,
+    which together make ``whole``.
 
-    ``unknown`` identifies the value to show as "?": the whole, or the size, which every part
-    shows. 3 groups of 4 is ``(3, 4, WHOLE)``, and 12 shared into 3 groups is ``(3, 4, SIZE)``.
+    The unknown value is ``None``, and shown as "?": an unknown size in every part. 3 groups of 4
+    is ``(3, 4, None)``, and 12 shared into 3 groups is ``(3, None, 12)``. A wrong choice can be
+    impossible: ``(3, None, 4)`` shares 4 into 3 equal groups.
     """
 
     groups: int
-    size: int
-    unknown: StripUnknown
+    size: int | None
+    whole: int | None
 
-    @property
-    def whole(self) -> int:
-        """The total of the equal parts, labelled above the bar."""
-        return self.groups * self.size
+
+# A word problem or equation as presented: its strip diagram chosen from lettered strips
+type StripChoiceQuestion = Question[
+    BasicOperationQuestionData, MultipleChoice[StripDiagram | EqualStripDiagram]
+]
 
 
 def strip_diagram(data: BasicOperationQuestionData) -> StripDiagram | EqualStripDiagram:
@@ -189,18 +192,93 @@ def strip_diagram(data: BasicOperationQuestionData) -> StripDiagram | EqualStrip
     and asks for the whole. Division shows its first operand as the whole, split into its second
     operand's number of equal parts, and asks for their size.
     """
+    return _operation_strip(data.operation, data)
+
+
+def strip_choices(
+    data: BasicOperationQuestionData,
+) -> MultipleChoice[StripDiagram | EqualStripDiagram]:
+    """
+    Return the strip diagrams to choose from for a question: its own, and as the wrong choices
+    the strips of the other three operations on its numbers. So an addition's wrong choices
+    subtract, multiply and divide its numbers instead.
+
+    Operands of 2 and 2 give two strips that look the same, 2 + 2 and 2 groups of 2, so a sheet
+    of these choices leaves them out.
+    """
+    wrong = tuple(
+        _operation_strip(operation, data)
+        for operation in Operation
+        if operation is not data.operation
+    )
+    return multiple_choice((strip_diagram(data),), wrong)
+
+
+def _operation_strip(
+    operation: Operation, data: BasicOperationQuestionData
+) -> StripDiagram | EqualStripDiagram:
+    """
+    Return the strip diagram of ``operation`` on the question's numbers, which is the question's
+    own strip diagram when ``operation`` is its operation.
+
+    Adding makes the numbers the parts, in presentation order. Subtracting makes the larger
+    number the whole and the smaller a part. Multiplying makes equal groups, and dividing shares
+    into them. The number of groups is the question's own for multiplication (its first operand)
+    and division (its second), and the smaller number for addition and subtraction. The other
+    number is the size of each group when multiplying, and the whole when dividing.
+    """
     first, second = data.operands
+    smaller, larger = sorted(data.operands)
     match data.operation:
-        case Operation.ADD:
-            return StripDiagram((first, second), data.answer, StripUnknown.WHOLE)
-        case Operation.SUBTRACT:
-            return StripDiagram((second, data.answer), first, StripUnknown.RIGHT)
         case Operation.MULTIPLY:
-            return EqualStripDiagram(first, second, StripUnknown.WHOLE)
+            groups, other = first, second
         case Operation.DIVIDE:
-            return EqualStripDiagram(second, data.answer, StripUnknown.SIZE)
+            groups, other = second, first
+        case Operation.ADD | Operation.SUBTRACT:
+            groups, other = smaller, larger
         case _:
             assert_never(data.operation)
+    match operation:
+        case Operation.ADD:
+            return StripDiagram((first, second), None)
+        case Operation.SUBTRACT:
+            return StripDiagram((smaller, None), larger)
+        case Operation.MULTIPLY:
+            return EqualStripDiagram(groups, other, None)
+        case Operation.DIVIDE:
+            return EqualStripDiagram(groups, None, other)
+        case _:
+            assert_never(operation)
+
+
+STRIP_CHOICE_NAME = "Pick the Strip Diagram"  # a strip-choice sheet's title unless one is given
+STRIP_CHOICE_INSTRUCTION = (
+    "Choose the strip diagram that matches each problem. The ? shows what to find."
+)
+
+
+class Prompt(StrEnum):
+    """What each problem on a sheet shows. Values are stable identifiers for the API and storage."""
+
+    WORD_PROBLEM = "word_problem"  # its wording
+    EQUATION = "equation"  # its equation, as in 47 + 25 = ?
+    BOTH = "both"  # its wording, then its equation
+
+
+def prompt_texts(data: BasicOperationQuestionData, prompt: Prompt) -> tuple[str, ...]:
+    """
+    Return the paragraphs a problem shows for ``prompt``: its wording, its equation followed by
+    "= ?", or both, in that order.
+    """
+    match prompt:
+        case Prompt.WORD_PROBLEM:
+            return (stem(data),)
+        case Prompt.EQUATION:
+            return (_equation_stem(data),)
+        case Prompt.BOTH:
+            return stem(data), _equation_stem(data)
+        case _:
+            assert_never(prompt)
 
 
 _NUMBER_LINE_HINTS = {

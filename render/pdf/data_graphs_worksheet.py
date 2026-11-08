@@ -31,7 +31,6 @@ from core.discrete_data.representation import (
 from render.pdf.data_displays import NumberListStyle, draw_display
 from render.pdf.page import (
     BOLD_FONT,
-    CONTENT_WIDTH,
     FONT,
     MARGIN,
     PAGE_WIDTH,
@@ -40,14 +39,13 @@ from render.pdf.page import (
     TEXT_WIDTH,
     Header,
     draw_answer_key,
+    draw_instruction,
+    make_room,
     new_pdf,
     start_page,
     wrap,
 )
 
-INSTRUCTION_SIZE = 12
-INSTRUCTION_LINE_HEIGHT = 16
-INSTRUCTION_GAP = 10  # extra space between the instruction and the first problem
 INTRO_SIZE = 12
 INTRO_LINE_HEIGHT = 15
 PART_SIZE = 11
@@ -93,7 +91,7 @@ def render_data_graphs_worksheet(
     two answers with their work. ``path`` is a filename or a binary file-like object.
     """
     pdf = new_pdf(path, header.title)
-    y = _draw_instruction(pdf, start_page(pdf, header))
+    y = draw_instruction(pdf, INSTRUCTION, start_page(pdf, header))
     for number, problem in enumerate(problems, start=1):
         intro_lines = wrap(intro(problem.summarize.data), INTRO_SIZE, TEXT_WIDTH)
         task_lines = wrap(stem(problem.summarize.data), PART_SIZE, TEXT_WIDTH - PART_INDENT)
@@ -109,23 +107,12 @@ def render_data_graphs_worksheet(
             + PANEL_DROP
             + sum(_part_height(lines) for lines in part_lines)
         )
-        if y - height < MARGIN:
-            pdf.showPage()
-            y = start_page(pdf, header)
+        y = make_room(pdf, header, y, height)
         y = _draw_problem(pdf, number, problem, intro_lines, task_lines, part_lines, list_style, y)
 
     if answer_key:
         draw_answer_key(pdf, header, [_solution(problem) for problem in problems])
     pdf.save()
-
-
-def _draw_instruction(pdf: Canvas, y: float) -> float:
-    """Draw the sheet's instruction from baseline ``y``, and return the first problem's baseline."""
-    pdf.setFont(FONT, INSTRUCTION_SIZE)
-    for line in wrap(INSTRUCTION, INSTRUCTION_SIZE, CONTENT_WIDTH):
-        pdf.drawString(MARGIN, y, line)
-        y -= INSTRUCTION_LINE_HEIGHT
-    return y - INSTRUCTION_GAP
 
 
 def _part_height(lines: Sequence[str]) -> float:

@@ -1,21 +1,23 @@
 """
 Page layout shared by every PDF worksheet.
 
-Defines the page geometry and fonts, and draws the header and footer, wrapped text and the
-answer key pages.
+Defines the page geometry and fonts, and draws the header and footer, a sheet's instruction,
+wrapped text, a problem's number and text, and the answer key pages. Also starts a new page when
+a problem won't fit, and letters multiple-choice options.
 """
 
 import re
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, replace
-from typing import BinaryIO
+from string import ascii_uppercase
+from typing import Any, BinaryIO
 
 from reportlab.lib.colors import gray
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.pdfgen.canvas import Canvas
 
-from core.question import BLANK
+from core.question import BLANK, MultipleChoice
 
 PAGE_WIDTH, PAGE_HEIGHT = letter
 MARGIN = 54
@@ -28,6 +30,9 @@ ITALIC_FONT = "Helvetica-Oblique"  # same widths as FONT, so wrap measures it co
 TEXT_SIZE = 14
 LINE_HEIGHT = 20
 FIRST_LINE_Y: float = PAGE_HEIGHT - MARGIN - 60
+INSTRUCTION_SIZE = 12
+INSTRUCTION_LINE_HEIGHT = 16
+INSTRUCTION_GAP = 10  # extra space between the instruction and the first problem
 
 # A word with its preceding whitespace. A bracketed term, such as (3 x 10,000), is one word.
 _WORD = re.compile(r"(\s*)(\([^)]*\)|\S+)")
@@ -149,6 +154,49 @@ def start_page(pdf: Canvas, header: Header) -> float:
     pdf.drawString(MARGIN, MARGIN / 2, header.label)
     pdf.setFillColor("black")
     return FIRST_LINE_Y
+
+
+def make_room(pdf: Canvas, header: Header, y: float, height: float) -> float:
+    """
+    Return the baseline to draw something ``height`` high from: ``y`` if it fits above the
+    bottom margin, and otherwise the first baseline of a new page.
+    """
+    if y - height < MARGIN:
+        pdf.showPage()
+        return start_page(pdf, header)
+    return y
+
+
+def draw_numbered_lines(pdf: Canvas, number: int, lines: Iterable[str], y: float) -> float:
+    """
+    Draw a problem's ``number`` at the margin and its ``lines`` beside it, one under another from
+    baseline ``y``, and return the baseline below the last line.
+    """
+    pdf.setFont(FONT, TEXT_SIZE)
+    pdf.drawString(MARGIN, y, f"{number}.")
+    for line in lines:
+        pdf.drawString(MARGIN + TEXT_INDENT, y, line)
+        y -= LINE_HEIGHT
+    return y
+
+
+def choice_label(index: int) -> str:
+    """Return the label of a multiple-choice option at ``index``: "A)", "B)" and so on."""
+    return f"{ascii_uppercase[index]})"
+
+
+def correct_letters(response: MultipleChoice[Any]) -> str:
+    """Return the correct options' letters, as an answer key gives them: "B", or "A, C"."""
+    return ", ".join(ascii_uppercase[index] for index in sorted(response.correct_indexes))
+
+
+def draw_instruction(pdf: Canvas, text: str, y: float) -> float:
+    """Draw a sheet's instruction from baseline ``y``, and return the first problem's baseline."""
+    pdf.setFont(FONT, INSTRUCTION_SIZE)
+    for line in wrap(text, INSTRUCTION_SIZE, CONTENT_WIDTH):
+        pdf.drawString(MARGIN, y, line)
+        y -= INSTRUCTION_LINE_HEIGHT
+    return y - INSTRUCTION_GAP
 
 
 def draw_answer_key(pdf: Canvas, header: Header, solutions: Iterable[str]) -> None:

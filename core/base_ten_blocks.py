@@ -16,7 +16,7 @@ from typing import Literal, assert_never
 
 from core.basic_operations.data import BasicOperationQuestionData, Operation
 from core.basic_operations.regrouping import Regrouping, fits_regrouping
-from core.basic_operations.representation import OPERATION_NAMES, equation
+from core.basic_operations.representation import OPERATION_NAMES, equation, solved_equation
 from core.placevalue.data import PlaceValueForm, PlaceValueQuestionData
 from core.placevalue.representation import format_number
 from core.question import FreeResponse, Question
@@ -174,7 +174,7 @@ def blocks_solution(data: BlocksQuestionData) -> str:
         case PlaceValueQuestionData():
             return format_number(data.answer, PlaceValueForm.STANDARD)
         case BasicOperationQuestionData():
-            return f"{equation(data)} = {data.answer}"
+            return solved_equation(data)
         case _:
             assert_never(data)
 
