@@ -219,8 +219,8 @@ def test_radio_buttons_send_each_choice_s_id_and_show_its_name(
             "/basic-operations/",
             "representation",
             [
-                (b"strip", b" selected", b"Strip Diagrams"),
-                (b"none", b"", b"Text Only"),
+                (b"strip", b"", b"Strip Diagrams"),
+                (b"none", b" selected", b"Text Only"),
                 (b"number_line", b"", b"Number Lines"),
                 (b"blocks", b"", b"Base-Ten Blocks"),
             ],
@@ -257,7 +257,7 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
     """
     Each dropdown option sends its ID and displays its name, with the expected default selected.
 
-    Representation defaults to strip diagrams, and also offers text only. From defaults to standard
+    Representation defaults to text only, and also offers strip diagrams. From defaults to standard
     and To to expanded, and each also offers mixed.
     """
     content = client.get(url).content
