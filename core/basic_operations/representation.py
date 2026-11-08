@@ -317,10 +317,13 @@ _BLOCKS_HINTS = {
 }
 
 
-def instruction(representation: Representation, operations: Collection[Operation]) -> str:
+def instruction(
+    representation: Representation, operations: Collection[Operation], work_box: bool
+) -> str:
     """
     Return the instruction printed under a word-problem sheet's header, for its representation and
-    the operations of its problems.
+    the operations of its problems. ``work_box`` is for text only: whether each problem has a box
+    to show the work in.
     """
     match representation:
         case Representation.STRIP:
@@ -334,7 +337,9 @@ def instruction(representation: Representation, operations: Collection[Operation
                 makes = "two parts make a whole"
             return f"Use the strip diagram (bar model): {makes}. The ? shows what to find."
         case Representation.NONE:
-            return "Read each problem. Show your work in the box."
+            if work_box:
+                return "Read each problem. Show your work in the box."
+            return "Read each problem and solve it."
         case Representation.NUMBER_LINE:
             return (
                 "Use the number line. Start at the first number and jump by hundreds, tens, and "

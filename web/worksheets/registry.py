@@ -418,6 +418,7 @@ class WordProblemOptions(HeaderOptions):
         "none", title="Representation", json_schema_extra={"labels": REPRESENTATION_LABELS}
     )
     no_hints: bool = Field(False, title="Leave out the hints")  # text only has none
+    work_box: bool = Field(False, title="Include working out space")  # text only
     black_and_white: bool = Field(False, title="Black and white blocks")  # for photocopying
     answer_key: AnswerKey = False
     # Tiles replace the answer lines with an answer bank page.
@@ -853,6 +854,7 @@ def _word_problems(o: WordProblemOptions, out: BinaryIO) -> None:
         hints=not o.no_hints,
         slot_of=_tile_slots(o) if o.self_check_tiles else None,
         black_and_white=o.black_and_white,
+        work_box=o.work_box,
     )
 
 

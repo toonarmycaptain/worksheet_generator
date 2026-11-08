@@ -183,6 +183,25 @@
     window.addEventListener("pageshow", showBlackAndWhite);
     showBlackAndWhite();
 
+    // Only text only has working out space, so its box is hidden, and disabled, for the other
+    // representations.
+    function showWorkBox() {
+      const show = representation.value === "none";
+      form.elements.work_box.disabled = !show;
+      // the page's CSS shows labels as blocks, which would win over the hidden attribute
+      form.elements.work_box.closest("label").style.display = show ? "" : "none";
+    }
+    representation.addEventListener("change", showWorkBox);
+    window.addEventListener("pageshow", showWorkBox);
+    showWorkBox();
+
+    // Ticking the tiles unchecks the working out space, which can be ticked again.
+    form.elements.self_check_tiles.addEventListener("change", () => {
+      if (form.elements.self_check_tiles.checked) {
+        form.elements.work_box.checked = false;
+      }
+    });
+
     // The operations the representation can't show, such as multiplication on a number line, are
     // greyed out, so they aren't sent. Their ticks come back with a representation that can show
     // them.

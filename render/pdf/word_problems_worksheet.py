@@ -5,9 +5,9 @@ key page.
 The first page has the representation's instruction under its header, and for base-ten blocks a key
 to the blocks. Each problem has its number and wording, a hint if the representation has one and
 hints aren't turned off, the representation, and an answer line. A text-only problem's
-representation is a box to show the work in. A number line's last box is its answer, so it has no
-answer line. A sheet for the self-check tiles case has no answer lines, and ends with a page for the
-answer bank and pattern.
+representation is a box to show the work in, unless the boxes are left out. A number line's last
+box is its answer, so it has no answer line. A sheet for the self-check tiles case has no answer
+lines, and ends with a page for the answer bank and pattern.
 """
 
 from collections.abc import Sequence
@@ -90,6 +90,7 @@ def render_word_problems_worksheet(
     hints: bool,
     slot_of: Sequence[int] | None,
     black_and_white: bool = False,
+    work_box: bool = False,
 ) -> None:
     """
     Render word problems, each drawn with ``representation``, and the answer key if requested, to
@@ -97,9 +98,9 @@ def render_word_problems_worksheet(
 
     Each problem's hint is left out when ``hints`` is False, and so is the note beside base-ten
     blocks saying how many to cross out. Base-ten blocks are grey when ``black_and_white`` is
-    set. A problem that would run past the bottom margin starts on the next page. The answer key
-    gives each problem's equation and answer. ``path`` is a filename or a binary file-like
-    object.
+    set. Text-only problems have no box to show the work in when ``work_box`` is False. A problem
+    that would run past the bottom margin starts on the next page. The answer key gives each
+    problem's equation and answer. ``path`` is a filename or a binary file-like object.
 
     With ``slot_of``, the sheet is for the self-check tiles case: the problems have no answer
     lines, and the answer bank and pattern follow on a page of their own. ``slot_of[i]`` is the
@@ -111,7 +112,9 @@ def render_word_problems_worksheet(
     colours = GREY_BLOCKS if black_and_white else COLOUR_BLOCKS
 
     operations = {question.data.operation for question in questions}
-    y = draw_instruction(pdf, instruction(representation, operations), start_page(pdf, header))
+    y = draw_instruction(
+        pdf, instruction(representation, operations, work_box), start_page(pdf, header)
+    )
     if representation is Representation.BLOCKS:
         top = y + REPRESENTATION_RAISE
         draw_blocks_key(pdf, MARGIN, top, colours)
@@ -124,7 +127,7 @@ def render_word_problems_worksheet(
             len(lines) * LINE_HEIGHT
             + len(hint_lines) * HINT_LINE_HEIGHT
             - REPRESENTATION_RAISE
-            + _representation_height(question.data, representation)
+            + _representation_height(question.data, representation, work_box)
             + (ANSWER_DROP if answer_lines else 0)
         )
         y = make_room(pdf, header, y, height)
@@ -138,6 +141,7 @@ def render_word_problems_worksheet(
             answer_lines,
             hints,
             colours,
+            work_box,
             y,
         )
 
@@ -166,6 +170,7 @@ def _draw_problem(
     answer_line: bool,
     hints: bool,
     colours: BlockColours,
+    work_box: bool,
     y: float,
 ) -> float:
     """
@@ -173,7 +178,8 @@ def _draw_problem(
     ``answer_line`` is set, and return the y below it.
 
     ``hints`` and ``colours`` are for base-ten blocks: whether to write the note saying how many
-    to cross out, and the blocks' colours.
+    to cross out, and the blocks' colours. ``work_box`` is for text only: whether to draw the box
+    to show the work in.
     """
     y = draw_numbered_lines(pdf, number, lines, y)
     pdf.setFont(ITALIC_FONT, HINT_SIZE)
@@ -184,9 +190,11 @@ def _draw_problem(
     pdf.setFillColor("black")
 
     top = y + REPRESENTATION_RAISE
-    _draw_representation(pdf, data, representation, MARGIN + TEXT_INDENT, top, hints, colours)
+    _draw_representation(
+        pdf, data, representation, MARGIN + TEXT_INDENT, top, hints, colours, work_box
+    )
 
-    bottom = top - _representation_height(data, representation)
+    bottom = top - _representation_height(data, representation, work_box)
     if answer_line:
         bottom -= ANSWER_DROP
         pdf.setFont(BOLD_FONT, TEXT_SIZE)
@@ -197,13 +205,13 @@ def _draw_problem(
 
 
 def _representation_height(
-    data: BasicOperationQuestionData, representation: Representation
+    data: BasicOperationQuestionData, representation: Representation, work_box: bool
 ) -> float:
     match representation:
         case Representation.STRIP:
             return STRIP_HEIGHT
         case Representation.NONE:
-            return WORK_BOX_HEIGHT
+            return WORK_BOX_HEIGHT if work_box else 0
         case Representation.NUMBER_LINE:
             return NUMBER_LINE_HEIGHT
         case Representation.BLOCKS:
@@ -220,16 +228,18 @@ def _draw_representation(
     top: float,
     hints: bool,
     colours: BlockColours,
+    work_box: bool,
 ) -> None:
     """
     Draw the problem's representation with its top-left corner at (``x``, ``top``). ``hints`` and
-    ``colours`` are for base-ten blocks, as in ``_draw_problem``.
+    ``colours`` are for base-ten blocks, and ``work_box`` for text only, as in ``_draw_problem``.
     """
     match representation:
         case Representation.STRIP:
             draw_strip_diagram(pdf, x, top, strip_diagram(data))
         case Representation.NONE:
-            _draw_work_box(pdf, x, top)
+            if work_box:
+                _draw_work_box(pdf, x, top)
         case Representation.NUMBER_LINE:
             draw_number_line(pdf, x, top, data.operands[0], number_line_jumps(data))
         case Representation.BLOCKS:

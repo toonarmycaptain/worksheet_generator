@@ -202,38 +202,44 @@ def test_hint(
 
 
 @pytest.mark.parametrize(
-    ("representation", "operations", "expected"),
+    ("representation", "operations", "work_box", "expected"),
     [
         (
             Representation.STRIP,
             [Operation.ADD, Operation.SUBTRACT],
+            True,
             "Use the strip diagram (bar model): two parts make a whole. The ? shows what to find.",
         ),
         (
             Representation.STRIP,
             [Operation.ADD],
+            True,
             "Use the strip diagram (bar model): two parts make a whole. The ? shows what to find.",
         ),
         (
             Representation.STRIP,
             [Operation.SUBTRACT],
+            True,
             "Use the strip diagram (bar model): two parts make a whole. The ? shows what to find.",
         ),
         (
             Representation.STRIP,
             [Operation.MULTIPLY, Operation.DIVIDE],
+            True,
             "Use the strip diagram (bar model): equal groups make a whole. "
             "The ? shows what to find.",
         ),
         (
             Representation.STRIP,
             [Operation.MULTIPLY],
+            True,
             "Use the strip diagram (bar model): equal groups make a whole. "
             "The ? shows what to find.",
         ),
         (
             Representation.STRIP,
             [Operation.DIVIDE],
+            True,
             "Use the strip diagram (bar model): equal groups make a whole. "
             "The ? shows what to find.",
         ),
@@ -241,12 +247,14 @@ def test_hint(
         (
             Representation.STRIP,
             [Operation.SUBTRACT, Operation.MULTIPLY],
+            True,
             "Use the strip diagram (bar model): parts or equal groups make a whole. "
             "The ? shows what to find.",
         ),
         (
             Representation.STRIP,
             [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
+            True,
             "Use the strip diagram (bar model): parts or equal groups make a whole. "
             "The ? shows what to find.",
         ),
@@ -254,41 +262,54 @@ def test_hint(
         (
             Representation.NONE,
             [Operation.ADD, Operation.SUBTRACT],
+            True,
             "Read each problem. Show your work in the box.",
         ),
         (
             Representation.NONE,
             [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
+            True,
             "Read each problem. Show your work in the box.",
+        ),
+        # without the work boxes, no box to mention
+        (
+            Representation.NONE,
+            [Operation.ADD, Operation.SUBTRACT],
+            False,
+            "Read each problem and solve it.",
         ),
         # number line: the same for addition, subtraction or both
         (
             Representation.NUMBER_LINE,
             [Operation.ADD, Operation.SUBTRACT],
+            True,
             "Use the number line. Start at the first number and jump by hundreds, tens, and ones.",
         ),
         (
             Representation.NUMBER_LINE,
             [Operation.SUBTRACT],
+            True,
             "Use the number line. Start at the first number and jump by hundreds, tens, and ones.",
         ),
         # base-ten blocks: the same for addition, subtraction or both
         (
             Representation.BLOCKS,
             [Operation.ADD, Operation.SUBTRACT],
+            True,
             "Use the base-ten blocks to help you solve each problem.",
         ),
         (
             Representation.BLOCKS,
             [Operation.ADD],
+            True,
             "Use the base-ten blocks to help you solve each problem.",
         ),
     ],
 )
 def test_instruction(
-    representation: Representation, operations: list[Operation], expected: str
+    representation: Representation, operations: list[Operation], work_box: bool, expected: str
 ) -> None:
-    assert instruction(representation, operations) == expected
+    assert instruction(representation, operations, work_box) == expected
 
 
 @pytest.mark.parametrize(
