@@ -24,7 +24,7 @@ import pytest
 
 from core.base_ten_blocks import BlocksQuestionData
 from core.basic_operations.data import BasicOperationQuestionData, MissingNumberQuestionData
-from core.basic_operations.representation import Representation
+from core.basic_operations.representation import Prompt, Representation, strip_choices
 from core.discrete_data.data import (
     CategoricalDataProblemData,
     DiscreteDataProblem,
@@ -44,6 +44,7 @@ from render.pdf.data_graphs_worksheet import render_data_graphs_worksheet
 from render.pdf.page import Header
 from render.pdf.place_value_worksheet import render_place_value_worksheet
 from render.pdf.self_check_tiles_worksheet import render_self_check_tiles_worksheet
+from render.pdf.strip_choice_worksheet import render_strip_choice_worksheet
 from render.pdf.word_problems_worksheet import render_word_problems_worksheet
 
 GOLDENS = Path(__file__).parent / "goldens"
@@ -332,6 +333,26 @@ def render_word_problems(
         slot_of=slot_of,
         black_and_white=black_and_white,
         work_box=work_box,
+    )
+    return out.getvalue()
+
+
+def render_strip_choice(
+    questions: list[BasicOperationQuestionData],
+    prompt: Prompt,
+    answer_key: bool,
+    title: str,
+    label: str,
+    name_line: bool = True,
+) -> bytes:
+    """Render the strip choice sheet, each question's choices made by ``strip_choices``."""
+    out = BytesIO()
+    render_strip_choice_worksheet(
+        questions=[Question(data, strip_choices(data)) for data in questions],
+        path=out,
+        header=Header(title=title, label=label, name_line=name_line),
+        answer_key=answer_key,
+        prompt=prompt,
     )
     return out.getvalue()
 

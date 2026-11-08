@@ -1,6 +1,7 @@
 """The wording of basic-operation questions: a missing-number equation, how the self-check tiles
 sheet shows a question, and a word problem's strip diagram, number line jumps, hint, instruction
-and sheet title."""
+and sheet title. Also the strip diagrams a problem's own is chosen from, and what each problem
+shows."""
 
 import pytest
 
@@ -12,6 +13,7 @@ from core.basic_operations.data import (
 )
 from core.basic_operations.representation import (
     EqualStripDiagram,
+    Prompt,
     Representation,
     StripDiagram,
     basic_operation_tile_question,
@@ -21,11 +23,14 @@ from core.basic_operations.representation import (
     missing_number_tile_question,
     number_line_jumps,
     operations_name,
+    prompt_texts,
+    strip_choices,
     strip_diagram,
     word_problems_title,
 )
-from core.question import BLANK
+from core.question import BLANK, MultipleChoice
 from core.self_check_tiles import TileQuestion
+from tests.helpers import reverse_shuffle
 
 
 @pytest.mark.parametrize(
@@ -125,6 +130,152 @@ def test_strip_diagram(
     data: BasicOperationQuestionData, expected: StripDiagram | EqualStripDiagram
 ) -> None:
     assert strip_diagram(data) == expected
+
+
+@pytest.mark.parametrize(
+    ("data", "expected"),
+    [
+        # Addition: the wrong strips subtract, multiply and divide its numbers, with the smaller
+        # number as the groups. Subtracting makes the larger number the whole.
+        (
+            BasicOperationQuestionData(Operation.ADD, (9, 4), 13),
+            MultipleChoice(
+                (
+                    EqualStripDiagram(4, None, 9),
+                    EqualStripDiagram(4, 9, None),
+                    StripDiagram((4, None), 9),
+                    StripDiagram((9, 4), None),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # adding keeps the numbers' order, and the smaller is the groups when it's first too
+        (
+            BasicOperationQuestionData(Operation.ADD, (4, 9), 13),
+            MultipleChoice(
+                (
+                    EqualStripDiagram(4, None, 9),
+                    EqualStripDiagram(4, 9, None),
+                    StripDiagram((4, None), 9),
+                    StripDiagram((4, 9), None),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        (
+            BasicOperationQuestionData(Operation.SUBTRACT, (13, 4), 9),
+            MultipleChoice(
+                (
+                    EqualStripDiagram(4, None, 13),
+                    EqualStripDiagram(4, 13, None),
+                    StripDiagram((13, 4), None),
+                    StripDiagram((4, None), 13),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # Multiplication's groups are its own, its first operand. Sharing 4 into 3 equal groups
+        # is impossible, and is a choice anyway.
+        (
+            MULTIPLY,
+            MultipleChoice(
+                (
+                    EqualStripDiagram(3, None, 4),
+                    StripDiagram((3, None), 4),
+                    StripDiagram((3, 4), None),
+                    EqualStripDiagram(3, 4, None),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # even when its first operand is the larger
+        (
+            BasicOperationQuestionData(Operation.MULTIPLY, (5, 2), 10),
+            MultipleChoice(
+                (
+                    EqualStripDiagram(5, None, 2),
+                    StripDiagram((2, None), 5),
+                    StripDiagram((5, 2), None),
+                    EqualStripDiagram(5, 2, None),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # division's groups are its own, its second operand
+        (
+            DIVIDE,
+            MultipleChoice(
+                (
+                    EqualStripDiagram(3, 12, None),
+                    StripDiagram((3, None), 12),
+                    StripDiagram((12, 3), None),
+                    EqualStripDiagram(3, None, 12),
+                ),
+                frozenset({3}),
+            ),
+        ),
+    ],
+)
+def test_strip_choices(
+    data: BasicOperationQuestionData,
+    expected: MultipleChoice[StripDiagram | EqualStripDiagram],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """
+    A problem's own strip diagram is one choice, and the strips of the other three operations on
+    its numbers are the wrong ones. ``shuffle`` reverses, so the wrong strips come in the reverse
+    of ``Operation``'s order, and the problem's own is last.
+    """
+    reverse_shuffle(monkeypatch)
+    assert strip_choices(data) == expected
+
+
+@pytest.mark.parametrize(
+    ("data", "prompt", "expected"),
+    [
+        (
+            BasicOperationQuestionData(
+                Operation.ADD,
+                (47, 5),
+                52,
+                "Maria had 47 cards and found 5 more. How many cards does Maria have now?",
+            ),
+            Prompt.WORD_PROBLEM,
+            ("Maria had 47 cards and found 5 more. How many cards does Maria have now?",),
+        ),
+        (
+            BasicOperationQuestionData(
+                Operation.ADD,
+                (47, 5),
+                52,
+                "Maria had 47 cards and found 5 more. How many cards does Maria have now?",
+            ),
+            Prompt.EQUATION,
+            ("47 + 5 = ?",),
+        ),
+        # the wording, then the equation
+        (
+            BasicOperationQuestionData(
+                Operation.ADD,
+                (47, 5),
+                52,
+                "Maria had 47 cards and found 5 more. How many cards does Maria have now?",
+            ),
+            Prompt.BOTH,
+            (
+                "Maria had 47 cards and found 5 more. How many cards does Maria have now?",
+                "47 + 5 = ?",
+            ),
+        ),
+        (DIVIDE, Prompt.EQUATION, ("12 \N{DIVISION SIGN} 3 = ?",)),
+        # a problem with no wording shows its equation
+        (DIVIDE, Prompt.WORD_PROBLEM, ("12 \N{DIVISION SIGN} 3 = ?",)),
+    ],
+)
+def test_prompt_texts(
+    data: BasicOperationQuestionData, prompt: Prompt, expected: tuple[str, ...]
+) -> None:
+    assert prompt_texts(data, prompt) == expected
 
 
 @pytest.mark.parametrize(
