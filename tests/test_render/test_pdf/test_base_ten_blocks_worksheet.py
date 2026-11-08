@@ -50,16 +50,25 @@ EXPECTED = GOLDENS / "base_ten_blocks_worksheet_pdf_expecteds.txt"
 
 
 @pytest.mark.parametrize(
-    ("case_name", "questions", "slot_of", "black_and_white", "answer_key", "title", "label"),
+    (
+        "case_name",
+        "questions",
+        "slot_of",
+        "black_and_white",
+        "answer_key",
+        "title",
+        "label",
+        "name_line",
+    ),
     [
         # The key under the header. A number to write has "=" and a box beside its blocks. A
         # sum has "+" beside its second number, and a difference no sign; each has a rule under
         # its blocks, then "Sum =" or its equation, and a box.
-        ("write_add_subtract", WRITE_ADD_SUBTRACT, None, False, False, TITLE, "Sheet A"),
+        ("write_add_subtract", WRITE_ADD_SUBTRACT, None, False, False, TITLE, "Sheet A", True),
         # the key has each number to write, and each equation and answer
-        ("answer_key", WRITE_ADD_SUBTRACT, None, False, True, TITLE, "Sheet A"),
+        ("answer_key", WRITE_ADD_SUBTRACT, None, False, True, TITLE, "Sheet A", True),
         # grey blocks, in the key too
-        ("black_and_white", WRITE_ADD_SUBTRACT, None, True, False, TITLE, "Sheet A"),
+        ("black_and_white", WRITE_ADD_SUBTRACT, None, True, False, TITLE, "Sheet A", True),
         # No boxes, rules or labels, so a difference notes beside its blocks how many to cross
         # out. The bank and pattern are on a page of their own, and the key has letters.
         (
@@ -70,11 +79,33 @@ EXPECTED = GOLDENS / "base_ten_blocks_worksheet_pdf_expecteds.txt"
             True,
             TITLE,
             "Sheet A",
+            True,
         ),
-        ("at_their_limits", AT_THEIR_LIMITS, None, False, False, TITLE, "Sheet A"),
-        ("four_subtractions", FOUR_SUBTRACTIONS, None, False, False, TITLE, "Sheet A"),
+        # Without the Name/Date line, the key starts a row higher on the questions' page, and so
+        # does the bank's heading on the tiles page.
+        (
+            "self_check_tiles_no_name_line",
+            WRITE_ADD_SUBTRACT,
+            REAL_CASE_SLOTS[:3],
+            False,
+            False,
+            TITLE,
+            "Sheet A",
+            False,
+        ),
+        ("at_their_limits", AT_THEIR_LIMITS, None, False, False, TITLE, "Sheet A", True),
+        ("four_subtractions", FOUR_SUBTRACTIONS, None, False, False, TITLE, "Sheet A", True),
         # the title and label are the ones given
-        ("title_and_label", WRITE_ADD_SUBTRACT, None, False, True, "Blocks Practice", "Week 3"),
+        (
+            "title_and_label",
+            WRITE_ADD_SUBTRACT,
+            None,
+            False,
+            True,
+            "Blocks Practice",
+            "Week 3",
+            True,
+        ),
     ],
 )
 def test_pdf_draws_the_expected_text(
@@ -85,16 +116,19 @@ def test_pdf_draws_the_expected_text(
     answer_key: bool,
     title: str,
     label: str,
+    name_line: bool,
 ) -> None:
     """
     The decoded PDF matches this case's section of ``base_ten_blocks_worksheet_pdf_expecteds.txt``.
 
     One comparison covers the key and its colours, the prompts, the blocks and their signs or
     notes, the answer boxes, rules and labels or the answer bank and pattern, the answer key, the
-    page breaks, and the title and label.
+    page breaks, and the title, label and Name/Date line.
     """
     actual = pdf_text(
-        render_base_ten_blocks(questions, slot_of, black_and_white, answer_key, title, label)
+        render_base_ten_blocks(
+            questions, slot_of, black_and_white, answer_key, title, label, name_line
+        )
     )
 
     # to regenerate, uncomment:

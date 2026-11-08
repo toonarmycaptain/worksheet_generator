@@ -1355,17 +1355,17 @@ BT /F1 9 Tf 10.8 TL ET
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
-BT 1 0 0 1 82 678 Tm (47 + 9 = 56    \(D\)) Tj T* ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (47 + 9 = 56    \(D\)) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 658 Tm (52 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 8 = 44    \(D\)) Tj T* ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (52 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 8 = 44    \(D\)) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 638 Tm (3.) Tj T* ET
-BT 1 0 0 1 82 638 Tm (3 \327 4 = 12    \(D\)) Tj T* ET
+BT 1 0 0 1 54 668 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 668 Tm (3 \327 4 = 12    \(D\)) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 618 Tm (4.) Tj T* ET
-BT 1 0 0 1 82 618 Tm (12 \367 3 = 4    \(D\)) Tj T* ET
+BT 1 0 0 1 54 648 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 648 Tm (12 \367 3 = 4    \(D\)) Tj T* ET
 
 === at_their_limits ===
 title: Strip Diagram multiple choice
@@ -2059,15 +2059,15 @@ BT /F1 9 Tf 10.8 TL ET
 BT 1 0 0 1 54 27 Tm (Week 3) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
-BT 1 0 0 1 82 678 Tm (47 + 9 = 56    \(D\)) Tj T* ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (47 + 9 = 56    \(D\)) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 658 Tm (52 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 8 = 44    \(D\)) Tj T* ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (52 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 8 = 44    \(D\)) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 638 Tm (3.) Tj T* ET
-BT 1 0 0 1 82 638 Tm (3 \327 4 = 12    \(D\)) Tj T* ET
+BT 1 0 0 1 54 668 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 668 Tm (3 \327 4 = 12    \(D\)) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 618 Tm (4.) Tj T* ET
-BT 1 0 0 1 82 618 Tm (12 \367 3 = 4    \(D\)) Tj T* ET
+BT 1 0 0 1 54 648 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 648 Tm (12 \367 3 = 4    \(D\)) Tj T* ET
 

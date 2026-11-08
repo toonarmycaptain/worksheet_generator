@@ -106,9 +106,9 @@ def test_wrap(text: str, width: float, expected: list[str]) -> None:
 @pytest.mark.parametrize(
     ("solutions", "last_page"),
     [
-        # one-line solutions: 31 fill the key's first page, which follows the sheet's page 1
-        (["7"] * 31, 2),
-        (["7"] * 32, 3),
+        # one-line solutions: 32 fill the key's first page, which follows the sheet's page 1
+        (["7"] * 32, 2),
+        (["7"] * 33, 3),
         # three-line solutions: 10 fill a page
         ([UNIT_TO_WORD] * 10, 2),
         ([UNIT_TO_WORD] * 11, 3),

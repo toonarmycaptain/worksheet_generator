@@ -47,7 +47,6 @@ from render.pdf.diagrams import (
 )
 from render.pdf.page import (
     BOLD_FONT,
-    FIRST_LINE_Y,
     FONT,
     ITALIC_FONT,
     LINE_HEIGHT,
@@ -67,7 +66,7 @@ from render.pdf.page import (
     start_page,
     wrap,
 )
-from render.pdf.tiles import BANK_HEADING_HEIGHT, draw_tiles, tile_solutions
+from render.pdf.tiles import draw_tiles_page, tile_solutions
 
 HINT_SIZE = 11
 HINT_LINE_HEIGHT = 15
@@ -162,10 +161,8 @@ def render_word_problems_worksheet(
         solutions = [_solution(question) for question in questions]
     else:
         tile_questions = [basic_operation_tile_question(question.data) for question in questions]
-        pdf.showPage()
-        start_page(pdf, header)
         answers = [tile_question.answer for tile_question in tile_questions]
-        draw_tiles(pdf, answers, slot_of, FIRST_LINE_Y - BANK_HEADING_HEIGHT)
+        draw_tiles_page(pdf, header, answers, slot_of)
         solutions = tile_solutions(tile_questions, slot_of)
     if answer_key:
         draw_answer_key(pdf, header, solutions)

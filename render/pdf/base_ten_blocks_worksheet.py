@@ -39,7 +39,6 @@ from render.pdf.diagrams import (
 )
 from render.pdf.page import (
     BOLD_FONT,
-    FIRST_LINE_Y,
     LINE_HEIGHT,
     MARGIN,
     TEXT_INDENT,
@@ -53,7 +52,7 @@ from render.pdf.page import (
     start_page,
     wrap,
 )
-from render.pdf.tiles import BANK_HEADING_HEIGHT, draw_tiles, tile_solutions
+from render.pdf.tiles import draw_tiles_page, tile_solutions
 
 KEY_RAISE = 10  # the key's top is level with the top of the first line's capitals
 KEY_GAP = 26  # from the bottom of the key down to the first question's baseline
@@ -110,10 +109,8 @@ def render_base_ten_blocks_worksheet(
         solutions = [blocks_solution(question.data) for question in questions]
     else:
         tile_questions = [blocks_tile_question(question.data) for question in questions]
-        pdf.showPage()
-        start_page(pdf, header)
         answers = [tile_question.answer for tile_question in tile_questions]
-        draw_tiles(pdf, answers, slot_of, FIRST_LINE_Y - BANK_HEADING_HEIGHT)
+        draw_tiles_page(pdf, header, answers, slot_of)
         solutions = tile_solutions(tile_questions, slot_of)
     if answer_key:
         draw_answer_key(pdf, header, solutions)
