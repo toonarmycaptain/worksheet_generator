@@ -1,11 +1,13 @@
 """
-Tests for the arithmetic, missing-number, word-problem and strip-choice generators.
+Tests for the arithmetic, missing-number, word-problem, strip-choice and equation-choice
+generators.
 
 The ``..._from_scripted_draws`` tests pin the exact output: ``random`` is scripted, so each case
 lists the questions that must be produced. The no-repeats tests,
 ``test_missing_number_sheets_can_always_be_finished``,
-``test_random_word_problems_have_distinct_answers`` and
-``test_random_strip_choice_sheets_can_always_be_finished`` use real random draws.
+``test_random_word_problems_have_distinct_answers``,
+``test_random_strip_choice_sheets_can_always_be_finished`` and
+``test_random_equation_choice_sheets_can_always_be_finished`` use real random draws.
 """
 
 import pytest
@@ -18,17 +20,19 @@ from core.basic_operations.data import (
 )
 from core.basic_operations.generator import (
     count_possible_answers,
+    count_possible_equation_choice_problems,
     count_possible_missing_number_questions,
     count_possible_questions,
     count_possible_sheet_questions,
     count_possible_strip_choice_problems,
     count_possible_word_problems,
     generate_basic_operation_questions,
+    generate_equation_choice_problems,
     generate_missing_number_questions,
     generate_strip_choice_problems,
     generate_word_problems,
 )
-from core.basic_operations.representation import strip_choices
+from core.basic_operations.representation import equation_choices, strip_choices
 from core.question import FreeResponse, MultipleChoice, Question
 from tests.helpers import (
     choices_returns,
@@ -2278,4 +2282,285 @@ def test_strip_choice_sheet_errors(
         generate_strip_choice_problems(
             count, operations, largest_number=largest_number, largest_groups=largest_groups
         )
+    assert str(error.value) == message
+
+
+@pytest.mark.parametrize(
+    ("count", "operations", "largest_number", "drawn", "bounds", "expected"),
+    [
+        # The defaults: one of each operation, then the sheet is shuffled. Multiplication and
+        # division are 2 to 6 groups of 2 to 20, as on any word problem. Subtraction is worded with
+        # its comparison, the last of its templates.
+        (
+            4,
+            [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
+            999,
+            [3, 4, 3, 4, 47, 9, 47, 5],
+            [(2, 6), (2, 20), (2, 6), (2, 20), (1, 999), (1, 999), (1, 999), (1, 999)],
+            [
+                BasicOperationQuestionData(
+                    Operation.DIVIDE,
+                    (12, 3),
+                    4,
+                    "Maria divides 12 cards into 3 equal piles. How many cards are in each pile?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.MULTIPLY,
+                    (3, 4),
+                    12,
+                    "3 friends each have 4 cards. How many cards do they have together?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.SUBTRACT,
+                    (47, 9),
+                    38,
+                    "Maria has 47 cards and Jamal has 9 cards. "
+                    "How many more cards does Maria have than Jamal?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (47, 5),
+                    52,
+                    "A basket held 47 cards. Maria added 5 more. "
+                    "How many cards are in the basket now?",
+                ),
+            ],
+        ),
+        # 2 groups of 2 is 4, as 2 + 2 is, and 4 - 2 is 2, as 4 ÷ 2 is, so both are redrawn
+        (
+            2,
+            [Operation.SUBTRACT, Operation.MULTIPLY],
+            999,
+            [2, 2, 2, 3, 4, 2, 4, 3],
+            [(2, 6), (2, 20), (2, 6), (2, 20), (1, 999), (1, 999), (1, 999), (1, 999)],
+            [
+                BasicOperationQuestionData(
+                    Operation.MULTIPLY,
+                    (2, 3),
+                    6,
+                    "2 friends each have 3 cards. How many cards do they have together?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.SUBTRACT,
+                    (4, 3),
+                    1,
+                    "Maria has 4 cards and Jamal has 3 cards. "
+                    "How many more cards does Maria have than Jamal?",
+                ),
+            ],
+        ),
+        # 4 shared into 2 and 2 + 2 are redrawn too, and so is 4 + 2, though none of its wrong
+        # equations is 6. 2 + 4 isn't left out.
+        (
+            2,
+            [Operation.ADD, Operation.DIVIDE],
+            999,
+            [2, 2, 2, 3, 2, 2, 4, 2, 2, 4],
+            [
+                (2, 6),
+                (2, 20),
+                (2, 6),
+                (2, 20),
+                (1, 999),
+                (1, 999),
+                (1, 999),
+                (1, 999),
+                (1, 999),
+                (1, 999),
+            ],
+            [
+                BasicOperationQuestionData(
+                    Operation.DIVIDE,
+                    (6, 2),
+                    3,
+                    "Maria divides 6 cards into 2 equal piles. How many cards are in each pile?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (2, 4),
+                    6,
+                    "A basket held 2 cards. Maria added 4 more. "
+                    "How many cards are in the basket now?",
+                ),
+            ],
+        ),
+        # the largest number caps an addition, so 7 + 6 is redrawn, but not a product
+        (
+            2,
+            [Operation.ADD, Operation.MULTIPLY],
+            10,
+            [6, 20, 7, 6, 3, 6],
+            [(2, 6), (2, 20), (1, 10), (1, 10), (1, 10), (1, 10)],
+            [
+                BasicOperationQuestionData(
+                    Operation.MULTIPLY,
+                    (6, 20),
+                    120,
+                    "6 friends each have 20 cards. How many cards do they have together?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (3, 6),
+                    9,
+                    "A basket held 3 cards. Maria added 6 more. "
+                    "How many cards are in the basket now?",
+                ),
+            ],
+        ),
+        # 3 problems split between 2 operations: the extra goes to the last, subtraction, whose
+        # second problem takes the last of its other templates
+        (
+            3,
+            [Operation.ADD, Operation.SUBTRACT],
+            999,
+            [47, 9, 60, 12, 47, 5],
+            [(1, 999), (1, 999), (1, 999), (1, 999), (1, 999), (1, 999)],
+            [
+                BasicOperationQuestionData(
+                    Operation.SUBTRACT,
+                    (47, 9),
+                    38,
+                    "Maria has 47 cards and Jamal has 9 cards. "
+                    "How many more cards does Maria have than Jamal?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.SUBTRACT,
+                    (60, 12),
+                    48,
+                    "Maria needs 60 cards in all and has 12 so far. "
+                    "How many more cards are needed?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (47, 5),
+                    52,
+                    "A basket held 47 cards. Maria added 5 more. "
+                    "How many cards are in the basket now?",
+                ),
+            ],
+        ),
+    ],
+)
+def test_equation_choice_problems_from_scripted_draws(
+    count: int,
+    operations: list[Operation],
+    largest_number: int,
+    drawn: list[int],
+    bounds: list[tuple[int, int]],
+    expected: list[BasicOperationQuestionData],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """
+    The operations are split evenly, then the sheet is shuffled. Each problem's numbers are
+    drawn, and redrawn until they meet the limits and aren't left out: an addition's or
+    subtraction's numbers at most the largest number, and no operands of 2 and 2, or 4 and 2.
+
+    ``sample`` keeps the operations' order, so any extra problems go to the last, and ``shuffle``
+    reverses the sheet and each problem's choices. The wording takes the first two names, the last
+    object and each operation's templates from the last, comparisons included. Every scripted draw
+    must be made, within ``bounds``. Each problem's choices are those of ``equation_choices``,
+    tested in ``test_representation``.
+    """
+    drawn_from = randint_returns(monkeypatch, drawn)
+    sample_first(monkeypatch)
+    reverse_shuffle(monkeypatch)
+    choose_last(monkeypatch)
+
+    questions = generate_equation_choice_problems(count, operations, largest_number=largest_number)
+
+    assert drawn_from == bounds
+    assert questions == [Question(data, equation_choices(data)) for data in expected]
+
+
+@pytest.mark.parametrize(
+    ("operations", "count", "largest_number"),
+    [
+        # every multiplication but 2 groups of 2 and 4 groups of 2
+        ([Operation.MULTIPLY], 93, 999),
+        # every division but 4 shared into 2
+        ([Operation.DIVIDE], 94, 999),
+        # the sums 2 to 4, with 2 + 2 left out
+        ([Operation.ADD], 3, 4),
+        # the most problems allowed, 20, with the defaults
+        ([Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE], 20, 999),
+    ],
+)
+def test_random_equation_choice_sheets_can_always_be_finished(
+    operations: list[Operation], count: int, largest_number: int
+) -> None:
+    """A sheet of the most problems the limits allow is produced, with no problem repeated."""
+    questions = generate_equation_choice_problems(count, operations, largest_number=largest_number)
+    problems = {(question.data.operation, question.data.operands) for question in questions}
+    assert len(problems) == count
+
+
+@pytest.mark.parametrize(
+    ("operations", "up_to", "largest_number", "expected"),
+    [
+        # the defaults: the sums from 1 + 1 to 999, and the differences from 1 to 998
+        ([Operation.ADD], 1000, 999, 998),
+        ([Operation.SUBTRACT], 1000, 999, 998),
+        # 2 to 6 groups of 2 to 20, but 2 groups of 2 and 4 groups of 2
+        ([Operation.MULTIPLY], 1000, 999, 93),
+        # every one of those shared, but 4 shared into 2
+        ([Operation.DIVIDE], 1000, 999, 94),
+        # the largest number doesn't cap a product
+        ([Operation.MULTIPLY], 1000, 10, 93),
+        # the sums from 1 + 1 to 10
+        ([Operation.ADD], 1000, 10, 9),
+        # Split evenly, each operation needs only its share: addition's 2 sums within 3 are
+        # enough for 2 of 4 problems.
+        ([Operation.ADD, Operation.MULTIPLY], 1000, 3, 4),
+        ([Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE], 1000, 999, 372),
+        # capped
+        ([Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE], 20, 999, 20),
+    ],
+)
+def test_count_possible_equation_choice_problems(
+    operations: list[Operation], up_to: int, largest_number: int, expected: int
+) -> None:
+    """
+    Each operation counts as on word problems, except that 2 groups of 2, 4 groups of 2 and 4
+    shared into 2 are left out. Split evenly, the count is the least of the operations' for each
+    operation.
+    """
+    possible = count_possible_equation_choice_problems(
+        operations, up_to=up_to, largest_number=largest_number
+    )
+    assert possible == expected
+
+
+@pytest.mark.parametrize(
+    ("operations", "count", "largest_number", "message"),
+    [
+        (
+            [Operation.MULTIPLY],
+            94,
+            999,
+            "Cannot make 94 different problems: only 93 possible.",
+        ),
+        (
+            [Operation.ADD],
+            10,
+            10,
+            "Cannot make 10 different problems: only 9 possible.",
+        ),
+        # split evenly: addition's 2 sums within 3 aren't enough for 3 of 6 problems
+        (
+            [Operation.ADD, Operation.MULTIPLY],
+            6,
+            3,
+            "Cannot make 6 different problems: only 4 possible.",
+        ),
+    ],
+)
+def test_equation_choice_sheet_errors(
+    operations: list[Operation], count: int, largest_number: int, message: str
+) -> None:
+    """
+    Requesting more problems than the operations and limits allow raises ``ValueError`` saying
+    how many.
+    """
+    with pytest.raises(ValueError) as error:
+        generate_equation_choice_problems(count, operations, largest_number=largest_number)
     assert str(error.value) == message

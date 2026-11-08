@@ -2,8 +2,10 @@
 Tests for the word problems endpoint: its options reach the core and the renderer intact.
 
 The tests script ``random``. ``choices`` returns the operations listed as picks, ``randint``
-the operands listed, and ``shuffle`` reverses, so the complex tile pattern runs from L to A.
-The wording takes the first two names, the last object and each operation's last template.
+the operands listed, and ``shuffle`` reverses, so the complex tile pattern runs from L to A, and
+an equation multiple choice sheet, whose operations are split evenly instead, comes in the
+reverse of the ticked order. The wording takes the first two names, the last object and each
+operation's last template.
 ``conventional_slot_of`` gives the slots of a real case. The PDF must then match what the
 renderer draws for the same questions. Disallowed options get Ninja's JSON error. The renderer's
 output is tested in ``test_word_problems_worksheet``.
@@ -486,6 +488,111 @@ ADD = BasicOperationQuestionData(
             [],
             422,
             refused("operations: Base-Ten Blocks show only addition and subtraction"),
+            None,
+            None,
+        ),
+        (
+            # Equation multiple choice, with its title, since none is given. Addition and
+            # subtraction are split evenly, one each, then the sheet is shuffled, and subtraction
+            # is worded with its comparison. The hints are on, but it has none.
+            "/api/worksheets/word_problems.pdf?representation=equation_choice&problems=2"
+            "&answer_key=true&sheet=1ab2c3",
+            [],
+            [40, 150, 47, 25],
+            200,
+            None,
+            {
+                "questions": [
+                    BasicOperationQuestionData(
+                        Operation.SUBTRACT,
+                        (150, 40),
+                        110,
+                        "Maria has 150 cards and Jamal has 40 cards. "
+                        "How many more cards does Maria have than Jamal?",
+                    ),
+                    ADD,
+                ],
+                "representation": Representation.EQUATION_CHOICE,
+                "hints": True,
+                "black_and_white": False,
+                "work_box": False,
+                "slot_of": None,
+                "answer_key": True,
+                "title": "Word Problems — Equation multiple choice",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        (
+            # All four ticked, one of each: 4 shared into 2 is redrawn, as 4 - 2 is 2 too, and the
+            # largest number caps the subtraction and addition, but not 6 groups of 20.
+            "/api/worksheets/word_problems.pdf?representation=equation_choice&operations=add"
+            "&operations=subtract&operations=multiply&operations=divide&problems=4"
+            "&max_number=100&sheet=1ab2c3",
+            [],
+            [2, 2, 3, 4, 6, 20, 40, 90, 47, 25],
+            200,
+            None,
+            {
+                "questions": [
+                    BasicOperationQuestionData(
+                        Operation.DIVIDE,
+                        (12, 3),
+                        4,
+                        "Maria divides 12 cards into 3 equal piles. "
+                        "How many cards are in each pile?",
+                    ),
+                    BasicOperationQuestionData(
+                        Operation.MULTIPLY,
+                        (6, 20),
+                        120,
+                        "6 friends each have 20 cards. How many cards do they have together?",
+                    ),
+                    BasicOperationQuestionData(
+                        Operation.SUBTRACT,
+                        (90, 40),
+                        50,
+                        "Maria has 90 cards and Jamal has 40 cards. "
+                        "How many more cards does Maria have than Jamal?",
+                    ),
+                    ADD,
+                ],
+                "representation": Representation.EQUATION_CHOICE,
+                "hints": True,
+                "black_and_white": False,
+                "work_box": False,
+                "slot_of": None,
+                "answer_key": False,
+                "title": "Word Problems — Equation multiple choice",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        # equation multiple choice has no tiles
+        (
+            "/api/worksheets/word_problems.pdf?representation=equation_choice"
+            "&self_check_tiles=true",
+            [],
+            [],
+            422,
+            refused("self_check_tiles: not available with Equation multiple choice"),
+            None,
+            None,
+        ),
+        (
+            # Split evenly, addition needs 3 of 6 problems, and a largest number of 3 allows 2
+            # sums. Text only would allow 2 problems in all.
+            "/api/worksheets/word_problems.pdf?representation=equation_choice&operations=add"
+            "&operations=multiply&problems=6&max_number=3",
+            [],
+            [],
+            422,
+            refused(
+                "problems: at most 4 without repeats for that choice of operations and largest "
+                "number. Lower problems to 4, or raise the largest number to 4."
+            ),
             None,
             None,
         ),

@@ -15,7 +15,12 @@ from core.basic_operations.data import (
     Operation,
     Unknown,
 )
-from core.basic_operations.representation import StripChoiceQuestion, strip_choices
+from core.basic_operations.representation import (
+    EquationChoiceQuestion,
+    StripChoiceQuestion,
+    equation_choices,
+    strip_choices,
+)
 from core.basic_operations.word_problems import word_problem_texts
 from core.question import FreeResponse, Question, multiple_choice
 from core.wrong_answers import WRONG_ANSWER_COUNT, random_wrong_answers
@@ -41,6 +46,10 @@ STRIP_CHOICE_LARGEST_NUMBER = 100  # a strip-choice sheet's default largest numb
 STRIP_CHOICE_LARGEST_GROUPS = 12
 # 2 + 2 and 2 groups of 2 draw the same strip, so a strip-choice sheet leaves them out
 STRIP_CHOICE_EXCLUDED_OPERANDS = frozenset({(2, 2)})
+# Operands that give a wrong equation with the problem's answer: 2 + 2 and 2 x 2 are both 4, and
+# 4 - 2 and 4 ÷ 2 are both 2. An equation-choice sheet leaves them out, for every operation, so
+# 4 + 2 and 4 groups of 2 go too.
+EQUATION_CHOICE_EXCLUDED_OPERANDS = frozenset({(2, 2), (4, 2)})
 
 
 def generate_basic_operation_question(
@@ -692,6 +701,48 @@ def generate_strip_choice_problems(
         split_evenly=True,
     )
     return [Question(problem.data, strip_choices(problem.data)) for problem in problems]
+
+
+def count_possible_equation_choice_problems(
+    operations: Sequence[Operation],
+    *,
+    up_to: int,
+    largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
+) -> int:
+    """
+    Count the problems ``generate_equation_choice_problems`` can produce, as
+    ``count_possible_word_problems`` counts them.
+    """
+    return count_possible_word_problems(
+        operations,
+        up_to=up_to,
+        largest_number=largest_number,
+        excluded_operands=EQUATION_CHOICE_EXCLUDED_OPERANDS,
+        split_evenly=True,
+    )
+
+
+def generate_equation_choice_problems(
+    count: int,
+    operations: Sequence[Operation],
+    *,
+    largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
+) -> list[EquationChoiceQuestion]:
+    """
+    Generate ``count`` word problems as ``generate_word_problems`` does, comparisons included,
+    each with its equation to choose from those of ``equation_choices``. The operations are split
+    evenly, and ``largest_number`` caps an addition's or subtraction's numbers, as on any word
+    problem. No problem's operands are in ``EQUATION_CHOICE_EXCLUDED_OPERANDS``.
+    """
+    problems = generate_word_problems(
+        count,
+        operations,
+        comparisons=True,
+        largest_number=largest_number,
+        excluded_operands=EQUATION_CHOICE_EXCLUDED_OPERANDS,
+        split_evenly=True,
+    )
+    return [Question(problem.data, equation_choices(problem.data)) for problem in problems]
 
 
 def _sum_or_difference(
