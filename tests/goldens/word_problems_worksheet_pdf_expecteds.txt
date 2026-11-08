@@ -163,11 +163,11 @@ BT /F1 9 Tf 10.8 TL ET
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
-BT 1 0 0 1 82 678 Tm (47 + 25 = 72) Tj T* ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (47 + 25 = 72) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 658 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47) Tj T* ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47) Tj T* ET
 
 === splits_at_their_limits ===
 title: Word Problems \204 Strip Diagrams
@@ -701,11 +701,11 @@ BT /F1 9 Tf 10.8 TL ET
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
-BT 1 0 0 1 82 678 Tm (47 + 25 = 72    \(H\)) Tj T* ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (47 + 25 = 72    \(H\)) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 658 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47    \(J\)) Tj T* ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47    \(J\)) Tj T* ET
 
 === other_title_and_label ===
 title: Story Problems
@@ -1106,17 +1106,17 @@ BT /F1 9 Tf 10.8 TL ET
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
-BT 1 0 0 1 82 678 Tm (47 + 25 = 72) Tj T* ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (47 + 25 = 72) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 658 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47) Tj T* ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 638 Tm (3.) Tj T* ET
-BT 1 0 0 1 82 638 Tm (3 \327 4 = 12) Tj T* ET
+BT 1 0 0 1 54 668 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 668 Tm (3 \327 4 = 12) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 618 Tm (4.) Tj T* ET
-BT 1 0 0 1 82 618 Tm (12 \367 3 = 4) Tj T* ET
+BT 1 0 0 1 54 648 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 648 Tm (12 \367 3 = 4) Tj T* ET
 
 === text_only_all_four_answer_key ===
 title: Word Problems
@@ -1260,17 +1260,17 @@ BT /F1 9 Tf 10.8 TL ET
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
-BT 1 0 0 1 82 678 Tm (47 + 25 = 72) Tj T* ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (47 + 25 = 72) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 658 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47) Tj T* ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 638 Tm (3.) Tj T* ET
-BT 1 0 0 1 82 638 Tm (3 \327 4 = 12) Tj T* ET
+BT 1 0 0 1 54 668 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 668 Tm (3 \327 4 = 12) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 618 Tm (4.) Tj T* ET
-BT 1 0 0 1 82 618 Tm (12 \367 3 = 4) Tj T* ET
+BT 1 0 0 1 54 648 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 648 Tm (12 \367 3 = 4) Tj T* ET
 
 === text_only_five_problems ===
 title: Word Problems
@@ -1711,11 +1711,11 @@ BT /F1 9 Tf 10.8 TL ET
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
-BT 1 0 0 1 82 678 Tm (47 + 25 = 72    \(H\)) Tj T* ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (47 + 25 = 72    \(H\)) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 658 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47    \(J\)) Tj T* ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47    \(J\)) Tj T* ET
 
 === number_line_add_and_subtract ===
 title: Word Problems \204 Number Lines
@@ -2093,14 +2093,14 @@ BT /F1 9 Tf 10.8 TL ET
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
-BT 1 0 0 1 82 678 Tm (347 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 125 = 222) Tj T* ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (347 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 125 = 222) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 658 Tm (35 + 804 = 839) Tj T* ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (35 + 804 = 839) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 638 Tm (3.) Tj T* ET
-BT 1 0 0 1 82 638 Tm (81 + 70 = 151) Tj T* ET
+BT 1 0 0 1 54 668 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 668 Tm (81 + 70 = 151) Tj T* ET
 
 === number_line_five_problems ===
 title: Word Problems \204 Number Lines
@@ -2813,11 +2813,11 @@ BT /F1 9 Tf 10.8 TL ET
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
-BT 1 0 0 1 82 678 Tm (47 + 25 = 72    \(H\)) Tj T* ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (47 + 25 = 72    \(H\)) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 658 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47    \(J\)) Tj T* ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47    \(J\)) Tj T* ET
 
 === blocks_add_and_subtract ===
 title: Word Problems \204 Base-Ten Blocks
@@ -3547,11 +3547,11 @@ BT /F1 9 Tf 10.8 TL ET
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
-BT 1 0 0 1 82 678 Tm (147 + 25 = 172) Tj T* ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (147 + 25 = 172) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 658 Tm (304 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 128 = 176) Tj T* ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (304 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 128 = 176) Tj T* ET
 
 === blocks_black_and_white ===
 title: Word Problems \204 Base-Ten Blocks
@@ -5594,11 +5594,11 @@ BT /F1 9 Tf 10.8 TL ET
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
-BT 1 0 0 1 82 678 Tm (147 + 25 = 172    \(H\)) Tj T* ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (147 + 25 = 172    \(H\)) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 658 Tm (304 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 128 = 176    \(J\)) Tj T* ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (304 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 128 = 176    \(J\)) Tj T* ET
 
 === text_only_no_work_boxes_answer_key ===
 title: Word Problems
@@ -5666,17 +5666,17 @@ BT /F1 9 Tf 10.8 TL ET
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
-BT 1 0 0 1 82 678 Tm (47 + 25 = 72) Tj T* ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (47 + 25 = 72) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 658 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47) Tj T* ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 638 Tm (3.) Tj T* ET
-BT 1 0 0 1 82 638 Tm (3 \327 4 = 12) Tj T* ET
+BT 1 0 0 1 54 668 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 668 Tm (3 \327 4 = 12) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 618 Tm (4.) Tj T* ET
-BT 1 0 0 1 82 618 Tm (12 \367 3 = 4) Tj T* ET
+BT 1 0 0 1 54 648 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 648 Tm (12 \367 3 = 4) Tj T* ET
 
 === text_only_no_work_boxes_five_problems ===
 title: Word Problems
@@ -6071,17 +6071,17 @@ BT /F1 9 Tf 10.8 TL ET
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
-BT 1 0 0 1 82 678 Tm (47 + 25 = 72    \(D\)) Tj T* ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (47 + 25 = 72    \(D\)) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 658 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 658 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47    \(D\)) Tj T* ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47    \(D\)) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 638 Tm (3.) Tj T* ET
-BT 1 0 0 1 82 638 Tm (3 \327 4 = 12    \(D\)) Tj T* ET
+BT 1 0 0 1 54 668 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 668 Tm (3 \327 4 = 12    \(D\)) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 618 Tm (4.) Tj T* ET
-BT 1 0 0 1 82 618 Tm (12 \367 3 = 4    \(D\)) Tj T* ET
+BT 1 0 0 1 54 648 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 648 Tm (12 \367 3 = 4    \(D\)) Tj T* ET
 
 === equation_choice_seven_problems ===
 title: Word Problems \204 Equation multiple choice

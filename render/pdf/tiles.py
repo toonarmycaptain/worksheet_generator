@@ -22,7 +22,17 @@ from core.self_check_tiles import (
     pattern,
     tile_outline,
 )
-from render.pdf.page import BOLD_FONT, CONTENT_WIDTH, FONT, MARGIN, PAGE_WIDTH, TEXT_SIZE, wrap
+from render.pdf.page import (
+    BOLD_FONT,
+    CONTENT_WIDTH,
+    FONT,
+    MARGIN,
+    PAGE_WIDTH,
+    TEXT_SIZE,
+    Header,
+    start_page,
+    wrap,
+)
 
 BANK_TOP = 400  # the default top edge of the answer bank's top row
 BANK_HEADING_HEIGHT = 56  # from the bank's top edge up to its heading's baseline
@@ -53,6 +63,17 @@ def draw_tiles(
     """
     box_height = _draw_answer_bank(pdf, answer_bank(answers, slot_of), top)
     _draw_pattern(pdf, pattern(slot_of), top - PATTERN_DROP - 2 * (box_height - BOX_HEIGHT))
+
+
+def draw_tiles_page(
+    pdf: Canvas, header: Header, answers: Sequence[str], slot_of: Sequence[int]
+) -> None:
+    """
+    Start a new page with ``header`` and draw the answer bank and pattern on it, as
+    ``draw_tiles`` does, with the bank's heading where the page's content starts.
+    """
+    pdf.showPage()
+    draw_tiles(pdf, answers, slot_of, start_page(pdf, header) - BANK_HEADING_HEIGHT)
 
 
 def tile_solutions(questions: Sequence[TileQuestion], slot_of: Sequence[int]) -> list[str]:
