@@ -189,6 +189,16 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
                 (b"always", b"", b"Always"),
             ],
         ),
+        # the strip choice form's Show: the wording by default
+        (
+            "/basic-operations/",
+            "prompt",
+            [
+                (b"word_problem", b" checked", b"Word problem"),
+                (b"equation", b"", b"Equation"),
+                (b"both", b"", b"Both"),
+            ],
+        ),
         # a grid by default
         (
             "/data-and-graphs/",
@@ -299,6 +309,19 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
                 (b"subtract", b" checked", b"Subtraction"),
                 (b"multiply", b"", b"Multiplication"),
                 (b"divide", b"", b"Division"),
+            ],
+            True,
+        ),
+        # all four by default on the strip choice form, with an All box
+        (
+            "/basic-operations/",
+            b"/api/worksheets/strip_choice.pdf",
+            "operations",
+            [
+                (b"add", b" checked", b"Addition"),
+                (b"subtract", b" checked", b"Subtraction"),
+                (b"multiply", b" checked", b"Multiplication"),
+                (b"divide", b" checked", b"Division"),
             ],
             True,
         ),

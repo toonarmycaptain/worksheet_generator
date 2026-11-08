@@ -1,10 +1,11 @@
 """
-Tests for the arithmetic, missing-number and word-problem generators.
+Tests for the arithmetic, missing-number, word-problem and strip-choice generators.
 
 The ``..._from_scripted_draws`` tests pin the exact output: ``random`` is scripted, so each case
 lists the questions that must be produced. The no-repeats tests,
-``test_missing_number_sheets_can_always_be_finished`` and
-``test_random_word_problems_have_distinct_answers`` use real random draws.
+``test_missing_number_sheets_can_always_be_finished``,
+``test_random_word_problems_have_distinct_answers`` and
+``test_random_strip_choice_sheets_can_always_be_finished`` use real random draws.
 """
 
 import pytest
@@ -20,11 +21,14 @@ from core.basic_operations.generator import (
     count_possible_missing_number_questions,
     count_possible_questions,
     count_possible_sheet_questions,
+    count_possible_strip_choice_problems,
     count_possible_word_problems,
     generate_basic_operation_questions,
     generate_missing_number_questions,
+    generate_strip_choice_problems,
     generate_word_problems,
 )
+from core.basic_operations.representation import strip_choices
 from core.question import FreeResponse, MultipleChoice, Question
 from tests.helpers import (
     choices_returns,
@@ -1943,5 +1947,335 @@ def test_word_problem_sheet_errors(
     with pytest.raises(ValueError) as error:
         generate_word_problems(
             count, operations, distinct_answers=distinct_answers, largest_number=largest_number
+        )
+    assert str(error.value) == message
+
+
+@pytest.mark.parametrize(
+    ("count", "operations", "largest_number", "largest_groups", "drawn", "bounds", "expected"),
+    [
+        # The defaults, a largest number of 100 and 12 groups: one of each operation, then the
+        # sheet is shuffled. An addition's or subtraction's smaller number is at most 12.
+        (
+            4,
+            [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
+            100,
+            12,
+            [3, 4, 3, 4, 47, 9, 47, 5],
+            [(2, 12), (2, 20), (2, 12), (2, 20), (1, 100), (1, 12), (1, 100), (1, 12)],
+            [
+                BasicOperationQuestionData(
+                    Operation.DIVIDE,
+                    (12, 3),
+                    4,
+                    "Maria divides 12 cards into 3 equal piles. How many cards are in each pile?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.MULTIPLY,
+                    (3, 4),
+                    12,
+                    "3 friends each have 4 cards. How many cards do they have together?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.SUBTRACT,
+                    (47, 9),
+                    38,
+                    "Maria needs 47 cards in all and has 9 so far. How many more cards are needed?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (47, 5),
+                    52,
+                    "A basket held 47 cards. Maria added 5 more. "
+                    "How many cards are in the basket now?",
+                ),
+            ],
+        ),
+        # the largest number caps a dividend and a product too: 6 groups of 20 and 12 groups of
+        # 20 are over 100, so they're redrawn
+        (
+            2,
+            [Operation.MULTIPLY, Operation.DIVIDE],
+            100,
+            12,
+            [6, 20, 4, 5, 12, 20, 6, 7],
+            [(2, 12), (2, 20), (2, 12), (2, 20), (2, 12), (2, 20), (2, 12), (2, 20)],
+            [
+                BasicOperationQuestionData(
+                    Operation.DIVIDE,
+                    (20, 4),
+                    5,
+                    "Maria divides 20 cards into 4 equal piles. How many cards are in each pile?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.MULTIPLY,
+                    (6, 7),
+                    42,
+                    "6 friends each have 7 cards. How many cards do they have together?",
+                ),
+            ],
+        ),
+        # 2 groups of 2 and 2 + 2 draw the same strip, so both are redrawn
+        (
+            2,
+            [Operation.ADD, Operation.MULTIPLY],
+            100,
+            12,
+            [2, 2, 2, 3, 2, 2, 2, 3],
+            [(2, 12), (2, 20), (2, 12), (2, 20), (1, 100), (1, 12), (1, 100), (1, 12)],
+            [
+                BasicOperationQuestionData(
+                    Operation.MULTIPLY,
+                    (2, 3),
+                    6,
+                    "2 friends each have 3 cards. How many cards do they have together?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (2, 3),
+                    5,
+                    "A basket held 2 cards. Maria added 3 more. "
+                    "How many cards are in the basket now?",
+                ),
+            ],
+        ),
+        # A largest number of groups of 5 caps every strip's groups: a division's and a
+        # multiplication's, and an addition's or subtraction's smaller number. Every number can
+        # still reach 100.
+        (
+            4,
+            [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
+            100,
+            5,
+            [5, 20, 5, 20, 100, 5, 95, 5],
+            [(2, 5), (2, 20), (2, 5), (2, 20), (1, 100), (1, 5), (1, 100), (1, 5)],
+            [
+                BasicOperationQuestionData(
+                    Operation.DIVIDE,
+                    (100, 5),
+                    20,
+                    "Maria divides 100 cards into 5 equal piles. How many cards are in each pile?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.MULTIPLY,
+                    (5, 20),
+                    100,
+                    "5 friends each have 20 cards. How many cards do they have together?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.SUBTRACT,
+                    (100, 5),
+                    95,
+                    "Maria needs 100 cards in all and has 5 so far. "
+                    "How many more cards are needed?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (95, 5),
+                    100,
+                    "A basket held 95 cards. Maria added 5 more. "
+                    "How many cards are in the basket now?",
+                ),
+            ],
+        ),
+        # 3 problems split between 2 operations: the extra goes to the last, subtraction
+        (
+            3,
+            [Operation.ADD, Operation.SUBTRACT],
+            100,
+            12,
+            [47, 9, 60, 12, 47, 5],
+            [(1, 100), (1, 12), (1, 100), (1, 12), (1, 100), (1, 12)],
+            [
+                BasicOperationQuestionData(
+                    Operation.SUBTRACT,
+                    (47, 9),
+                    38,
+                    "Maria needs 47 cards in all and has 9 so far. How many more cards are needed?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.SUBTRACT,
+                    (60, 12),
+                    48,
+                    "Maria had 60 points and lost 12 points. How many points does Maria have now?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (47, 5),
+                    52,
+                    "A basket held 47 cards. Maria added 5 more. "
+                    "How many cards are in the basket now?",
+                ),
+            ],
+        ),
+        # a largest number under 12 caps the smaller number first, and 7 + 6 is over 10
+        (
+            1,
+            [Operation.ADD],
+            10,
+            12,
+            [7, 6, 3, 6],
+            [(1, 10), (1, 10), (1, 10), (1, 10)],
+            [
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (3, 6),
+                    9,
+                    "A basket held 3 cards. Maria added 6 more. "
+                    "How many cards are in the basket now?",
+                ),
+            ],
+        ),
+    ],
+)
+def test_strip_choice_problems_from_scripted_draws(
+    count: int,
+    operations: list[Operation],
+    largest_number: int,
+    largest_groups: int,
+    drawn: list[int],
+    bounds: list[tuple[int, int]],
+    expected: list[BasicOperationQuestionData],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """
+    The operations are split evenly, then the sheet is shuffled. Each problem's numbers are
+    drawn, and redrawn until they meet the limits and aren't left out: every number at most the
+    largest number, a dividend and a product included, and no strip of more groups than the
+    largest number of groups.
+
+    ``sample`` keeps the operations' order, so any extra problems go to the last, and ``shuffle``
+    reverses the sheet and each problem's choices. The wording takes the first two names, the last
+    object and each operation's templates from the last. Every scripted draw must be made, within
+    ``bounds``. Each problem's choices are those of ``strip_choices``, tested in
+    ``test_representation``.
+    """
+    drawn_from = randint_returns(monkeypatch, drawn)
+    sample_first(monkeypatch)
+    reverse_shuffle(monkeypatch)
+    choose_last(monkeypatch)
+
+    questions = generate_strip_choice_problems(
+        count, operations, largest_number=largest_number, largest_groups=largest_groups
+    )
+
+    assert drawn_from == bounds
+    assert questions == [Question(data, strip_choices(data)) for data in expected]
+
+
+@pytest.mark.parametrize(
+    ("operations", "count", "largest_number", "largest_groups"),
+    [
+        # every multiplication within 20 but 2 groups of 2
+        ([Operation.MULTIPLY], 26, 20, 12),
+        # one of each, with 2 groups of 3 the only multiplication
+        ([Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE], 4, 6, 2),
+        # the most problems allowed, 20, with the defaults
+        ([Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE], 20, 100, 12),
+    ],
+)
+def test_random_strip_choice_sheets_can_always_be_finished(
+    operations: list[Operation], count: int, largest_number: int, largest_groups: int
+) -> None:
+    """A sheet of the most problems the limits allow is produced, with no problem repeated."""
+    questions = generate_strip_choice_problems(
+        count, operations, largest_number=largest_number, largest_groups=largest_groups
+    )
+    problems = {(question.data.operation, question.data.operands) for question in questions}
+    assert len(problems) == count
+
+
+@pytest.mark.parametrize(
+    ("operations", "up_to", "largest_number", "largest_groups", "expected"),
+    [
+        # the defaults: the sums from 1 + 1 to 100, and the differences from 1 to 99
+        ([Operation.ADD], 1000, 100, 12, 99),
+        ([Operation.SUBTRACT], 1000, 100, 12, 99),
+        # 2 to 12 groups of 2 to 20 within 100, but 2 groups of 2
+        ([Operation.MULTIPLY], 1000, 100, 12, 148),
+        # every one of those shared, as 4 shared into 2 draws a strip of its own
+        ([Operation.DIVIDE], 1000, 100, 12, 149),
+        # 2 groups only: of 3 to 20, or 4 to 40 shared into them
+        ([Operation.MULTIPLY], 1000, 100, 2, 18),
+        ([Operation.DIVIDE], 1000, 100, 2, 19),
+        # the largest number caps the product too
+        ([Operation.MULTIPLY], 1000, 20, 12, 26),
+        # the sums from 1 + 1 to 10
+        ([Operation.ADD], 1000, 10, 12, 9),
+        # Split evenly, each operation needs only its share: 2 groups of 3, the only
+        # multiplication, is enough for 1 of 2 problems, and 1 of 4.
+        ([Operation.ADD, Operation.MULTIPLY], 1000, 6, 2, 2),
+        ([Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE], 1000, 6, 2, 4),
+        # 2 groups of 2 is the only multiplication within 5 in 2 groups, and it's left out
+        ([Operation.ADD, Operation.MULTIPLY], 1000, 5, 2, 0),
+        # capped
+        (
+            [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
+            20,
+            100,
+            12,
+            20,
+        ),
+    ],
+)
+def test_count_possible_strip_choice_problems(
+    operations: list[Operation],
+    up_to: int,
+    largest_number: int,
+    largest_groups: int,
+    expected: int,
+) -> None:
+    """
+    Each operation counts as on word problems, except that the largest number caps a product or
+    dividend too, and 2 groups of 2 is left out. Split evenly, the count is the least of the
+    operations' for each operation.
+    """
+    possible = count_possible_strip_choice_problems(
+        operations, up_to=up_to, largest_number=largest_number, largest_groups=largest_groups
+    )
+    assert possible == expected
+
+
+@pytest.mark.parametrize(
+    ("operations", "count", "largest_number", "largest_groups", "message"),
+    [
+        # 2 groups of 2 is left out, and no other multiplication is within 5 in 2 groups
+        (
+            [Operation.ADD, Operation.MULTIPLY],
+            1,
+            5,
+            2,
+            "Cannot make 1 different problems: only 0 possible.",
+        ),
+        (
+            [Operation.MULTIPLY],
+            27,
+            20,
+            12,
+            "Cannot make 27 different problems: only 26 possible.",
+        ),
+        (
+            [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
+            5,
+            6,
+            2,
+            "Cannot make 5 different problems: only 4 possible.",
+        ),
+    ],
+)
+def test_strip_choice_sheet_errors(
+    operations: list[Operation],
+    count: int,
+    largest_number: int,
+    largest_groups: int,
+    message: str,
+) -> None:
+    """
+    Requesting more problems than the operations and limits allow raises ``ValueError`` saying
+    how many.
+    """
+    with pytest.raises(ValueError) as error:
+        generate_strip_choice_problems(
+            count, operations, largest_number=largest_number, largest_groups=largest_groups
         )
     assert str(error.value) == message
