@@ -2,12 +2,13 @@
 Wording of basic-operation questions: each operation's symbol and name, the equations, two-step
 questions' steps, and the questions as the self-check tiles sheet shows them. Also the
 representations drawn with, or chosen for, word problems, with their sheet titles, instructions,
-hints and diagram descriptions, the equations a problem's own is chosen from, and the strip
-diagrams a problem's own is chosen from, two-step problems' included, with what each problem
-shows.
+hints and diagram descriptions, the equations and number lines a problem's own is chosen from,
+and the strip diagrams a problem's own is chosen from, two-step problems' included, with what
+each problem shows.
 """
 
-from collections.abc import Collection, Sequence
+import random
+from collections.abc import Collection, Iterable, Iterator, Sequence
 from dataclasses import dataclass
 from enum import StrEnum
 from typing import assert_never
@@ -127,7 +128,7 @@ class Representation(StrEnum):
     NONE = "none"  # text only, with a box to show the work
     NUMBER_LINE = "number_line"  # jumps along an open number line
     BLOCKS = "blocks"  # base-ten blocks
-    EQUATION_CHOICE = "equation_choice"  # its equation, chosen from lettered equations
+    EQUATION = "equation"  # its equation, as in 47 + 25 = □, written on a line or chosen
 
 
 # What each representation is called, in a sheet's title and on the web page
@@ -136,9 +137,16 @@ REPRESENTATION_NAMES = {
     Representation.NONE: "Text Only",
     Representation.NUMBER_LINE: "Number Lines",
     Representation.BLOCKS: "Base-Ten Blocks",
-    Representation.EQUATION_CHOICE: "Equation multiple choice",
+    Representation.EQUATION: "Equations",
 }
 WORD_PROBLEMS_NAME = "Word Problems"
+
+# What a sheet of word problems is called after its name, when each problem's representation is
+# chosen from lettered ones. Only these representations are offered as multiple choice.
+CHOICE_NAMES = {
+    Representation.NUMBER_LINE: "Number Line multiple choice",
+    Representation.EQUATION: "Equation multiple choice",
+}
 
 # The operations each representation can show. A number line jumps forward or back, and base-ten
 # blocks are joined or crossed out, so they show only addition and subtraction.
@@ -147,7 +155,7 @@ REPRESENTATION_OPERATIONS = {
     Representation.NONE: frozenset(Operation),
     Representation.NUMBER_LINE: frozenset({Operation.ADD, Operation.SUBTRACT}),
     Representation.BLOCKS: frozenset({Operation.ADD, Operation.SUBTRACT}),
-    Representation.EQUATION_CHOICE: frozenset(Operation),
+    Representation.EQUATION: frozenset(Operation),
 }
 
 
@@ -155,12 +163,15 @@ REPRESENTATION_OPERATIONS = {
 TWO_STEP_REPRESENTATIONS = frozenset({Representation.STRIP, Representation.NONE})
 
 
-def word_problems_title(representation: Representation) -> str:
+def word_problems_title(representation: Representation, choices: bool = False) -> str:
     """
     Return what a sheet of word problems drawn with ``representation`` is called, so its title
     unless one is given: "Word Problems", followed by the representation's name unless the sheet is
-    text only.
+    text only. With ``choices``, each problem's representation is chosen from lettered ones, and
+    its name in ``CHOICE_NAMES`` follows instead.
     """
+    if choices:
+        return f"{WORD_PROBLEMS_NAME} — {CHOICE_NAMES[representation]}"
     if representation is Representation.NONE:
         return WORD_PROBLEMS_NAME
     return f"{WORD_PROBLEMS_NAME} — {REPRESENTATION_NAMES[representation]}"
@@ -404,11 +415,13 @@ def _groups_and_other(data: BasicOperationQuestionData) -> tuple[int, int]:
 
 # A word problem as presented: its equation chosen from lettered equations
 type EquationChoiceQuestion = Question[BasicOperationQuestionData, MultipleChoice[str]]
-# A word problem as presented: answered in writing, with one step or two, or its equation chosen
+# A word problem as presented: answered in writing, with one step or two, or its equation or
+# number line chosen
 type WordProblemQuestion = (
     Question[BasicOperationQuestionData, FreeResponse]
     | Question[TwoStepQuestionData, FreeResponse]
     | EquationChoiceQuestion
+    | NumberLineChoiceQuestion
 )
 
 
@@ -506,17 +519,143 @@ def number_line_jumps(data: BasicOperationQuestionData) -> tuple[int, ...]:
     227 and 222. A number line shows only addition and subtraction, so any other operation
     raises ``ValueError``.
     """
-    terms = place_value_terms(data.operands[1])
-    match data.operation:
+    direction = _jump_direction(data.operation)
+    return tuple(direction * term for term in place_value_terms(data.operands[1]))
+
+
+def _jump_direction(operation: Operation) -> int:
+    """
+    Return 1 for addition, which jumps forward on a number line, and -1 for subtraction, which
+    jumps back. A number line shows only addition and subtraction, so any other operation raises
+    ``ValueError``.
+    """
+    match operation:
         case Operation.ADD:
-            return terms
+            return 1
         case Operation.SUBTRACT:
-            return tuple(-term for term in terms)
+            return -1
         case Operation.MULTIPLY | Operation.DIVIDE:
-            name = OPERATION_NAMES[data.operation].lower()
+            name = OPERATION_NAMES[operation].lower()
             raise ValueError(f"A number line shows only addition and subtraction, not {name}.")
         case _:
-            assert_never(data.operation)
+            assert_never(operation)
+
+
+@dataclass(frozen=True)
+class TwoJumpLine:
+    """
+    A number line from 0 with two jumps: ``first`` forward, then ``second``, forward if positive
+    and back if negative, landing on ``end``.
+
+    47 + 25 is ``(47, 25, 72)``, and 72 - 25 is ``(72, -25, 47)``. A wrong choice can land where
+    its jumps don't: ``(47, 25, 82)``.
+    """
+
+    first: int
+    second: int
+    end: int
+
+
+# A word problem as presented: its number line chosen from lettered number lines
+type NumberLineChoiceQuestion = Question[BasicOperationQuestionData, MultipleChoice[TwoJumpLine]]
+
+# A wrong landing's distance from the answer, a ten miscounted, where the numbers leave room for it
+_LANDING_STEP = 10
+
+
+def number_line_choices(data: BasicOperationQuestionData) -> MultipleChoice[TwoJumpLine]:
+    """
+    Return the number lines to choose from for an addition or subtraction: its own, which jumps
+    its first number and then its second, and three wrong lines, each with one mistake:
+
+    - the second jump going the wrong way, which is the other operation;
+    - the right jumps landing on the wrong number, ``_landing_step`` from the answer, on a side
+      drawn at random, or else on the other side;
+    - one of its numbers misread, as ``_misread_lines`` gives it, landing more than that step from
+      the answer if any misreading does, and failing that anywhere new.
+
+    The wrong landing has the same jumps as the problem's own line, so nothing else may tell the
+    two apart. Its side is drawn, so the problem's own isn't always the lower or the higher. It
+    lands past the first number the way the second jump goes, so its arc points the way its sign
+    says. The misread line lands clear of both its possible spots where it can, so where it lands
+    doesn't depend on the side drawn. With a second number of 1, or a subtraction's answer of 1,
+    only one side is past the first number. With 2 - 1 neither is, so its wrong landing is 10
+    above, pointing back. A subtraction whose answer is its second number, such as 50 - 25, has no
+    misreading clear of both spots.
+
+    Every line lands on a different number, above 0 and not on the first number. An addition's
+    larger number must come first, so that its wrong way stays above 0, or this raises
+    ``ValueError``, as it does for any other operation.
+    """
+    first, second = data.operands
+    direction = _jump_direction(data.operation)
+    right = TwoJumpLine(first, direction * second, data.answer)
+    wrong_way = TwoJumpLine(first, -direction * second, first - direction * second)
+    if wrong_way.end <= 0:
+        raise ValueError("A number line from 0 needs an addition's larger number first.")
+    step = _landing_step(data)
+    side = random.choice((1, -1))  # above the answer or below, for the wrong landing to try first
+    # Each is past the first number, by the step's choice, or on it or 0, for _first_new to skip.
+    landings = [
+        TwoJumpLine(first, right.second, data.answer + sign * step) for sign in (side, -side)
+    ]
+    pointing_back = TwoJumpLine(first, right.second, data.answer + _LANDING_STEP)  # for 2 - 1
+    misread = list(_misread_lines(data))
+    clear = [line for line in misread if abs(line.end - data.answer) > step]
+    lines = [right, wrong_way]
+    lines.append(_first_new([*landings, pointing_back], lines))
+    lines.append(_first_new(clear + misread, lines))
+    return multiple_choice((right,), tuple(lines[1:]))
+
+
+def _landing_step(data: BasicOperationQuestionData) -> int:
+    """
+    Return how far a wrong landing is from the answer: ``_LANDING_STEP`` when that leaves it past
+    the first number and above 0 on both sides of the answer, which needs a second number over 10
+    and, for a subtraction, an answer over 10 too. Otherwise 1, the start counted as a jump.
+    """
+    second = data.operands[1]
+    room = second if data.operation is Operation.ADD else min(second, data.answer)
+    return _LANDING_STEP if room > _LANDING_STEP else 1
+
+
+def _misread_lines(data: BasicOperationQuestionData) -> Iterator[TwoJumpLine]:
+    """
+    Yield the problem's own line with one of its numbers misread, most likely first: the second
+    number, then the first, each as ``_misreadings`` gives it. Some land on or below 0, for the
+    caller to skip.
+    """
+    first, second = data.operands
+    direction = _jump_direction(data.operation)
+    for number in _misreadings(second):
+        yield TwoJumpLine(first, direction * number, first + direction * number)
+    for number in _misreadings(first):
+        yield TwoJumpLine(number, direction * second, number + direction * second)
+
+
+def _misreadings(number: int) -> Iterator[int]:
+    """
+    Yield what ``number`` might be misread as, most likely first: its tens and ones swapped (25 as
+    52, 30 as 3), double it, 10 less, and last, miscounted by one, one less and one more. A swap
+    that reads the same, such as 33's, and anything 0 or less are skipped.
+    """
+    hundreds, tens, ones = number // 100, number // 10 % 10, number % 10
+    swapped = hundreds * 100 + ones * 10 + tens
+    for misread in (swapped, 2 * number, number - 10, number - 1, number + 1):
+        if 0 < misread != number:
+            yield misread
+
+
+def _first_new(candidates: Iterable[TwoJumpLine], lines: Sequence[TwoJumpLine]) -> TwoJumpLine:
+    """
+    Return the first of ``candidates`` that lands above 0, not on the first number, and not where
+    any of ``lines`` lands, or raise ``ValueError`` if none does.
+    """
+    taken = {lines[0].first} | {line.end for line in lines}
+    for line in candidates:
+        if line.end > 0 and line.end not in taken:
+            return line
+    raise ValueError("No wrong number line lands somewhere new.")
 
 
 _BLOCKS_HINTS = {
@@ -526,12 +665,16 @@ _BLOCKS_HINTS = {
 
 
 def instruction(
-    representation: Representation, operations: Collection[Operation], work_box: bool
+    representation: Representation,
+    operations: Collection[Operation],
+    work_box: bool,
+    choices: bool = False,
 ) -> str:
     """
     Return the instruction printed under a word-problem sheet's header, for its representation and
     the operations of its problems. ``work_box`` is for text only: whether each problem has a box
-    to show the work in.
+    to show the work in. ``choices`` is for number lines and equations: whether each problem's is
+    chosen from lettered ones.
     """
     match representation:
         case Representation.STRIP:
@@ -549,14 +692,24 @@ def instruction(
                 return "Read each problem. Show your work in the box."
             return "Read each problem and solve it."
         case Representation.NUMBER_LINE:
+            if choices:
+                return (
+                    "Each number line starts at 0 and shows both numbers as jumps. Circle the "
+                    "correct one."
+                )
             return (
                 "Use the number line. Start at the first number and jump by hundreds, tens, and "
                 "ones."
             )
         case Representation.BLOCKS:
             return "Use the base-ten blocks to help you solve each problem."
-        case Representation.EQUATION_CHOICE:
-            return f"Choose the equation that matches each problem. The {BLANK} shows what to find."
+        case Representation.EQUATION:
+            if choices:
+                return (
+                    f"Choose the equation that matches each problem. The {BLANK} shows what to "
+                    "find."
+                )
+            return f"Write an equation for each problem, with a {BLANK} for what to find. Solve it."
         case _:
             assert_never(representation)
 
@@ -580,7 +733,7 @@ def hint(
             return _NUMBER_LINE_HINTS[data.operation]
         case Representation.BLOCKS:
             return _BLOCKS_HINTS[data.operation].format(b=data.operands[1])
-        case Representation.EQUATION_CHOICE:
+        case Representation.EQUATION:
             return None
         case _:
             assert_never(representation)

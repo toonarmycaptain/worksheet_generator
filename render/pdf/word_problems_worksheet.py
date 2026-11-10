@@ -5,11 +5,13 @@ key page.
 The first page has the representation's instruction under its header, and for base-ten blocks a key
 to the blocks. Each problem has its number and wording, a hint if the representation has one and
 hints aren't turned off, the representation, and an answer line. A text-only problem's
-representation is a box to show the work in, unless the boxes are left out. A number line's last
-box is its answer, so it has no answer line. A problem whose equation is chosen has its lettered
-equations instead, in rows of two. A two-step problem is shown only with strip diagrams, as one
-bar under its whole, or as text only. A sheet for the self-check tiles case has no answer lines,
-and ends with a page for the answer bank and pattern.
+representation is a box to show the work in, unless the boxes are left out, and an equation's is a
+line to write it on. A number line's last box is its answer, so it has no answer line. A
+multiple-choice problem, whose representation is
+chosen, has no hint, and has its lettered equations or number lines instead, in rows of two. A
+two-step problem is shown only with strip diagrams, as one bar under its whole, or as text only.
+A sheet for the self-check tiles case has no answer lines, and ends with a page for the answer
+bank and pattern.
 """
 
 from collections.abc import Sequence
@@ -25,6 +27,7 @@ from core.basic_operations.representation import (
     REPRESENTATION_NAMES,
     TWO_STEP_REPRESENTATIONS,
     Representation,
+    TwoJumpLine,
     WordProblemQuestion,
     basic_operation_tile_question,
     hint,
@@ -45,12 +48,15 @@ from render.pdf.diagrams import (
     GREY_BLOCKS,
     NUMBER_LINE_HEIGHT,
     STRIP_HEIGHT,
+    TWO_JUMP_LINE_DROP,
+    TWO_JUMP_LINE_HEIGHT,
     BlockColours,
     blocks_height,
     draw_blocks,
     draw_blocks_key,
     draw_number_line,
     draw_strip_diagram,
+    draw_two_jump_line,
 )
 from render.pdf.page import (
     BOLD_FONT,
@@ -91,11 +97,20 @@ WORK_BOX_LABEL_SIZE = 9
 WORK_BOX_LABEL_COLOUR = HexColor("#a0aec0")  # grey
 WORK_BOX_LABEL_INSET = 5  # from the box's left edge to the label
 WORK_BOX_LABEL_DROP = 12  # from the box's top down to the label's baseline
-# Equations to choose from, in rows below the problem's text
+# Equations, written: a labelled line, like the answer line
+EQUATION_LABEL = "Equation: "
+EQUATION_DROP = ANSWER_DROP  # from the representation's top down to the line
+EQUATION_LINE_LENGTH = 300
+# Equations or number lines to choose from, in rows below the problem's text
 CHOICE_COLUMNS = 2
 CHOICE_DROP = 12  # from the representation's top down to the first row's baseline
 CHOICE_ROW_HEIGHT = 26  # from one row's baseline to the next
 CHOICE_DESCENT = 8  # the squares reach below the baseline, so the last row ends this far below it
+LINE_CHOICE_LETTER_WIDTH = 26  # room for "A)" left of each number line
+LINE_CHOICE_GAP = 24  # between a number line and the next choice's letter
+# each number line's width
+LINE_CHOICE_WIDTH = (TEXT_WIDTH - LINE_CHOICE_GAP) / CHOICE_COLUMNS - LINE_CHOICE_LETTER_WIDTH
+LINE_CHOICE_ROW_HEIGHT = TWO_JUMP_LINE_HEIGHT + 9  # from one row's top to the next
 
 
 def render_word_problems_worksheet(
@@ -117,7 +132,8 @@ def render_word_problems_worksheet(
     blocks saying how many to cross out. Base-ten blocks are grey when ``black_and_white`` is
     set. Text-only problems have no box to show the work in when ``work_box`` is False. A problem
     that would run past the bottom margin starts on the next page. A multiple-choice problem has
-    its lettered options instead of an answer line. A two-step problem needs ``representation`` to
+    its lettered options instead of its representation and an answer line, and no hint; on a
+    sheet of them, the instruction says to choose. A two-step problem needs ``representation`` to
     be strip diagrams or text only, or raises ``ValueError``. The answer key gives each problem's
     equation and answer (each step's, for a two-step problem), and a multiple-choice problem's
     correct letter.
@@ -136,8 +152,9 @@ def render_word_problems_worksheet(
     colours = GREY_BLOCKS if black_and_white else COLOUR_BLOCKS
 
     operations = {step.operation for question in questions for step in _steps(question.data)}
+    choices = any(isinstance(question.response, MultipleChoice) for question in questions)
     y = draw_instruction(
-        pdf, instruction(representation, operations, work_box), start_page(pdf, header)
+        pdf, instruction(representation, operations, work_box, choices), start_page(pdf, header)
     )
     if representation is Representation.BLOCKS:
         top = y + REPRESENTATION_RAISE
@@ -145,14 +162,17 @@ def render_word_problems_worksheet(
         y = top - BLOCKS_KEY_HEIGHT - PROBLEM_GAP
     for number, question in enumerate(questions, start=1):
         lines = wrap(stem(question.data), TEXT_SIZE, TEXT_WIDTH)
-        hint_text = hint(question.data, representation) if hints else None
+        hint_text = (
+            hint(question.data, representation)
+            if hints and isinstance(question.response, FreeResponse)
+            else None
+        )
         hint_lines = wrap(hint_text, HINT_SIZE, TEXT_WIDTH) if hint_text is not None else []
         height = (
             len(lines) * LINE_HEIGHT
             + len(hint_lines) * HINT_LINE_HEIGHT
             - REPRESENTATION_RAISE
-            + _representation_height(question.data, representation, work_box)
-            + _response_height(question.response, answer_lines)
+            + _body_height(question, representation, work_box, answer_lines)
         )
         y = make_room(pdf, header, y, height)
         y = _draw_problem(
@@ -208,15 +228,24 @@ def _solution(question: WordProblemQuestion) -> str:
     return solved_equation(question.data)
 
 
-def _response_height(response: FreeResponse | MultipleChoice[str], answer_line: bool) -> float:
+def _body_height(
+    question: WordProblemQuestion,
+    representation: Representation,
+    work_box: bool,
+    answer_line: bool,
+) -> float:
     """
-    Return the height below the representation of the problem's lettered options, if it has
-    them, or else of its answer line, if ``answer_line`` is set.
+    Return the height of the problem below its text: its lettered options, if it has them, or
+    else its representation and its answer line, if ``answer_line`` is set.
     """
-    if isinstance(response, MultipleChoice):
-        rows = -(-len(response.options) // CHOICE_COLUMNS)  # rounded up
-        return CHOICE_DROP + (rows - 1) * CHOICE_ROW_HEIGHT + CHOICE_DESCENT
-    return ANSWER_DROP if answer_line else 0
+    if isinstance(question.response, MultipleChoice):
+        options = question.response.options
+        last_row = (len(options) - 1) // CHOICE_COLUMNS
+        if isinstance(options[0], TwoJumpLine):
+            return last_row * LINE_CHOICE_ROW_HEIGHT + TWO_JUMP_LINE_HEIGHT
+        return CHOICE_DROP + last_row * CHOICE_ROW_HEIGHT + CHOICE_DESCENT
+    answer_drop = ANSWER_DROP if answer_line else 0
+    return _representation_height(question.data, representation, work_box) + answer_drop
 
 
 def _draw_problem(
@@ -233,9 +262,8 @@ def _draw_problem(
     y: float,
 ) -> float:
     """
-    Draw one problem, from its number down to its representation, followed by its lettered
-    options if it has them, or else an answer line if ``answer_line`` is set, and return the y
-    below it.
+    Draw one problem, from its number down to its lettered options if it has them, or else to its
+    representation and an answer line if ``answer_line`` is set, and return the y below it.
 
     ``hints`` and ``colours`` are for base-ten blocks: whether to write the note saying how many
     to cross out, and the blocks' colours. ``work_box`` is for text only: whether to draw the box
@@ -250,20 +278,25 @@ def _draw_problem(
     pdf.setFillColor("black")
 
     top = y + REPRESENTATION_RAISE
+    if isinstance(question.response, MultipleChoice):
+        return _draw_choices(pdf, question.response.options, top) - PROBLEM_GAP
     _draw_representation(
         pdf, question.data, representation, MARGIN + TEXT_INDENT, top, hints, colours, work_box
     )
 
     bottom = top - _representation_height(question.data, representation, work_box)
-    if isinstance(question.response, MultipleChoice):
-        bottom = _draw_choices(pdf, question.response.options, bottom)
-    elif answer_line:
+    if answer_line:
         bottom -= ANSWER_DROP
-        pdf.setFont(BOLD_FONT, TEXT_SIZE)
-        pdf.drawString(MARGIN + TEXT_INDENT, bottom, ANSWER_LABEL)
-        line_x = MARGIN + TEXT_INDENT + stringWidth(ANSWER_LABEL, BOLD_FONT, TEXT_SIZE)
-        pdf.line(line_x, bottom, line_x + ANSWER_LINE_LENGTH, bottom)
+        _draw_labelled_line(pdf, MARGIN + TEXT_INDENT, bottom, ANSWER_LABEL, ANSWER_LINE_LENGTH)
     return bottom - PROBLEM_GAP
+
+
+def _draw_labelled_line(pdf: Canvas, x: float, baseline: float, label: str, length: float) -> None:
+    """Draw ``label`` in bold from ``x``, followed on its baseline by a line ``length`` long."""
+    pdf.setFont(BOLD_FONT, TEXT_SIZE)
+    pdf.drawString(x, baseline, label)
+    line_x = x + stringWidth(label, BOLD_FONT, TEXT_SIZE)
+    pdf.line(line_x, baseline, line_x + length, baseline)
 
 
 def _representation_height(
@@ -280,8 +313,8 @@ def _representation_height(
             return NUMBER_LINE_HEIGHT
         case Representation.BLOCKS:
             return blocks_height(blocks_diagram(_one_step(data, representation)))
-        case Representation.EQUATION_CHOICE:
-            return 0  # the equations are the problem's options, below it
+        case Representation.EQUATION:
+            return EQUATION_DROP
         case _:
             assert_never(representation)
 
@@ -316,8 +349,8 @@ def _draw_representation(
         case Representation.BLOCKS:
             diagram = blocks_diagram(_one_step(data, representation))
             draw_blocks(pdf, x, top, diagram, colours, note=hints)
-        case Representation.EQUATION_CHOICE:
-            pass  # the equations are the problem's options, drawn by _draw_choices
+        case Representation.EQUATION:
+            _draw_labelled_line(pdf, x, top - EQUATION_DROP, EQUATION_LABEL, EQUATION_LINE_LENGTH)
         case _:
             assert_never(representation)
 
@@ -334,11 +367,14 @@ def _one_step(
     return data
 
 
-def _draw_choices(pdf: Canvas, options: Sequence[str], top: float) -> float:
+def _draw_choices(pdf: Canvas, options: Sequence[str | TwoJumpLine], top: float) -> float:
     """
-    Draw the options to choose from, ``CHOICE_COLUMNS`` to a row, each after its letter, from
-    ``top`` down, and return the bottom of the last row.
+    Draw the options to choose from, equations or number lines, ``CHOICE_COLUMNS`` to a row, each
+    after its letter, from ``top`` down, and return the bottom of the last row.
     """
+    lines = [option for option in options if isinstance(option, TwoJumpLine)]
+    if lines:  # a problem's options are all of one kind
+        return _draw_line_choices(pdf, lines, top)
     pdf.setFont(FONT, TEXT_SIZE)
     first_baseline = top - CHOICE_DROP
     for index, option in enumerate(options):
@@ -348,6 +384,26 @@ def _draw_choices(pdf: Canvas, options: Sequence[str], top: float) -> float:
         draw_text(pdf, x, baseline, f"{choice_label(index)} {option}", TEXT_SIZE)
     last_row = (len(options) - 1) // CHOICE_COLUMNS
     return first_baseline - last_row * CHOICE_ROW_HEIGHT - CHOICE_DESCENT
+
+
+def _draw_line_choices(pdf: Canvas, lines: Sequence[TwoJumpLine], top: float) -> float:
+    """
+    Draw the number lines to choose from, ``CHOICE_COLUMNS`` to a row, each with its letter level
+    with its line, from ``top`` down, and return the bottom of the last row.
+    """
+    for index, line in enumerate(lines):
+        row, column = divmod(index, CHOICE_COLUMNS)
+        x = (
+            MARGIN
+            + TEXT_INDENT
+            + column * (LINE_CHOICE_LETTER_WIDTH + LINE_CHOICE_WIDTH + LINE_CHOICE_GAP)
+        )
+        row_top = top - row * LINE_CHOICE_ROW_HEIGHT
+        pdf.setFont(BOLD_FONT, TEXT_SIZE)
+        pdf.drawString(x, row_top - TWO_JUMP_LINE_DROP - 5, choice_label(index))
+        draw_two_jump_line(pdf, x + LINE_CHOICE_LETTER_WIDTH, row_top, line, LINE_CHOICE_WIDTH)
+    last_row = (len(lines) - 1) // CHOICE_COLUMNS
+    return top - last_row * LINE_CHOICE_ROW_HEIGHT - TWO_JUMP_LINE_HEIGHT
 
 
 def _draw_work_box(pdf: Canvas, x: float, top: float) -> None:

@@ -15,6 +15,7 @@ from django.shortcuts import render
 
 from core.basic_operations.data import Operation
 from core.basic_operations.representation import (
+    CHOICE_NAMES,
     REPRESENTATION_OPERATIONS,
     STRIP_CHOICE_NAME,
     Representation,
@@ -152,6 +153,12 @@ def basic_operations(request: HttpRequest) -> HttpResponse:
         "representation_titles": {
             representation.value: word_problems_title(representation)
             for representation in Representation
+        },
+        # each value of a representation offered as multiple choice -> the title of word problems
+        # choosing it
+        "choice_titles": {
+            representation.value: word_problems_title(representation, choices=True)
+            for representation in CHOICE_NAMES
         },
         # each representation's value -> the values of the operations it can show
         "representation_operations": {
