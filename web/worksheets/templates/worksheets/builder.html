@@ -144,29 +144,78 @@
 
   {% if representation_titles %}
   {{ representation_titles|json_script:"representation-titles" }}
+  {{ choice_titles|json_script:"choice-titles" }}
   {{ representation_operations|json_script:"representation-operations" }}
   <script type="module">
     // The word problems form: the only one with a representation.
     const representation = document.querySelector("select[name=representation]");
     const form = representation.form;
+    const tiles = form.elements.self_check_tiles;
 
-    // The title follows the representation, unless it has been changed to something else.
-    const titles = JSON.parse(document.getElementById("representation-titles").textContent);
-    representation.addEventListener("change", () => {
-      if (Object.values(titles).includes(form.elements.title.value)) {
-        form.elements.title.value = titles[representation.value];
+    // The response radios show only when there's a choice to make: for a representation offered
+    // as multiple choice (one with a choice title), while tiles, which aren't available with
+    // multiple choice, are unticked. Otherwise they're hidden, and disabled so they aren't sent,
+    // which gives free response.
+    const choiceTitles = JSON.parse(document.getElementById("choice-titles").textContent);
+    const responses = [...form.querySelectorAll("input[name=response]")];
+    const freeResponse = responses.find((radio) => radio.value === "free_response");
+    const multipleChoice = responses.find((radio) => radio.value === "multiple_choice");
+    const choosing = () => multipleChoice.checked && !multipleChoice.disabled;
+    function showResponses() {
+      const show = representation.value in choiceTitles && !tiles.checked;
+      for (const radio of responses) radio.disabled = !show;
+      // so a representation offered both ways starts at free response
+      if (!show) freeResponse.checked = true;
+      responses[0].closest("[role=radiogroup]").style.display = show ? "" : "none";
+    }
+    representation.addEventListener("change", showResponses);
+    tiles.addEventListener("change", showResponses);
+    window.addEventListener("pageshow", showResponses);
+    showResponses();
+
+    // Multiple choice greys out the tiles box and pattern, so they aren't sent: each choice's
+    // letter would need coding as a number. Ticked tiles are unticked, which puts back the
+    // normal number of problems.
+    const patterns = [...form.querySelectorAll("input[name=tile_pattern]")];
+    function greyOutTiles() {
+      const available = !choosing();
+      if (!available && tiles.checked) {
+        tiles.checked = false;
+        // setting checked doesn't fire change, which the tiles script listens for
+        tiles.dispatchEvent(new Event("change"));
       }
-    });
+      tiles.disabled = !available;
+      for (const radio of patterns) radio.disabled = !available;
+    }
+    // after showResponses, which sets the response for the representation
+    representation.addEventListener("change", greyOutTiles);
+    for (const radio of responses) radio.addEventListener("change", greyOutTiles);
+    window.addEventListener("pageshow", greyOutTiles);
+    greyOutTiles();
 
-    // Text only and equation multiple choice have no hints, so the box to leave them out is
-    // hidden, and disabled so it isn't sent.
+    // The title follows the representation and response, unless it has been changed to something
+    // else.
+    const titles = JSON.parse(document.getElementById("representation-titles").textContent);
+    function followTitle() {
+      const known = [...Object.values(titles), ...Object.values(choiceTitles)];
+      if (known.includes(form.elements.title.value)) {
+        const chosen = choosing() ? choiceTitles : titles;
+        form.elements.title.value = chosen[representation.value];
+      }
+    }
+    representation.addEventListener("change", followTitle);
+    for (const radio of responses) radio.addEventListener("change", followTitle);
+
+    // Text only and equations have no hints, and neither does multiple choice, so the box to
+    // leave them out is hidden, and disabled so it isn't sent.
     function showNoHints() {
-      const show = !["none", "equation_choice"].includes(representation.value);
+      const show = !["none", "equation"].includes(representation.value) && !choosing();
       form.elements.no_hints.disabled = !show;
       // the page's CSS shows labels as blocks, which would win over the hidden attribute
       form.elements.no_hints.closest("label").style.display = show ? "" : "none";
     }
     representation.addEventListener("change", showNoHints);
+    for (const radio of responses) radio.addEventListener("change", showNoHints);
     // also when the browser restores the choices, going back to the page
     window.addEventListener("pageshow", showNoHints);
     showNoHints();
@@ -201,25 +250,6 @@
         form.elements.work_box.checked = false;
       }
     });
-
-    // Tiles aren't available for equation multiple choice: each choice's letter would need
-    // coding as a number. So the tiles box and pattern are greyed out, so they aren't sent, and
-    // ticked tiles are unticked, which puts back the normal number of problems.
-    const tiles = form.elements.self_check_tiles;
-    const patterns = [...form.querySelectorAll("input[name=tile_pattern]")];
-    function greyOutTiles() {
-      const available = representation.value !== "equation_choice";
-      if (!available && tiles.checked) {
-        tiles.checked = false;
-        // setting checked doesn't fire change, which the tiles script listens for
-        tiles.dispatchEvent(new Event("change"));
-      }
-      tiles.disabled = !available;
-      for (const radio of patterns) radio.disabled = !available;
-    }
-    representation.addEventListener("change", greyOutTiles);
-    window.addEventListener("pageshow", greyOutTiles);
-    greyOutTiles();
 
     // The operations the representation can't show, such as multiplication on a number line, are
     // greyed out, so they aren't sent. Their ticks come back with a representation that can show

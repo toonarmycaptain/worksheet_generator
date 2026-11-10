@@ -1,6 +1,6 @@
 """
-Tests for the arithmetic, missing-number, word-problem, strip-choice and equation-choice
-generators, with one step or two.
+Tests for the arithmetic, missing-number, word-problem, strip-choice, equation-choice and
+number-line-choice generators, with one step or two.
 
 The ``..._from_scripted_draws`` tests pin the exact output: ``random`` is scripted, so each case
 lists the questions that must be produced. The no-repeats tests,
@@ -8,6 +8,7 @@ lists the questions that must be produced. The no-repeats tests,
 ``test_random_word_problems_have_distinct_answers``,
 ``test_random_strip_choice_sheets_can_always_be_finished``,
 ``test_random_equation_choice_sheets_can_always_be_finished``,
+``test_random_number_line_choice_sheets_can_always_be_finished``,
 ``test_random_two_step_problems_have_distinct_answers`` and
 ``test_random_two_step_strip_choice_sheets_can_always_be_finished`` use real random draws.
 """
@@ -26,6 +27,7 @@ from core.basic_operations.generator import (
     count_possible_answers,
     count_possible_equation_choice_problems,
     count_possible_missing_number_questions,
+    count_possible_number_line_choice_problems,
     count_possible_questions,
     count_possible_sheet_questions,
     count_possible_strip_choice_problems,
@@ -34,6 +36,7 @@ from core.basic_operations.generator import (
     generate_basic_operation_questions,
     generate_equation_choice_problems,
     generate_missing_number_questions,
+    generate_number_line_choice_problems,
     generate_strip_choice_problems,
     generate_two_step_problems,
     generate_two_step_strip_choice_problems,
@@ -41,6 +44,7 @@ from core.basic_operations.generator import (
 )
 from core.basic_operations.representation import (
     equation_choices,
+    number_line_choices,
     strip_choices,
     two_step_strip_choices,
 )
@@ -2576,6 +2580,230 @@ def test_equation_choice_sheet_errors(
     """
     with pytest.raises(ValueError) as error:
         generate_equation_choice_problems(count, operations, largest_number=largest_number)
+    assert str(error.value) == message
+
+
+@pytest.mark.parametrize(
+    ("count", "operations", "largest_number", "drawn", "bounds", "expected"),
+    [
+        # The defaults: one of each, then the sheet is shuffled. The addition, drawn 5 and 47,
+        # puts its larger number first. Subtraction is worded with its comparison.
+        (
+            2,
+            [Operation.ADD, Operation.SUBTRACT],
+            999,
+            [9, 47, 5, 47],
+            [(1, 999), (1, 999), (1, 999), (1, 999)],
+            [
+                BasicOperationQuestionData(
+                    Operation.SUBTRACT,
+                    (47, 9),
+                    38,
+                    "Maria has 47 cards and Jamal has 9 cards. "
+                    "How many more cards does Maria have than Jamal?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (47, 5),
+                    52,
+                    "A basket held 47 cards. Maria added 5 more. "
+                    "How many cards are in the basket now?",
+                ),
+            ],
+        ),
+        # an addition's numbers differ, so 30 + 30 is redrawn
+        (
+            1,
+            [Operation.ADD],
+            999,
+            [30, 30, 47, 5],
+            [(1, 999), (1, 999), (1, 999), (1, 999)],
+            [
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (47, 5),
+                    52,
+                    "A basket held 47 cards. Maria added 5 more. "
+                    "How many cards are in the basket now?",
+                ),
+            ],
+        ),
+        # the largest number caps the sum, so 50 + 60, put in order as 60 + 50, is redrawn
+        (
+            1,
+            [Operation.ADD],
+            100,
+            [50, 60, 47, 5],
+            [(1, 100), (1, 100), (1, 100), (1, 100)],
+            [
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (47, 5),
+                    52,
+                    "A basket held 47 cards. Maria added 5 more. "
+                    "How many cards are in the basket now?",
+                ),
+            ],
+        ),
+        # 3 problems split between 2 operations: the extra goes to the last, subtraction, whose
+        # second problem takes the next of its comparisons
+        (
+            3,
+            [Operation.ADD, Operation.SUBTRACT],
+            999,
+            [47, 9, 60, 12, 5, 47],
+            [(1, 999), (1, 999), (1, 999), (1, 999), (1, 999), (1, 999)],
+            [
+                BasicOperationQuestionData(
+                    Operation.SUBTRACT,
+                    (47, 9),
+                    38,
+                    "Maria has 47 cards and Jamal has 9 cards. "
+                    "How many more cards does Maria have than Jamal?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.SUBTRACT,
+                    (60, 12),
+                    48,
+                    "A school sold 60 tickets on Friday and 12 tickets on Saturday. "
+                    "How many more tickets were sold on Friday than on Saturday?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (47, 5),
+                    52,
+                    "A basket held 47 cards. Maria added 5 more. "
+                    "How many cards are in the basket now?",
+                ),
+            ],
+        ),
+    ],
+)
+def test_number_line_choice_problems_from_scripted_draws(
+    count: int,
+    operations: list[Operation],
+    largest_number: int,
+    drawn: list[int],
+    bounds: list[tuple[int, int]],
+    expected: list[BasicOperationQuestionData],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """
+    The operations are split evenly, then the sheet is shuffled. Each problem's numbers are
+    drawn, and redrawn until they meet the limits: every number at most the largest number, and an
+    addition's numbers different, with the larger first.
+
+    ``sample`` keeps the operations' order, so any extra problems go to the last, and ``shuffle``
+    reverses the sheet and each problem's choices. The wording takes the first two names, the last
+    object and each operation's templates from the last, comparisons included, and each wrong
+    landing tries below the answer first. Every scripted draw must be made, within ``bounds``.
+    Each problem's choices are those of ``number_line_choices``, tested in
+    ``test_representation``.
+    """
+    drawn_from = randint_returns(monkeypatch, drawn)
+    sample_first(monkeypatch)
+    reverse_shuffle(monkeypatch)
+    choose_last(monkeypatch)
+
+    questions = generate_number_line_choice_problems(
+        count, operations, largest_number=largest_number
+    )
+
+    assert drawn_from == bounds
+    assert questions == [Question(data, number_line_choices(data)) for data in expected]
+
+
+@pytest.mark.parametrize(
+    ("operations", "count", "largest_number"),
+    [
+        # 2 + 1 and 3 + 1, the only additions within 4 with different numbers
+        ([Operation.ADD], 2, 4),
+        # the differences 1 to 3
+        ([Operation.SUBTRACT], 3, 4),
+        # one of each, at the smallest largest number with an addition
+        ([Operation.ADD, Operation.SUBTRACT], 2, 3),
+        # the most problems allowed, 20, with the defaults
+        ([Operation.ADD, Operation.SUBTRACT], 20, 999),
+    ],
+)
+def test_random_number_line_choice_sheets_can_always_be_finished(
+    operations: list[Operation], count: int, largest_number: int
+) -> None:
+    """
+    A sheet of the most problems the limits allow is produced, with no problem repeated, and
+    every problem has its number lines to choose from.
+    """
+    questions = generate_number_line_choice_problems(
+        count, operations, largest_number=largest_number
+    )
+    problems = {(question.data.operation, question.data.operands) for question in questions}
+    assert len(problems) == count
+
+
+@pytest.mark.parametrize(
+    ("operations", "up_to", "largest_number", "expected"),
+    [
+        # the sums from 2 + 1 to 999, as 1 + 1 has the same numbers
+        ([Operation.ADD], 2000, 999, 997),
+        # the differences from 1 to 998, as on any word problem
+        ([Operation.SUBTRACT], 2000, 999, 998),
+        # only 2 + 1, and below that, none
+        ([Operation.ADD], 2000, 3, 1),
+        ([Operation.ADD], 2000, 2, 0),
+        # Split evenly, each operation needs only its share: addition's 1 sum within 3 is
+        # enough for 1 of 2 problems.
+        ([Operation.ADD, Operation.SUBTRACT], 2000, 3, 2),
+        ([Operation.ADD, Operation.SUBTRACT], 2000, 999, 1994),
+        # capped
+        ([Operation.ADD, Operation.SUBTRACT], 20, 999, 20),
+    ],
+)
+def test_count_possible_number_line_choice_problems(
+    operations: list[Operation], up_to: int, largest_number: int, expected: int
+) -> None:
+    """
+    Subtraction counts as on word problems, and addition counts the sums of two different numbers.
+    Split evenly, the count is the least of the operations' for each operation.
+    """
+    possible = count_possible_number_line_choice_problems(
+        operations, up_to=up_to, largest_number=largest_number
+    )
+    assert possible == expected
+
+
+@pytest.mark.parametrize(
+    ("operations", "count", "largest_number", "message"),
+    [
+        (
+            [Operation.ADD],
+            2,
+            3,
+            "Cannot make 2 different problems: only 1 possible.",
+        ),
+        (
+            [Operation.ADD],
+            1,
+            2,
+            "Cannot make 1 different problems: only 0 possible.",
+        ),
+        # split evenly: addition's 1 sum within 3 isn't enough for 2 of 3 problems
+        (
+            [Operation.ADD, Operation.SUBTRACT],
+            3,
+            3,
+            "Cannot make 3 different problems: only 2 possible.",
+        ),
+    ],
+)
+def test_number_line_choice_sheet_errors(
+    operations: list[Operation], count: int, largest_number: int, message: str
+) -> None:
+    """
+    Requesting more problems than the operations and limits allow raises ``ValueError`` saying
+    how many.
+    """
+    with pytest.raises(ValueError) as error:
+        generate_number_line_choice_problems(count, operations, largest_number=largest_number)
     assert str(error.value) == message
 
 
