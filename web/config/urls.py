@@ -17,6 +17,7 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
+from feedback.views import feedback
 from ninja import NinjaAPI
 from worksheets import views
 from worksheets.api import router as worksheets_router
@@ -30,6 +31,7 @@ urlpatterns = [
     path("place-value/", views.place_value, name="place_value"),
     path("data-and-graphs/", views.data_graphs, name="data_graphs"),
     path("legacy/", views.legacy, name="legacy"),
+    path("feedback/", feedback, name="feedback"),
     path("admin/", admin.site.urls),
     path("api/", api.urls),
 ]

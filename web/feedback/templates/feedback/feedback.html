@@ -1,0 +1,18 @@
+{% extends "worksheets/base.html" %}
+
+{% block title %}Feedback{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block content %}
+  <h1>Feedback</h1>
+  <p>Report a problem, suggest new worksheets or features.</p>
+  <form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}"></div>
+    <button type="submit">Send</button>
+  </form>
+  {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+{% endblock %}
