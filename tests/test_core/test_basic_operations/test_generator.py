@@ -2421,7 +2421,7 @@ def test_strip_choice_sheet_errors(
             ],
         ),
         # 3 problems split between 2 operations: the extra goes to the last, subtraction, whose
-        # second problem takes the last of its other templates
+        # second problem takes the next of its comparisons
         (
             3,
             [Operation.ADD, Operation.SUBTRACT],
@@ -2440,8 +2440,8 @@ def test_strip_choice_sheet_errors(
                     Operation.SUBTRACT,
                     (60, 12),
                     48,
-                    "Maria needs 60 cards in all and has 12 so far. "
-                    "How many more cards are needed?",
+                    "A school sold 60 tickets on Friday and 12 tickets on Saturday. "
+                    "How many more tickets were sold on Friday than on Saturday?",
                 ),
                 BasicOperationQuestionData(
                     Operation.ADD,

@@ -144,7 +144,7 @@ TWO_STEP_SLOTS = {"n1", "n2", "obj", "a_obj", "b_obj", "c_obj", "a", "b", "c"}
                 "Maria scored 47 points, then scored 25 more points. How many points in all?",
             ],
         ),
-        # each of the eight in turn
+        # eight in turn, from the last
         (
             [ADD] * 8,
             False,
@@ -166,7 +166,7 @@ TWO_STEP_SLOTS = {"n1", "n2", "obj", "a_obj", "b_obj", "c_obj", "a", "b", "c"}
         ),
         # 1 takes the singular, and the words that agree with it, in every addition story
         (
-            [ADD_ONES] * 8,
+            [ADD_ONES] * 14,
             False,
             [
                 "A basket held 1 card. Maria added 1 more. How many cards are in the basket now?",
@@ -180,15 +180,32 @@ TWO_STEP_SLOTS = {"n1", "n2", "obj", "a_obj", "b_obj", "c_obj", "a", "b", "c"}
                 "A farm picked 1 apple and then picked 1 more. How many apples were picked in all?",
                 "The library had 1 book. It received 1 more book. "
                 "How many books does the library have now?",
+                "A museum had 1 visitor on Saturday and 1 visitor on Sunday. "
+                "How many visitors did the museum have in all?",
+                "Maria took 1 step before lunch and 1 step after lunch. "
+                "How many steps did Maria take in all?",
+                "The school play sold 1 ticket on Friday and 1 ticket on Saturday. "
+                "How many tickets did the play sell in all?",
+                "A farm has 1 cow and 1 horse. How many animals are on the farm?",
+                "A parking lot had 1 car. Then 1 more car parked there. "
+                "How many cars are in the parking lot now?",
+                "A school collected 1 can of food on Monday and 1 can on Tuesday. "
+                "How many cans of food did the school collect in all?",
             ],
         ),
-        # and in every subtraction story, the comparison included, while 2 stays plural
+        # and in every subtraction story, the comparisons included, while 2 stays plural
         (
-            [SUBTRACT_ONE] * 7,
+            [SUBTRACT_ONE] * 16,
             True,
             [
                 "Maria has 2 cards and Jamal has 1 card. "
                 "How many more cards does Maria have than Jamal?",
+                "A school sold 2 tickets on Friday and 1 ticket on Saturday. "
+                "How many more tickets were sold on Friday than on Saturday?",
+                "Maria has 2 cards. Jamal has 1 card. "
+                "How many fewer cards does Jamal have than Maria?",
+                "Maria scored 2 points and Jamal scored 1 point. "
+                "How many more points did Maria score than Jamal?",
                 "Maria needs 2 cards in all and has 1 so far. How many more cards are needed?",
                 "Maria had 2 points and lost 1 point. How many points does Maria have now?",
                 "A book has 2 pages. Maria has read 1 page. How many pages are left to read?",
@@ -196,6 +213,14 @@ TWO_STEP_SLOTS = {"n1", "n2", "obj", "a_obj", "b_obj", "c_obj", "a", "b", "c"}
                 "There were 2 cards on the shelf. 1 of them was sold. How many cards are left?",
                 "Maria had 2 cards. Maria gave away 1 of them. "
                 "How many cards does Maria have left?",
+                "Maria had 2 dollars and spent 1 dollar. How many dollars does Maria have left?",
+                "A tree had 2 leaves. 1 leaf fell off. How many leaves are still on the tree?",
+                "A store had 2 bottles of water and sold 1 of them. "
+                "How many bottles of water does the store have left?",
+                "Maria had 2 cards and put 1 of them in a box. How many cards are not in the box?",
+                "A bus had 2 passengers. At the first stop, 1 passenger got off. "
+                "How many passengers are on the bus now?",
+                "The theater has 2 seats. 1 of them is filled. How many seats are empty?",
             ],
         ),
     ],
@@ -251,7 +276,7 @@ def test_word_problem_texts(
                 "How many cards does the store have left?"
             ],
         ),
-        # each of the three in turn
+        # three in turn, from the last
         (
             [SUBTRACT_DIVIDE] * 3,
             [
