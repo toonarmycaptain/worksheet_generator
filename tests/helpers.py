@@ -23,13 +23,20 @@ from typing import Any
 import pytest
 
 from core.base_ten_blocks import BlocksQuestionData
-from core.basic_operations.data import BasicOperationQuestionData, MissingNumberQuestionData
+from core.basic_operations.data import (
+    BasicOperationQuestionData,
+    MissingNumberQuestionData,
+    TwoStepQuestionData,
+)
 from core.basic_operations.representation import (
     Prompt,
     Representation,
+    StripChoiceQuestion,
+    TwoStepStripChoiceQuestion,
     WordProblemQuestion,
     equation_choices,
     strip_choices,
+    two_step_strip_choices,
 )
 from core.discrete_data.data import (
     CategoricalDataProblemData,
@@ -145,22 +152,25 @@ def choose_last(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(random, "choice", lambda items: items[-1])
 
 
-def choice_returns(monkeypatch: pytest.MonkeyPatch, picks: list[Any]) -> None:
+def choice_returns(monkeypatch: pytest.MonkeyPatch, picks: list[Any]) -> list[Sequence[Any]]:
     """
-    Make ``random.choice`` return ``picks`` in order.
+    Make ``random.choice`` return ``picks`` in order, and return the items of each call.
 
     A pick that is not among its call's items raises ``ValueError``, as the real ``choice`` never
     returns one, so a pick also shows that the code offered it.
     """
     values = iter(picks)
+    offered: list[Sequence[Any]] = []
 
     def choice(items: Sequence[Any]) -> Any:
+        offered.append(items)
         pick = next(values)
         if pick not in items:
             raise ValueError(f"{pick} is not one of {items}")
         return pick
 
     monkeypatch.setattr(random, "choice", choice)
+    return offered
 
 
 def random_returns(monkeypatch: pytest.MonkeyPatch, drawn: list[float]) -> None:
@@ -316,7 +326,7 @@ def render_tiles[Data: QuestionData[Any]](
 
 
 def render_word_problems(
-    questions: list[BasicOperationQuestionData],
+    questions: list[BasicOperationQuestionData | TwoStepQuestionData],
     representation: Representation,
     hints: bool,
     black_and_white: bool,
@@ -329,12 +339,14 @@ def render_word_problems(
 ) -> bytes:
     """
     Render the word problems sheet, each question free response, with no wrong answers, or for
-    equation multiple choice with its choices made by ``equation_choices``.
+    equation multiple choice with its choices made by ``equation_choices``. Two-step questions
+    are always free response.
     """
     out = BytesIO()
     made: list[WordProblemQuestion] = [
         Question(data, equation_choices(data))
         if representation is Representation.EQUATION_CHOICE
+        and isinstance(data, BasicOperationQuestionData)
         else Question(data, FreeResponse())
         for data in questions
     ]
@@ -353,17 +365,26 @@ def render_word_problems(
 
 
 def render_strip_choice(
-    questions: list[BasicOperationQuestionData],
+    questions: list[BasicOperationQuestionData | TwoStepQuestionData],
     prompt: Prompt,
     answer_key: bool,
     title: str,
     label: str,
     name_line: bool = True,
 ) -> bytes:
-    """Render the strip choice sheet, each question's choices made by ``strip_choices``."""
+    """
+    Render the strip choice sheet, each question's choices made by ``strip_choices``, or for a
+    two-step question by ``two_step_strip_choices``.
+    """
     out = BytesIO()
+    made: list[StripChoiceQuestion | TwoStepStripChoiceQuestion] = [
+        Question(data, two_step_strip_choices(data))
+        if isinstance(data, TwoStepQuestionData)
+        else Question(data, strip_choices(data))
+        for data in questions
+    ]
     render_strip_choice_worksheet(
-        questions=[Question(data, strip_choices(data)) for data in questions],
+        questions=made,
         path=out,
         header=Header(title=title, label=label, name_line=name_line),
         answer_key=answer_key,

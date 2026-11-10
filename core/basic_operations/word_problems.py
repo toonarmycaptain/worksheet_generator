@@ -15,15 +15,32 @@ number meets a noun or a verb. Multiplication and division operands start at 2, 
 templates use ``{obj}``. A new template is one more string in its operation's tuple, and a new
 operation is one more entry in ``TEMPLATES``.
 
+New templates and objects go at the top of their tuples, and new names at the end. The tests
+script ``random`` to take each tuple's templates from the end, the last object and the first two
+names, so their wording stays the same.
+
 Comparisons, which ask how many more one has than another, are kept apart in
 ``COMPARISON_TEMPLATES``: a part-part-whole representation, such as the strip diagram, can't show
 them.
+
+Two-step problems have their own templates, in ``TWO_STEP_TEMPLATES``, keyed by their shape. They
+take the same slots, with ``{a}`` and ``{b}`` as the first step's operands, plus ``{c}``,
+``{c_obj}`` and ``{c:...}`` for the second step's other operand. The first step's answer, which
+the second step also uses, is never stated. The generator draws only the shapes that have an
+entry, and each shape needs its strip diagram and wrong choices too, in
+``core.basic_operations.representation``: so far, the five shapes that one bar can show.
 """
 
 import random
 from collections.abc import Sequence
 
-from core.basic_operations.data import BasicOperationQuestionData, Operation
+from core.basic_operations.data import (
+    BasicOperationQuestionData,
+    Operation,
+    TwoStepQuestionData,
+    TwoStepShape,
+    Unknown,
+)
 
 NAMES = (
     "Maria",
@@ -129,6 +146,47 @@ COMPARISON_TEMPLATES: dict[Operation, tuple[str, ...]] = {
     ),
 }
 
+# {a} and {b} make the first step's answer, which the second step uses with {c}
+TWO_STEP_TEMPLATES: dict[TwoStepShape, tuple[str, ...]] = {
+    # ({a} + {b}) + {c}
+    (Operation.ADD, Operation.ADD, Unknown.FIRST): (
+        "{n1} had {a} {a_obj}. {n1} found {b} more on Monday and {c} more on Tuesday. "
+        "How many {obj} does {n1} have now?",
+        "A jar held {a} {a_obj}. {n1} added {b} more, and then {n2} added {c} more. "
+        "How many {obj} are in the jar now?",
+    ),
+    # ({a} - {b}) - {c}
+    (Operation.SUBTRACT, Operation.SUBTRACT, Unknown.FIRST): (
+        "{n1} had {a} {a_obj}. {n1} gave {b} to {n2} and then lost {c}. "
+        "How many {obj} does {n1} have left?",
+        "A box held {a} {a_obj}. {n1} took out {b}, and then {n2} took out {c}. "
+        "How many {obj} are left in the box?",
+    ),
+    # ({a} - {b}) shared equally into {c} groups
+    (Operation.SUBTRACT, Operation.DIVIDE, Unknown.FIRST): (
+        "{n1} has {a} {a_obj}. {n1} gives {b} to {n2} and then shares the rest equally among {c} "
+        "friends. How many {obj} does each friend get?",
+        "{n1} had {a} {a_obj} and used {b}. {n1} put the rest into {c} equal groups. "
+        "How many {obj} are in each group?",
+        "{n1} has {a} {a_obj}. {b} {b:is|are} in a box, and the rest are in {c} bags with the same "
+        "number in each bag. How many {obj} are in each bag?",
+    ),
+    # ({a} groups of {b}) + {c}
+    (Operation.MULTIPLY, Operation.ADD, Unknown.FIRST): (
+        "{n1} has {a} bags with {b} {obj} in each bag, and {c} more {c_obj} on the table. "
+        "How many {obj} does {n1} have in all?",
+        "There are {a} boxes with {b} {obj} in each box. {n1} brings {c} more. "
+        "How many {obj} are there now?",
+    ),
+    # {c} - ({a} groups of {b})
+    (Operation.MULTIPLY, Operation.SUBTRACT, Unknown.SECOND): (
+        "{n1} had {c} {c_obj}. {n1} gave {a} friends {b} {obj} each. "
+        "How many {obj} does {n1} have left?",
+        "A store had {c} {c_obj}. It sold {a} packs with {b} {obj} in each pack. "
+        "How many {obj} does the store have left?",
+    ),
+}
+
 
 class _Count(int):
     """
@@ -155,23 +213,46 @@ def word_problem_texts(
     unused: dict[Operation, list[str]] = {}
     texts = []
     for data in questions:
-        templates = unused.setdefault(data.operation, [])
-        if not templates:
-            pool = TEMPLATES[data.operation]
-            if comparisons:
-                pool += COMPARISON_TEMPLATES.get(data.operation, ())
-            templates += random.sample(pool, len(pool))
-        first_name, second_name = random.sample(NAMES, 2)
-        singular, plural = random.choice(OBJECTS)
-        first, second = data.operands
-        text = templates.pop().format(
-            n1=first_name,
-            n2=second_name,
-            obj=plural,
-            a_obj=singular if first == 1 else plural,
-            b_obj=singular if second == 1 else plural,
-            a=_Count(first),
-            b=_Count(second),
-        )
-        texts.append(text)
+        pool = TEMPLATES[data.operation]
+        if comparisons:
+            pool += COMPARISON_TEMPLATES.get(data.operation, ())
+        template = _next_template(unused.setdefault(data.operation, []), pool)
+        texts.append(_fill(template, data.operands))
     return texts
+
+
+def two_step_texts(questions: Sequence[TwoStepQuestionData]) -> list[str]:
+    """
+    Word each two-step question with a template for its shape, two different names and an
+    object.
+
+    No template is used twice for the same shape until all of that shape's templates have been
+    used.
+    """
+    unused: dict[TwoStepShape, list[str]] = {}
+    texts = []
+    for data in questions:
+        template = _next_template(unused.setdefault(data.shape, []), TWO_STEP_TEMPLATES[data.shape])
+        texts.append(_fill(template, data.given_numbers))
+    return texts
+
+
+def _next_template(unused: list[str], pool: Sequence[str]) -> str:
+    """Take a template from ``unused``, first refilling it with ``pool`` shuffled if it's empty."""
+    if not unused:
+        unused += random.sample(pool, len(pool))
+    return unused.pop()
+
+
+def _fill(template: str, numbers: Sequence[int]) -> str:
+    """
+    Fill ``template``'s slots with two different names, an object, and ``numbers`` in order as
+    ``{a}``, ``{b}`` and ``{c}``, each with its agreeing object and words.
+    """
+    first_name, second_name = random.sample(NAMES, 2)
+    singular, plural = random.choice(OBJECTS)
+    slots: dict[str, object] = {}
+    for slot, number in zip("abc", numbers, strict=False):
+        slots[slot] = _Count(number)
+        slots[f"{slot}_obj"] = singular if number == 1 else plural
+    return template.format(n1=first_name, n2=second_name, obj=plural, **slots)

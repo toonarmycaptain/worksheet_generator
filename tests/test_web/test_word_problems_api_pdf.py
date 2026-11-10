@@ -1,11 +1,12 @@
 """
 Tests for the word problems endpoint: its options reach the core and the renderer intact.
 
-The tests script ``random``. ``choices`` returns the operations listed as picks, ``randint``
-the operands listed, and ``shuffle`` reverses, so the complex tile pattern runs from L to A, and
-an equation multiple choice sheet, whose operations are split evenly instead, comes in the
-reverse of the ticked order. The wording takes the first two names, the last object and each
-operation's last template.
+The tests script ``random``. ``choices`` returns the operations, or two-step shapes, listed as
+picks, ``randint`` the operands listed, and ``shuffle`` reverses, so the complex tile pattern runs
+from L to A, and an equation multiple choice sheet, whose operations are split evenly instead,
+comes in the reverse of the ticked order. ``choice`` returns the draws listed as chosen: for each
+two-step problem, the number its first step carries, then each step, and then each problem's
+object. The wording takes the first two names and each operation's or shape's last template.
 ``conventional_slot_of`` gives the slots of a real case. The PDF must then match what the
 renderer draws for the same questions. Disallowed options get Ninja's JSON error. The renderer's
 output is tested in ``test_word_problems_worksheet``.
@@ -16,12 +17,18 @@ from typing import Any
 import pytest
 from django.test import Client
 
-from core.basic_operations.data import BasicOperationQuestionData, Operation
+from core.basic_operations.data import (
+    BasicOperationQuestionData,
+    Operation,
+    TwoStepQuestionData,
+    TwoStepShape,
+    Unknown,
+)
 from core.basic_operations.representation import Representation
 from tests.data import REAL_CASE_SLOTS
 from tests.helpers import (
+    choice_returns,
     choices_returns,
-    choose_last,
     conventional_slot_of_returns,
     pdf_text,
     randint_returns,
@@ -47,13 +54,14 @@ ADD = BasicOperationQuestionData(
 
 
 @pytest.mark.parametrize(
-    ("url", "picks", "drawn", "status", "expected_json", "pdf_data", "filename"),
+    ("url", "picks", "drawn", "chosen", "status", "expected_json", "pdf_data", "filename"),
     [
         (
             # strip diagrams, with 2 problems: subtraction then addition, each with its hint
             "/api/worksheets/word_problems.pdf?representation=strip&problems=2&sheet=1ab2c3",
             [Operation.SUBTRACT, Operation.ADD],
             [40, 150, 47, 25],
+            [("card", "cards"), ("card", "cards")],
             200,
             None,
             {
@@ -77,6 +85,7 @@ ADD = BasicOperationQuestionData(
             "&sheet=1ab2c3",
             [Operation.ADD],
             [47, 25],
+            [("card", "cards")],
             200,
             None,
             {
@@ -100,6 +109,7 @@ ADD = BasicOperationQuestionData(
             "&problems=2&sheet=1ab2c3",
             [Operation.SUBTRACT, Operation.ADD],
             [40, 150, 55, 55, 47, 25],
+            [("card", "cards"), ("card", "cards")],
             200,
             None,
             {
@@ -121,6 +131,7 @@ ADD = BasicOperationQuestionData(
             "&tile_pattern=complex&problems=2&answer_key=true&sheet=1ab2c3",
             [Operation.SUBTRACT, Operation.ADD],
             [40, 150, 47, 25],
+            [("card", "cards"), ("card", "cards")],
             200,
             None,
             {
@@ -143,6 +154,7 @@ ADD = BasicOperationQuestionData(
             "/api/worksheets/word_problems.pdf?self_check_tiles=true&problems=13",
             [],
             [],
+            [],
             422,
             refused("problems: self-check tiles has 12 tiles, so at most 12"),
             None,
@@ -150,6 +162,7 @@ ADD = BasicOperationQuestionData(
         ),
         (
             "/api/worksheets/word_problems.pdf?problems=21",
+            [],
             [],
             [],
             422,
@@ -172,6 +185,7 @@ ADD = BasicOperationQuestionData(
             "&sheet=1ab2c3",
             [Operation.MULTIPLY],
             [3, 4],
+            [("card", "cards")],
             200,
             None,
             {
@@ -202,6 +216,7 @@ ADD = BasicOperationQuestionData(
             "&answer_key=true&sheet=1ab2c3",
             [Operation.DIVIDE, Operation.ADD],
             [3, 4, 47, 25],
+            [("card", "cards"), ("card", "cards")],
             200,
             None,
             {
@@ -233,6 +248,7 @@ ADD = BasicOperationQuestionData(
             "&self_check_tiles=true&problems=2&sheet=1ab2c3",
             [Operation.DIVIDE, Operation.DIVIDE],
             [3, 4, 5, 6],
+            [("card", "cards"), ("card", "cards")],
             200,
             None,
             {
@@ -271,6 +287,7 @@ ADD = BasicOperationQuestionData(
             "/api/worksheets/word_problems.pdf?problems=2&sheet=1ab2c3",
             [Operation.SUBTRACT, Operation.ADD],
             [40, 150, 47, 25],
+            [("card", "cards"), ("card", "cards")],
             200,
             None,
             {
@@ -302,6 +319,7 @@ ADD = BasicOperationQuestionData(
             "&title=Story+Problems&sheet=1ab2c3",
             [Operation.MULTIPLY],
             [3, 4],
+            [("card", "cards")],
             200,
             None,
             {
@@ -330,6 +348,7 @@ ADD = BasicOperationQuestionData(
             "/api/worksheets/word_problems.pdf?work_box=true&problems=2&sheet=1ab2c3",
             [Operation.SUBTRACT, Operation.ADD],
             [40, 150, 47, 25],
+            [("card", "cards"), ("card", "cards")],
             200,
             None,
             {
@@ -356,11 +375,223 @@ ADD = BasicOperationQuestionData(
             "word_problems-sheet-a.pdf",
         ),
         (
+            # two steps with strip diagrams: the shapes listed as picks
+            "/api/worksheets/word_problems.pdf?representation=strip&steps=two&operations=add"
+            "&operations=subtract&problems=2&sheet=1ab2c3",
+            [
+                (Operation.ADD, Operation.ADD, Unknown.FIRST),
+                (Operation.SUBTRACT, Operation.SUBTRACT, Unknown.FIRST),
+            ],
+            [],
+            [
+                10,
+                BasicOperationQuestionData(Operation.ADD, (4, 6), 10),
+                BasicOperationQuestionData(Operation.ADD, (10, 7), 17),
+                20,
+                BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                BasicOperationQuestionData(Operation.SUBTRACT, (20, 8), 12),
+                ("card", "cards"),
+                ("card", "cards"),
+            ],
+            200,
+            None,
+            {
+                "questions": [
+                    TwoStepQuestionData(
+                        (
+                            BasicOperationQuestionData(Operation.ADD, (4, 6), 10),
+                            BasicOperationQuestionData(Operation.ADD, (10, 7), 17),
+                        ),
+                        Unknown.FIRST,
+                        17,
+                        "A jar held 4 cards. Maria added 6 more, and then Jamal added 7 more. "
+                        "How many cards are in the jar now?",
+                    ),
+                    TwoStepQuestionData(
+                        (
+                            BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                            BasicOperationQuestionData(Operation.SUBTRACT, (20, 8), 12),
+                        ),
+                        Unknown.FIRST,
+                        12,
+                        "A box held 25 cards. Maria took out 5, and then Jamal took out 8. "
+                        "How many cards are left in the box?",
+                    ),
+                ],
+                "representation": Representation.STRIP,
+                "hints": True,
+                "black_and_white": False,
+                "work_box": False,
+                "slot_of": None,
+                "answer_key": False,
+                "title": "Word Problems — Strip Diagrams",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        (
+            # two steps, text only, with tiles and the answer key: a second answer of 6 is redrawn
+            "/api/worksheets/word_problems.pdf?representation=none&steps=two&operations=subtract"
+            "&operations=divide&self_check_tiles=true&problems=2&answer_key=true&sheet=1ab2c3",
+            [
+                (Operation.SUBTRACT, Operation.DIVIDE, Unknown.FIRST),
+                (Operation.SUBTRACT, Operation.SUBTRACT, Unknown.FIRST),
+            ],
+            [],
+            [
+                18,
+                BasicOperationQuestionData(Operation.SUBTRACT, (24, 6), 18),
+                BasicOperationQuestionData(Operation.DIVIDE, (18, 3), 6),
+                20,
+                BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                BasicOperationQuestionData(Operation.SUBTRACT, (20, 14), 6),
+                20,
+                BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                BasicOperationQuestionData(Operation.SUBTRACT, (20, 8), 12),
+                ("card", "cards"),
+                ("card", "cards"),
+            ],
+            200,
+            None,
+            {
+                "questions": [
+                    TwoStepQuestionData(
+                        (
+                            BasicOperationQuestionData(Operation.SUBTRACT, (24, 6), 18),
+                            BasicOperationQuestionData(Operation.DIVIDE, (18, 3), 6),
+                        ),
+                        Unknown.FIRST,
+                        6,
+                        "Maria has 24 cards. 6 are in a box, and the rest are in 3 bags with the "
+                        "same number in each bag. How many cards are in each bag?",
+                    ),
+                    TwoStepQuestionData(
+                        (
+                            BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                            BasicOperationQuestionData(Operation.SUBTRACT, (20, 8), 12),
+                        ),
+                        Unknown.FIRST,
+                        12,
+                        "A box held 25 cards. Maria took out 5, and then Jamal took out 8. "
+                        "How many cards are left in the box?",
+                    ),
+                ],
+                "representation": Representation.NONE,
+                "hints": True,
+                "black_and_white": False,
+                "work_box": False,
+                "slot_of": (7, 9),
+                "answer_key": True,
+                "title": "Word Problems",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        (
+            # two steps, text only, with working out space, and a largest number given
+            "/api/worksheets/word_problems.pdf?representation=none&steps=two&operations=subtract"
+            "&operations=multiply&max_number=50&work_box=true&problems=1&sheet=1ab2c3",
+            [(Operation.MULTIPLY, Operation.SUBTRACT, Unknown.SECOND)],
+            [],
+            [
+                48,
+                BasicOperationQuestionData(Operation.MULTIPLY, (6, 8), 48),
+                BasicOperationQuestionData(Operation.SUBTRACT, (50, 48), 2),
+                ("card", "cards"),
+            ],
+            200,
+            None,
+            {
+                "questions": [
+                    TwoStepQuestionData(
+                        (
+                            BasicOperationQuestionData(Operation.MULTIPLY, (6, 8), 48),
+                            BasicOperationQuestionData(Operation.SUBTRACT, (50, 48), 2),
+                        ),
+                        Unknown.SECOND,
+                        2,
+                        "A store had 50 cards. It sold 6 packs with 8 cards in each pack. "
+                        "How many cards does the store have left?",
+                    ),
+                ],
+                "representation": Representation.NONE,
+                "hints": True,
+                "black_and_white": False,
+                "work_box": True,
+                "slot_of": None,
+                "answer_key": False,
+                "title": "Word Problems",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        # two steps only with strip diagrams or text only, and every shape adds or subtracts
+        (
+            "/api/worksheets/word_problems.pdf?representation=number_line&steps=two",
+            [],
+            [],
+            [],
+            422,
+            refused("steps: two steps not available with Number Lines"),
+            None,
+            None,
+        ),
+        (
+            "/api/worksheets/word_problems.pdf?representation=blocks&steps=two",
+            [],
+            [],
+            [],
+            422,
+            refused("steps: two steps not available with Base-Ten Blocks"),
+            None,
+            None,
+        ),
+        (
+            "/api/worksheets/word_problems.pdf?representation=equation_choice&steps=two",
+            [],
+            [],
+            [],
+            422,
+            refused("steps: two steps not available with Equation multiple choice"),
+            None,
+            None,
+        ),
+        (
+            "/api/worksheets/word_problems.pdf?representation=strip&steps=two&operations=multiply"
+            "&operations=divide",
+            [],
+            [],
+            [],
+            422,
+            refused("operations: two steps need addition or subtraction"),
+            None,
+            None,
+        ),
+        (
+            # with tiles, three different numbers within 10 make only the answers 6 to 10
+            "/api/worksheets/word_problems.pdf?representation=none&steps=two&operations=add"
+            "&max_number=10&self_check_tiles=true&problems=12",
+            [],
+            [],
+            [],
+            422,
+            refused(
+                "problems: at most 5 without repeated answers for that largest number. Lower "
+                "problems to 5, or raise the largest number to 17."
+            ),
+            None,
+            None,
+        ),
+        (
             # Number lines, with their title, since none is given. Subtraction is worded with its
             # comparison, the last of its templates on a number-line sheet.
             "/api/worksheets/word_problems.pdf?representation=number_line&problems=2&sheet=1ab2c3",
             [Operation.SUBTRACT, Operation.ADD],
             [40, 150, 47, 25],
+            [("card", "cards"), ("card", "cards")],
             200,
             None,
             {
@@ -392,6 +623,7 @@ ADD = BasicOperationQuestionData(
             "&problems=2&answer_key=true&sheet=1ab2c3",
             [Operation.SUBTRACT, Operation.ADD],
             [40, 150, 47, 25],
+            [("card", "cards"), ("card", "cards")],
             200,
             None,
             {
@@ -423,6 +655,7 @@ ADD = BasicOperationQuestionData(
             "&operations=multiply",
             [],
             [],
+            [],
             422,
             refused("operations: Number Lines show only addition and subtraction"),
             None,
@@ -430,6 +663,7 @@ ADD = BasicOperationQuestionData(
         ),
         (
             "/api/worksheets/word_problems.pdf?representation=number_line&operations=divide",
+            [],
             [],
             [],
             422,
@@ -443,6 +677,7 @@ ADD = BasicOperationQuestionData(
             "/api/worksheets/word_problems.pdf?representation=blocks&problems=2&sheet=1ab2c3",
             [Operation.SUBTRACT, Operation.ADD],
             [40, 150, 47, 25],
+            [("card", "cards"), ("card", "cards")],
             200,
             None,
             {
@@ -465,6 +700,7 @@ ADD = BasicOperationQuestionData(
             "&black_and_white=true&no_hints=true&sheet=1ab2c3",
             [Operation.SUBTRACT],
             [40, 150],
+            [("card", "cards")],
             200,
             None,
             {
@@ -486,6 +722,7 @@ ADD = BasicOperationQuestionData(
             "/api/worksheets/word_problems.pdf?representation=blocks&operations=multiply",
             [],
             [],
+            [],
             422,
             refused("operations: Base-Ten Blocks show only addition and subtraction"),
             None,
@@ -499,6 +736,7 @@ ADD = BasicOperationQuestionData(
             "&answer_key=true&sheet=1ab2c3",
             [],
             [40, 150, 47, 25],
+            [("card", "cards"), ("card", "cards")],
             200,
             None,
             {
@@ -532,6 +770,7 @@ ADD = BasicOperationQuestionData(
             "&max_number=100&sheet=1ab2c3",
             [],
             [2, 2, 3, 4, 6, 20, 40, 90, 47, 25],
+            [("card", "cards"), ("card", "cards"), ("card", "cards"), ("card", "cards")],
             200,
             None,
             {
@@ -576,6 +815,7 @@ ADD = BasicOperationQuestionData(
             "&self_check_tiles=true",
             [],
             [],
+            [],
             422,
             refused("self_check_tiles: not available with Equation multiple choice"),
             None,
@@ -586,6 +826,7 @@ ADD = BasicOperationQuestionData(
             # sums. Text only would allow 2 problems in all.
             "/api/worksheets/word_problems.pdf?representation=equation_choice&operations=add"
             "&operations=multiply&problems=6&max_number=3",
+            [],
             [],
             [],
             422,
@@ -602,6 +843,7 @@ ADD = BasicOperationQuestionData(
             "&max_number=99&sheet=1ab2c3",
             [Operation.ADD],
             [60, 50, 47, 25],
+            [("card", "cards")],
             200,
             None,
             {
@@ -624,6 +866,7 @@ ADD = BasicOperationQuestionData(
             "/api/worksheets/word_problems.pdf?self_check_tiles=true&problems=12&max_number=10",
             [],
             [],
+            [],
             422,
             refused(
                 "problems: at most 9 without repeated answers for that largest number. "
@@ -636,6 +879,7 @@ ADD = BasicOperationQuestionData(
             # with multiplication too, raising the largest number helps only the addition
             "/api/worksheets/word_problems.pdf?operations=add&operations=multiply&problems=4"
             "&max_number=3",
+            [],
             [],
             [],
             422,
@@ -652,6 +896,7 @@ ADD = BasicOperationQuestionData(
             "&max_number=2&sheet=1ab2c3",
             [Operation.DIVIDE],
             [6, 20],
+            [("card", "cards")],
             200,
             None,
             {
@@ -681,6 +926,7 @@ ADD = BasicOperationQuestionData(
             "/api/worksheets/word_problems.pdf?max_number=1",
             [],
             [],
+            [],
             422,
             {
                 "detail": [
@@ -697,6 +943,7 @@ ADD = BasicOperationQuestionData(
         ),
         (
             "/api/worksheets/word_problems.pdf?max_number=1000",
+            [],
             [],
             [],
             422,
@@ -717,8 +964,9 @@ ADD = BasicOperationQuestionData(
 )
 def test_word_problems_pdf(
     url: str,
-    picks: list[Operation],
+    picks: list[Operation] | list[TwoStepShape],
     drawn: list[int],
+    chosen: list[object],
     status: int,
     expected_json: dict[str, Any] | None,
     pdf_data: dict[str, Any] | None,
@@ -737,7 +985,7 @@ def test_word_problems_pdf(
     randint_returns(monkeypatch, drawn)
     reverse_shuffle(monkeypatch)
     sample_first(monkeypatch)
-    choose_last(monkeypatch)
+    choice_returns(monkeypatch, chosen)
     conventional_slot_of_returns(monkeypatch, REAL_CASE_SLOTS)
 
     response = client.get(url)

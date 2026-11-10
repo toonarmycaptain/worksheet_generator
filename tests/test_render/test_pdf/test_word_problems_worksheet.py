@@ -15,7 +15,12 @@ breaks. To regenerate sections after an intended change, uncomment the ``write_s
 
 import pytest
 
-from core.basic_operations.data import BasicOperationQuestionData, Operation
+from core.basic_operations.data import (
+    BasicOperationQuestionData,
+    Operation,
+    TwoStepQuestionData,
+    Unknown,
+)
 from core.basic_operations.representation import Representation
 from tests.data import REAL_CASE_SLOTS
 from tests.helpers import GOLDENS, pdf_text, read_sections, render_word_problems, reverse_shuffle
@@ -175,6 +180,85 @@ SEVEN_PROBLEMS = [
         "How many stickers did they collect altogether?",
     )
     for first in (11, 22, 33, 44, 55, 66, 77)
+]
+
+# one two-step problem of each shape
+TWO_STEPS = [
+    TwoStepQuestionData(
+        (
+            BasicOperationQuestionData(Operation.ADD, (14, 26), 40),
+            BasicOperationQuestionData(Operation.ADD, (40, 9), 49),
+        ),
+        Unknown.FIRST,
+        49,
+        "A jar held 14 marbles. Maria added 26 more, and then Jamal added 9 more. "
+        "How many marbles are in the jar now?",
+    ),
+    TwoStepQuestionData(
+        (
+            BasicOperationQuestionData(Operation.SUBTRACT, (64, 15), 49),
+            BasicOperationQuestionData(Operation.SUBTRACT, (49, 23), 26),
+        ),
+        Unknown.FIRST,
+        26,
+        "A box held 64 crayons. Priya took out 15, and then Leo took out 23. "
+        "How many crayons are left in the box?",
+    ),
+    TwoStepQuestionData(
+        (
+            BasicOperationQuestionData(Operation.SUBTRACT, (38, 8), 30),
+            BasicOperationQuestionData(Operation.DIVIDE, (30, 5), 6),
+        ),
+        Unknown.FIRST,
+        6,
+        "Sofia has 38 stickers. 8 are in a box, and the rest are in 5 bags with the same number "
+        "in each bag. How many stickers are in each bag?",
+    ),
+    TwoStepQuestionData(
+        (
+            BasicOperationQuestionData(Operation.MULTIPLY, (4, 6), 24),
+            BasicOperationQuestionData(Operation.ADD, (24, 7), 31),
+        ),
+        Unknown.FIRST,
+        31,
+        "There are 4 boxes with 6 apples in each box. Kai brings 7 more. "
+        "How many apples are there now?",
+    ),
+    TwoStepQuestionData(
+        (
+            BasicOperationQuestionData(Operation.MULTIPLY, (6, 12), 72),
+            BasicOperationQuestionData(Operation.SUBTRACT, (90, 72), 18),
+        ),
+        Unknown.SECOND,
+        18,
+        "A store had 90 pencils. It sold 6 packs with 12 pencils in each pack. "
+        "How many pencils does the store have left?",
+    ),
+]
+
+# The largest number, 999, less 879 shared into the most groups, 6: each unknown part is 20, so
+# narrow, and widened to the least width. 1 + 2 + 996: its narrow parts are widened too.
+TWO_STEPS_AT_THEIR_LIMITS = [
+    TwoStepQuestionData(
+        (
+            BasicOperationQuestionData(Operation.SUBTRACT, (999, 879), 120),
+            BasicOperationQuestionData(Operation.DIVIDE, (120, 6), 20),
+        ),
+        Unknown.FIRST,
+        20,
+        "Maria has 999 beads. 879 are in a box, and the rest are in 6 bags with the same number "
+        "in each bag. How many beads are in each bag?",
+    ),
+    TwoStepQuestionData(
+        (
+            BasicOperationQuestionData(Operation.ADD, (1, 2), 3),
+            BasicOperationQuestionData(Operation.ADD, (3, 996), 999),
+        ),
+        Unknown.FIRST,
+        999,
+        "A jar held 1 bead. Sam added 2 more, and then Ivy added 996 more. "
+        "How many beads are in the jar now?",
+    ),
 ]
 
 
@@ -542,11 +626,51 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             EQUATION_CHOICE_TITLE,
             "Sheet A",
         ),
+        # Two steps with strip diagrams: one bar each, with its whole in a box over its parts,
+        # and each shape's hint. The key has each step.
+        (
+            "two_steps_strip_answer_key",
+            TWO_STEPS,
+            Representation.STRIP,
+            True,
+            False,
+            True,
+            None,
+            True,
+            TITLE,
+            "Sheet A",
+        ),
+        (
+            "two_steps_strip_at_their_limits",
+            TWO_STEPS_AT_THEIR_LIMITS,
+            Representation.STRIP,
+            False,
+            False,
+            True,
+            None,
+            False,
+            TITLE,
+            "Sheet A",
+        ),
+        # text only: a box to show the work in, and the bank and pattern; the key has each step
+        # and its letter
+        (
+            "two_steps_text_only_self_check_tiles_answer_key",
+            TWO_STEPS,
+            Representation.NONE,
+            True,
+            False,
+            True,
+            REAL_CASE_SLOTS[:5],
+            True,
+            TEXT_ONLY_TITLE,
+            "Sheet A",
+        ),
     ],
 )
 def test_pdf_draws_the_expected_text(
     case_name: str,
-    questions: list[BasicOperationQuestionData],
+    questions: list[BasicOperationQuestionData | TwoStepQuestionData],
     representation: Representation,
     hints: bool,
     black_and_white: bool,
@@ -584,3 +708,26 @@ def test_pdf_draws_the_expected_text(
     # from tests.helpers import write_section
     # write_section(EXPECTED, case_name, actual)
     assert actual == read_sections(EXPECTED).get(case_name)
+
+
+@pytest.mark.parametrize(
+    ("representation", "message"),
+    [
+        (
+            Representation.NUMBER_LINE,
+            "Only strip diagrams and text only show two-step problems.",
+        ),
+        (Representation.BLOCKS, "Only strip diagrams and text only show two-step problems."),
+        (
+            Representation.EQUATION_CHOICE,
+            "Only strip diagrams and text only show two-step problems.",
+        ),
+    ],
+)
+def test_word_problems_worksheet_errors(representation: Representation, message: str) -> None:
+    """A two-step problem with a representation that shows only one step raises ``ValueError``."""
+    with pytest.raises(ValueError) as error:
+        render_word_problems(
+            TWO_STEPS[:1], representation, True, False, True, None, False, TITLE, "Sheet A"
+        )
+    assert str(error.value) == message

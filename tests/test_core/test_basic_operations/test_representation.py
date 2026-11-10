@@ -1,7 +1,10 @@
 """The wording of basic-operation questions: a missing-number equation, how the self-check tiles
-sheet shows a question, and a word problem's strip diagram, number line jumps, hint, instruction
-and sheet title. Also the equations and the strip diagrams a problem's own is chosen from, and
-what each problem shows."""
+sheet shows a question, two-step ones included, and a word problem's strip diagram, two-step
+strip diagram, number line jumps, hint, instruction and sheet title. Also the equations and the
+strip diagrams a problem's own is chosen from, two-step ones included, and what each problem
+shows."""
+
+from collections.abc import Callable
 
 import pytest
 
@@ -9,6 +12,7 @@ from core.basic_operations.data import (
     BasicOperationQuestionData,
     MissingNumberQuestionData,
     Operation,
+    TwoStepQuestionData,
     Unknown,
 )
 from core.basic_operations.representation import (
@@ -16,6 +20,7 @@ from core.basic_operations.representation import (
     Prompt,
     Representation,
     StripDiagram,
+    TwoStepStripDiagram,
     basic_operation_tile_question,
     equation_choices,
     hint,
@@ -27,6 +32,9 @@ from core.basic_operations.representation import (
     prompt_texts,
     strip_choices,
     strip_diagram,
+    two_step_strip,
+    two_step_strip_choices,
+    two_step_tile_question,
     word_problems_title,
 )
 from core.question import BLANK, MultipleChoice
@@ -84,6 +92,48 @@ SUBTRACT = BasicOperationQuestionData(Operation.SUBTRACT, (72, 25), 47)
 MULTIPLY = BasicOperationQuestionData(Operation.MULTIPLY, (3, 4), 12)  # 3 groups of 4
 DIVIDE = BasicOperationQuestionData(Operation.DIVIDE, (12, 3), 4)  # 12 shared into 3 groups
 
+# one two-step problem of each shape that one bar shows
+ADD_ADD = TwoStepQuestionData(  # (4 + 6) + 7
+    (
+        BasicOperationQuestionData(Operation.ADD, (4, 6), 10),
+        BasicOperationQuestionData(Operation.ADD, (10, 7), 17),
+    ),
+    Unknown.FIRST,
+    17,
+)
+SUBTRACT_SUBTRACT = TwoStepQuestionData(  # (25 - 5) - 8
+    (
+        BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+        BasicOperationQuestionData(Operation.SUBTRACT, (20, 8), 12),
+    ),
+    Unknown.FIRST,
+    12,
+)
+SUBTRACT_DIVIDE = TwoStepQuestionData(  # (24 - 6) shared into 3 groups
+    (
+        BasicOperationQuestionData(Operation.SUBTRACT, (24, 6), 18),
+        BasicOperationQuestionData(Operation.DIVIDE, (18, 3), 6),
+    ),
+    Unknown.FIRST,
+    6,
+)
+MULTIPLY_ADD = TwoStepQuestionData(  # (3 groups of 5) + 4
+    (
+        BasicOperationQuestionData(Operation.MULTIPLY, (3, 5), 15),
+        BasicOperationQuestionData(Operation.ADD, (15, 4), 19),
+    ),
+    Unknown.FIRST,
+    19,
+)
+MULTIPLY_SUBTRACT = TwoStepQuestionData(  # 45 - (3 groups of 5)
+    (
+        BasicOperationQuestionData(Operation.MULTIPLY, (3, 5), 15),
+        BasicOperationQuestionData(Operation.SUBTRACT, (45, 15), 30),
+    ),
+    Unknown.SECOND,
+    30,
+)
+
 
 @pytest.mark.parametrize(
     ("data", "expected"),
@@ -112,6 +162,43 @@ def test_basic_operation_tile_question(
     data: BasicOperationQuestionData, expected: TileQuestion
 ) -> None:
     assert basic_operation_tile_question(data) == expected
+
+
+@pytest.mark.parametrize(
+    ("data", "expected"),
+    [
+        # with no wording, the prompt has the first step in brackets
+        (
+            MULTIPLY_SUBTRACT,
+            TileQuestion(
+                "45 \N{MINUS SIGN} (3 \N{MULTIPLICATION SIGN} 5) = ?",
+                "30",
+                "3 \N{MULTIPLICATION SIGN} 5 = 15,  45 \N{MINUS SIGN} 15 = 30",
+            ),
+        ),
+        # a word problem: the prompt is its wording, and the key has each step
+        (
+            TwoStepQuestionData(
+                (
+                    BasicOperationQuestionData(Operation.SUBTRACT, (24, 6), 18),
+                    BasicOperationQuestionData(Operation.DIVIDE, (18, 3), 6),
+                ),
+                Unknown.FIRST,
+                6,
+                "Maria had 24 cards and used 6. Maria put the rest into 3 equal groups. "
+                "How many cards are in each group?",
+            ),
+            TileQuestion(
+                "Maria had 24 cards and used 6. Maria put the rest into 3 equal groups. "
+                "How many cards are in each group?",
+                "6",
+                "24 \N{MINUS SIGN} 6 = 18,  18 \N{DIVISION SIGN} 3 = 6",
+            ),
+        ),
+    ],
+)
+def test_two_step_tile_question(data: TwoStepQuestionData, expected: TileQuestion) -> None:
+    assert two_step_tile_question(data) == expected
 
 
 @pytest.mark.parametrize(
@@ -229,6 +316,150 @@ def test_strip_choices(
     """
     reverse_shuffle(monkeypatch)
     assert strip_choices(data) == expected
+
+
+@pytest.mark.parametrize(
+    ("data", "expected"),
+    [
+        # adding three numbers: the parts in the order they're added, and the whole to find
+        (ADD_ADD, TwoStepStripDiagram((4, 6, 7), None)),
+        # taking two from a whole: the parts taken, then the part to find
+        (SUBTRACT_SUBTRACT, TwoStepStripDiagram((5, 8, None), 25)),
+        # what's left after the part is taken, shared into 3 equal parts to find
+        (SUBTRACT_DIVIDE, TwoStepStripDiagram((6, None, None, None), 24)),
+        # 3 equal parts of 5, then the part added, and the whole to find
+        (MULTIPLY_ADD, TwoStepStripDiagram((5, 5, 5, 4), None)),
+        # 3 equal parts of 5 taken from the whole, then the part to find
+        (MULTIPLY_SUBTRACT, TwoStepStripDiagram((5, 5, 5, None), 45)),
+    ],
+)
+def test_two_step_strip(data: TwoStepQuestionData, expected: TwoStepStripDiagram) -> None:
+    assert two_step_strip(data) == expected
+
+
+@pytest.mark.parametrize(
+    ("data", "expected"),
+    [
+        # adding three parts: each part as the whole, with the whole to find the first part
+        (
+            ADD_ADD,
+            MultipleChoice(
+                (
+                    TwoStepStripDiagram((None, 4, 6), 7),
+                    TwoStepStripDiagram((None, 4, 7), 6),
+                    TwoStepStripDiagram((None, 6, 7), 4),
+                    TwoStepStripDiagram((4, 6, 7), None),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # Taking two from a whole: each part taken as the whole, with the whole the first part,
+        # and the whole as a part, with the whole to find. A part larger than its whole is
+        # impossible, and a choice anyway.
+        (
+            SUBTRACT_SUBTRACT,
+            MultipleChoice(
+                (
+                    TwoStepStripDiagram((25, 5, None), 8),
+                    TwoStepStripDiagram((25, 8, None), 5),
+                    TwoStepStripDiagram((25, 5, 8), None),
+                    TwoStepStripDiagram((5, 8, None), 25),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # Equal parts: one too many, the equal parts forgotten, and the unknown as the whole
+        (
+            SUBTRACT_DIVIDE,
+            MultipleChoice(
+                (
+                    TwoStepStripDiagram((6, None, None, None, None), 24),
+                    TwoStepStripDiagram((6, None), 24),
+                    TwoStepStripDiagram((24, 6), None),
+                    TwoStepStripDiagram((6, None, None, None), 24),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # the whole is already the unknown, so the other part is the whole instead
+        (
+            MULTIPLY_ADD,
+            MultipleChoice(
+                (
+                    TwoStepStripDiagram((5, 5, 5, 5, 4), None),
+                    TwoStepStripDiagram((5, 4), None),
+                    TwoStepStripDiagram((None, 5, 5, 5), 4),
+                    TwoStepStripDiagram((5, 5, 5, 4), None),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        (
+            MULTIPLY_SUBTRACT,
+            MultipleChoice(
+                (
+                    TwoStepStripDiagram((5, 5, 5, 5, None), 45),
+                    TwoStepStripDiagram((5, None), 45),
+                    TwoStepStripDiagram((45, 5, 5, 5), None),
+                    TwoStepStripDiagram((5, 5, 5, None), 45),
+                ),
+                frozenset({3}),
+            ),
+        ),
+    ],
+)
+def test_two_step_strip_choices(
+    data: TwoStepQuestionData,
+    expected: MultipleChoice[TwoStepStripDiagram],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """
+    A problem's own strip diagram is one choice, and three wrong strips are made the way the
+    teacher's examples make them. ``shuffle`` reverses, so the wrong strips come last first, and
+    the problem's own is last.
+    """
+    reverse_shuffle(monkeypatch)
+    assert two_step_strip_choices(data) == expected
+
+
+@pytest.mark.parametrize(
+    ("make", "data", "message"),
+    [
+        # adding, then taking away: the part taken away isn't in the bar
+        (
+            two_step_strip,
+            TwoStepQuestionData(
+                (
+                    BasicOperationQuestionData(Operation.ADD, (4, 6), 10),
+                    BasicOperationQuestionData(Operation.SUBTRACT, (10, 3), 7),
+                ),
+                Unknown.FIRST,
+                7,
+            ),
+            "One strip diagram shows only some shapes of two-step problem.",
+        ),
+        # sharing, then sharing again: equal parts of equal parts
+        (
+            two_step_strip_choices,
+            TwoStepQuestionData(
+                (
+                    BasicOperationQuestionData(Operation.DIVIDE, (24, 2), 12),
+                    BasicOperationQuestionData(Operation.DIVIDE, (12, 3), 4),
+                ),
+                Unknown.FIRST,
+                4,
+            ),
+            "One strip diagram shows only some shapes of two-step problem.",
+        ),
+    ],
+)
+def test_two_step_strip_errors(
+    make: Callable[[TwoStepQuestionData], object], data: TwoStepQuestionData, message: str
+) -> None:
+    """A shape that one bar can't show raises ``ValueError``, for its strip and its choices."""
+    with pytest.raises(ValueError) as error:
+        make(data)
+    assert str(error.value) == message
 
 
 @pytest.mark.parametrize(
@@ -368,10 +599,42 @@ def test_equation_choices(
         (DIVIDE, Prompt.EQUATION, ("12 \N{DIVISION SIGN} 3 = ?",)),
         # a problem with no wording shows its equation
         (DIVIDE, Prompt.WORD_PROBLEM, ("12 \N{DIVISION SIGN} 3 = ?",)),
+        # two steps: the first in brackets, where its answer is carried
+        (
+            SUBTRACT_DIVIDE,
+            Prompt.EQUATION,
+            ("(24 \N{MINUS SIGN} 6) \N{DIVISION SIGN} 3 = ?",),
+        ),
+        (
+            MULTIPLY_SUBTRACT,
+            Prompt.EQUATION,
+            ("45 \N{MINUS SIGN} (3 \N{MULTIPLICATION SIGN} 5) = ?",),
+        ),
+        (
+            TwoStepQuestionData(
+                (
+                    BasicOperationQuestionData(Operation.SUBTRACT, (24, 6), 18),
+                    BasicOperationQuestionData(Operation.DIVIDE, (18, 3), 6),
+                ),
+                Unknown.FIRST,
+                6,
+                "Maria had 24 cards and used 6. Maria put the rest into 3 equal groups. "
+                "How many cards are in each group?",
+            ),
+            Prompt.BOTH,
+            (
+                "Maria had 24 cards and used 6. Maria put the rest into 3 equal groups. "
+                "How many cards are in each group?",
+                "(24 \N{MINUS SIGN} 6) \N{DIVISION SIGN} 3 = ?",
+            ),
+        ),
+        (ADD_ADD, Prompt.WORD_PROBLEM, ("(4 + 6) + 7 = ?",)),
     ],
 )
 def test_prompt_texts(
-    data: BasicOperationQuestionData, prompt: Prompt, expected: tuple[str, ...]
+    data: BasicOperationQuestionData | TwoStepQuestionData,
+    prompt: Prompt,
+    expected: tuple[str, ...],
 ) -> None:
     assert prompt_texts(data, prompt) == expected
 
@@ -445,10 +708,38 @@ def test_number_line_jumps_errors(data: BasicOperationQuestionData, message: str
         # equation multiple choice has no hints
         (ADD, Representation.EQUATION_CHOICE, None),
         (DIVIDE, Representation.EQUATION_CHOICE, None),
+        # a strip diagram has a hint for each shape of two-step problem
+        (ADD_ADD, Representation.STRIP, "All three parts are shown. Add them to find the whole."),
+        (
+            SUBTRACT_SUBTRACT,
+            Representation.STRIP,
+            "The whole and two parts are shown. Subtract both parts to find the missing part.",
+        ),
+        (
+            SUBTRACT_DIVIDE,
+            Representation.STRIP,
+            "Subtract the part that's shown from the whole, then divide the rest into the equal "
+            "parts.",
+        ),
+        (
+            MULTIPLY_ADD,
+            Representation.STRIP,
+            "Multiply to find the equal parts together, then add the other part to find the whole.",
+        ),
+        (
+            MULTIPLY_SUBTRACT,
+            Representation.STRIP,
+            "Multiply to find the equal parts together, then subtract them from the whole to find "
+            "the missing part.",
+        ),
+        # text only still has none
+        (SUBTRACT_DIVIDE, Representation.NONE, None),
     ],
 )
 def test_hint(
-    data: BasicOperationQuestionData, representation: Representation, expected: str | None
+    data: BasicOperationQuestionData | TwoStepQuestionData,
+    representation: Representation,
+    expected: str | None,
 ) -> None:
     assert hint(data, representation) == expected
 

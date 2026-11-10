@@ -45,12 +45,16 @@ from core.basic_operations.generator import (
     count_possible_missing_number_questions,
     count_possible_sheet_questions,
     count_possible_strip_choice_problems,
+    count_possible_two_step_problems,
     count_possible_word_problems,
     generate_basic_operation_questions,
     generate_equation_choice_problems,
     generate_missing_number_questions,
     generate_strip_choice_problems,
+    generate_two_step_problems,
+    generate_two_step_strip_choice_problems,
     generate_word_problems,
+    two_step_shapes,
 )
 from core.basic_operations.regrouping import REGROUPING_NAMES, Regrouping
 from core.basic_operations.representation import (
@@ -58,8 +62,11 @@ from core.basic_operations.representation import (
     REPRESENTATION_NAMES,
     REPRESENTATION_OPERATIONS,
     STRIP_CHOICE_NAME,
+    TWO_STEP_REPRESENTATIONS,
     Prompt,
     Representation,
+    StripChoiceQuestion,
+    TwoStepStripChoiceQuestion,
     WordProblemQuestion,
     basic_operation_tile_question,
     missing_number_tile_question,
@@ -144,6 +151,8 @@ FORM_CHOICE_LABELS: dict[str, JsonValue] = {
 REPRESENTATION_LABELS: dict[str, JsonValue] = {
     representation.value: name for representation, name in REPRESENTATION_NAMES.items()
 }
+StepsChoice = Literal["one", "two"]
+STEPS_LABELS: dict[str, JsonValue] = {"one": "One step", "two": "Two steps"}
 PromptChoice = Literal["word_problem", "equation", "both"]  # a Prompt value
 # Show radio labels
 PROMPT_LABELS: dict[str, JsonValue] = {
@@ -202,6 +211,15 @@ def _smallest_raise(count: Callable[[int], int], needed: int, current: int, top:
 def _operations(ticked: Sequence[str]) -> list[Operation]:
     """Return the ticked operations, each once, in the order of ``Operation``."""
     return [operation for operation in Operation if operation.value in ticked]
+
+
+def _two_steps_can_be_made(operations: Sequence[Operation]) -> None:
+    """
+    Raise ``ValueError`` if no shape of two-step problem has both its operations in
+    ``operations``: every shape so far adds or subtracts.
+    """
+    if not two_step_shapes(operations):
+        raise ValueError("operations: two steps need addition or subtraction")
 
 
 def _too_many_problems(
@@ -414,11 +432,17 @@ class WordProblemOptions(HeaderOptions):
     problems: Problems = 4
     # Each problem's operation is drawn at random from those ticked.
     operations: Operations = Field(["add", "subtract"])
-    # Addition and subtraction only: every number in the problem, its answer included. It's at
+    # Addition and subtraction only: every number in the problem, its answer included. With two
+    # steps, which share a number, every number, multiplication's and division's too. It's at
     # least the smallest sum, which leaves room for a subtraction too.
     max_number: WordProblemLargestNumber = LARGEST_WORD_PROBLEM_NUMBER
     representation: Literal["strip", "none", "number_line", "blocks", "equation_choice"] = Field(
         "none", title="Representation", json_schema_extra={"labels": REPRESENTATION_LABELS}
+    )
+    # Strip diagrams and text only: with strip diagrams, two steps draw one bar, the whole over
+    # its parts.
+    steps: StepsChoice = Field(
+        "one", title="Steps", json_schema_extra={"input": "radio", "labels": STEPS_LABELS}
     )
     no_hints: bool = Field(False, title="Leave out the hints")  # text only has none
     work_box: bool = Field(False, title="Include working out space")  # text only
@@ -455,6 +479,17 @@ class WordProblemOptions(HeaderOptions):
         return self
 
     @model_validator(mode="after")
+    def _two_steps_are_available(self) -> Self:
+        # Only strip diagrams and text only show two steps. The page hides the steps for the
+        # others.
+        representation = Representation(self.representation)
+        if self.steps == "two" and representation not in TWO_STEP_REPRESENTATIONS:
+            raise ValueError(
+                f"steps: two steps not available with {REPRESENTATION_NAMES[representation]}"
+            )
+        return self
+
+    @model_validator(mode="after")
     def _tiles_are_available(self) -> Self:
         # Not built for equation multiple choice: each choice's letter would need coding as a
         # number. The page greys the tiles out.
@@ -472,8 +507,17 @@ class WordProblemOptions(HeaderOptions):
         # Any one operation may be drawn for every problem, and with tiles each tile needs a
         # distinct answer.
         operations = _operations(self.operations)
+        if self.steps == "two":
+            _two_steps_can_be_made(operations)
 
         def possible_with(largest: int) -> int:
+            if self.steps == "two":
+                return count_possible_two_step_problems(
+                    operations,
+                    distinct_answers=self.self_check_tiles,
+                    up_to=self.problems,
+                    largest_number=largest,
+                )
             if Representation(self.representation) is Representation.EQUATION_CHOICE:
                 return count_possible_equation_choice_problems(
                     operations, up_to=self.problems, largest_number=largest
@@ -490,8 +534,8 @@ class WordProblemOptions(HeaderOptions):
         if self.problems <= possible:
             return self
         repeats = "repeated answers" if self.self_check_tiles else "repeats"
-        if {Operation.ADD, Operation.SUBTRACT}.isdisjoint(operations):
-            # Multiplication and division have no number limits to raise.
+        if self.steps == "one" and {Operation.ADD, Operation.SUBTRACT}.isdisjoint(operations):
+            # One-step multiplication and division have no number limits to raise.
             raise _too_many_problems(possible, repeats, "choice of operations", {})
         raise_to = _smallest_raise(
             possible_with, self.problems, self.max_number, LARGEST_WORD_PROBLEM_NUMBER
@@ -516,6 +560,9 @@ class StripChoiceOptions(HeaderOptions):
     # Every number in a problem, its answer included: a multiplication's product and a
     # division's dividend too, unlike on word problems
     max_number: WordProblemLargestNumber = STRIP_CHOICE_LARGEST_NUMBER
+    steps: StepsChoice = Field(
+        "one", title="Steps", json_schema_extra={"input": "radio", "labels": STEPS_LABELS}
+    )
     # Every strip's equal groups: a multiplication's, a division's, and the smaller number of an
     # addition or subtraction, which its wrong choices multiply and divide by
     max_groups: int = Field(
@@ -533,10 +580,21 @@ class StripChoiceOptions(HeaderOptions):
 
     @model_validator(mode="after")
     def _enough_different_problems(self) -> Self:
-        # Any one operation may be drawn for every problem.
+        # Any one operation, or with two steps any one shape, may be drawn for every problem.
         operations = _operations(self.operations)
+        two_steps = self.steps == "two"
+        if two_steps:
+            _two_steps_can_be_made(operations)
 
         def possible_with(largest: int, groups: int) -> int:
+            if two_steps:
+                return count_possible_two_step_problems(
+                    operations,
+                    up_to=self.problems,
+                    largest_number=largest,
+                    largest_groups=groups,
+                    split_evenly=True,
+                )
             return count_possible_strip_choice_problems(
                 operations, up_to=self.problems, largest_number=largest, largest_groups=groups
             )
@@ -544,10 +602,15 @@ class StripChoiceOptions(HeaderOptions):
         possible = possible_with(self.max_number, self.max_groups)
         if self.problems <= possible:
             return self
-        # Every operation's count depends on the largest number, and all but subtraction's on the
-        # number of groups too.
+        # Every count depends on the largest number. With one step, every operation's but
+        # subtraction's depends on the number of groups too, and with two steps, multiplication's
+        # and division's.
         limits = ["largest number"]
-        if not {Operation.SUBTRACT}.issuperset(operations):
+        if two_steps:
+            groups_count = not {Operation.MULTIPLY, Operation.DIVIDE}.isdisjoint(operations)
+        else:
+            groups_count = not {Operation.SUBTRACT}.issuperset(operations)
+        if groups_count:
             limits.append("largest number of groups")
         raises = {
             "largest number": _smallest_raise(
@@ -859,6 +922,13 @@ def _word_problems(o: WordProblemOptions, out: BinaryIO) -> None:
         questions = generate_equation_choice_problems(
             o.problems, _operations(o.operations), largest_number=o.max_number
         )
+    elif o.steps == "two":
+        questions = generate_two_step_problems(
+            o.problems,
+            _operations(o.operations),
+            distinct_answers=o.self_check_tiles,
+            largest_number=o.max_number,
+        )
     else:
         questions = generate_word_problems(
             o.problems,
@@ -884,13 +954,23 @@ def _word_problems(o: WordProblemOptions, out: BinaryIO) -> None:
 
 
 def _strip_choice(o: StripChoiceOptions, out: BinaryIO) -> None:
-    render_strip_choice_worksheet(
-        questions=generate_strip_choice_problems(
+    questions: Sequence[StripChoiceQuestion | TwoStepStripChoiceQuestion]
+    if o.steps == "two":
+        questions = generate_two_step_strip_choice_problems(
             o.problems,
             _operations(o.operations),
             largest_number=o.max_number,
             largest_groups=o.max_groups,
-        ),
+        )
+    else:
+        questions = generate_strip_choice_problems(
+            o.problems,
+            _operations(o.operations),
+            largest_number=o.max_number,
+            largest_groups=o.max_groups,
+        )
+    render_strip_choice_worksheet(
+        questions=questions,
         path=out,
         header=o.header(),
         answer_key=o.answer_key,

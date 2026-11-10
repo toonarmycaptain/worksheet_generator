@@ -4,7 +4,7 @@ optional answer key page.
 
 The first page has the sheet's instruction under its header. Each problem has its number, what
 the sheet shows of it (its wording, its equation, or both), and its strip diagrams in rows of
-two, each with its letter.
+two, each with its letter. A two-step problem's strip diagrams are each one bar, under its whole.
 """
 
 from collections.abc import Sequence
@@ -12,14 +12,18 @@ from typing import BinaryIO
 
 from reportlab.pdfgen.canvas import Canvas
 
+from core.basic_operations.data import BasicOperationQuestionData, TwoStepQuestionData
 from core.basic_operations.representation import (
     STRIP_CHOICE_INSTRUCTION,
     EqualStripDiagram,
     Prompt,
     StripChoiceQuestion,
     StripDiagram,
+    TwoStepStripChoiceQuestion,
+    TwoStepStripDiagram,
     prompt_texts,
     solved_equation,
+    solved_steps,
 )
 from render.pdf.diagrams import STRIP_BAR_HEIGHT, STRIP_HEIGHT, draw_strip_diagram
 from render.pdf.page import (
@@ -51,7 +55,7 @@ PROBLEM_GAP = 22  # from the last row of strips down to the next problem's basel
 
 
 def render_strip_choice_worksheet(
-    questions: Sequence[StripChoiceQuestion],
+    questions: Sequence[StripChoiceQuestion | TwoStepStripChoiceQuestion],
     path: str | BinaryIO,
     header: Header,
     answer_key: bool,
@@ -62,8 +66,8 @@ def render_strip_choice_worksheet(
     and the answer key if requested, to ``path``.
 
     A problem that would run past the bottom margin starts on the next page. The answer key gives
-    each problem's equation, answer and correct letter. ``path`` is a filename or a binary
-    file-like object.
+    each problem's equation and answer (each step's, for a two-step problem) and its correct
+    letter. ``path`` is a filename or a binary file-like object.
     """
     pdf = new_pdf(path, header.title)
     y = draw_instruction(pdf, STRIP_CHOICE_INSTRUCTION, start_page(pdf, header))
@@ -82,15 +86,24 @@ def render_strip_choice_worksheet(
 
     if answer_key:
         solutions = [
-            f"{solved_equation(question.data)}    ({correct_letters(question.response)})"
+            f"{_solved(question.data)}    ({correct_letters(question.response)})"
             for question in questions
         ]
         draw_answer_key(pdf, header, solutions)
     pdf.save()
 
 
+def _solved(data: BasicOperationQuestionData | TwoStepQuestionData) -> str:
+    """Return the problem's equation solved, or for a two-step problem, each step solved."""
+    if isinstance(data, TwoStepQuestionData):
+        return solved_steps(data)
+    return solved_equation(data)
+
+
 def _draw_choices(
-    pdf: Canvas, options: Sequence[StripDiagram | EqualStripDiagram], top: float
+    pdf: Canvas,
+    options: Sequence[StripDiagram | EqualStripDiagram | TwoStepStripDiagram],
+    top: float,
 ) -> float:
     """
     Draw the strips to choose from, ``CHOICE_COLUMNS`` to a row, each with its letter, from

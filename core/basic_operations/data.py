@@ -1,4 +1,7 @@
-"""Question data for the four arithmetic operations and for missing-number equations."""
+"""
+Question data for the four arithmetic operations, for two-step questions and for missing-number
+equations.
+"""
 
 from dataclasses import dataclass
 from enum import StrEnum
@@ -40,6 +43,45 @@ class Unknown(StrEnum):
 
     FIRST = "first"  # □ ÷ 4 = 7, the dividend
     SECOND = "second"  # 28 ÷ □ = 4, the divisor
+
+
+# A two-step question's shape: the operations of its two steps, and which of the second step's
+# operands is the first step's answer
+type TwoStepShape = tuple[Operation, Operation, Unknown]
+
+
+@dataclass(frozen=True)
+class TwoStepQuestionData(QuestionData[int]):
+    """
+    A two-step arithmetic question: ``steps[0]`` is worked first, and its answer is the operand
+    of ``steps[1]`` that ``carried`` identifies. ``answer`` is the answer of ``steps[1]``.
+
+    (24 - 6) ÷ 3 is ``((SUBTRACT, (24, 6), 18), (DIVIDE, (18, 3), 6))`` with ``carried``
+    ``FIRST``, and 45 - (3 x 5) is ``((MULTIPLY, (3, 5), 15), (SUBTRACT, (45, 15), 30))`` with
+    ``carried`` ``SECOND``. The steps have no ``question_text`` of their own: ``question_text``
+    holds the word problem's wording, as on ``BasicOperationQuestionData``.
+    """
+
+    steps: tuple[BasicOperationQuestionData, BasicOperationQuestionData]
+    carried: Unknown
+    answer: int
+    question_text: str | None = None
+
+    @property
+    def shape(self) -> TwoStepShape:
+        """The question's shape: its steps' operations, and its ``carried`` operand."""
+        first, second = self.steps
+        return first.operation, second.operation, self.carried
+
+    @property
+    def given_numbers(self) -> tuple[int, int, int]:
+        """
+        The numbers the question gives: the first step's operands, then the second step's
+        operand that isn't the first step's answer. (24 - 6) ÷ 3 gives ``(24, 6, 3)``.
+        """
+        first, second = self.steps
+        other = second.operands[1] if self.carried is Unknown.FIRST else second.operands[0]
+        return *first.operands, other
 
 
 @dataclass(frozen=True)

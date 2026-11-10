@@ -7,8 +7,9 @@ to the blocks. Each problem has its number and wording, a hint if the representa
 hints aren't turned off, the representation, and an answer line. A text-only problem's
 representation is a box to show the work in, unless the boxes are left out. A number line's last
 box is its answer, so it has no answer line. A problem whose equation is chosen has its lettered
-equations instead, in rows of two. A sheet for the self-check tiles case has no answer lines, and
-ends with a page for the answer bank and pattern.
+equations instead, in rows of two. A two-step problem is shown only with strip diagrams, as one
+bar under its whole, or as text only. A sheet for the self-check tiles case has no answer lines,
+and ends with a page for the answer bank and pattern.
 """
 
 from collections.abc import Sequence
@@ -19,8 +20,10 @@ from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.pdfgen.canvas import Canvas
 
 from core.base_ten_blocks import blocks_diagram
-from core.basic_operations.data import BasicOperationQuestionData
+from core.basic_operations.data import BasicOperationQuestionData, TwoStepQuestionData
 from core.basic_operations.representation import (
+    REPRESENTATION_NAMES,
+    TWO_STEP_REPRESENTATIONS,
     Representation,
     WordProblemQuestion,
     basic_operation_tile_question,
@@ -28,10 +31,14 @@ from core.basic_operations.representation import (
     instruction,
     number_line_jumps,
     solved_equation,
+    solved_steps,
     stem,
     strip_diagram,
+    two_step_strip,
+    two_step_tile_question,
 )
 from core.question import FreeResponse, MultipleChoice
+from core.self_check_tiles import TileQuestion
 from render.pdf.diagrams import (
     BLOCKS_KEY_HEIGHT,
     COLOUR_BLOCKS,
@@ -110,20 +117,25 @@ def render_word_problems_worksheet(
     blocks saying how many to cross out. Base-ten blocks are grey when ``black_and_white`` is
     set. Text-only problems have no box to show the work in when ``work_box`` is False. A problem
     that would run past the bottom margin starts on the next page. A multiple-choice problem has
-    its lettered options instead of an answer line. The answer key gives each problem's equation
-    and answer, and a multiple-choice problem's correct letter. ``path`` is a filename or a binary
-    file-like object.
+    its lettered options instead of an answer line. A two-step problem needs ``representation`` to
+    be strip diagrams or text only, or raises ``ValueError``. The answer key gives each problem's
+    equation and answer (each step's, for a two-step problem), and a multiple-choice problem's
+    correct letter.
+    ``path`` is a filename or a binary file-like object.
 
     With ``slot_of``, the sheet is for the self-check tiles case: the problems have no answer
     lines, and the answer bank and pattern follow on a page of their own. ``slot_of[i]`` is the
     slot of question i + 1's answer, as in ``core.self_check_tiles``, so there are at most 12
     questions, and their answers must be distinct. The answer key adds each answer's slot letter.
     """
+    two_steps = any(isinstance(question.data, TwoStepQuestionData) for question in questions)
+    if two_steps and representation not in TWO_STEP_REPRESENTATIONS:
+        raise ValueError("Only strip diagrams and text only show two-step problems.")
     pdf = new_pdf(path, header.title)
     answer_lines = slot_of is None and representation is not Representation.NUMBER_LINE
     colours = GREY_BLOCKS if black_and_white else COLOUR_BLOCKS
 
-    operations = {question.data.operation for question in questions}
+    operations = {step.operation for question in questions for step in _steps(question.data)}
     y = draw_instruction(
         pdf, instruction(representation, operations, work_box), start_page(pdf, header)
     )
@@ -160,7 +172,7 @@ def render_word_problems_worksheet(
     if slot_of is None:
         solutions = [_solution(question) for question in questions]
     else:
-        tile_questions = [basic_operation_tile_question(question.data) for question in questions]
+        tile_questions = [_tile_question(question.data) for question in questions]
         answers = [tile_question.answer for tile_question in tile_questions]
         draw_tiles_page(pdf, header, answers, slot_of)
         solutions = tile_solutions(tile_questions, slot_of)
@@ -170,8 +182,27 @@ def render_word_problems_worksheet(
     pdf.save()
 
 
+def _steps(
+    data: BasicOperationQuestionData | TwoStepQuestionData,
+) -> tuple[BasicOperationQuestionData, ...]:
+    """Return the problem's steps: its two for a two-step problem, or else the problem itself."""
+    return data.steps if isinstance(data, TwoStepQuestionData) else (data,)
+
+
+def _tile_question(data: BasicOperationQuestionData | TwoStepQuestionData) -> TileQuestion:
+    """Convert the problem to a ``TileQuestion``, as its kind of data is converted."""
+    if isinstance(data, TwoStepQuestionData):
+        return two_step_tile_question(data)
+    return basic_operation_tile_question(data)
+
+
 def _solution(question: WordProblemQuestion) -> str:
-    """Return the problem's line in the answer key, with its correct letter if it has choices."""
+    """
+    Return the problem's line in the answer key: each step solved for a two-step problem, or
+    else its equation solved, with its correct letter if it has choices.
+    """
+    if isinstance(question.data, TwoStepQuestionData):
+        return solved_steps(question.data)
     if isinstance(question.response, MultipleChoice):
         return f"{solved_equation(question.data)}    ({correct_letters(question.response)})"
     return solved_equation(question.data)
@@ -236,7 +267,9 @@ def _draw_problem(
 
 
 def _representation_height(
-    data: BasicOperationQuestionData, representation: Representation, work_box: bool
+    data: BasicOperationQuestionData | TwoStepQuestionData,
+    representation: Representation,
+    work_box: bool,
 ) -> float:
     match representation:
         case Representation.STRIP:
@@ -246,7 +279,7 @@ def _representation_height(
         case Representation.NUMBER_LINE:
             return NUMBER_LINE_HEIGHT
         case Representation.BLOCKS:
-            return blocks_height(blocks_diagram(data))
+            return blocks_height(blocks_diagram(_one_step(data, representation)))
         case Representation.EQUATION_CHOICE:
             return 0  # the equations are the problem's options, below it
         case _:
@@ -255,7 +288,7 @@ def _representation_height(
 
 def _draw_representation(
     pdf: Canvas,
-    data: BasicOperationQuestionData,
+    data: BasicOperationQuestionData | TwoStepQuestionData,
     representation: Representation,
     x: float,
     top: float,
@@ -264,23 +297,41 @@ def _draw_representation(
     work_box: bool,
 ) -> None:
     """
-    Draw the problem's representation with its top-left corner at (``x``, ``top``). ``hints`` and
-    ``colours`` are for base-ten blocks, and ``work_box`` for text only, as in ``_draw_problem``.
+    Draw the problem's representation with its top-left corner at (``x``, ``top``): for a
+    two-step problem's strip diagram, its one bar. ``hints`` and ``colours`` are for base-ten
+    blocks, and ``work_box`` for text only, as in ``_draw_problem``.
     """
     match representation:
         case Representation.STRIP:
-            draw_strip_diagram(pdf, x, top, strip_diagram(data))
+            if isinstance(data, TwoStepQuestionData):
+                draw_strip_diagram(pdf, x, top, two_step_strip(data))
+            else:
+                draw_strip_diagram(pdf, x, top, strip_diagram(data))
         case Representation.NONE:
             if work_box:
                 _draw_work_box(pdf, x, top)
         case Representation.NUMBER_LINE:
-            draw_number_line(pdf, x, top, data.operands[0], number_line_jumps(data))
+            one_step = _one_step(data, representation)
+            draw_number_line(pdf, x, top, one_step.operands[0], number_line_jumps(one_step))
         case Representation.BLOCKS:
-            draw_blocks(pdf, x, top, blocks_diagram(data), colours, note=hints)
+            diagram = blocks_diagram(_one_step(data, representation))
+            draw_blocks(pdf, x, top, diagram, colours, note=hints)
         case Representation.EQUATION_CHOICE:
             pass  # the equations are the problem's options, drawn by _draw_choices
         case _:
             assert_never(representation)
+
+
+def _one_step(
+    data: BasicOperationQuestionData | TwoStepQuestionData, representation: Representation
+) -> BasicOperationQuestionData:
+    """
+    Return the one-step problem's data, for a representation that shows only one step, or raise
+    ``ValueError`` for a two-step problem.
+    """
+    if isinstance(data, TwoStepQuestionData):
+        raise ValueError(f"{REPRESENTATION_NAMES[representation]} show only one-step problems.")
+    return data
 
 
 def _draw_choices(pdf: Canvas, options: Sequence[str], top: float) -> float:

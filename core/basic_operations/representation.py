@@ -1,9 +1,10 @@
 """
-Wording of basic-operation questions: each operation's symbol and name, the equations, and the
-questions as the self-check tiles sheet shows them. Also the representations drawn with, or chosen
-for, word problems, with their sheet titles, instructions, hints and diagram descriptions, the
-equations a problem's own is chosen from, and the strip diagrams a problem's own is chosen from,
-with what each problem shows.
+Wording of basic-operation questions: each operation's symbol and name, the equations, two-step
+questions' steps, and the questions as the self-check tiles sheet shows them. Also the
+representations drawn with, or chosen for, word problems, with their sheet titles, instructions,
+hints and diagram descriptions, the equations a problem's own is chosen from, and the strip
+diagrams a problem's own is chosen from, two-step problems' included, with what each problem
+shows.
 """
 
 from collections.abc import Collection, Sequence
@@ -15,6 +16,8 @@ from core.basic_operations.data import (
     BasicOperationQuestionData,
     MissingNumberQuestionData,
     Operation,
+    TwoStepQuestionData,
+    TwoStepShape,
     Unknown,
 )
 from core.placevalue.representation import place_value_terms
@@ -53,21 +56,35 @@ def equation(data: BasicOperationQuestionData) -> str:
     return f"{first} {SYMBOLS[data.operation]} {second}"
 
 
-def stem(data: BasicOperationQuestionData) -> str:
+def stem(data: BasicOperationQuestionData | TwoStepQuestionData) -> str:
     """Return the question's text: its word-problem wording, or its equation followed by "= ?"."""
     if data.question_text is not None:
         return data.question_text
     return _equation_stem(data)
 
 
-def _equation_stem(data: BasicOperationQuestionData) -> str:
-    """Return the question's equation followed by "= ?", as in 47 + 25 = ?."""
-    return f"{equation(data)} = ?"
+def _equation_stem(data: BasicOperationQuestionData | TwoStepQuestionData) -> str:
+    """
+    Return the question's equation followed by "= ?", as in 47 + 25 = ?, or for two steps, with
+    the first in brackets, as in (24 - 6) ÷ 3 = ?.
+    """
+    if isinstance(data, BasicOperationQuestionData):
+        return f"{equation(data)} = ?"
+    first, second = data.steps
+    bracketed = f"({equation(first)})"
+    left, right = second.operands
+    operands = (bracketed, right) if data.carried is Unknown.FIRST else (left, bracketed)
+    return f"{operands[0]} {SYMBOLS[second.operation]} {operands[1]} = ?"
 
 
 def solved_equation(data: BasicOperationQuestionData) -> str:
     """Return the question's equation with its answer, as in 47 + 25 = 72."""
     return f"{equation(data)} = {data.answer}"
+
+
+def solved_steps(data: TwoStepQuestionData) -> str:
+    """Return each of the two-step question's steps with its answer: 24 - 6 = 18,  18 ÷ 3 = 6."""
+    return ",  ".join(solved_equation(step) for step in data.steps)
 
 
 def basic_operation_tile_question(data: BasicOperationQuestionData) -> TileQuestion:
@@ -93,6 +110,11 @@ def missing_number_tile_question(data: MissingNumberQuestionData) -> TileQuestio
         answer=str(data.answer),
         solution=missing_number_equation(data, data.answer),
     )
+
+
+def two_step_tile_question(data: TwoStepQuestionData) -> TileQuestion:
+    """Convert the two-step question to a ``TileQuestion`` for the self-check tiles sheet."""
+    return TileQuestion(prompt=stem(data), answer=str(data.answer), solution=solved_steps(data))
 
 
 class Representation(StrEnum):
@@ -129,6 +151,10 @@ REPRESENTATION_OPERATIONS = {
 }
 
 
+# The representations that can show a two-step problem: one bar of strip diagram, or text only
+TWO_STEP_REPRESENTATIONS = frozenset({Representation.STRIP, Representation.NONE})
+
+
 def word_problems_title(representation: Representation) -> str:
     """
     Return what a sheet of word problems drawn with ``representation`` is called, so its title
@@ -146,6 +172,18 @@ _STRIP_HINTS = {
     Operation.MULTIPLY: "Equal groups are shown. Multiply the group size by the number of groups.",
     Operation.DIVIDE: "The whole is split into equal groups. "
     "Divide to find the amount in each group.",
+}
+_TWO_STEP_STRIP_HINTS: dict[TwoStepShape, str] = {
+    (Operation.ADD, Operation.ADD, Unknown.FIRST): "All three parts are shown. "
+    "Add them to find the whole.",
+    (Operation.SUBTRACT, Operation.SUBTRACT, Unknown.FIRST): "The whole and two parts are shown. "
+    "Subtract both parts to find the missing part.",
+    (Operation.SUBTRACT, Operation.DIVIDE, Unknown.FIRST): "Subtract the part that's shown from "
+    "the whole, then divide the rest into the equal parts.",
+    (Operation.MULTIPLY, Operation.ADD, Unknown.FIRST): "Multiply to find the equal parts "
+    "together, then add the other part to find the whole.",
+    (Operation.MULTIPLY, Operation.SUBTRACT, Unknown.SECOND): "Multiply to find the equal parts "
+    "together, then subtract them from the whole to find the missing part.",
 }
 
 
@@ -180,10 +218,27 @@ class EqualStripDiagram:
     whole: int | None
 
 
+@dataclass(frozen=True)
+class TwoStepStripDiagram:
+    """
+    A two-step problem's strip diagram: a bar split into ``parts``, which together make
+    ``whole``, drawn in a box over them. Equal parts are the same value repeated.
+
+    The unknown value is ``None``, and shown as "?". 294 - 196 - 49 is ``((196, 49, None), 294)``,
+    and 68 - 46 shared into 2 is ``((46, None, None), 68)``. A wrong choice can be impossible:
+    ``((294, 49, None), 196)`` has a part larger than the whole.
+    """
+
+    parts: tuple[int | None, ...]
+    whole: int | None
+
+
 # A word problem or equation as presented: its strip diagram chosen from lettered strips
 type StripChoiceQuestion = Question[
     BasicOperationQuestionData, MultipleChoice[StripDiagram | EqualStripDiagram]
 ]
+# A two-step word problem or equation as presented: its strip diagram chosen from lettered strips
+type TwoStepStripChoiceQuestion = Question[TwoStepQuestionData, MultipleChoice[TwoStepStripDiagram]]
 
 
 def strip_diagram(data: BasicOperationQuestionData) -> StripDiagram | EqualStripDiagram:
@@ -197,6 +252,86 @@ def strip_diagram(data: BasicOperationQuestionData) -> StripDiagram | EqualStrip
     operand's number of equal parts, and asks for their size.
     """
     return _operation_strip(data.operation, data)
+
+
+def two_step_strip(data: TwoStepQuestionData) -> TwoStepStripDiagram:
+    """
+    Return the strip diagram for a two-step question: one bar, with its parts in the order the
+    steps meet them. Raises ``ValueError`` for a shape that one bar can't show.
+    """
+    strip, _ = _two_step_strips(data)
+    return strip
+
+
+def two_step_strip_choices(data: TwoStepQuestionData) -> MultipleChoice[TwoStepStripDiagram]:
+    """
+    Return the strip diagrams to choose from for a two-step question: its own, and three wrong
+    choices made the way the teacher's examples make them.
+
+    A bar of three parts and a whole (adding three numbers, or taking two from a whole) has each
+    of its other values in the whole's place, with the whole first among the parts. A bar with
+    equal parts has a different value in the whole's place (the unknown, or else its other part),
+    its equal parts forgotten (one instead of several), and one equal part too many. Raises
+    ``ValueError`` for a shape that one bar can't show.
+
+    A question that repeats one of its given numbers can have two choices that look the same, so
+    a sheet of these choices leaves them out.
+    """
+    strip, wrong = _two_step_strips(data)
+    return multiple_choice((strip,), wrong)
+
+
+def _two_step_strips(
+    data: TwoStepQuestionData,
+) -> tuple[TwoStepStripDiagram, tuple[TwoStepStripDiagram, ...]]:
+    """
+    Return a two-step question's strip diagram and its wrong choices, as
+    ``two_step_strip_choices`` describes them.
+    """
+    first, second = data.steps
+    match data.shape:
+        case (Operation.ADD, Operation.ADD, Unknown.FIRST):  # a + b + c = ?
+            a, b = first.operands
+            c = second.operands[1]
+            return TwoStepStripDiagram((a, b, c), None), (
+                TwoStepStripDiagram((None, b, c), a),
+                TwoStepStripDiagram((None, a, c), b),
+                TwoStepStripDiagram((None, a, b), c),
+            )
+        case (Operation.SUBTRACT, Operation.SUBTRACT, Unknown.FIRST):  # whole - a - b = ?
+            whole, a = first.operands
+            b = second.operands[1]
+            return TwoStepStripDiagram((a, b, None), whole), (
+                TwoStepStripDiagram((whole, a, b), None),
+                TwoStepStripDiagram((whole, b, None), a),
+                TwoStepStripDiagram((whole, a, None), b),
+            )
+        case (Operation.SUBTRACT, Operation.DIVIDE, Unknown.FIRST):  # whole - part, shared
+            whole, part = first.operands
+            groups = second.operands[1]
+            return TwoStepStripDiagram((part, *(None,) * groups), whole), (
+                TwoStepStripDiagram((whole, part), None),
+                TwoStepStripDiagram((part, None), whole),
+                TwoStepStripDiagram((part, *(None,) * (groups + 1)), whole),
+            )
+        case (Operation.MULTIPLY, Operation.ADD, Unknown.FIRST):  # groups of size, + part
+            groups, size = first.operands
+            part = second.operands[1]
+            return TwoStepStripDiagram(((size,) * groups + (part,)), None), (
+                TwoStepStripDiagram((None, *(size,) * groups), part),
+                TwoStepStripDiagram((size, part), None),
+                TwoStepStripDiagram(((size,) * (groups + 1) + (part,)), None),
+            )
+        case (Operation.MULTIPLY, Operation.SUBTRACT, Unknown.SECOND):  # whole - groups of size
+            groups, size = first.operands
+            whole = second.operands[0]
+            return TwoStepStripDiagram(((size,) * groups + (None,)), whole), (
+                TwoStepStripDiagram((whole, *(size,) * groups), None),
+                TwoStepStripDiagram((size, None), whole),
+                TwoStepStripDiagram(((size,) * (groups + 1) + (None,)), whole),
+            )
+        case _:
+            raise ValueError("One strip diagram shows only some shapes of two-step problem.")
 
 
 def strip_choices(
@@ -269,9 +404,11 @@ def _groups_and_other(data: BasicOperationQuestionData) -> tuple[int, int]:
 
 # A word problem as presented: its equation chosen from lettered equations
 type EquationChoiceQuestion = Question[BasicOperationQuestionData, MultipleChoice[str]]
-# A word problem as presented: answered in writing, or its equation chosen
+# A word problem as presented: answered in writing, with one step or two, or its equation chosen
 type WordProblemQuestion = (
-    Question[BasicOperationQuestionData, FreeResponse] | EquationChoiceQuestion
+    Question[BasicOperationQuestionData, FreeResponse]
+    | Question[TwoStepQuestionData, FreeResponse]
+    | EquationChoiceQuestion
 )
 
 
@@ -336,7 +473,9 @@ class Prompt(StrEnum):
     BOTH = "both"  # its wording, then its equation
 
 
-def prompt_texts(data: BasicOperationQuestionData, prompt: Prompt) -> tuple[str, ...]:
+def prompt_texts(
+    data: BasicOperationQuestionData | TwoStepQuestionData, prompt: Prompt
+) -> tuple[str, ...]:
     """
     Return the paragraphs a problem shows for ``prompt``: its wording, its equation followed by
     "= ?", or both, in that order.
@@ -422,11 +561,16 @@ def instruction(
             assert_never(representation)
 
 
-def hint(data: BasicOperationQuestionData, representation: Representation) -> str | None:
+def hint(
+    data: BasicOperationQuestionData | TwoStepQuestionData, representation: Representation
+) -> str | None:
     """
     Return the hint printed under a word problem, for the representation drawn with it, or None if
-    the representation has no hints.
+    the representation has no hints. Strip diagrams have a hint for each shape of two-step
+    problem, and text only, the other representation that shows two steps, has none.
     """
+    if isinstance(data, TwoStepQuestionData):
+        return _TWO_STEP_STRIP_HINTS[data.shape] if representation is Representation.STRIP else None
     match representation:
         case Representation.STRIP:
             return _STRIP_HINTS[data.operation]
