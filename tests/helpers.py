@@ -35,6 +35,7 @@ from core.basic_operations.representation import (
     TwoStepStripChoiceQuestion,
     WordProblemQuestion,
     equation_choices,
+    number_line_choices,
     strip_choices,
     two_step_strip_choices,
 )
@@ -328,6 +329,7 @@ def render_tiles[Data: QuestionData[Any]](
 def render_word_problems(
     questions: list[BasicOperationQuestionData | TwoStepQuestionData],
     representation: Representation,
+    choices: bool,
     hints: bool,
     black_and_white: bool,
     work_box: bool,
@@ -338,18 +340,12 @@ def render_word_problems(
     name_line: bool = True,
 ) -> bytes:
     """
-    Render the word problems sheet, each question free response, with no wrong answers, or for
-    equation multiple choice with its choices made by ``equation_choices``. Two-step questions
-    are always free response.
+    Render the word problems sheet, each question free response, with no wrong answers, or with
+    ``choices`` multiple choice, its number lines made by ``number_line_choices`` or its equations
+    by ``equation_choices``. Two-step questions are always free response.
     """
     out = BytesIO()
-    made: list[WordProblemQuestion] = [
-        Question(data, equation_choices(data))
-        if representation is Representation.EQUATION_CHOICE
-        and isinstance(data, BasicOperationQuestionData)
-        else Question(data, FreeResponse())
-        for data in questions
-    ]
+    made = [_word_problem(data, representation, choices) for data in questions]
     render_word_problems_worksheet(
         questions=made,
         path=out,
@@ -362,6 +358,19 @@ def render_word_problems(
         work_box=work_box,
     )
     return out.getvalue()
+
+
+def _word_problem(
+    data: BasicOperationQuestionData | TwoStepQuestionData,
+    representation: Representation,
+    choices: bool,
+) -> WordProblemQuestion:
+    """Pair a word problem with its response, as ``render_word_problems`` describes."""
+    if not choices or isinstance(data, TwoStepQuestionData):
+        return Question(data, FreeResponse())
+    if representation is Representation.NUMBER_LINE:
+        return Question(data, number_line_choices(data))
+    return Question(data, equation_choices(data))
 
 
 def render_strip_choice(

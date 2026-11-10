@@ -7011,3 +7011,2253 @@ BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 628 Tm (5.) Tj T* ET
 BT 1 0 0 1 82 628 Tm (6 \327 12 = 72,  90 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 72 = 18    \(E\)) Tj T* ET
 
+=== equation_all_four_answer_key ===
+title: Word Problems \204 Equations
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Equations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (Write an equation for each problem, with a ) Tj T* ET
+n 282.768 673.8 16.8 16.8 re S
+BT 1 0 0 1 299.568 678 Tm ( for what to find. Solve it.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 652 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 652 Tm (Maria collected 47 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 632 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 592 Tm (Equation: ) Tj T* ET
+n 150.446 592 m 450.446 592 l S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 566 Tm (Answer: ) Tj T* ET
+n 141.122 566 m 261.122 566 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 544 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 544 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 504 Tm (Equation: ) Tj T* ET
+n 150.446 504 m 450.446 504 l S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 478 Tm (Answer: ) Tj T* ET
+n 141.122 478 m 261.122 478 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 456 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 456 Tm (Maria has 3 bags with 4 stickers in each bag. How many stickers are there in) Tj T* ET
+BT 1 0 0 1 82 436 Tm (all?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 396 Tm (Equation: ) Tj T* ET
+n 150.446 396 m 450.446 396 l S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 370 Tm (Answer: ) Tj T* ET
+n 141.122 370 m 261.122 370 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 348 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 348 Tm (Jamal shares 12 marbles equally among 3 friends. How many marbles does) Tj T* ET
+BT 1 0 0 1 82 328 Tm (each friend get?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 288 Tm (Equation: ) Tj T* ET
+n 150.446 288 m 450.446 288 l S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 262 Tm (Answer: ) Tj T* ET
+n 141.122 262 m 261.122 262 l S
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Equations: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (47 + 25 = 72) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 668 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 668 Tm (3 \327 4 = 12) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 648 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 648 Tm (12 \367 3 = 4) Tj T* ET
+
+=== equation_seven_problems ===
+title: Word Problems \204 Equations
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Equations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (Write an equation for each problem, with a ) Tj T* ET
+n 282.768 673.8 16.8 16.8 re S
+BT 1 0 0 1 299.568 678 Tm ( for what to find. Solve it.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 652 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 652 Tm (Maria collected 11 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 632 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 592 Tm (Equation: ) Tj T* ET
+n 150.446 592 m 450.446 592 l S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 566 Tm (Answer: ) Tj T* ET
+n 141.122 566 m 261.122 566 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 544 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 544 Tm (Maria collected 22 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 524 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 484 Tm (Equation: ) Tj T* ET
+n 150.446 484 m 450.446 484 l S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 458 Tm (Answer: ) Tj T* ET
+n 141.122 458 m 261.122 458 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 436 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 436 Tm (Maria collected 33 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 416 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 376 Tm (Equation: ) Tj T* ET
+n 150.446 376 m 450.446 376 l S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 350 Tm (Answer: ) Tj T* ET
+n 141.122 350 m 261.122 350 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 328 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 328 Tm (Maria collected 44 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 308 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 268 Tm (Equation: ) Tj T* ET
+n 150.446 268 m 450.446 268 l S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 242 Tm (Answer: ) Tj T* ET
+n 141.122 242 m 261.122 242 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 220 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 220 Tm (Maria collected 55 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 200 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 160 Tm (Equation: ) Tj T* ET
+n 150.446 160 m 450.446 160 l S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 134 Tm (Answer: ) Tj T* ET
+n 141.122 134 m 261.122 134 l S
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Equations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Maria collected 66 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 658 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 618 Tm (Equation: ) Tj T* ET
+n 150.446 618 m 450.446 618 l S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 592 Tm (Answer: ) Tj T* ET
+n 141.122 592 m 261.122 592 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 570 Tm (7.) Tj T* ET
+BT 1 0 0 1 82 570 Tm (Maria collected 77 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 550 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 510 Tm (Equation: ) Tj T* ET
+n 150.446 510 m 450.446 510 l S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 484 Tm (Answer: ) Tj T* ET
+n 141.122 484 m 261.122 484 l S
+
+=== equation_self_check_tiles_answer_key ===
+title: Word Problems \204 Equations
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Equations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (Write an equation for each problem, with a ) Tj T* ET
+n 282.768 673.8 16.8 16.8 re S
+BT 1 0 0 1 299.568 678 Tm ( for what to find. Solve it.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 652 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 652 Tm (Maria collected 47 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 632 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 592 Tm (Equation: ) Tj T* ET
+n 150.446 592 m 450.446 592 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 570 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 570 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 530 Tm (Equation: ) Tj T* ET
+n 150.446 530 m 450.446 530 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 508 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 508 Tm (Maria has 3 bags with 4 stickers in each bag. How many stickers are there in) Tj T* ET
+BT 1 0 0 1 82 488 Tm (all?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 448 Tm (Equation: ) Tj T* ET
+n 150.446 448 m 450.446 448 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 426 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 426 Tm (Jamal shares 12 marbles equally among 3 friends. How many marbles does) Tj T* ET
+BT 1 0 0 1 82 406 Tm (each friend get?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 366 Tm (Equation: ) Tj T* ET
+n 150.446 366 m 450.446 366 l S
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Equations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (Answer bank) Tj T* ET
+BT /F1 11 Tf 13.2 TL ET
+BT 1 0 0 1 54 662 Tm (Put each numbered tile in the slot whose letter matches the answer to its question. Shaded boxes are) Tj T* ET
+BT 1 0 0 1 54 649 Tm (not used.) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 578 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.668 626 Tm (A) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 578 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 626 Tm (B) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 578 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 259.668 626 Tm (C) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 578 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 343.668 626 Tm (D) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 578 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.998 626 Tm (E) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 578 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 626 Tm (F) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 534 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 91.552 551 Tm (4) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.332 520 Tm (G) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 534 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 171.104 551 Tm (72) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 520 Tm (H) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 534 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 262.332 520 Tm (I) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 534 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 339.104 551 Tm (47) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 344.664 520 Tm (J) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 534 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 423.104 551 Tm (12) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.668 520 Tm (K) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 534 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 520 Tm (L) Tj T* ET
+q
+1 1 1 rg
+n 318 432 40 40 re f*
+.941176 .745098 0 rg
+n 358 472 m 338 472 l 338 452 l 318 432 l 358 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 358 432 40 40 re f*
+.941176 .745098 0 rg
+n 358 472 m 378 472 l 378 452 l 398 432 l 358 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 432 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 398 432 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 438 432 40 40 re f*
+0 .235294 .784314 rg
+n 438 472 m 458 472 l 458 452 l 478 432 l 438 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 478 432 40 40 re f*
+.85098 .14902 .172549 rg
+n 518 472 m 498 472 l 498 452 l 478 432 l 518 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 432 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 518 432 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 432 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 318 392 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 392 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 358 392 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 392 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 398 392 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 392 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 438 392 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 392 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 478 392 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 392 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 518 392 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 392 40 40 re S
+Q
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 458 Tm (Close the case and flip it over. If every) Tj T* ET
+BT 1 0 0 1 54 443 Tm (answer is right, the back looks like this.) Tj T* ET
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Equations: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (47 + 25 = 72    \(H\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47    \(J\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 668 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 668 Tm (3 \327 4 = 12    \(K\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 648 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 648 Tm (12 \367 3 = 4    \(G\)) Tj T* ET
+
+=== number_line_choice_answer_key ===
+title: Word Problems \204 Number Line multiple choice
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Number Line multiple choice) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (Each number line starts at 0 and shows both numbers as jumps. Circle the correct one.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 652 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 652 Tm (Maria collected 47 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 632 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 573 Tm (A\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 578 m 301 578 l S
+n 108 578 m 115 582 l 115 574 l h
+f*
+n 308 578 m 301 582 l 301 574 l h
+f*
+n 123 574 m 123 582 l S
+n 208 574 m 208 582 l S
+n 293 574 m 293 582 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 565 Tm (0) Tj T* ET
+BT 1 0 0 1 202.996 565 Tm (47) Tj T* ET
+BT 1 0 0 1 287.996 565 Tm (99) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 578 m 144.25 588 186.75 588 200.7615 581.4064 c
+S
+n 208 578 m 202.2517 584.5732 l 199.2712 578.2395 l h
+f*
+BT 1 0 0 1 156.617 588.5 Tm (+ 47) Tj T* ET
+n 208 578 m 229.25 588 271.75 588 285.7615 581.4064 c
+S
+n 293 578 m 287.2517 584.5732 l 284.2712 578.2395 l h
+f*
+BT 1 0 0 1 241.617 588.5 Tm (+ 52) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 573 Tm (B\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 578 m 551 578 l S
+n 358 578 m 365 582 l 365 574 l h
+f*
+n 558 578 m 551 582 l 551 574 l h
+f*
+n 373 574 m 373 582 l S
+n 458 574 m 458 582 l S
+n 543 574 m 543 582 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 565 Tm (0) Tj T* ET
+BT 1 0 0 1 452.996 565 Tm (47) Tj T* ET
+BT 1 0 0 1 537.996 565 Tm (62) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 578 m 394.25 588 436.75 588 450.7615 581.4064 c
+S
+n 458 578 m 452.2517 584.5732 l 449.2712 578.2395 l h
+f*
+BT 1 0 0 1 406.617 588.5 Tm (+ 47) Tj T* ET
+n 458 578 m 479.25 588 521.75 588 535.7615 581.4064 c
+S
+n 543 578 m 537.2517 584.5732 l 534.2712 578.2395 l h
+f*
+BT 1 0 0 1 491.617 588.5 Tm (+ 25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 509 Tm (C\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 514 m 301 514 l S
+n 108 514 m 115 518 l 115 510 l h
+f*
+n 308 514 m 301 518 l 301 510 l h
+f*
+n 123 510 m 123 518 l S
+n 208 510 m 208 518 l S
+n 293 510 m 293 518 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 501 Tm (0) Tj T* ET
+BT 1 0 0 1 202.996 501 Tm (22) Tj T* ET
+BT 1 0 0 1 287.996 501 Tm (47) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 514 m 165.5 554 250.5 554 287.1744 519.4829 c
+S
+n 293 514 m 289.5732 522.0316 l 284.7756 516.9342 l h
+f*
+BT 1 0 0 1 199.117 547 Tm (+ 47) Tj T* ET
+n 293 514 m 271.75 524 229.25 524 215.2385 517.4064 c
+S
+n 208 514 m 216.7288 514.2395 l 213.7483 520.5732 l h
+f*
+BT 1 0 0 1 241.7745 524.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 509 Tm (D\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 514 m 551 514 l S
+n 358 514 m 365 518 l 365 510 l h
+f*
+n 558 514 m 551 518 l 551 510 l h
+f*
+n 373 510 m 373 518 l S
+n 458 510 m 458 518 l S
+n 543 510 m 543 518 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 501 Tm (0) Tj T* ET
+BT 1 0 0 1 452.996 501 Tm (47) Tj T* ET
+BT 1 0 0 1 537.996 501 Tm (72) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 514 m 394.25 524 436.75 524 450.7615 517.4064 c
+S
+n 458 514 m 452.2517 520.5732 l 449.2712 514.2395 l h
+f*
+BT 1 0 0 1 406.617 524.5 Tm (+ 47) Tj T* ET
+n 458 514 m 479.25 524 521.75 524 535.7615 517.4064 c
+S
+n 543 514 m 537.2517 520.5732 l 534.2712 514.2395 l h
+f*
+BT 1 0 0 1 491.617 524.5 Tm (+ 25) Tj T* ET
+Q
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 477 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 477 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 418 Tm (A\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 423 m 301 423 l S
+n 108 423 m 115 427 l 115 419 l h
+f*
+n 308 423 m 301 427 l 301 419 l h
+f*
+n 123 419 m 123 427 l S
+n 208 419 m 208 427 l S
+n 293 419 m 293 427 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 410 Tm (0) Tj T* ET
+BT 1 0 0 1 202.996 410 Tm (20) Tj T* ET
+BT 1 0 0 1 287.996 410 Tm (72) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 423 m 165.5 463 250.5 463 287.1744 428.4829 c
+S
+n 293 423 m 289.5732 431.0316 l 284.7756 425.9342 l h
+f*
+BT 1 0 0 1 199.117 456 Tm (+ 72) Tj T* ET
+n 293 423 m 271.75 433 229.25 433 215.2385 426.4064 c
+S
+n 208 423 m 216.7288 423.2395 l 213.7483 429.5732 l h
+f*
+BT 1 0 0 1 241.7745 433.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 52) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 418 Tm (B\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 423 m 551 423 l S
+n 358 423 m 365 427 l 365 419 l h
+f*
+n 558 423 m 551 427 l 551 419 l h
+f*
+n 373 419 m 373 427 l S
+n 458 419 m 458 427 l S
+n 543 419 m 543 427 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 410 Tm (0) Tj T* ET
+BT 1 0 0 1 452.996 410 Tm (37) Tj T* ET
+BT 1 0 0 1 537.996 410 Tm (72) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 423 m 415.5 463 500.5 463 537.1744 428.4829 c
+S
+n 543 423 m 539.5732 431.0316 l 534.7756 425.9342 l h
+f*
+BT 1 0 0 1 449.117 456 Tm (+ 72) Tj T* ET
+n 543 423 m 521.75 433 479.25 433 465.2385 426.4064 c
+S
+n 458 423 m 466.7288 423.2395 l 463.7483 429.5732 l h
+f*
+BT 1 0 0 1 491.7745 433.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 354 Tm (C\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 359 m 301 359 l S
+n 108 359 m 115 363 l 115 355 l h
+f*
+n 308 359 m 301 363 l 301 355 l h
+f*
+n 123 355 m 123 363 l S
+n 208 355 m 208 363 l S
+n 293 355 m 293 363 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 346 Tm (0) Tj T* ET
+BT 1 0 0 1 202.996 346 Tm (72) Tj T* ET
+BT 1 0 0 1 287.996 346 Tm (97) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 359 m 144.25 369 186.75 369 200.7615 362.4064 c
+S
+n 208 359 m 202.2517 365.5732 l 199.2712 359.2395 l h
+f*
+BT 1 0 0 1 156.617 369.5 Tm (+ 72) Tj T* ET
+n 208 359 m 229.25 369 271.75 369 285.7615 362.4064 c
+S
+n 293 359 m 287.2517 365.5732 l 284.2712 359.2395 l h
+f*
+BT 1 0 0 1 241.617 369.5 Tm (+ 25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 354 Tm (D\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 359 m 551 359 l S
+n 358 359 m 365 363 l 365 355 l h
+f*
+n 558 359 m 551 363 l 551 355 l h
+f*
+n 373 355 m 373 363 l S
+n 458 355 m 458 363 l S
+n 543 355 m 543 363 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 346 Tm (0) Tj T* ET
+BT 1 0 0 1 452.996 346 Tm (47) Tj T* ET
+BT 1 0 0 1 537.996 346 Tm (72) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 359 m 415.5 399 500.5 399 537.1744 364.4829 c
+S
+n 543 359 m 539.5732 367.0316 l 534.7756 361.9342 l h
+f*
+BT 1 0 0 1 449.117 392 Tm (+ 72) Tj T* ET
+n 543 359 m 521.75 369 479.25 369 465.2385 362.4064 c
+S
+n 458 359 m 466.7288 359.2395 l 463.7483 365.5732 l h
+f*
+BT 1 0 0 1 491.7745 369.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 25) Tj T* ET
+Q
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Number Line multiple choice: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (47 + 25 = 72    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47    \(D\)) Tj T* ET
+
+=== number_line_choice_at_their_limits ===
+title: Word Problems \204 Number Line multiple choice
+media boxes: 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Number Line multiple choice) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (Each number line starts at 0 and shows both numbers as jumps. Circle the correct one.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 652 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 652 Tm (A basket held 998 cards. Maria added 1 more. How many cards are in the) Tj T* ET
+BT 1 0 0 1 82 632 Tm (basket now?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 573 Tm (A\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 578 m 301 578 l S
+n 108 578 m 115 582 l 115 574 l h
+f*
+n 308 578 m 301 582 l 301 574 l h
+f*
+n 123 574 m 123 582 l S
+n 208 574 m 208 582 l S
+n 293 574 m 293 582 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 565 Tm (0) Tj T* ET
+BT 1 0 0 1 200.494 565 Tm (998) Tj T* ET
+BT 1 0 0 1 282.992 565 Tm (1008) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 578 m 144.25 588 186.75 588 200.7615 581.4064 c
+S
+n 208 578 m 202.2517 584.5732 l 199.2712 578.2395 l h
+f*
+BT 1 0 0 1 154.115 588.5 Tm (+ 998) Tj T* ET
+n 208 578 m 229.25 588 271.75 588 285.7615 581.4064 c
+S
+n 293 578 m 287.2517 584.5732 l 284.2712 578.2395 l h
+f*
+BT 1 0 0 1 241.617 588.5 Tm (+ 10) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 573 Tm (B\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 578 m 551 578 l S
+n 358 578 m 365 582 l 365 574 l h
+f*
+n 558 578 m 551 582 l 551 574 l h
+f*
+n 373 574 m 373 582 l S
+n 458 574 m 458 582 l S
+n 543 574 m 543 582 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 565 Tm (0) Tj T* ET
+BT 1 0 0 1 450.494 565 Tm (998) Tj T* ET
+BT 1 0 0 1 532.992 565 Tm (1000) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 578 m 394.25 588 436.75 588 450.7615 581.4064 c
+S
+n 458 578 m 452.2517 584.5732 l 449.2712 578.2395 l h
+f*
+BT 1 0 0 1 404.115 588.5 Tm (+ 998) Tj T* ET
+n 458 578 m 479.25 588 521.75 588 535.7615 581.4064 c
+S
+n 543 578 m 537.2517 584.5732 l 534.2712 578.2395 l h
+f*
+BT 1 0 0 1 494.119 588.5 Tm (+ 1) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 509 Tm (C\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 514 m 301 514 l S
+n 108 514 m 115 518 l 115 510 l h
+f*
+n 308 514 m 301 518 l 301 510 l h
+f*
+n 123 510 m 123 518 l S
+n 208 510 m 208 518 l S
+n 293 510 m 293 518 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 501 Tm (0) Tj T* ET
+BT 1 0 0 1 200.494 501 Tm (997) Tj T* ET
+BT 1 0 0 1 285.494 501 Tm (998) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 514 m 165.5 554 250.5 554 287.1744 519.4829 c
+S
+n 293 514 m 289.5732 522.0316 l 284.7756 516.9342 l h
+f*
+BT 1 0 0 1 196.615 547 Tm (+ 998) Tj T* ET
+n 293 514 m 271.75 524 229.25 524 215.2385 517.4064 c
+S
+n 208 514 m 216.7288 514.2395 l 213.7483 520.5732 l h
+f*
+BT 1 0 0 1 244.2765 524.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 1) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 509 Tm (D\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 514 m 551 514 l S
+n 358 514 m 365 518 l 365 510 l h
+f*
+n 558 514 m 551 518 l 551 510 l h
+f*
+n 373 510 m 373 518 l S
+n 458 510 m 458 518 l S
+n 543 510 m 543 518 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 501 Tm (0) Tj T* ET
+BT 1 0 0 1 450.494 501 Tm (998) Tj T* ET
+BT 1 0 0 1 535.494 501 Tm (999) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 514 m 394.25 524 436.75 524 450.7615 517.4064 c
+S
+n 458 514 m 452.2517 520.5732 l 449.2712 514.2395 l h
+f*
+BT 1 0 0 1 404.115 524.5 Tm (+ 998) Tj T* ET
+n 458 514 m 479.25 524 521.75 524 535.7615 517.4064 c
+S
+n 543 514 m 537.2517 520.5732 l 534.2712 514.2395 l h
+f*
+BT 1 0 0 1 494.119 524.5 Tm (+ 1) Tj T* ET
+Q
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 477 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 477 Tm (Maria had 2 cards and used 1. How many cards are left?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 418 Tm (A\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 423 m 301 423 l S
+n 108 423 m 115 427 l 115 419 l h
+f*
+n 308 423 m 301 427 l 301 419 l h
+f*
+n 123 419 m 123 427 l S
+n 208 419 m 208 427 l S
+n 293 419 m 293 427 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 410 Tm (0) Tj T* ET
+BT 1 0 0 1 202.996 410 Tm (19) Tj T* ET
+BT 1 0 0 1 287.996 410 Tm (20) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 423 m 165.5 463 250.5 463 287.1744 428.4829 c
+S
+n 293 423 m 289.5732 431.0316 l 284.7756 425.9342 l h
+f*
+BT 1 0 0 1 199.117 456 Tm (+ 20) Tj T* ET
+n 293 423 m 271.75 433 229.25 433 215.2385 426.4064 c
+S
+n 208 423 m 216.7288 423.2395 l 213.7483 429.5732 l h
+f*
+BT 1 0 0 1 244.2765 433.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 1) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 418 Tm (B\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 423 m 551 423 l S
+n 358 423 m 365 427 l 365 419 l h
+f*
+n 558 423 m 551 427 l 551 419 l h
+f*
+n 373 419 m 373 427 l S
+n 458 419 m 458 427 l S
+n 543 419 m 543 427 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 410 Tm (0) Tj T* ET
+BT 1 0 0 1 455.498 410 Tm (2) Tj T* ET
+BT 1 0 0 1 537.996 410 Tm (11) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 423 m 394.25 433 436.75 433 450.7615 426.4064 c
+S
+n 458 423 m 452.2517 429.5732 l 449.2712 423.2395 l h
+f*
+BT 1 0 0 1 409.119 433.5 Tm (+ 2) Tj T* ET
+n 458 423 m 479.25 433 521.75 433 535.7615 426.4064 c
+S
+n 543 423 m 537.2517 429.5732 l 534.2712 423.2395 l h
+f*
+BT 1 0 0 1 494.2765 433.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 1) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 354 Tm (C\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 359 m 301 359 l S
+n 108 359 m 115 363 l 115 355 l h
+f*
+n 308 359 m 301 363 l 301 355 l h
+f*
+n 123 355 m 123 363 l S
+n 208 355 m 208 363 l S
+n 293 355 m 293 363 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 346 Tm (0) Tj T* ET
+BT 1 0 0 1 205.498 346 Tm (2) Tj T* ET
+BT 1 0 0 1 290.498 346 Tm (3) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 359 m 144.25 369 186.75 369 200.7615 362.4064 c
+S
+n 208 359 m 202.2517 365.5732 l 199.2712 359.2395 l h
+f*
+BT 1 0 0 1 159.119 369.5 Tm (+ 2) Tj T* ET
+n 208 359 m 229.25 369 271.75 369 285.7615 362.4064 c
+S
+n 293 359 m 287.2517 365.5732 l 284.2712 359.2395 l h
+f*
+BT 1 0 0 1 244.119 369.5 Tm (+ 1) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 354 Tm (D\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 359 m 551 359 l S
+n 358 359 m 365 363 l 365 355 l h
+f*
+n 558 359 m 551 363 l 551 355 l h
+f*
+n 373 355 m 373 363 l S
+n 458 355 m 458 363 l S
+n 543 355 m 543 363 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 346 Tm (0) Tj T* ET
+BT 1 0 0 1 455.498 346 Tm (1) Tj T* ET
+BT 1 0 0 1 540.498 346 Tm (2) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 359 m 415.5 399 500.5 399 537.1744 364.4829 c
+S
+n 543 359 m 539.5732 367.0316 l 534.7756 361.9342 l h
+f*
+BT 1 0 0 1 451.619 392 Tm (+ 2) Tj T* ET
+n 543 359 m 521.75 369 479.25 369 465.2385 362.4064 c
+S
+n 458 359 m 466.7288 359.2395 l 463.7483 365.5732 l h
+f*
+BT 1 0 0 1 494.2765 369.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 1) Tj T* ET
+Q
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 322 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 322 Tm (Maria has 15 cards and Jamal has 10 cards. How many more cards does) Tj T* ET
+BT 1 0 0 1 82 302 Tm (Maria have than Jamal?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 243 Tm (A\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 248 m 301 248 l S
+n 108 248 m 115 252 l 115 244 l h
+f*
+n 308 248 m 301 252 l 301 244 l h
+f*
+n 123 244 m 123 252 l S
+n 208 244 m 208 252 l S
+n 293 244 m 293 252 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 235 Tm (0) Tj T* ET
+BT 1 0 0 1 202.996 235 Tm (14) Tj T* ET
+BT 1 0 0 1 287.996 235 Tm (15) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 248 m 165.5 288 250.5 288 287.1744 253.4829 c
+S
+n 293 248 m 289.5732 256.0316 l 284.7756 250.9342 l h
+f*
+BT 1 0 0 1 199.117 281 Tm (+ 15) Tj T* ET
+n 293 248 m 271.75 258 229.25 258 215.2385 251.4064 c
+S
+n 208 248 m 216.7288 248.2395 l 213.7483 254.5732 l h
+f*
+BT 1 0 0 1 244.2765 258.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 1) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 243 Tm (B\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 248 m 551 248 l S
+n 358 248 m 365 252 l 365 244 l h
+f*
+n 558 248 m 551 252 l 551 244 l h
+f*
+n 373 244 m 373 252 l S
+n 458 244 m 458 252 l S
+n 543 244 m 543 252 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 235 Tm (0) Tj T* ET
+BT 1 0 0 1 455.498 235 Tm (4) Tj T* ET
+BT 1 0 0 1 537.996 235 Tm (15) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 248 m 415.5 288 500.5 288 537.1744 253.4829 c
+S
+n 543 248 m 539.5732 256.0316 l 534.7756 250.9342 l h
+f*
+BT 1 0 0 1 449.117 281 Tm (+ 15) Tj T* ET
+n 543 248 m 521.75 258 479.25 258 465.2385 251.4064 c
+S
+n 458 248 m 466.7288 248.2395 l 463.7483 254.5732 l h
+f*
+BT 1 0 0 1 491.7745 258.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 10) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 179 Tm (C\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 184 m 301 184 l S
+n 108 184 m 115 188 l 115 180 l h
+f*
+n 308 184 m 301 188 l 301 180 l h
+f*
+n 123 180 m 123 188 l S
+n 208 180 m 208 188 l S
+n 293 180 m 293 188 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 171 Tm (0) Tj T* ET
+BT 1 0 0 1 202.996 171 Tm (15) Tj T* ET
+BT 1 0 0 1 287.996 171 Tm (25) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 184 m 144.25 194 186.75 194 200.7615 187.4064 c
+S
+n 208 184 m 202.2517 190.5732 l 199.2712 184.2395 l h
+f*
+BT 1 0 0 1 156.617 194.5 Tm (+ 15) Tj T* ET
+n 208 184 m 229.25 194 271.75 194 285.7615 187.4064 c
+S
+n 293 184 m 287.2517 190.5732 l 284.2712 184.2395 l h
+f*
+BT 1 0 0 1 241.617 194.5 Tm (+ 10) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 179 Tm (D\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 184 m 551 184 l S
+n 358 184 m 365 188 l 365 180 l h
+f*
+n 558 184 m 551 188 l 551 180 l h
+f*
+n 373 180 m 373 188 l S
+n 458 180 m 458 188 l S
+n 543 180 m 543 188 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 171 Tm (0) Tj T* ET
+BT 1 0 0 1 455.498 171 Tm (5) Tj T* ET
+BT 1 0 0 1 537.996 171 Tm (15) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 184 m 415.5 224 500.5 224 537.1744 189.4829 c
+S
+n 543 184 m 539.5732 192.0316 l 534.7756 186.9342 l h
+f*
+BT 1 0 0 1 449.117 217 Tm (+ 15) Tj T* ET
+n 543 184 m 521.75 194 479.25 194 465.2385 187.4064 c
+S
+n 458 184 m 466.7288 184.2395 l 463.7483 190.5732 l h
+f*
+BT 1 0 0 1 491.7745 194.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 10) Tj T* ET
+Q
+
+=== number_line_choice_seven_problems ===
+title: Word Problems \204 Number Line multiple choice
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Number Line multiple choice) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (Each number line starts at 0 and shows both numbers as jumps. Circle the correct one.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 652 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 652 Tm (Maria had 31 cards and found 25 more. How many cards does Maria have) Tj T* ET
+BT 1 0 0 1 82 632 Tm (now?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 573 Tm (A\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 578 m 301 578 l S
+n 108 578 m 115 582 l 115 574 l h
+f*
+n 308 578 m 301 582 l 301 574 l h
+f*
+n 123 574 m 123 582 l S
+n 208 574 m 208 582 l S
+n 293 574 m 293 582 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 565 Tm (0) Tj T* ET
+BT 1 0 0 1 202.996 565 Tm (31) Tj T* ET
+BT 1 0 0 1 287.996 565 Tm (83) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 578 m 144.25 588 186.75 588 200.7615 581.4064 c
+S
+n 208 578 m 202.2517 584.5732 l 199.2712 578.2395 l h
+f*
+BT 1 0 0 1 156.617 588.5 Tm (+ 31) Tj T* ET
+n 208 578 m 229.25 588 271.75 588 285.7615 581.4064 c
+S
+n 293 578 m 287.2517 584.5732 l 284.2712 578.2395 l h
+f*
+BT 1 0 0 1 241.617 588.5 Tm (+ 52) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 573 Tm (B\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 578 m 551 578 l S
+n 358 578 m 365 582 l 365 574 l h
+f*
+n 558 578 m 551 582 l 551 574 l h
+f*
+n 373 574 m 373 582 l S
+n 458 574 m 458 582 l S
+n 543 574 m 543 582 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 565 Tm (0) Tj T* ET
+BT 1 0 0 1 452.996 565 Tm (31) Tj T* ET
+BT 1 0 0 1 537.996 565 Tm (46) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 578 m 394.25 588 436.75 588 450.7615 581.4064 c
+S
+n 458 578 m 452.2517 584.5732 l 449.2712 578.2395 l h
+f*
+BT 1 0 0 1 406.617 588.5 Tm (+ 31) Tj T* ET
+n 458 578 m 479.25 588 521.75 588 535.7615 581.4064 c
+S
+n 543 578 m 537.2517 584.5732 l 534.2712 578.2395 l h
+f*
+BT 1 0 0 1 491.617 588.5 Tm (+ 25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 509 Tm (C\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 514 m 301 514 l S
+n 108 514 m 115 518 l 115 510 l h
+f*
+n 308 514 m 301 518 l 301 510 l h
+f*
+n 123 510 m 123 518 l S
+n 208 510 m 208 518 l S
+n 293 510 m 293 518 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 501 Tm (0) Tj T* ET
+BT 1 0 0 1 205.498 501 Tm (6) Tj T* ET
+BT 1 0 0 1 287.996 501 Tm (31) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 514 m 165.5 554 250.5 554 287.1744 519.4829 c
+S
+n 293 514 m 289.5732 522.0316 l 284.7756 516.9342 l h
+f*
+BT 1 0 0 1 199.117 547 Tm (+ 31) Tj T* ET
+n 293 514 m 271.75 524 229.25 524 215.2385 517.4064 c
+S
+n 208 514 m 216.7288 514.2395 l 213.7483 520.5732 l h
+f*
+BT 1 0 0 1 241.7745 524.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 509 Tm (D\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 514 m 551 514 l S
+n 358 514 m 365 518 l 365 510 l h
+f*
+n 558 514 m 551 518 l 551 510 l h
+f*
+n 373 510 m 373 518 l S
+n 458 510 m 458 518 l S
+n 543 510 m 543 518 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 501 Tm (0) Tj T* ET
+BT 1 0 0 1 452.996 501 Tm (31) Tj T* ET
+BT 1 0 0 1 537.996 501 Tm (56) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 514 m 394.25 524 436.75 524 450.7615 517.4064 c
+S
+n 458 514 m 452.2517 520.5732 l 449.2712 514.2395 l h
+f*
+BT 1 0 0 1 406.617 524.5 Tm (+ 31) Tj T* ET
+n 458 514 m 479.25 524 521.75 524 535.7615 517.4064 c
+S
+n 543 514 m 537.2517 520.5732 l 534.2712 514.2395 l h
+f*
+BT 1 0 0 1 491.617 524.5 Tm (+ 25) Tj T* ET
+Q
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 477 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 477 Tm (Maria had 42 cards and found 25 more. How many cards does Maria have) Tj T* ET
+BT 1 0 0 1 82 457 Tm (now?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 398 Tm (A\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 403 m 301 403 l S
+n 108 403 m 115 407 l 115 399 l h
+f*
+n 308 403 m 301 407 l 301 399 l h
+f*
+n 123 399 m 123 407 l S
+n 208 399 m 208 407 l S
+n 293 399 m 293 407 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 390 Tm (0) Tj T* ET
+BT 1 0 0 1 202.996 390 Tm (42) Tj T* ET
+BT 1 0 0 1 287.996 390 Tm (94) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 403 m 144.25 413 186.75 413 200.7615 406.4064 c
+S
+n 208 403 m 202.2517 409.5732 l 199.2712 403.2395 l h
+f*
+BT 1 0 0 1 156.617 413.5 Tm (+ 42) Tj T* ET
+n 208 403 m 229.25 413 271.75 413 285.7615 406.4064 c
+S
+n 293 403 m 287.2517 409.5732 l 284.2712 403.2395 l h
+f*
+BT 1 0 0 1 241.617 413.5 Tm (+ 52) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 398 Tm (B\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 403 m 551 403 l S
+n 358 403 m 365 407 l 365 399 l h
+f*
+n 558 403 m 551 407 l 551 399 l h
+f*
+n 373 399 m 373 407 l S
+n 458 399 m 458 407 l S
+n 543 399 m 543 407 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 390 Tm (0) Tj T* ET
+BT 1 0 0 1 452.996 390 Tm (42) Tj T* ET
+BT 1 0 0 1 537.996 390 Tm (57) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 403 m 394.25 413 436.75 413 450.7615 406.4064 c
+S
+n 458 403 m 452.2517 409.5732 l 449.2712 403.2395 l h
+f*
+BT 1 0 0 1 406.617 413.5 Tm (+ 42) Tj T* ET
+n 458 403 m 479.25 413 521.75 413 535.7615 406.4064 c
+S
+n 543 403 m 537.2517 409.5732 l 534.2712 403.2395 l h
+f*
+BT 1 0 0 1 491.617 413.5 Tm (+ 25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 334 Tm (C\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 339 m 301 339 l S
+n 108 339 m 115 343 l 115 335 l h
+f*
+n 308 339 m 301 343 l 301 335 l h
+f*
+n 123 335 m 123 343 l S
+n 208 335 m 208 343 l S
+n 293 335 m 293 343 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 326 Tm (0) Tj T* ET
+BT 1 0 0 1 202.996 326 Tm (17) Tj T* ET
+BT 1 0 0 1 287.996 326 Tm (42) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 339 m 165.5 379 250.5 379 287.1744 344.4829 c
+S
+n 293 339 m 289.5732 347.0316 l 284.7756 341.9342 l h
+f*
+BT 1 0 0 1 199.117 372 Tm (+ 42) Tj T* ET
+n 293 339 m 271.75 349 229.25 349 215.2385 342.4064 c
+S
+n 208 339 m 216.7288 339.2395 l 213.7483 345.5732 l h
+f*
+BT 1 0 0 1 241.7745 349.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 334 Tm (D\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 339 m 551 339 l S
+n 358 339 m 365 343 l 365 335 l h
+f*
+n 558 339 m 551 343 l 551 335 l h
+f*
+n 373 335 m 373 343 l S
+n 458 335 m 458 343 l S
+n 543 335 m 543 343 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 326 Tm (0) Tj T* ET
+BT 1 0 0 1 452.996 326 Tm (42) Tj T* ET
+BT 1 0 0 1 537.996 326 Tm (67) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 339 m 394.25 349 436.75 349 450.7615 342.4064 c
+S
+n 458 339 m 452.2517 345.5732 l 449.2712 339.2395 l h
+f*
+BT 1 0 0 1 406.617 349.5 Tm (+ 42) Tj T* ET
+n 458 339 m 479.25 349 521.75 349 535.7615 342.4064 c
+S
+n 543 339 m 537.2517 345.5732 l 534.2712 339.2395 l h
+f*
+BT 1 0 0 1 491.617 349.5 Tm (+ 25) Tj T* ET
+Q
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 302 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 302 Tm (Maria had 53 cards and found 25 more. How many cards does Maria have) Tj T* ET
+BT 1 0 0 1 82 282 Tm (now?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 223 Tm (A\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 228 m 301 228 l S
+n 108 228 m 115 232 l 115 224 l h
+f*
+n 308 228 m 301 232 l 301 224 l h
+f*
+n 123 224 m 123 232 l S
+n 208 224 m 208 232 l S
+n 293 224 m 293 232 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 215 Tm (0) Tj T* ET
+BT 1 0 0 1 202.996 215 Tm (53) Tj T* ET
+BT 1 0 0 1 285.494 215 Tm (105) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 228 m 144.25 238 186.75 238 200.7615 231.4064 c
+S
+n 208 228 m 202.2517 234.5732 l 199.2712 228.2395 l h
+f*
+BT 1 0 0 1 156.617 238.5 Tm (+ 53) Tj T* ET
+n 208 228 m 229.25 238 271.75 238 285.7615 231.4064 c
+S
+n 293 228 m 287.2517 234.5732 l 284.2712 228.2395 l h
+f*
+BT 1 0 0 1 241.617 238.5 Tm (+ 52) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 223 Tm (B\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 228 m 551 228 l S
+n 358 228 m 365 232 l 365 224 l h
+f*
+n 558 228 m 551 232 l 551 224 l h
+f*
+n 373 224 m 373 232 l S
+n 458 224 m 458 232 l S
+n 543 224 m 543 232 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 215 Tm (0) Tj T* ET
+BT 1 0 0 1 452.996 215 Tm (53) Tj T* ET
+BT 1 0 0 1 537.996 215 Tm (68) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 228 m 394.25 238 436.75 238 450.7615 231.4064 c
+S
+n 458 228 m 452.2517 234.5732 l 449.2712 228.2395 l h
+f*
+BT 1 0 0 1 406.617 238.5 Tm (+ 53) Tj T* ET
+n 458 228 m 479.25 238 521.75 238 535.7615 231.4064 c
+S
+n 543 228 m 537.2517 234.5732 l 534.2712 228.2395 l h
+f*
+BT 1 0 0 1 491.617 238.5 Tm (+ 25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 159 Tm (C\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 164 m 301 164 l S
+n 108 164 m 115 168 l 115 160 l h
+f*
+n 308 164 m 301 168 l 301 160 l h
+f*
+n 123 160 m 123 168 l S
+n 208 160 m 208 168 l S
+n 293 160 m 293 168 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 151 Tm (0) Tj T* ET
+BT 1 0 0 1 202.996 151 Tm (28) Tj T* ET
+BT 1 0 0 1 287.996 151 Tm (53) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 164 m 165.5 204 250.5 204 287.1744 169.4829 c
+S
+n 293 164 m 289.5732 172.0316 l 284.7756 166.9342 l h
+f*
+BT 1 0 0 1 199.117 197 Tm (+ 53) Tj T* ET
+n 293 164 m 271.75 174 229.25 174 215.2385 167.4064 c
+S
+n 208 164 m 216.7288 164.2395 l 213.7483 170.5732 l h
+f*
+BT 1 0 0 1 241.7745 174.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 159 Tm (D\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 164 m 551 164 l S
+n 358 164 m 365 168 l 365 160 l h
+f*
+n 558 164 m 551 168 l 551 160 l h
+f*
+n 373 160 m 373 168 l S
+n 458 160 m 458 168 l S
+n 543 160 m 543 168 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 151 Tm (0) Tj T* ET
+BT 1 0 0 1 452.996 151 Tm (53) Tj T* ET
+BT 1 0 0 1 537.996 151 Tm (78) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 164 m 394.25 174 436.75 174 450.7615 167.4064 c
+S
+n 458 164 m 452.2517 170.5732 l 449.2712 164.2395 l h
+f*
+BT 1 0 0 1 406.617 174.5 Tm (+ 53) Tj T* ET
+n 458 164 m 479.25 174 521.75 174 535.7615 167.4064 c
+S
+n 543 164 m 537.2517 170.5732 l 534.2712 164.2395 l h
+f*
+BT 1 0 0 1 491.617 174.5 Tm (+ 25) Tj T* ET
+Q
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Number Line multiple choice) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Maria had 64 cards and found 25 more. How many cards does Maria have) Tj T* ET
+BT 1 0 0 1 82 658 Tm (now?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 599 Tm (A\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 604 m 301 604 l S
+n 108 604 m 115 608 l 115 600 l h
+f*
+n 308 604 m 301 608 l 301 600 l h
+f*
+n 123 600 m 123 608 l S
+n 208 600 m 208 608 l S
+n 293 600 m 293 608 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 591 Tm (0) Tj T* ET
+BT 1 0 0 1 202.996 591 Tm (64) Tj T* ET
+BT 1 0 0 1 285.494 591 Tm (116) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 604 m 144.25 614 186.75 614 200.7615 607.4064 c
+S
+n 208 604 m 202.2517 610.5732 l 199.2712 604.2395 l h
+f*
+BT 1 0 0 1 156.617 614.5 Tm (+ 64) Tj T* ET
+n 208 604 m 229.25 614 271.75 614 285.7615 607.4064 c
+S
+n 293 604 m 287.2517 610.5732 l 284.2712 604.2395 l h
+f*
+BT 1 0 0 1 241.617 614.5 Tm (+ 52) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 599 Tm (B\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 604 m 551 604 l S
+n 358 604 m 365 608 l 365 600 l h
+f*
+n 558 604 m 551 608 l 551 600 l h
+f*
+n 373 600 m 373 608 l S
+n 458 600 m 458 608 l S
+n 543 600 m 543 608 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 591 Tm (0) Tj T* ET
+BT 1 0 0 1 452.996 591 Tm (64) Tj T* ET
+BT 1 0 0 1 537.996 591 Tm (79) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 604 m 394.25 614 436.75 614 450.7615 607.4064 c
+S
+n 458 604 m 452.2517 610.5732 l 449.2712 604.2395 l h
+f*
+BT 1 0 0 1 406.617 614.5 Tm (+ 64) Tj T* ET
+n 458 604 m 479.25 614 521.75 614 535.7615 607.4064 c
+S
+n 543 604 m 537.2517 610.5732 l 534.2712 604.2395 l h
+f*
+BT 1 0 0 1 491.617 614.5 Tm (+ 25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 535 Tm (C\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 540 m 301 540 l S
+n 108 540 m 115 544 l 115 536 l h
+f*
+n 308 540 m 301 544 l 301 536 l h
+f*
+n 123 536 m 123 544 l S
+n 208 536 m 208 544 l S
+n 293 536 m 293 544 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 527 Tm (0) Tj T* ET
+BT 1 0 0 1 202.996 527 Tm (39) Tj T* ET
+BT 1 0 0 1 287.996 527 Tm (64) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 540 m 165.5 580 250.5 580 287.1744 545.4829 c
+S
+n 293 540 m 289.5732 548.0316 l 284.7756 542.9342 l h
+f*
+BT 1 0 0 1 199.117 573 Tm (+ 64) Tj T* ET
+n 293 540 m 271.75 550 229.25 550 215.2385 543.4064 c
+S
+n 208 540 m 216.7288 540.2395 l 213.7483 546.5732 l h
+f*
+BT 1 0 0 1 241.7745 550.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 535 Tm (D\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 540 m 551 540 l S
+n 358 540 m 365 544 l 365 536 l h
+f*
+n 558 540 m 551 544 l 551 536 l h
+f*
+n 373 536 m 373 544 l S
+n 458 536 m 458 544 l S
+n 543 536 m 543 544 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 527 Tm (0) Tj T* ET
+BT 1 0 0 1 452.996 527 Tm (64) Tj T* ET
+BT 1 0 0 1 537.996 527 Tm (89) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 540 m 394.25 550 436.75 550 450.7615 543.4064 c
+S
+n 458 540 m 452.2517 546.5732 l 449.2712 540.2395 l h
+f*
+BT 1 0 0 1 406.617 550.5 Tm (+ 64) Tj T* ET
+n 458 540 m 479.25 550 521.75 550 535.7615 543.4064 c
+S
+n 543 540 m 537.2517 546.5732 l 534.2712 540.2395 l h
+f*
+BT 1 0 0 1 491.617 550.5 Tm (+ 25) Tj T* ET
+Q
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 503 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 503 Tm (Maria had 75 cards and found 25 more. How many cards does Maria have) Tj T* ET
+BT 1 0 0 1 82 483 Tm (now?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 424 Tm (A\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 429 m 301 429 l S
+n 108 429 m 115 433 l 115 425 l h
+f*
+n 308 429 m 301 433 l 301 425 l h
+f*
+n 123 425 m 123 433 l S
+n 208 425 m 208 433 l S
+n 293 425 m 293 433 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 416 Tm (0) Tj T* ET
+BT 1 0 0 1 202.996 416 Tm (75) Tj T* ET
+BT 1 0 0 1 285.494 416 Tm (127) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 429 m 144.25 439 186.75 439 200.7615 432.4064 c
+S
+n 208 429 m 202.2517 435.5732 l 199.2712 429.2395 l h
+f*
+BT 1 0 0 1 156.617 439.5 Tm (+ 75) Tj T* ET
+n 208 429 m 229.25 439 271.75 439 285.7615 432.4064 c
+S
+n 293 429 m 287.2517 435.5732 l 284.2712 429.2395 l h
+f*
+BT 1 0 0 1 241.617 439.5 Tm (+ 52) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 424 Tm (B\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 429 m 551 429 l S
+n 358 429 m 365 433 l 365 425 l h
+f*
+n 558 429 m 551 433 l 551 425 l h
+f*
+n 373 425 m 373 433 l S
+n 458 425 m 458 433 l S
+n 543 425 m 543 433 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 416 Tm (0) Tj T* ET
+BT 1 0 0 1 452.996 416 Tm (75) Tj T* ET
+BT 1 0 0 1 537.996 416 Tm (90) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 429 m 394.25 439 436.75 439 450.7615 432.4064 c
+S
+n 458 429 m 452.2517 435.5732 l 449.2712 429.2395 l h
+f*
+BT 1 0 0 1 406.617 439.5 Tm (+ 75) Tj T* ET
+n 458 429 m 479.25 439 521.75 439 535.7615 432.4064 c
+S
+n 543 429 m 537.2517 435.5732 l 534.2712 429.2395 l h
+f*
+BT 1 0 0 1 491.617 439.5 Tm (+ 25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 360 Tm (C\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 365 m 301 365 l S
+n 108 365 m 115 369 l 115 361 l h
+f*
+n 308 365 m 301 369 l 301 361 l h
+f*
+n 123 361 m 123 369 l S
+n 208 361 m 208 369 l S
+n 293 361 m 293 369 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 352 Tm (0) Tj T* ET
+BT 1 0 0 1 202.996 352 Tm (50) Tj T* ET
+BT 1 0 0 1 287.996 352 Tm (75) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 365 m 165.5 405 250.5 405 287.1744 370.4829 c
+S
+n 293 365 m 289.5732 373.0316 l 284.7756 367.9342 l h
+f*
+BT 1 0 0 1 199.117 398 Tm (+ 75) Tj T* ET
+n 293 365 m 271.75 375 229.25 375 215.2385 368.4064 c
+S
+n 208 365 m 216.7288 365.2395 l 213.7483 371.5732 l h
+f*
+BT 1 0 0 1 241.7745 375.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 360 Tm (D\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 365 m 551 365 l S
+n 358 365 m 365 369 l 365 361 l h
+f*
+n 558 365 m 551 369 l 551 361 l h
+f*
+n 373 361 m 373 369 l S
+n 458 361 m 458 369 l S
+n 543 361 m 543 369 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 352 Tm (0) Tj T* ET
+BT 1 0 0 1 452.996 352 Tm (75) Tj T* ET
+BT 1 0 0 1 535.494 352 Tm (100) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 365 m 394.25 375 436.75 375 450.7615 368.4064 c
+S
+n 458 365 m 452.2517 371.5732 l 449.2712 365.2395 l h
+f*
+BT 1 0 0 1 406.617 375.5 Tm (+ 75) Tj T* ET
+n 458 365 m 479.25 375 521.75 375 535.7615 368.4064 c
+S
+n 543 365 m 537.2517 371.5732 l 534.2712 365.2395 l h
+f*
+BT 1 0 0 1 491.617 375.5 Tm (+ 25) Tj T* ET
+Q
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 328 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 328 Tm (Maria had 86 cards and found 25 more. How many cards does Maria have) Tj T* ET
+BT 1 0 0 1 82 308 Tm (now?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 249 Tm (A\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 254 m 301 254 l S
+n 108 254 m 115 258 l 115 250 l h
+f*
+n 308 254 m 301 258 l 301 250 l h
+f*
+n 123 250 m 123 258 l S
+n 208 250 m 208 258 l S
+n 293 250 m 293 258 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 241 Tm (0) Tj T* ET
+BT 1 0 0 1 202.996 241 Tm (86) Tj T* ET
+BT 1 0 0 1 285.494 241 Tm (138) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 254 m 144.25 264 186.75 264 200.7615 257.4064 c
+S
+n 208 254 m 202.2517 260.5732 l 199.2712 254.2395 l h
+f*
+BT 1 0 0 1 156.617 264.5 Tm (+ 86) Tj T* ET
+n 208 254 m 229.25 264 271.75 264 285.7615 257.4064 c
+S
+n 293 254 m 287.2517 260.5732 l 284.2712 254.2395 l h
+f*
+BT 1 0 0 1 241.617 264.5 Tm (+ 52) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 249 Tm (B\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 254 m 551 254 l S
+n 358 254 m 365 258 l 365 250 l h
+f*
+n 558 254 m 551 258 l 551 250 l h
+f*
+n 373 250 m 373 258 l S
+n 458 250 m 458 258 l S
+n 543 250 m 543 258 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 241 Tm (0) Tj T* ET
+BT 1 0 0 1 452.996 241 Tm (86) Tj T* ET
+BT 1 0 0 1 535.494 241 Tm (101) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 254 m 394.25 264 436.75 264 450.7615 257.4064 c
+S
+n 458 254 m 452.2517 260.5732 l 449.2712 254.2395 l h
+f*
+BT 1 0 0 1 406.617 264.5 Tm (+ 86) Tj T* ET
+n 458 254 m 479.25 264 521.75 264 535.7615 257.4064 c
+S
+n 543 254 m 537.2517 260.5732 l 534.2712 254.2395 l h
+f*
+BT 1 0 0 1 491.617 264.5 Tm (+ 25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 185 Tm (C\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 190 m 301 190 l S
+n 108 190 m 115 194 l 115 186 l h
+f*
+n 308 190 m 301 194 l 301 186 l h
+f*
+n 123 186 m 123 194 l S
+n 208 186 m 208 194 l S
+n 293 186 m 293 194 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 177 Tm (0) Tj T* ET
+BT 1 0 0 1 202.996 177 Tm (61) Tj T* ET
+BT 1 0 0 1 287.996 177 Tm (86) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 190 m 165.5 230 250.5 230 287.1744 195.4829 c
+S
+n 293 190 m 289.5732 198.0316 l 284.7756 192.9342 l h
+f*
+BT 1 0 0 1 199.117 223 Tm (+ 86) Tj T* ET
+n 293 190 m 271.75 200 229.25 200 215.2385 193.4064 c
+S
+n 208 190 m 216.7288 190.2395 l 213.7483 196.5732 l h
+f*
+BT 1 0 0 1 241.7745 200.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 185 Tm (D\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 190 m 551 190 l S
+n 358 190 m 365 194 l 365 186 l h
+f*
+n 558 190 m 551 194 l 551 186 l h
+f*
+n 373 186 m 373 194 l S
+n 458 186 m 458 194 l S
+n 543 186 m 543 194 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 177 Tm (0) Tj T* ET
+BT 1 0 0 1 452.996 177 Tm (86) Tj T* ET
+BT 1 0 0 1 535.494 177 Tm (111) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 190 m 394.25 200 436.75 200 450.7615 193.4064 c
+S
+n 458 190 m 452.2517 196.5732 l 449.2712 190.2395 l h
+f*
+BT 1 0 0 1 406.617 200.5 Tm (+ 86) Tj T* ET
+n 458 190 m 479.25 200 521.75 200 535.7615 193.4064 c
+S
+n 543 190 m 537.2517 196.5732 l 534.2712 190.2395 l h
+f*
+BT 1 0 0 1 491.617 200.5 Tm (+ 25) Tj T* ET
+Q
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems \227 Number Line multiple choice) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (7.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Maria had 97 cards and found 25 more. How many cards does Maria have) Tj T* ET
+BT 1 0 0 1 82 658 Tm (now?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 599 Tm (A\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 604 m 301 604 l S
+n 108 604 m 115 608 l 115 600 l h
+f*
+n 308 604 m 301 608 l 301 600 l h
+f*
+n 123 600 m 123 608 l S
+n 208 600 m 208 608 l S
+n 293 600 m 293 608 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 591 Tm (0) Tj T* ET
+BT 1 0 0 1 202.996 591 Tm (97) Tj T* ET
+BT 1 0 0 1 285.494 591 Tm (149) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 604 m 144.25 614 186.75 614 200.7615 607.4064 c
+S
+n 208 604 m 202.2517 610.5732 l 199.2712 604.2395 l h
+f*
+BT 1 0 0 1 156.617 614.5 Tm (+ 97) Tj T* ET
+n 208 604 m 229.25 614 271.75 614 285.7615 607.4064 c
+S
+n 293 604 m 287.2517 610.5732 l 284.2712 604.2395 l h
+f*
+BT 1 0 0 1 241.617 614.5 Tm (+ 52) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 599 Tm (B\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 604 m 551 604 l S
+n 358 604 m 365 608 l 365 600 l h
+f*
+n 558 604 m 551 608 l 551 600 l h
+f*
+n 373 600 m 373 608 l S
+n 458 600 m 458 608 l S
+n 543 600 m 543 608 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 591 Tm (0) Tj T* ET
+BT 1 0 0 1 452.996 591 Tm (97) Tj T* ET
+BT 1 0 0 1 535.494 591 Tm (112) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 604 m 394.25 614 436.75 614 450.7615 607.4064 c
+S
+n 458 604 m 452.2517 610.5732 l 449.2712 604.2395 l h
+f*
+BT 1 0 0 1 406.617 614.5 Tm (+ 97) Tj T* ET
+n 458 604 m 479.25 614 521.75 614 535.7615 607.4064 c
+S
+n 543 604 m 537.2517 610.5732 l 534.2712 604.2395 l h
+f*
+BT 1 0 0 1 491.617 614.5 Tm (+ 25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 535 Tm (C\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 115 540 m 301 540 l S
+n 108 540 m 115 544 l 115 536 l h
+f*
+n 308 540 m 301 544 l 301 536 l h
+f*
+n 123 536 m 123 544 l S
+n 208 536 m 208 544 l S
+n 293 536 m 293 544 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 120.498 527 Tm (0) Tj T* ET
+BT 1 0 0 1 202.996 527 Tm (72) Tj T* ET
+BT 1 0 0 1 287.996 527 Tm (97) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 123 540 m 165.5 580 250.5 580 287.1744 545.4829 c
+S
+n 293 540 m 289.5732 548.0316 l 284.7756 542.9342 l h
+f*
+BT 1 0 0 1 199.117 573 Tm (+ 97) Tj T* ET
+n 293 540 m 271.75 550 229.25 550 215.2385 543.4064 c
+S
+n 208 540 m 216.7288 540.2395 l 213.7483 546.5732 l h
+f*
+BT 1 0 0 1 241.7745 550.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 25) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 332 535 Tm (D\)) Tj T* ET
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 365 540 m 551 540 l S
+n 358 540 m 365 544 l 365 536 l h
+f*
+n 558 540 m 551 544 l 551 536 l h
+f*
+n 373 536 m 373 544 l S
+n 458 536 m 458 544 l S
+n 543 536 m 543 544 l S
+0 0 0 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 370.498 527 Tm (0) Tj T* ET
+BT 1 0 0 1 452.996 527 Tm (97) Tj T* ET
+BT 1 0 0 1 535.494 527 Tm (122) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+n 373 540 m 394.25 550 436.75 550 450.7615 543.4064 c
+S
+n 458 540 m 452.2517 546.5732 l 449.2712 540.2395 l h
+f*
+BT 1 0 0 1 406.617 550.5 Tm (+ 97) Tj T* ET
+n 458 540 m 479.25 550 521.75 550 535.7615 543.4064 c
+S
+n 543 540 m 537.2517 546.5732 l 534.2712 540.2395 l h
+f*
+BT 1 0 0 1 491.617 550.5 Tm (+ 25) Tj T* ET
+Q
+

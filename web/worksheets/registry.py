@@ -43,6 +43,7 @@ from core.basic_operations.generator import (
     WORD_PROBLEM_GROUPS,
     count_possible_equation_choice_problems,
     count_possible_missing_number_questions,
+    count_possible_number_line_choice_problems,
     count_possible_sheet_questions,
     count_possible_strip_choice_problems,
     count_possible_two_step_problems,
@@ -50,6 +51,7 @@ from core.basic_operations.generator import (
     generate_basic_operation_questions,
     generate_equation_choice_problems,
     generate_missing_number_questions,
+    generate_number_line_choice_problems,
     generate_strip_choice_problems,
     generate_two_step_problems,
     generate_two_step_strip_choice_problems,
@@ -58,6 +60,7 @@ from core.basic_operations.generator import (
 )
 from core.basic_operations.regrouping import REGROUPING_NAMES, Regrouping
 from core.basic_operations.representation import (
+    CHOICE_NAMES,
     OPERATION_NAMES,
     REPRESENTATION_NAMES,
     REPRESENTATION_OPERATIONS,
@@ -153,6 +156,11 @@ REPRESENTATION_LABELS: dict[str, JsonValue] = {
 }
 StepsChoice = Literal["one", "two"]
 STEPS_LABELS: dict[str, JsonValue] = {"one": "One step", "two": "Two steps"}
+ResponseChoice = Literal["free_response", "multiple_choice"]
+RESPONSE_LABELS: dict[str, JsonValue] = {
+    "free_response": "Free response",
+    "multiple_choice": "Multiple choice",
+}
 PromptChoice = Literal["word_problem", "equation", "both"]  # a Prompt value
 # Show radio labels
 PROMPT_LABELS: dict[str, JsonValue] = {
@@ -230,15 +238,21 @@ def _too_many_problems(
 
     ``possible`` is how many problems ``limits`` allow without ``repeats``. ``raises`` maps each
     limit, named as in the message, to the smallest value that would allow the requested
-    problems, or to ``None`` when raising that limit alone cannot.
+    problems, or to ``None`` when raising that limit alone cannot. When no problem is possible,
+    lowering the number of problems can't help, so it isn't suggested.
     """
-    fixes = [f"Lower problems to {possible}"]
+    fixes = [f"lower problems to {possible}"] if possible else []
     fixes += [
         f"raise the {limit} to {value:,}" for limit, value in raises.items() if value is not None
     ]
-    return ValueError(
-        f"problems: at most {possible} without {repeats} for that {limits}. {', or '.join(fixes)}."
-    )
+    if possible:
+        message = f"problems: at most {possible} without {repeats} for that {limits}."
+    else:
+        message = f"problems: none possible for that {limits}."
+    if fixes:
+        advice = ", or ".join(fixes)
+        message += f" {advice[0].upper()}{advice[1:]}."
+    return ValueError(message)
 
 
 class Options(Schema):
@@ -436,8 +450,15 @@ class WordProblemOptions(HeaderOptions):
     # steps, which share a number, every number, multiplication's and division's too. It's at
     # least the smallest sum, which leaves room for a subtraction too.
     max_number: WordProblemLargestNumber = LARGEST_WORD_PROBLEM_NUMBER
-    representation: Literal["strip", "none", "number_line", "blocks", "equation_choice"] = Field(
+    representation: Literal["strip", "none", "number_line", "blocks", "equation"] = Field(
         "none", title="Representation", json_schema_extra={"labels": REPRESENTATION_LABELS}
+    )
+    # Multiple choice is for the representations in CHOICE_NAMES: each problem's is chosen from
+    # lettered ones.
+    response: ResponseChoice = Field(
+        "free_response",
+        title="Response",
+        json_schema_extra={"input": "radio", "labels": RESPONSE_LABELS},
     )
     # Strip diagrams and text only: with strip diagrams, two steps draw one bar, the whole over
     # its parts.
@@ -459,12 +480,27 @@ class WordProblemOptions(HeaderOptions):
             return LARGEST_BLOCKS_OPERAND
         return LARGEST_WORD_PROBLEM_NUMBER
 
+    @property
+    def choices(self) -> bool:
+        """Whether each problem's representation is chosen from lettered ones."""
+        return self.response == "multiple_choice"
+
+    @model_validator(mode="after")
+    def _choices_are_available(self) -> Self:
+        # The page hides the response radios for a representation without choices. Runs before
+        # the title follows the response, which needs a choice title for multiple choice.
+        representation = Representation(self.representation)
+        if self.choices and representation not in CHOICE_NAMES:
+            name = REPRESENTATION_NAMES[representation]
+            raise ValueError(f"response: multiple choice not available with {name}")
+        return self
+
     @model_validator(mode="after")
     def _title_follows_the_representation(self) -> Self:
-        # The default is the default representation's title. A request that picks another and gives
-        # no title gets its title.
+        # The default is the default representation's title. A request that picks another, or
+        # multiple choice, and gives no title gets its title.
         if "title" not in self.model_fields_set:
-            self.title = word_problems_title(Representation(self.representation))
+            self.title = word_problems_title(Representation(self.representation), self.choices)
         return self
 
     @model_validator(mode="after")
@@ -491,13 +527,10 @@ class WordProblemOptions(HeaderOptions):
 
     @model_validator(mode="after")
     def _tiles_are_available(self) -> Self:
-        # Not built for equation multiple choice: each choice's letter would need coding as a
-        # number. The page greys the tiles out.
-        representation = Representation(self.representation)
-        if self.self_check_tiles and representation is Representation.EQUATION_CHOICE:
-            raise ValueError(
-                f"self_check_tiles: not available with {REPRESENTATION_NAMES[representation]}"
-            )
+        # Not built for multiple choice: each choice's letter would need coding as a number. The
+        # page greys each out while the other is picked.
+        if self.self_check_tiles and self.choices:
+            raise ValueError("self_check_tiles: not available with multiple choice")
         return self
 
     @model_validator(mode="after")
@@ -518,7 +551,11 @@ class WordProblemOptions(HeaderOptions):
                     up_to=self.problems,
                     largest_number=largest,
                 )
-            if Representation(self.representation) is Representation.EQUATION_CHOICE:
+            if self.choices and Representation(self.representation) is Representation.NUMBER_LINE:
+                return count_possible_number_line_choice_problems(
+                    operations, up_to=self.problems, largest_number=largest
+                )
+            if self.choices:
                 return count_possible_equation_choice_problems(
                     operations, up_to=self.problems, largest_number=largest
                 )
@@ -918,7 +955,11 @@ def _tile_slots(
 def _word_problems(o: WordProblemOptions, out: BinaryIO) -> None:
     representation = Representation(o.representation)
     questions: Sequence[WordProblemQuestion]
-    if representation is Representation.EQUATION_CHOICE:
+    if o.choices and representation is Representation.NUMBER_LINE:
+        questions = generate_number_line_choice_problems(
+            o.problems, _operations(o.operations), largest_number=o.max_number
+        )
+    elif o.choices:
         questions = generate_equation_choice_problems(
             o.problems, _operations(o.operations), largest_number=o.max_number
         )

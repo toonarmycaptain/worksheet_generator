@@ -3,10 +3,11 @@ Tests for the word problems endpoint: its options reach the core and the rendere
 
 The tests script ``random``. ``choices`` returns the operations, or two-step shapes, listed as
 picks, ``randint`` the operands listed, and ``shuffle`` reverses, so the complex tile pattern runs
-from L to A, and an equation multiple choice sheet, whose operations are split evenly instead,
-comes in the reverse of the ticked order. ``choice`` returns the draws listed as chosen: for each
+from L to A, and a multiple choice sheet, whose operations are split evenly instead, comes in
+the reverse of the ticked order. ``choice`` returns the draws listed as chosen: for each
 two-step problem, the number its first step carries, then each step, and then each problem's
-object. The wording takes the first two names and each operation's or shape's last template.
+object, and for number lines to choose from, the side of the answer each wrong landing tries
+first. The wording takes the first two names and each operation's or shape's last template.
 ``conventional_slot_of`` gives the slots of a real case. The PDF must then match what the
 renderer draws for the same questions. Disallowed options get Ninja's JSON error. The renderer's
 output is tested in ``test_word_problems_worksheet``.
@@ -67,6 +68,7 @@ ADD = BasicOperationQuestionData(
             {
                 "questions": [SUBTRACT, ADD],
                 "representation": Representation.STRIP,
+                "choices": False,
                 "hints": True,
                 "black_and_white": False,
                 "work_box": False,
@@ -91,6 +93,7 @@ ADD = BasicOperationQuestionData(
             {
                 "questions": [ADD],
                 "representation": Representation.STRIP,
+                "choices": False,
                 "hints": False,
                 "black_and_white": False,
                 "work_box": False,
@@ -115,6 +118,7 @@ ADD = BasicOperationQuestionData(
             {
                 "questions": [SUBTRACT, ADD],
                 "representation": Representation.STRIP,
+                "choices": False,
                 "hints": True,
                 "black_and_white": False,
                 "work_box": False,
@@ -137,6 +141,7 @@ ADD = BasicOperationQuestionData(
             {
                 "questions": [SUBTRACT, ADD],
                 "representation": Representation.STRIP,
+                "choices": False,
                 "hints": True,
                 "black_and_white": False,
                 "work_box": False,
@@ -198,6 +203,7 @@ ADD = BasicOperationQuestionData(
                     ),
                 ],
                 "representation": Representation.STRIP,
+                "choices": False,
                 "hints": True,
                 "black_and_white": False,
                 "work_box": False,
@@ -231,6 +237,7 @@ ADD = BasicOperationQuestionData(
                     ADD,
                 ],
                 "representation": Representation.STRIP,
+                "choices": False,
                 "hints": True,
                 "black_and_white": False,
                 "work_box": False,
@@ -268,6 +275,7 @@ ADD = BasicOperationQuestionData(
                     ),
                 ],
                 "representation": Representation.STRIP,
+                "choices": False,
                 "hints": True,
                 "black_and_white": False,
                 "work_box": False,
@@ -302,6 +310,7 @@ ADD = BasicOperationQuestionData(
                     ADD,
                 ],
                 "representation": Representation.NONE,
+                "choices": False,
                 "hints": True,
                 "black_and_white": False,
                 "work_box": False,
@@ -332,6 +341,7 @@ ADD = BasicOperationQuestionData(
                     ),
                 ],
                 "representation": Representation.NONE,
+                "choices": False,
                 "hints": True,
                 "black_and_white": False,
                 "work_box": False,
@@ -363,6 +373,7 @@ ADD = BasicOperationQuestionData(
                     ADD,
                 ],
                 "representation": Representation.NONE,
+                "choices": False,
                 "hints": True,
                 "black_and_white": False,
                 "work_box": True,
@@ -419,6 +430,7 @@ ADD = BasicOperationQuestionData(
                     ),
                 ],
                 "representation": Representation.STRIP,
+                "choices": False,
                 "hints": True,
                 "black_and_white": False,
                 "work_box": False,
@@ -478,6 +490,7 @@ ADD = BasicOperationQuestionData(
                     ),
                 ],
                 "representation": Representation.NONE,
+                "choices": False,
                 "hints": True,
                 "black_and_white": False,
                 "work_box": False,
@@ -517,6 +530,7 @@ ADD = BasicOperationQuestionData(
                     ),
                 ],
                 "representation": Representation.NONE,
+                "choices": False,
                 "hints": True,
                 "black_and_white": False,
                 "work_box": True,
@@ -550,12 +564,12 @@ ADD = BasicOperationQuestionData(
             None,
         ),
         (
-            "/api/worksheets/word_problems.pdf?representation=equation_choice&steps=two",
+            "/api/worksheets/word_problems.pdf?representation=equation&steps=two",
             [],
             [],
             [],
             422,
-            refused("steps: two steps not available with Equation multiple choice"),
+            refused("steps: two steps not available with Equations"),
             None,
             None,
         ),
@@ -606,6 +620,7 @@ ADD = BasicOperationQuestionData(
                     ADD,
                 ],
                 "representation": Representation.NUMBER_LINE,
+                "choices": False,
                 "hints": True,
                 "black_and_white": False,
                 "work_box": False,
@@ -638,6 +653,7 @@ ADD = BasicOperationQuestionData(
                     ADD,
                 ],
                 "representation": Representation.NUMBER_LINE,
+                "choices": False,
                 "hints": True,
                 "black_and_white": False,
                 "work_box": False,
@@ -683,6 +699,7 @@ ADD = BasicOperationQuestionData(
             {
                 "questions": [SUBTRACT, ADD],
                 "representation": Representation.BLOCKS,
+                "choices": False,
                 "hints": True,
                 "black_and_white": False,
                 "work_box": False,
@@ -706,6 +723,7 @@ ADD = BasicOperationQuestionData(
             {
                 "questions": [SUBTRACT],
                 "representation": Representation.BLOCKS,
+                "choices": False,
                 "hints": False,
                 "black_and_white": True,
                 "work_box": False,
@@ -732,8 +750,8 @@ ADD = BasicOperationQuestionData(
             # Equation multiple choice, with its title, since none is given. Addition and
             # subtraction are split evenly, one each, then the sheet is shuffled, and subtraction
             # is worded with its comparison. The hints are on, but it has none.
-            "/api/worksheets/word_problems.pdf?representation=equation_choice&problems=2"
-            "&answer_key=true&sheet=1ab2c3",
+            "/api/worksheets/word_problems.pdf?representation=equation&response=multiple_choice"
+            "&problems=2&answer_key=true&sheet=1ab2c3",
             [],
             [40, 150, 47, 25],
             [("card", "cards"), ("card", "cards")],
@@ -750,7 +768,8 @@ ADD = BasicOperationQuestionData(
                     ),
                     ADD,
                 ],
-                "representation": Representation.EQUATION_CHOICE,
+                "representation": Representation.EQUATION,
+                "choices": True,
                 "hints": True,
                 "black_and_white": False,
                 "work_box": False,
@@ -765,8 +784,8 @@ ADD = BasicOperationQuestionData(
         (
             # All four ticked, one of each: 4 shared into 2 is redrawn, as 4 - 2 is 2 too, and the
             # largest number caps the subtraction and addition, but not 6 groups of 20.
-            "/api/worksheets/word_problems.pdf?representation=equation_choice&operations=add"
-            "&operations=subtract&operations=multiply&operations=divide&problems=4"
+            "/api/worksheets/word_problems.pdf?representation=equation&response=multiple_choice"
+            "&operations=add&operations=subtract&operations=multiply&operations=divide&problems=4"
             "&max_number=100&sheet=1ab2c3",
             [],
             [2, 2, 3, 4, 6, 20, 40, 90, 47, 25],
@@ -797,7 +816,8 @@ ADD = BasicOperationQuestionData(
                     ),
                     ADD,
                 ],
-                "representation": Representation.EQUATION_CHOICE,
+                "representation": Representation.EQUATION,
+                "choices": True,
                 "hints": True,
                 "black_and_white": False,
                 "work_box": False,
@@ -809,23 +829,23 @@ ADD = BasicOperationQuestionData(
             },
             "word_problems-sheet-a.pdf",
         ),
-        # equation multiple choice has no tiles
+        # multiple choice has no tiles
         (
-            "/api/worksheets/word_problems.pdf?representation=equation_choice"
+            "/api/worksheets/word_problems.pdf?representation=equation&response=multiple_choice"
             "&self_check_tiles=true",
             [],
             [],
             [],
             422,
-            refused("self_check_tiles: not available with Equation multiple choice"),
+            refused("self_check_tiles: not available with multiple choice"),
             None,
             None,
         ),
         (
             # Split evenly, addition needs 3 of 6 problems, and a largest number of 3 allows 2
             # sums. Text only would allow 2 problems in all.
-            "/api/worksheets/word_problems.pdf?representation=equation_choice&operations=add"
-            "&operations=multiply&problems=6&max_number=3",
+            "/api/worksheets/word_problems.pdf?representation=equation&response=multiple_choice"
+            "&operations=add&operations=multiply&problems=6&max_number=3",
             [],
             [],
             [],
@@ -836,6 +856,182 @@ ADD = BasicOperationQuestionData(
             ),
             None,
             None,
+        ),
+        (
+            # Number line multiple choice, with its title, since none is given. Split evenly and
+            # shuffled, as equation multiple choice is. The addition, drawn 25 and 47, puts its
+            # larger number first. Subtraction is worded with its comparison. Its wrong landing
+            # tries below the answer first, and the addition's above, for the request and again
+            # for the expected PDF.
+            "/api/worksheets/word_problems.pdf?representation=number_line"
+            "&response=multiple_choice&problems=2&answer_key=true&sheet=1ab2c3",
+            [],
+            [40, 150, 25, 47],
+            [("card", "cards"), ("card", "cards"), -1, 1, -1, 1],
+            200,
+            None,
+            {
+                "questions": [
+                    BasicOperationQuestionData(
+                        Operation.SUBTRACT,
+                        (150, 40),
+                        110,
+                        "Maria has 150 cards and Jamal has 40 cards. "
+                        "How many more cards does Maria have than Jamal?",
+                    ),
+                    ADD,
+                ],
+                "representation": Representation.NUMBER_LINE,
+                "choices": True,
+                "hints": True,
+                "black_and_white": False,
+                "work_box": False,
+                "slot_of": None,
+                "answer_key": True,
+                "title": "Word Problems — Number Line multiple choice",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        (
+            "/api/worksheets/word_problems.pdf?representation=number_line"
+            "&response=multiple_choice&self_check_tiles=true",
+            [],
+            [],
+            [],
+            422,
+            refused("self_check_tiles: not available with multiple choice"),
+            None,
+            None,
+        ),
+        (
+            # an addition's numbers differ, so a largest number of 3 allows only 2 + 1
+            "/api/worksheets/word_problems.pdf?representation=number_line"
+            "&response=multiple_choice&operations=add&problems=2&max_number=3",
+            [],
+            [],
+            [],
+            422,
+            refused(
+                "problems: at most 1 without repeats for that largest number. Lower problems to 1, "
+                "or raise the largest number to 4."
+            ),
+            None,
+            None,
+        ),
+        (
+            # and 2 allows none, so lowering the problems can't help
+            "/api/worksheets/word_problems.pdf?representation=number_line"
+            "&response=multiple_choice&operations=add&problems=1&max_number=2",
+            [],
+            [],
+            [],
+            422,
+            refused(
+                "problems: none possible for that largest number. Raise the largest number to 3."
+            ),
+            None,
+            None,
+        ),
+        # only number lines and equations are multiple choice
+        (
+            "/api/worksheets/word_problems.pdf?representation=strip&response=multiple_choice",
+            [],
+            [],
+            [],
+            422,
+            refused("response: multiple choice not available with Strip Diagrams"),
+            None,
+            None,
+        ),
+        (
+            "/api/worksheets/word_problems.pdf?representation=none&response=multiple_choice",
+            [],
+            [],
+            [],
+            422,
+            refused("response: multiple choice not available with Text Only"),
+            None,
+            None,
+        ),
+        (
+            "/api/worksheets/word_problems.pdf?representation=blocks&response=multiple_choice",
+            [],
+            [],
+            [],
+            422,
+            refused("response: multiple choice not available with Base-Ten Blocks"),
+            None,
+            None,
+        ),
+        (
+            # Equations, written, by default: an operation drawn for each problem, as on text only,
+            # and subtraction worded with its comparison. The hints are on, but it has none.
+            "/api/worksheets/word_problems.pdf?representation=equation&problems=2&answer_key=true"
+            "&sheet=1ab2c3",
+            [Operation.SUBTRACT, Operation.ADD],
+            [40, 150, 47, 25],
+            [("card", "cards"), ("card", "cards")],
+            200,
+            None,
+            {
+                "questions": [
+                    BasicOperationQuestionData(
+                        Operation.SUBTRACT,
+                        (150, 40),
+                        110,
+                        "Maria has 150 cards and Jamal has 40 cards. "
+                        "How many more cards does Maria have than Jamal?",
+                    ),
+                    ADD,
+                ],
+                "representation": Representation.EQUATION,
+                "choices": False,
+                "hints": True,
+                "black_and_white": False,
+                "work_box": False,
+                "slot_of": None,
+                "answer_key": True,
+                "title": "Word Problems — Equations",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        (
+            # written equations work with tiles, whose answers must differ, so 55 + 55, also 110,
+            # is redrawn
+            "/api/worksheets/word_problems.pdf?representation=equation&self_check_tiles=true"
+            "&problems=2&sheet=1ab2c3",
+            [Operation.SUBTRACT, Operation.ADD],
+            [40, 150, 55, 55, 47, 25],
+            [("card", "cards"), ("card", "cards")],
+            200,
+            None,
+            {
+                "questions": [
+                    BasicOperationQuestionData(
+                        Operation.SUBTRACT,
+                        (150, 40),
+                        110,
+                        "Maria has 150 cards and Jamal has 40 cards. "
+                        "How many more cards does Maria have than Jamal?",
+                    ),
+                    ADD,
+                ],
+                "representation": Representation.EQUATION,
+                "choices": False,
+                "hints": True,
+                "black_and_white": False,
+                "work_box": False,
+                "slot_of": (7, 9),
+                "answer_key": False,
+                "title": "Word Problems — Equations",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
         ),
         (
             # a largest number of 99 caps the sum too, so 60 + 50 is redrawn
@@ -849,6 +1045,7 @@ ADD = BasicOperationQuestionData(
             {
                 "questions": [ADD],
                 "representation": Representation.STRIP,
+                "choices": False,
                 "hints": True,
                 "black_and_white": False,
                 "work_box": False,
@@ -910,6 +1107,7 @@ ADD = BasicOperationQuestionData(
                     ),
                 ],
                 "representation": Representation.STRIP,
+                "choices": False,
                 "hints": True,
                 "black_and_white": False,
                 "work_box": False,
@@ -1002,6 +1200,7 @@ def test_word_problems_pdf(
             render_word_problems(
                 questions=pdf_data["questions"],
                 representation=pdf_data["representation"],
+                choices=pdf_data["choices"],
                 hints=pdf_data["hints"],
                 black_and_white=pdf_data["black_and_white"],
                 work_box=pdf_data["work_box"],

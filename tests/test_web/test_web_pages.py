@@ -66,6 +66,8 @@ def test_pages(client: Client) -> None:
                 b"operations",
                 b"max_number",
                 b"representation",
+                b"response",  # a radio button for each choice
+                b"response",
                 b"steps",  # a radio button for each choice
                 b"steps",
                 b"no_hints",
@@ -194,6 +196,15 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
                 (b"always", b"", b"Always"),
             ],
         ),
+        # the word problems form's Response: free response by default
+        (
+            "/basic-operations/",
+            "response",
+            [
+                (b"free_response", b" checked", b"Free response"),
+                (b"multiple_choice", b"", b"Multiple choice"),
+            ],
+        ),
         # the strip choice form's Show: the wording by default
         (
             "/basic-operations/",
@@ -251,7 +262,7 @@ def test_radio_buttons_send_each_choice_s_id_and_show_its_name(
                 (b"none", b" selected", b"Text Only"),
                 (b"number_line", b"", b"Number Lines"),
                 (b"blocks", b"", b"Base-Ten Blocks"),
-                (b"equation_choice", b"", b"Equation multiple choice"),
+                (b"equation", b"", b"Equations"),
             ],
         ),
         (
@@ -437,31 +448,44 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
 
 
 @pytest.mark.parametrize(
-    ("url", "expected"),
+    ("url", "script_id", "expected"),
     [
+        # the operations each representation can show, for the script to grey out the others
         (
             "/basic-operations/",
+            "representation-operations",
             b'<script id="representation-operations" type="application/json">'
             b'{"strip": ["add", "subtract", "multiply", "divide"], '
             b'"none": ["add", "subtract", "multiply", "divide"], '
             b'"number_line": ["add", "subtract"], '
             b'"blocks": ["add", "subtract"], '
-            b'"equation_choice": ["add", "subtract", "multiply", "divide"]}</script>',
+            b'"equation": ["add", "subtract", "multiply", "divide"]}</script>',
         ),
-        ("/place-value/", None),
-        ("/data-and-graphs/", None),
+        # the title of a sheet choosing each representation offered as multiple choice
+        (
+            "/basic-operations/",
+            "choice-titles",
+            b'<script id="choice-titles" type="application/json">'
+            b'{"number_line": "Word Problems \\u2014 Number Line multiple choice", '
+            b'"equation": "Word Problems \\u2014 Equation multiple choice"}</script>',
+        ),
+        ("/place-value/", "representation-operations", None),
+        ("/place-value/", "choice-titles", None),
+        ("/data-and-graphs/", "representation-operations", None),
+        ("/data-and-graphs/", "choice-titles", None),
     ],
 )
-def test_the_representation_script_greys_out_the_operations_a_representation_cannot_show(
-    client: Client, url: str, expected: bytes | None
+def test_the_representation_script_s_data(
+    client: Client, url: str, script_id: str, expected: bytes | None
 ) -> None:
     """
-    The basic operations page has the operations each representation can show, for the
-    representation script to grey out the others. Whether the script works is checked manually in a
+    The basic operations page has the data its representation script needs: the operations each
+    representation can show, to grey out the others, and the title of a sheet choosing each
+    representation offered as multiple choice. Whether the script works is checked manually in a
     browser.
     """
     found = re.search(
-        rb'<script id="representation-operations".*?</script>', client.get(url).content
+        rb'<script id="' + script_id.encode() + rb'".*?</script>', client.get(url).content
     )
     assert (found.group() if found else None) == expected
 

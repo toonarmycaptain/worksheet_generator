@@ -21,6 +21,7 @@ from core.basic_operations.representation import (
     SYMBOLS,
     EqualStripDiagram,
     StripDiagram,
+    TwoJumpLine,
     TwoStepStripDiagram,
 )
 from render.pdf.page import BOLD_FONT, FONT, ITALIC_FONT, TEXT_INDENT, TEXT_WIDTH
@@ -60,6 +61,16 @@ LANDING_BOX_DROP = 9  # from the line down to the top of the boxes
 LANDING_BOX_COLOUR = HexColor("#4a5568")  # dark grey
 ANSWER_CAPTION = "answer"
 CAPTION_COLOUR = HexColor("#718096")  # grey
+# A number line to choose from: two jumps from 0, with its three ticks labelled
+TWO_JUMP_LINE_HEIGHT = 55  # from the top of the higher jump's label to the bottom of the numbers
+TWO_JUMP_LINE_DROP = 40  # from the top down to the line
+# How far above the line a jump's arc is pulled, for a jump to the next tick, and for one past it.
+# A jump past the next tick arcs over the other jump, whose label stays under it.
+SHORT_JUMP_HEIGHT = 10
+LONG_JUMP_HEIGHT = 40
+TWO_JUMP_LABEL_SIZE = 9  # the jumps' labels and the ticks' numbers
+TWO_JUMP_LABEL_RAISE = 3  # from the top of a jump's arc up to its label's baseline
+TWO_JUMP_NUMBER_DROP = 13  # from the line down to the ticks' numbers' baseline
 
 BLOCK_UNIT = 5.5  # a unit's edge: a rod is 1 by 10 units, and a flat 10 by 10
 FLAT_SIZE = 10 * BLOCK_UNIT
@@ -299,27 +310,11 @@ def draw_number_line(pdf: Canvas, x: float, top: float, start: int, jumps: Seque
     left from the rightmost tick.
     """
     line_y = top - NUMBER_LINE_DROP
-    first_tick = x + LINE_ARROW_LENGTH + LINE_OVERHANG
-    step = (NUMBER_LINE_WIDTH - 2 * (LINE_ARROW_LENGTH + LINE_OVERHANG)) / len(jumps)
-    ticks = [first_tick + index * step for index in range(len(jumps) + 1)]
+    ticks = _ticks(x, NUMBER_LINE_WIDTH, len(jumps) + 1)
     if jumps[0] < 0:
         ticks.reverse()  # start at the right, and jump left
     pdf.saveState()
-
-    # the line, with an arrowhead at each end, and the ticks
-    pdf.setStrokeColor(OUTLINE_COLOUR)
-    pdf.setFillColor(OUTLINE_COLOUR)
-    pdf.setLineWidth(1.2)
-    pdf.line(x + LINE_ARROW_LENGTH, line_y, x + NUMBER_LINE_WIDTH - LINE_ARROW_LENGTH, line_y)
-    for tip, back in ((x, LINE_ARROW_LENGTH), (x + NUMBER_LINE_WIDTH, -LINE_ARROW_LENGTH)):
-        arrowhead = pdf.beginPath()
-        arrowhead.moveTo(tip, line_y)
-        arrowhead.lineTo(tip + back, line_y + 4)
-        arrowhead.lineTo(tip + back, line_y - 4)
-        arrowhead.close()
-        pdf.drawPath(arrowhead, stroke=0, fill=1)
-    for tick in ticks:
-        pdf.line(tick, line_y - TICK_HALF_HEIGHT, tick, line_y + TICK_HALF_HEIGHT)
+    _draw_line(pdf, x, NUMBER_LINE_WIDTH, line_y, ticks)
 
     # the start under its tick, and a box under each landing
     pdf.setFillColor("black")
@@ -348,30 +343,111 @@ def draw_number_line(pdf: Canvas, x: float, top: float, start: int, jumps: Seque
     pdf.setLineWidth(1.3)
     pdf.setFont(BOLD_FONT, 10)
     for jump, (start_x, end_x) in zip(jumps, pairwise(ticks), strict=True):
-        quarter = (end_x - start_x) / 4
-        pull_y = line_y + JUMP_HEIGHT
-        # The arc ends travelling from its last control point towards the tick, so the arrowhead
-        # points that way, with its tip on the line. The arc stops at the arrowhead's base, so
-        # its end doesn't show beside the tip.
-        length = hypot(quarter, JUMP_HEIGHT)
-        along_x, along_y = quarter / length, -JUMP_HEIGHT / length
-        base_x = end_x - JUMP_ARROWHEAD_LENGTH * along_x
-        base_y = line_y - JUMP_ARROWHEAD_LENGTH * along_y
-        arc = pdf.beginPath()
-        arc.moveTo(start_x, line_y)
-        arc.curveTo(start_x + quarter, pull_y, end_x - quarter, pull_y, base_x, base_y)
-        pdf.drawPath(arc, stroke=1, fill=0)
-        half_width = JUMP_ARROWHEAD_WIDTH / 2
-        arrowhead = pdf.beginPath()
-        arrowhead.moveTo(end_x, line_y)
-        arrowhead.lineTo(base_x - half_width * along_y, base_y + half_width * along_x)
-        arrowhead.lineTo(base_x + half_width * along_y, base_y - half_width * along_x)
-        arrowhead.close()
-        pdf.drawPath(arrowhead, stroke=0, fill=1)
-        sign = SYMBOLS[Operation.ADD if jump > 0 else Operation.SUBTRACT]
-        pdf.drawCentredString((start_x + end_x) / 2, line_y + 29, f"{sign} {abs(jump)}")
+        _draw_jump(pdf, start_x, end_x, line_y, JUMP_HEIGHT, jump, line_y + 29)
 
     pdf.restoreState()
+
+
+def draw_two_jump_line(
+    pdf: Canvas, x: float, top: float, line: TwoJumpLine, width: float = NUMBER_LINE_WIDTH
+) -> None:
+    """
+    Draw a number line to choose from, from 0 with two jumps, with its top-left corner at
+    (``x``, ``top``), ``width`` wide and ``TWO_JUMP_LINE_HEIGHT`` high.
+
+    Its three ticks are 0, the first jump's landing and the line's end, evenly spaced in order of
+    value, not to scale, each with its number under it. The jumps are labelled arcs from 0 to the
+    first landing, and from there to the end, whichever way that is, even against the second
+    jump's sign, as a wrong landing can be.
+    """
+    line_y = top - TWO_JUMP_LINE_DROP
+    values = sorted({0, line.first, line.end})
+    ticks = _ticks(x, width, len(values))
+    tick_of = dict(zip(values, ticks, strict=True))
+    pdf.saveState()
+    _draw_line(pdf, x, width, line_y, ticks)
+
+    pdf.setFillColor("black")
+    pdf.setFont(BOLD_FONT, TWO_JUMP_LABEL_SIZE)
+    for value, tick in tick_of.items():
+        pdf.drawCentredString(tick, line_y - TWO_JUMP_NUMBER_DROP, str(value))
+
+    pdf.setStrokeColor(JUMP_COLOUR)
+    pdf.setFillColor(JUMP_COLOUR)
+    pdf.setLineWidth(1.3)
+    for start, end, jump in ((0, line.first, line.first), (line.first, line.end, line.second)):
+        start_x, end_x = tick_of[start], tick_of[end]
+        long = abs(values.index(end) - values.index(start)) > 1
+        pull = LONG_JUMP_HEIGHT if long else SHORT_JUMP_HEIGHT
+        label_y = line_y + 0.75 * pull + TWO_JUMP_LABEL_RAISE  # 3/4 of the pull is the arc's top
+        _draw_jump(pdf, start_x, end_x, line_y, pull, jump, label_y)
+
+    pdf.restoreState()
+
+
+def _ticks(x: float, width: float, count: int) -> list[float]:
+    """
+    Return ``count`` evenly spaced ticks along a number line ``width`` wide from ``x``, from
+    left to right, leaving room for its overhang and arrowheads.
+    """
+    first_tick = x + LINE_ARROW_LENGTH + LINE_OVERHANG
+    step = (width - 2 * (LINE_ARROW_LENGTH + LINE_OVERHANG)) / (count - 1)
+    return [first_tick + index * step for index in range(count)]
+
+
+def _draw_line(pdf: Canvas, x: float, width: float, line_y: float, ticks: Sequence[float]) -> None:
+    """Draw a number line ``width`` wide from ``x``, with arrowheads at both ends, and ``ticks``."""
+    pdf.setStrokeColor(OUTLINE_COLOUR)
+    pdf.setFillColor(OUTLINE_COLOUR)
+    pdf.setLineWidth(1.2)
+    pdf.line(x + LINE_ARROW_LENGTH, line_y, x + width - LINE_ARROW_LENGTH, line_y)
+    for tip, back in ((x, LINE_ARROW_LENGTH), (x + width, -LINE_ARROW_LENGTH)):
+        arrowhead = pdf.beginPath()
+        arrowhead.moveTo(tip, line_y)
+        arrowhead.lineTo(tip + back, line_y + 4)
+        arrowhead.lineTo(tip + back, line_y - 4)
+        arrowhead.close()
+        pdf.drawPath(arrowhead, stroke=0, fill=1)
+    for tick in ticks:
+        pdf.line(tick, line_y - TICK_HALF_HEIGHT, tick, line_y + TICK_HALF_HEIGHT)
+
+
+def _draw_jump(
+    pdf: Canvas,
+    start_x: float,
+    end_x: float,
+    line_y: float,
+    pull: float,
+    jump: int,
+    label_y: float,
+) -> None:
+    """
+    Draw a jump along a number line: an arc from ``start_x`` to ``end_x``, pulled ``pull`` above
+    the line, with an arrowhead pointing the way it goes, and its label, such as "+ 25", centred
+    over it at ``label_y``. The pen's colours, width and font are the caller's.
+    """
+    quarter = (end_x - start_x) / 4
+    pull_y = line_y + pull
+    # The arc ends travelling from its last control point towards the tick, so the arrowhead
+    # points that way, with its tip on the line. The arc stops at the arrowhead's base, so its
+    # end doesn't show beside the tip.
+    length = hypot(quarter, pull)
+    along_x, along_y = quarter / length, -pull / length
+    base_x = end_x - JUMP_ARROWHEAD_LENGTH * along_x
+    base_y = line_y - JUMP_ARROWHEAD_LENGTH * along_y
+    arc = pdf.beginPath()
+    arc.moveTo(start_x, line_y)
+    arc.curveTo(start_x + quarter, pull_y, end_x - quarter, pull_y, base_x, base_y)
+    pdf.drawPath(arc, stroke=1, fill=0)
+    half_width = JUMP_ARROWHEAD_WIDTH / 2
+    arrowhead = pdf.beginPath()
+    arrowhead.moveTo(end_x, line_y)
+    arrowhead.lineTo(base_x - half_width * along_y, base_y + half_width * along_x)
+    arrowhead.lineTo(base_x + half_width * along_y, base_y - half_width * along_x)
+    arrowhead.close()
+    pdf.drawPath(arrowhead, stroke=0, fill=1)
+    sign = SYMBOLS[Operation.ADD if jump > 0 else Operation.SUBTRACT]
+    pdf.drawCentredString((start_x + end_x) / 2, label_y, f"{sign} {abs(jump)}")
 
 
 def blocks_height(diagram: BlocksDiagram) -> float:

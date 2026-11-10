@@ -22,9 +22,11 @@ from core.basic_operations.data import (
 )
 from core.basic_operations.representation import (
     EquationChoiceQuestion,
+    NumberLineChoiceQuestion,
     StripChoiceQuestion,
     TwoStepStripChoiceQuestion,
     equation_choices,
+    number_line_choices,
     strip_choices,
     two_step_strip_choices,
 )
@@ -518,10 +520,11 @@ def count_possible_word_problems(
     largest_whole: int | None = None,
     excluded_operands: Collection[tuple[int, int]] = (),
     split_evenly: bool = False,
+    larger_first: bool = False,
 ) -> int:
     """
     Count the word problems ``generate_word_problems`` can produce for ``operations``, with its
-    limits and ``excluded_operands``.
+    limits, ``excluded_operands`` and ``larger_first``.
 
     As in ``count_possible_sheet_questions``, any one operation may be drawn for every problem,
     so the count is the smallest that any one operation allows by itself: its distinct answers
@@ -542,8 +545,13 @@ def count_possible_word_problems(
     for operation in operations:
         match operation:
             case Operation.ADD:
-                # from smallest + smallest
-                counts.append(max(min(largest_number, largest + smaller) - 2 * smallest + 1, 0))
+                if larger_first:  # from smallest + 1 + smallest, with a smaller second number
+                    lowest = 2 * smallest + 1
+                    highest = min(largest_number, largest + min(smaller, largest - 1))
+                else:  # from smallest + smallest
+                    lowest = 2 * smallest
+                    highest = min(largest_number, largest + smaller)
+                counts.append(max(highest - lowest + 1, 0))
             case Operation.SUBTRACT:
                 counts.append(max(largest - smallest, 0))  # from 1, with 1 taken away
             case Operation.MULTIPLY | Operation.DIVIDE:
@@ -575,6 +583,7 @@ def generate_word_problems(
     largest_whole: int | None = None,
     excluded_operands: Collection[tuple[int, int]] = (),
     split_evenly: bool = False,
+    larger_first: bool = False,
 ) -> list[Question[BasicOperationQuestionData, FreeResponse]]:
     """
     Generate ``count`` word problems, each with an operation drawn at random from ``operations``.
@@ -586,7 +595,9 @@ def generate_word_problems(
     number in the problem, its answer included, is at most ``largest_number``, and the operands
     are also at most ``largest_operand``, for a representation that can show only so much. Base-ten
     blocks, for example, show at most 599. With ``largest_smaller_operand``, the smaller operand is
-    at most that too. Multiplication and division are equal groups, as in ``_equal_groups``, with
+    at most that too. With ``larger_first``, an addition's larger operand comes first, and its
+    operands differ, as a subtraction's do. Multiplication and division are equal groups, as in
+    ``_equal_groups``, with
     at most ``largest_groups`` groups and, if given, a whole (the product, or the dividend) of at
     most ``largest_whole``. They ignore the other limits. The wording comes from the
     word-problem bank, with
@@ -612,6 +623,7 @@ def generate_word_problems(
         largest_whole=largest_whole,
         excluded_operands=excluded_operands,
         split_evenly=split_evenly,
+        larger_first=larger_first,
     )
     if count > possible:
         kind = "problems with different answers" if distinct_answers else "different problems"
@@ -629,6 +641,7 @@ def generate_word_problems(
                     largest_number,
                     largest_operand,
                     largest_smaller_operand,
+                    larger_first,
                 )
             case Operation.MULTIPLY | Operation.DIVIDE:
                 draw = partial(_equal_groups, operation, largest_groups, largest_whole)
@@ -745,6 +758,49 @@ def generate_equation_choice_problems(
         split_evenly=True,
     )
     return [Question(problem.data, equation_choices(problem.data)) for problem in problems]
+
+
+def count_possible_number_line_choice_problems(
+    operations: Sequence[Operation],
+    *,
+    up_to: int,
+    largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
+) -> int:
+    """
+    Count the problems ``generate_number_line_choice_problems`` can produce, as
+    ``count_possible_word_problems`` counts them.
+    """
+    return count_possible_word_problems(
+        operations,
+        up_to=up_to,
+        largest_number=largest_number,
+        split_evenly=True,
+        larger_first=True,
+    )
+
+
+def generate_number_line_choice_problems(
+    count: int,
+    operations: Sequence[Operation],
+    *,
+    largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
+) -> list[NumberLineChoiceQuestion]:
+    """
+    Generate ``count`` addition and subtraction word problems as ``generate_word_problems`` does,
+    comparisons included, each with its number line to choose from those of
+    ``number_line_choices``. The operations are split evenly, and ``largest_number`` caps every
+    number in a problem. An addition's larger number comes first, as ``number_line_choices``
+    needs.
+    """
+    problems = generate_word_problems(
+        count,
+        operations,
+        comparisons=True,
+        largest_number=largest_number,
+        split_evenly=True,
+        larger_first=True,
+    )
+    return [Question(problem.data, number_line_choices(problem.data)) for problem in problems]
 
 
 def count_possible_two_step_problems(
@@ -880,17 +936,19 @@ def _sum_or_difference(
     largest_number: int,
     largest_operand: int,
     largest_smaller_operand: int | None = None,
+    larger_first: bool = False,
 ) -> BasicOperationQuestionData:
     """
     Draw two operands at random from ``SMALLEST_WORD_PROBLEM_NUMBER`` to the smaller of
     ``largest_number`` and ``largest_operand``, redrawing until they meet the word-problem
     limits: a sum is at most ``largest_number``, and a difference is at least 1, with the larger
     operand first. With ``largest_smaller_operand``, the second operand is drawn no larger than
-    that, and then an addition's operands are put in random order.
+    that, and then an addition's operands are put in random order. With ``larger_first``, an
+    addition's larger operand comes first instead, and its operands differ.
 
     The caller checks first that the limits allow a problem, as ``count_possible_word_problems``
     does. Then about half of all draws meet them, and even the tightest limits meet one draw in
-    four, so the redraws end quickly.
+    five, so the redraws end quickly.
     """
     largest = min(largest_number, largest_operand)
     smaller = largest if largest_smaller_operand is None else min(largest_smaller_operand, largest)
@@ -899,7 +957,11 @@ def _sum_or_difference(
         second = random.randint(SMALLEST_WORD_PROBLEM_NUMBER, smaller)
         match operation:
             case Operation.ADD:
-                if smaller < largest:
+                if larger_first:
+                    if first == second:
+                        continue
+                    first, second = max(first, second), min(first, second)
+                elif smaller < largest:
                     first, second = random.sample((first, second), 2)
                 if first + second <= largest_number:
                     return BasicOperationQuestionData(operation, (first, second), first + second)

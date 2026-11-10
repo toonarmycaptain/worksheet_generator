@@ -2,15 +2,17 @@
 Tests for the word problems worksheet PDFs, rendered from hand-built questions.
 
 The question generator is not used. Questions are built by hand, with their wording, and have no
-wrong answers, except on equation multiple choice sheets, whose choices are those of
-``equation_choices``. ``reverse_shuffle`` fixes their order by reversing them.
+wrong answers, except on multiple choice sheets, whose choices are those of ``equation_choices``
+or ``number_line_choices``. ``reverse_shuffle`` fixes their order by reversing them, and
+``choose_last`` makes each wrong landing try below the answer first.
 
 Each case's output is stored as text decoded from the PDF, in one file with a section per case:
 ``goldens/word_problems_worksheet_pdf_expecteds.txt``. The text includes the instruction, the
 key to base-ten blocks, every problem's wording and hint, its representation or work box, its
-lettered equations, the answer lines or the answer bank and pattern, the answer key and the page
-breaks. To regenerate sections after an intended change, uncomment the ``write_section`` lines in
-``test_pdf_draws_the_expected_text`` and run it (``-k`` selects cases).
+lettered equations or number lines, the answer lines or the answer bank and pattern, the answer
+key and the page breaks. To regenerate sections after an intended change, uncomment the
+``write_section`` lines in ``test_pdf_draws_the_expected_text`` and run it (``-k`` selects
+cases).
 """
 
 import pytest
@@ -23,13 +25,22 @@ from core.basic_operations.data import (
 )
 from core.basic_operations.representation import Representation
 from tests.data import REAL_CASE_SLOTS
-from tests.helpers import GOLDENS, pdf_text, read_sections, render_word_problems, reverse_shuffle
+from tests.helpers import (
+    GOLDENS,
+    choose_last,
+    pdf_text,
+    read_sections,
+    render_word_problems,
+    reverse_shuffle,
+)
 
 TITLE = "Word Problems — Strip Diagrams"
 TEXT_ONLY_TITLE = "Word Problems"
 NUMBER_LINE_TITLE = "Word Problems — Number Lines"
 BLOCKS_TITLE = "Word Problems — Base-Ten Blocks"
 EQUATION_CHOICE_TITLE = "Word Problems — Equation multiple choice"
+EQUATION_TITLE = "Word Problems — Equations"
+NUMBER_LINE_CHOICE_TITLE = "Word Problems — Number Line multiple choice"
 
 ADD_AND_SUBTRACT = [
     BasicOperationQuestionData(
@@ -154,6 +165,45 @@ BLOCKS_AT_THEIR_LIMITS = [
     ),
 ]
 
+# Number lines to choose from at their limits. 998 + 1 lands on the largest number, 999, and its
+# wrong landing, 1 above as 1 below is its first number, and its misread 1 (as 10) go past it, to
+# 4 digits. 2 - 1's wrong landing is 10 above its first number, against the "- 1", as no landing
+# is past it, and its first number is misread, as 20. 15 - 10's step is 1, as 10 isn't over 10.
+LINE_CHOICES_AT_THEIR_LIMITS = [
+    BasicOperationQuestionData(
+        Operation.ADD,
+        (998, 1),
+        999,
+        "A basket held 998 cards. Maria added 1 more. How many cards are in the basket now?",
+    ),
+    BasicOperationQuestionData(
+        Operation.SUBTRACT,
+        (2, 1),
+        1,
+        "Maria had 2 cards and used 1. How many cards are left?",
+    ),
+    BasicOperationQuestionData(
+        Operation.SUBTRACT,
+        (15, 10),
+        5,
+        "Maria has 15 cards and Jamal has 10 cards. "
+        "How many more cards does Maria have than Jamal?",
+    ),
+]
+
+# Seven problems of one line each, with the larger number first, as number lines to choose from
+# need. Three fill a page, with no room for a fourth, so the fourth starts a second page and the
+# seventh a third.
+SEVEN_LARGER_FIRST = [
+    BasicOperationQuestionData(
+        Operation.ADD,
+        (first, 25),
+        first + 25,
+        f"Maria had {first} cards and found 25 more. How many cards does Maria have now?",
+    )
+    for first in (31, 42, 53, 64, 75, 86, 97)
+]
+
 # Both kinds of strip on one sheet, with the instruction for both
 ALL_FOUR = ADD_AND_SUBTRACT + MULTIPLY_AND_DIVIDE
 
@@ -270,6 +320,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
         "case_name",
         "questions",
         "representation",
+        "choices",
         "hints",
         "black_and_white",
         "work_box",
@@ -283,6 +334,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "add_and_subtract",
             ADD_AND_SUBTRACT,
             Representation.STRIP,
+            False,
             True,
             False,
             True,
@@ -297,6 +349,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             Representation.STRIP,
             False,
             False,
+            False,
             True,
             None,
             True,
@@ -307,6 +360,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "splits_at_their_limits",
             SPLITS_AT_THEIR_LIMITS,
             Representation.STRIP,
+            False,
             True,
             False,
             True,
@@ -319,6 +373,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "five_problems",
             FIVE_PROBLEMS,
             Representation.STRIP,
+            False,
             True,
             False,
             True,
@@ -331,6 +386,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "multiply_and_divide",
             MULTIPLY_AND_DIVIDE,
             Representation.STRIP,
+            False,
             True,
             False,
             True,
@@ -343,6 +399,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "groups_at_their_limits",
             GROUPS_AT_THEIR_LIMITS,
             Representation.STRIP,
+            False,
             True,
             False,
             True,
@@ -356,6 +413,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "all_four_answer_key",
             ALL_FOUR,
             Representation.STRIP,
+            False,
             True,
             False,
             True,
@@ -369,6 +427,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "self_check_tiles_answer_key",
             ADD_AND_SUBTRACT,
             Representation.STRIP,
+            False,
             True,
             False,
             True,
@@ -381,6 +440,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "other_title_and_label",
             ADD_AND_SUBTRACT,
             Representation.STRIP,
+            False,
             True,
             False,
             True,
@@ -395,6 +455,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "text_only_all_four_answer_key",
             ALL_FOUR,
             Representation.NONE,
+            False,
             True,
             False,
             True,
@@ -408,6 +469,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "text_only_five_problems",
             FIVE_PROBLEMS,
             Representation.NONE,
+            False,
             True,
             False,
             True,
@@ -421,6 +483,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "text_only_self_check_tiles_answer_key",
             ADD_AND_SUBTRACT,
             Representation.NONE,
+            False,
             True,
             False,
             True,
@@ -435,6 +498,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "text_only_no_work_boxes_answer_key",
             ALL_FOUR,
             Representation.NONE,
+            False,
             True,
             False,
             False,
@@ -448,6 +512,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "text_only_no_work_boxes_five_problems",
             FIVE_PROBLEMS,
             Representation.NONE,
+            False,
             True,
             False,
             False,
@@ -461,6 +526,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "text_only_no_work_boxes_self_check_tiles",
             ADD_AND_SUBTRACT,
             Representation.NONE,
+            False,
             True,
             False,
             False,
@@ -475,6 +541,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "number_line_add_and_subtract",
             ADD_AND_SUBTRACT,
             Representation.NUMBER_LINE,
+            False,
             True,
             False,
             True,
@@ -489,6 +556,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             Representation.NUMBER_LINE,
             False,
             False,
+            False,
             True,
             None,
             True,
@@ -500,6 +568,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "number_line_five_problems",
             FIVE_PROBLEMS,
             Representation.NUMBER_LINE,
+            False,
             True,
             False,
             True,
@@ -513,6 +582,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "number_line_self_check_tiles_answer_key",
             ADD_AND_SUBTRACT,
             Representation.NUMBER_LINE,
+            False,
             True,
             False,
             True,
@@ -527,6 +597,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "blocks_add_and_subtract",
             BLOCKS,
             Representation.BLOCKS,
+            False,
             True,
             False,
             True,
@@ -542,6 +613,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             Representation.BLOCKS,
             False,
             False,
+            False,
             True,
             None,
             True,
@@ -553,6 +625,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "blocks_black_and_white",
             BLOCKS,
             Representation.BLOCKS,
+            False,
             True,
             True,
             True,
@@ -565,6 +638,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "blocks_at_their_limits",
             BLOCKS_AT_THEIR_LIMITS,
             Representation.BLOCKS,
+            False,
             True,
             False,
             True,
@@ -578,6 +652,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "blocks_five_problems",
             FIVE_PROBLEMS,
             Representation.BLOCKS,
+            False,
             True,
             False,
             True,
@@ -591,6 +666,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "blocks_self_check_tiles_answer_key",
             BLOCKS,
             Representation.BLOCKS,
+            False,
             True,
             False,
             True,
@@ -605,7 +681,8 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
         (
             "equation_choice_all_four_answer_key",
             ALL_FOUR,
-            Representation.EQUATION_CHOICE,
+            Representation.EQUATION,
+            True,
             True,
             False,
             True,
@@ -617,7 +694,8 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
         (
             "equation_choice_seven_problems",
             SEVEN_PROBLEMS,
-            Representation.EQUATION_CHOICE,
+            Representation.EQUATION,
+            True,
             True,
             False,
             True,
@@ -626,12 +704,100 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             EQUATION_CHOICE_TITLE,
             "Sheet A",
         ),
+        # Equations, written: an equation line, then the answer line, with no hint. The key has
+        # each equation solved.
+        (
+            "equation_all_four_answer_key",
+            ALL_FOUR,
+            Representation.EQUATION,
+            False,
+            True,
+            False,
+            True,
+            None,
+            True,
+            EQUATION_TITLE,
+            "Sheet A",
+        ),
+        # five fill the first page, so the sixth starts a second
+        (
+            "equation_seven_problems",
+            SEVEN_PROBLEMS,
+            Representation.EQUATION,
+            False,
+            True,
+            False,
+            True,
+            None,
+            False,
+            EQUATION_TITLE,
+            "Sheet A",
+        ),
+        # tiles: the equation lines stay, the answer lines go, then the bank and pattern
+        (
+            "equation_self_check_tiles_answer_key",
+            ALL_FOUR,
+            Representation.EQUATION,
+            False,
+            True,
+            False,
+            True,
+            REAL_CASE_SLOTS[:4],
+            True,
+            EQUATION_TITLE,
+            "Sheet A",
+        ),
+        # Number line multiple choice: each problem's four lines from 0 in rows of two, with no
+        # hint even with hints on. Each line's ticks are 0, its first landing and its end, in
+        # order. A jump past the middle tick arcs high, as the right addition's first jump does,
+        # and the wrong way's second jump comes back under it. The key has each equation and its
+        # letter.
+        (
+            "number_line_choice_answer_key",
+            ADD_AND_SUBTRACT,
+            Representation.NUMBER_LINE,
+            True,
+            True,
+            False,
+            True,
+            None,
+            True,
+            NUMBER_LINE_CHOICE_TITLE,
+            "Sheet A",
+        ),
+        (
+            "number_line_choice_at_their_limits",
+            LINE_CHOICES_AT_THEIR_LIMITS,
+            Representation.NUMBER_LINE,
+            True,
+            True,
+            False,
+            True,
+            None,
+            False,
+            NUMBER_LINE_CHOICE_TITLE,
+            "Sheet A",
+        ),
+        (
+            "number_line_choice_seven_problems",
+            SEVEN_LARGER_FIRST,
+            Representation.NUMBER_LINE,
+            True,
+            True,
+            False,
+            True,
+            None,
+            False,
+            NUMBER_LINE_CHOICE_TITLE,
+            "Sheet A",
+        ),
         # Two steps with strip diagrams: one bar each, with its whole in a box over its parts,
         # and each shape's hint. The key has each step.
         (
             "two_steps_strip_answer_key",
             TWO_STEPS,
             Representation.STRIP,
+            False,
             True,
             False,
             True,
@@ -646,6 +812,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             Representation.STRIP,
             False,
             False,
+            False,
             True,
             None,
             False,
@@ -658,6 +825,7 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             "two_steps_text_only_self_check_tiles_answer_key",
             TWO_STEPS,
             Representation.NONE,
+            False,
             True,
             False,
             True,
@@ -672,6 +840,7 @@ def test_pdf_draws_the_expected_text(
     case_name: str,
     questions: list[BasicOperationQuestionData | TwoStepQuestionData],
     representation: Representation,
+    choices: bool,
     hints: bool,
     black_and_white: bool,
     work_box: bool,
@@ -686,14 +855,16 @@ def test_pdf_draws_the_expected_text(
 
     One comparison covers the instruction, the wording, the hints, the strips and their splits
     or equal parts, the number lines and their jumps, the base-ten blocks, their key and colours,
-    the lettered equations, the answer lines or the answer bank and pattern, the answer key, the
-    page breaks, and the title and label.
+    the lettered equations and number lines, the equation lines, the answer lines or the answer
+    bank and pattern, the answer key, the page breaks, and the title and label.
     """
     reverse_shuffle(monkeypatch)
+    choose_last(monkeypatch)
     actual = pdf_text(
         render_word_problems(
             questions,
             representation,
+            choices,
             hints,
             black_and_white,
             work_box,
@@ -719,7 +890,7 @@ def test_pdf_draws_the_expected_text(
         ),
         (Representation.BLOCKS, "Only strip diagrams and text only show two-step problems."),
         (
-            Representation.EQUATION_CHOICE,
+            Representation.EQUATION,
             "Only strip diagrams and text only show two-step problems.",
         ),
     ],
@@ -728,6 +899,6 @@ def test_word_problems_worksheet_errors(representation: Representation, message:
     """A two-step problem with a representation that shows only one step raises ``ValueError``."""
     with pytest.raises(ValueError) as error:
         render_word_problems(
-            TWO_STEPS[:1], representation, True, False, True, None, False, TITLE, "Sheet A"
+            TWO_STEPS[:1], representation, False, True, False, True, None, False, TITLE, "Sheet A"
         )
     assert str(error.value) == message

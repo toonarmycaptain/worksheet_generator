@@ -1,8 +1,8 @@
 """The wording of basic-operation questions: a missing-number equation, how the self-check tiles
 sheet shows a question, two-step ones included, and a word problem's strip diagram, two-step
-strip diagram, number line jumps, hint, instruction and sheet title. Also the equations and the
-strip diagrams a problem's own is chosen from, two-step ones included, and what each problem
-shows."""
+strip diagram, number line jumps, hint, instruction and sheet title. Also the equations, the
+number lines and the strip diagrams a problem's own is chosen from, two-step strip diagrams
+included, and what each problem shows."""
 
 from collections.abc import Callable
 
@@ -20,6 +20,7 @@ from core.basic_operations.representation import (
     Prompt,
     Representation,
     StripDiagram,
+    TwoJumpLine,
     TwoStepStripDiagram,
     basic_operation_tile_question,
     equation_choices,
@@ -27,6 +28,7 @@ from core.basic_operations.representation import (
     instruction,
     missing_number_equation,
     missing_number_tile_question,
+    number_line_choices,
     number_line_jumps,
     operations_name,
     prompt_texts,
@@ -39,7 +41,7 @@ from core.basic_operations.representation import (
 )
 from core.question import BLANK, MultipleChoice
 from core.self_check_tiles import TileQuestion
-from tests.helpers import reverse_shuffle
+from tests.helpers import choice_returns, reverse_shuffle
 
 
 @pytest.mark.parametrize(
@@ -671,6 +673,329 @@ def test_number_line_jumps_errors(data: BasicOperationQuestionData, message: str
 
 
 @pytest.mark.parametrize(
+    ("data", "side", "expected"),
+    [
+        # Addition, with the wrong landing drawn above the answer: the misread 25 is 52, the wrong
+        # landing 10 above, and the wrong way subtracts.
+        (
+            ADD,
+            1,
+            MultipleChoice(
+                (
+                    TwoJumpLine(47, 52, 99),
+                    TwoJumpLine(47, 25, 82),
+                    TwoJumpLine(47, -25, 22),
+                    TwoJumpLine(47, 25, 72),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # subtraction jumps back, and its wrong way forward
+        (
+            SUBTRACT,
+            1,
+            MultipleChoice(
+                (
+                    TwoJumpLine(72, -52, 20),
+                    TwoJumpLine(72, -25, 57),
+                    TwoJumpLine(72, 25, 97),
+                    TwoJumpLine(72, -25, 47),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # 30 is misread as 3
+        (
+            BasicOperationQuestionData(Operation.ADD, (45, 30), 75),
+            1,
+            MultipleChoice(
+                (
+                    TwoJumpLine(45, 3, 48),
+                    TwoJumpLine(45, 30, 85),
+                    TwoJumpLine(45, -30, 15),
+                    TwoJumpLine(45, 30, 75),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # with hundreds, the tens and ones are swapped
+        (
+            BasicOperationQuestionData(Operation.ADD, (347, 125), 472),
+            1,
+            MultipleChoice(
+                (
+                    TwoJumpLine(347, 152, 499),
+                    TwoJumpLine(347, 125, 482),
+                    TwoJumpLine(347, -125, 222),
+                    TwoJumpLine(347, 125, 472),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # 33 swapped is 33, so it's misread as double, 66
+        (
+            BasicOperationQuestionData(Operation.ADD, (50, 33), 83),
+            1,
+            MultipleChoice(
+                (
+                    TwoJumpLine(50, 66, 116),
+                    TwoJumpLine(50, 33, 93),
+                    TwoJumpLine(50, -33, 17),
+                    TwoJumpLine(50, 33, 83),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # 34 as 43 would land 9 from the answer, between the wrong landing's two spots, so it's
+        # misread as double, 68
+        (
+            BasicOperationQuestionData(Operation.ADD, (50, 34), 84),
+            1,
+            MultipleChoice(
+                (
+                    TwoJumpLine(50, 68, 118),
+                    TwoJumpLine(50, 34, 94),
+                    TwoJumpLine(50, -34, 16),
+                    TwoJumpLine(50, 34, 84),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # A second number of 10 or less steps 1: 10 above, 25, would be behind the first number,
+        # its - 5 pointing back. 5 as 50 lands under 0, so it's misread as double, 10.
+        (
+            BasicOperationQuestionData(Operation.SUBTRACT, (20, 5), 15),
+            1,
+            MultipleChoice(
+                (
+                    TwoJumpLine(20, -10, 10),
+                    TwoJumpLine(20, -5, 16),
+                    TwoJumpLine(20, 5, 25),
+                    TwoJumpLine(20, -5, 15),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # 10 isn't over 10, so the step is 1; 10 is misread as 1
+        (
+            BasicOperationQuestionData(Operation.SUBTRACT, (50, 10), 40),
+            1,
+            MultipleChoice(
+                (
+                    TwoJumpLine(50, -1, 49),
+                    TwoJumpLine(50, -10, 41),
+                    TwoJumpLine(50, 10, 60),
+                    TwoJumpLine(50, -10, 40),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # 1 above, 5, is the first number, so the wrong landing is 1 below, whichever side is
+        # drawn. Every misreading of 1 lands under 0 or beside the answer, so the first number is
+        # misread, 5 as 50.
+        (
+            BasicOperationQuestionData(Operation.SUBTRACT, (5, 1), 4),
+            1,
+            MultipleChoice(
+                (
+                    TwoJumpLine(50, -1, 49),
+                    TwoJumpLine(5, -1, 3),
+                    TwoJumpLine(5, 1, 6),
+                    TwoJumpLine(5, -1, 4),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # The answer, 5, leaves no room 10 below, so the step is 1, even with 25. 25 as 52, and
+        # double, 50, land under 0, so it's misread as 10 less, 15.
+        (
+            BasicOperationQuestionData(Operation.SUBTRACT, (30, 25), 5),
+            1,
+            MultipleChoice(
+                (
+                    TwoJumpLine(30, -15, 15),
+                    TwoJumpLine(30, -25, 6),
+                    TwoJumpLine(30, 25, 55),
+                    TwoJumpLine(30, -25, 5),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # The answer is the second number, so doubling either number lands on 0 or on the wrong
+        # way's 75, and no misreading clears both landing spots. The first to land somewhere new
+        # would be 10 less, 15, but it lands on 35, where the wrong landing is, so one less, 24.
+        (
+            BasicOperationQuestionData(Operation.SUBTRACT, (50, 25), 25),
+            1,
+            MultipleChoice(
+                (
+                    TwoJumpLine(50, -24, 26),
+                    TwoJumpLine(50, -25, 35),
+                    TwoJumpLine(50, 25, 75),
+                    TwoJumpLine(50, -25, 25),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # 2 - 1 has no wrong landing past its first number and above 0, so it lands 10 above,
+        # pointing back. Every misreading of 1 lands on or under 0, so the first number is
+        # misread, 2 as 20.
+        (
+            BasicOperationQuestionData(Operation.SUBTRACT, (2, 1), 1),
+            1,
+            MultipleChoice(
+                (
+                    TwoJumpLine(20, -1, 19),
+                    TwoJumpLine(2, -1, 11),
+                    TwoJumpLine(2, 1, 3),
+                    TwoJumpLine(2, -1, 1),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # with the wrong landing drawn below the answer, 10 below
+        (
+            ADD,
+            -1,
+            MultipleChoice(
+                (
+                    TwoJumpLine(47, 52, 99),
+                    TwoJumpLine(47, 25, 62),
+                    TwoJumpLine(47, -25, 22),
+                    TwoJumpLine(47, 25, 72),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        (
+            SUBTRACT,
+            -1,
+            MultipleChoice(
+                (
+                    TwoJumpLine(72, -52, 20),
+                    TwoJumpLine(72, -25, 37),
+                    TwoJumpLine(72, 25, 97),
+                    TwoJumpLine(72, -25, 47),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # 10 below, 40, would be behind the first number, its + 3 pointing back, so the step is 1
+        (
+            BasicOperationQuestionData(Operation.ADD, (47, 3), 50),
+            -1,
+            MultipleChoice(
+                (
+                    TwoJumpLine(47, 30, 77),
+                    TwoJumpLine(47, 3, 49),
+                    TwoJumpLine(47, -3, 44),
+                    TwoJumpLine(47, 3, 50),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # 1 below, 47, is the first number, so the wrong landing is 1 above, whichever side is
+        # drawn
+        (
+            BasicOperationQuestionData(Operation.ADD, (47, 1), 48),
+            -1,
+            MultipleChoice(
+                (
+                    TwoJumpLine(47, 10, 57),
+                    TwoJumpLine(47, 1, 49),
+                    TwoJumpLine(47, -1, 46),
+                    TwoJumpLine(47, 1, 48),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # The answer, 8, leaves no room 10 below, so the step is 1, even with 12. 12 as 21, and
+        # double, 24, land under 0, so it's misread as 10 less, 2.
+        (
+            BasicOperationQuestionData(Operation.SUBTRACT, (20, 12), 8),
+            -1,
+            MultipleChoice(
+                (
+                    TwoJumpLine(20, -2, 18),
+                    TwoJumpLine(20, -12, 7),
+                    TwoJumpLine(20, 12, 32),
+                    TwoJumpLine(20, -12, 8),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # with the wrong landing on 15, 10 less lands somewhere new, on 35
+        (
+            BasicOperationQuestionData(Operation.SUBTRACT, (50, 25), 25),
+            -1,
+            MultipleChoice(
+                (
+                    TwoJumpLine(50, -15, 35),
+                    TwoJumpLine(50, -25, 15),
+                    TwoJumpLine(50, 25, 75),
+                    TwoJumpLine(50, -25, 25),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # 2 - 1 has the same lines either way
+        (
+            BasicOperationQuestionData(Operation.SUBTRACT, (2, 1), 1),
+            -1,
+            MultipleChoice(
+                (
+                    TwoJumpLine(20, -1, 19),
+                    TwoJumpLine(2, -1, 11),
+                    TwoJumpLine(2, 1, 3),
+                    TwoJumpLine(2, -1, 1),
+                ),
+                frozenset({3}),
+            ),
+        ),
+    ],
+)
+def test_number_line_choices(
+    data: BasicOperationQuestionData,
+    side: int,
+    expected: MultipleChoice[TwoJumpLine],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """
+    A problem's own line is one choice, and the wrong lines are its second jump going the wrong
+    way, its right jumps landing on a wrong number, and one of its numbers misread. Every line
+    lands somewhere different, above 0 and not on the first number, and the wrong landing points
+    the way its sign says, but for 2 - 1's. ``choice`` returns ``side``, the side of the answer
+    the wrong landing tries first: 1 above, -1 below. ``shuffle`` reverses, so the wrong lines
+    come misread, wrong landing, wrong way, and the problem's own is last.
+    """
+    choice_returns(monkeypatch, [side])
+    reverse_shuffle(monkeypatch)
+    assert number_line_choices(data) == expected
+
+
+@pytest.mark.parametrize(
+    ("data", "message"),
+    [
+        # the wrong way would go below 0, or to 0
+        (
+            BasicOperationQuestionData(Operation.ADD, (25, 47), 72),
+            "A number line from 0 needs an addition's larger number first.",
+        ),
+        (
+            BasicOperationQuestionData(Operation.ADD, (25, 25), 50),
+            "A number line from 0 needs an addition's larger number first.",
+        ),
+        (MULTIPLY, "A number line shows only addition and subtraction, not multiplication."),
+        (DIVIDE, "A number line shows only addition and subtraction, not division."),
+    ],
+)
+def test_number_line_choices_errors(data: BasicOperationQuestionData, message: str) -> None:
+    with pytest.raises(ValueError) as error:
+        number_line_choices(data)
+    assert str(error.value) == message
+
+
+@pytest.mark.parametrize(
     ("data", "representation", "expected"),
     [
         (ADD, Representation.STRIP, "Both parts are shown. Add the parts to find the whole."),
@@ -706,8 +1031,8 @@ def test_number_line_jumps_errors(data: BasicOperationQuestionData, message: str
         # the amount to cross out, the second number
         (SUBTRACT, Representation.BLOCKS, "Cross out 25 to subtract."),
         # equation multiple choice has no hints
-        (ADD, Representation.EQUATION_CHOICE, None),
-        (DIVIDE, Representation.EQUATION_CHOICE, None),
+        (ADD, Representation.EQUATION, None),
+        (DIVIDE, Representation.EQUATION, None),
         # a strip diagram has a hint for each shape of two-step problem
         (ADD_ADD, Representation.STRIP, "All three parts are shown. Add them to find the whole."),
         (
@@ -745,30 +1070,34 @@ def test_hint(
 
 
 @pytest.mark.parametrize(
-    ("representation", "operations", "work_box", "expected"),
+    ("representation", "operations", "work_box", "choices", "expected"),
     [
         (
             Representation.STRIP,
             [Operation.ADD, Operation.SUBTRACT],
             True,
+            False,
             "Use the strip diagram (bar model): two parts make a whole. The ? shows what to find.",
         ),
         (
             Representation.STRIP,
             [Operation.ADD],
             True,
+            False,
             "Use the strip diagram (bar model): two parts make a whole. The ? shows what to find.",
         ),
         (
             Representation.STRIP,
             [Operation.SUBTRACT],
             True,
+            False,
             "Use the strip diagram (bar model): two parts make a whole. The ? shows what to find.",
         ),
         (
             Representation.STRIP,
             [Operation.MULTIPLY, Operation.DIVIDE],
             True,
+            False,
             "Use the strip diagram (bar model): equal groups make a whole. "
             "The ? shows what to find.",
         ),
@@ -776,6 +1105,7 @@ def test_hint(
             Representation.STRIP,
             [Operation.MULTIPLY],
             True,
+            False,
             "Use the strip diagram (bar model): equal groups make a whole. "
             "The ? shows what to find.",
         ),
@@ -783,6 +1113,7 @@ def test_hint(
             Representation.STRIP,
             [Operation.DIVIDE],
             True,
+            False,
             "Use the strip diagram (bar model): equal groups make a whole. "
             "The ? shows what to find.",
         ),
@@ -791,6 +1122,7 @@ def test_hint(
             Representation.STRIP,
             [Operation.SUBTRACT, Operation.MULTIPLY],
             True,
+            False,
             "Use the strip diagram (bar model): parts or equal groups make a whole. "
             "The ? shows what to find.",
         ),
@@ -798,6 +1130,7 @@ def test_hint(
             Representation.STRIP,
             [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
             True,
+            False,
             "Use the strip diagram (bar model): parts or equal groups make a whole. "
             "The ? shows what to find.",
         ),
@@ -806,18 +1139,21 @@ def test_hint(
             Representation.NONE,
             [Operation.ADD, Operation.SUBTRACT],
             True,
+            False,
             "Read each problem. Show your work in the box.",
         ),
         (
             Representation.NONE,
             [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
             True,
+            False,
             "Read each problem. Show your work in the box.",
         ),
         # without the work boxes, no box to mention
         (
             Representation.NONE,
             [Operation.ADD, Operation.SUBTRACT],
+            False,
             False,
             "Read each problem and solve it.",
         ),
@@ -826,46 +1162,86 @@ def test_hint(
             Representation.NUMBER_LINE,
             [Operation.ADD, Operation.SUBTRACT],
             True,
+            False,
             "Use the number line. Start at the first number and jump by hundreds, tens, and ones.",
         ),
         (
             Representation.NUMBER_LINE,
             [Operation.SUBTRACT],
             True,
+            False,
             "Use the number line. Start at the first number and jump by hundreds, tens, and ones.",
+        ),
+        # number lines to choose from: from 0, with both numbers as jumps
+        (
+            Representation.NUMBER_LINE,
+            [Operation.ADD, Operation.SUBTRACT],
+            False,
+            True,
+            "Each number line starts at 0 and shows both numbers as jumps. Circle the correct one.",
+        ),
+        (
+            Representation.NUMBER_LINE,
+            [Operation.SUBTRACT],
+            False,
+            True,
+            "Each number line starts at 0 and shows both numbers as jumps. Circle the correct one.",
         ),
         # base-ten blocks: the same for addition, subtraction or both
         (
             Representation.BLOCKS,
             [Operation.ADD, Operation.SUBTRACT],
             True,
+            False,
             "Use the base-ten blocks to help you solve each problem.",
         ),
         (
             Representation.BLOCKS,
             [Operation.ADD],
             True,
+            False,
             "Use the base-ten blocks to help you solve each problem.",
         ),
         # equation multiple choice: the same for any operations
         (
-            Representation.EQUATION_CHOICE,
+            Representation.EQUATION,
             [Operation.ADD, Operation.SUBTRACT],
             False,
+            True,
             f"Choose the equation that matches each problem. The {BLANK} shows what to find.",
         ),
         (
-            Representation.EQUATION_CHOICE,
+            Representation.EQUATION,
             [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
             False,
+            True,
             f"Choose the equation that matches each problem. The {BLANK} shows what to find.",
+        ),
+        # equations, written: the same for any operations
+        (
+            Representation.EQUATION,
+            [Operation.ADD, Operation.SUBTRACT],
+            False,
+            False,
+            f"Write an equation for each problem, with a {BLANK} for what to find. Solve it.",
+        ),
+        (
+            Representation.EQUATION,
+            [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
+            False,
+            False,
+            f"Write an equation for each problem, with a {BLANK} for what to find. Solve it.",
         ),
     ],
 )
 def test_instruction(
-    representation: Representation, operations: list[Operation], work_box: bool, expected: str
+    representation: Representation,
+    operations: list[Operation],
+    work_box: bool,
+    choices: bool,
+    expected: str,
 ) -> None:
-    assert instruction(representation, operations, work_box) == expected
+    assert instruction(representation, operations, work_box, choices) == expected
 
 
 @pytest.mark.parametrize(
@@ -884,15 +1260,18 @@ def test_operations_name(operations: list[Operation], expected: str) -> None:
 
 
 @pytest.mark.parametrize(
-    ("representation", "expected"),
+    ("representation", "choices", "expected"),
     [
-        (Representation.STRIP, "Word Problems — Strip Diagrams"),
+        (Representation.STRIP, False, "Word Problems — Strip Diagrams"),
         # text only: no representation to name
-        (Representation.NONE, "Word Problems"),
-        (Representation.NUMBER_LINE, "Word Problems — Number Lines"),
-        (Representation.BLOCKS, "Word Problems — Base-Ten Blocks"),
-        (Representation.EQUATION_CHOICE, "Word Problems — Equation multiple choice"),
+        (Representation.NONE, False, "Word Problems"),
+        (Representation.NUMBER_LINE, False, "Word Problems — Number Lines"),
+        (Representation.BLOCKS, False, "Word Problems — Base-Ten Blocks"),
+        (Representation.EQUATION, False, "Word Problems — Equations"),
+        # chosen from lettered ones: the name in CHOICE_NAMES
+        (Representation.NUMBER_LINE, True, "Word Problems — Number Line multiple choice"),
+        (Representation.EQUATION, True, "Word Problems — Equation multiple choice"),
     ],
 )
-def test_word_problems_title(representation: Representation, expected: str) -> None:
-    assert word_problems_title(representation) == expected
+def test_word_problems_title(representation: Representation, choices: bool, expected: str) -> None:
+    assert word_problems_title(representation, choices) == expected
