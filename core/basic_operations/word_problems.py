@@ -17,7 +17,9 @@ operation is one more entry in ``TEMPLATES``.
 
 New templates and objects go at the top of their tuples, and new names at the end. The tests
 script ``random`` to take each tuple's templates from the end, the last object and the first two
-names, so their wording stays the same.
+names, so their wording stays the same. Comparisons are the exception: with comparisons on, the
+tests take them first, so a new comparison changes the wording of any test with more problems of
+its operation than there were comparisons.
 
 Comparisons, which ask how many more one has than another, are kept apart in
 ``COMPARISON_TEMPLATES``: a part-part-whole representation, such as the strip diagram, can't show
@@ -67,9 +69,23 @@ NAMES = (
     "Sam",
     "Ivy",
     "Dev",
+    "Mateo",
+    "Grace",
+    "Ravi",
+    "Elena",
+    "Jonah",
+    "Mia",
+    "Tariq",
+    "Lily",
 )
 # Each object, singular and plural
 OBJECTS = (
+    ("eraser", "erasers"),
+    ("toy car", "toy cars"),
+    ("paper clip", "paper clips"),
+    ("postcard", "postcards"),
+    ("seed", "seeds"),
+    ("magnet", "magnets"),
     ("sticker", "stickers"),
     ("marble", "marbles"),
     ("seashell", "seashells"),
@@ -91,6 +107,17 @@ OBJECTS = (
 
 TEMPLATES: dict[Operation, tuple[str, ...]] = {
     Operation.ADD: (
+        "A school collected {a} {a:can|cans} of food on Monday and {b} {b:can|cans} on Tuesday. "
+        "How many cans of food did the school collect in all?",
+        "A parking lot had {a} {a:car|cars}. Then {b} more {b:car|cars} parked there. "
+        "How many cars are in the parking lot now?",
+        "A farm has {a} {a:cow|cows} and {b} {b:horse|horses}. How many animals are on the farm?",
+        "The school play sold {a} {a:ticket|tickets} on Friday and {b} {b:ticket|tickets} on "
+        "Saturday. How many tickets did the play sell in all?",
+        "{n1} took {a} {a:step|steps} before lunch and {b} {b:step|steps} after lunch. "
+        "How many steps did {n1} take in all?",
+        "A museum had {a} {a:visitor|visitors} on Saturday and {b} {b:visitor|visitors} on "
+        "Sunday. How many visitors did the museum have in all?",
         "The library had {a} {a:book|books}. It received {b} more {b:book|books}. "
         "How many books does the library have now?",
         "A farm picked {a} {a:apple|apples} and then picked {b} more. "
@@ -107,6 +134,17 @@ TEMPLATES: dict[Operation, tuple[str, ...]] = {
         "A basket held {a} {a_obj}. {n1} added {b} more. How many {obj} are in the basket now?",
     ),
     Operation.SUBTRACT: (
+        "The theater has {a} {a:seat|seats}. {b} of them {b:is|are} filled. "
+        "How many seats are empty?",
+        "A bus had {a} {a:passenger|passengers}. At the first stop, {b} {b:passenger|passengers} "
+        "got off. How many passengers are on the bus now?",
+        "{n1} had {a} {a_obj} and put {b} of them in a box. How many {obj} are not in the box?",
+        "A store had {a} {a:bottle|bottles} of water and sold {b} of them. "
+        "How many bottles of water does the store have left?",
+        "A tree had {a} {a:leaf|leaves}. {b} {b:leaf|leaves} fell off. "
+        "How many leaves are still on the tree?",
+        "{n1} had {a} {a:dollar|dollars} and spent {b} {b:dollar|dollars}. "
+        "How many dollars does {n1} have left?",
         "{n1} had {a} {a_obj}. {n1} gave away {b} of them. How many {obj} does {n1} have left?",
         "There {a:was|were} {a} {a_obj} on the shelf. {b} of them {b:was|were} sold. "
         "How many {obj} are left?",
@@ -119,6 +157,13 @@ TEMPLATES: dict[Operation, tuple[str, ...]] = {
     ),
     # {a} groups of {b}: the whole is to find
     Operation.MULTIPLY: (
+        "A classroom has {a} rows of desks with {b} desks in each row. "
+        "How many desks are in the classroom?",
+        "{n1} reads {b} pages each day for {a} days. How many pages does {n1} read in all?",
+        "There are {a} teams with {b} players on each team. How many players are there in all?",
+        "{n1} puts {b} {obj} in each of {a} jars. How many {obj} are in the jars?",
+        "{n1} saves {b} dollars each week for {a} weeks. How many dollars does {n1} save in all?",
+        "{a} tables each have {b} {obj} on them. How many {obj} are on the tables?",
         "{n1} has {a} bags with {b} {obj} in each bag. How many {obj} are there in all?",
         "There are {a} boxes. Each box holds {b} {obj}. How many {obj} altogether?",
         "{n1} plants {a} rows with {b} flowers in each row. How many flowers did {n1} plant?",
@@ -128,6 +173,17 @@ TEMPLATES: dict[Operation, tuple[str, ...]] = {
     ),
     # {a} shared equally into {b} groups (partitive division): the size of each group is to find
     Operation.DIVIDE: (
+        "A coach puts {a} players into {b} teams with the same number on each team. "
+        "How many players are on each team?",
+        "{n1} reads {a} pages in {b} days, the same number each day. "
+        "How many pages does {n1} read each day?",
+        "{a} students sit at {b} tables, with the same number at each table. "
+        "How many students sit at each table?",
+        "{n1} packs {a} {obj} equally into {b} boxes. How many {obj} go in each box?",
+        "{n1} saved {a} dollars in {b} weeks, the same amount each week. "
+        "How many dollars did {n1} save each week?",
+        "A baker puts {a} muffins on {b} trays with the same number on each tray. "
+        "How many muffins are on each tray?",
         "{n1} shares {a} {obj} equally among {b} friends. How many {obj} does each friend get?",
         "{a} {obj} are put into {b} equal groups. How many {obj} are in each group?",
         "{n1} puts {a} {obj} into {b} baskets with the same number in each. "
@@ -141,6 +197,12 @@ TEMPLATES: dict[Operation, tuple[str, ...]] = {
 # How many more {n1} has than {n2}: {a} is the larger amount
 COMPARISON_TEMPLATES: dict[Operation, tuple[str, ...]] = {
     Operation.SUBTRACT: (
+        "{n1} scored {a} {a:point|points} and {n2} scored {b} {b:point|points}. "
+        "How many more points did {n1} score than {n2}?",
+        "{n1} has {a} {a_obj}. {n2} has {b} {b_obj}. "
+        "How many fewer {obj} does {n2} have than {n1}?",
+        "A school sold {a} {a:ticket|tickets} on Friday and {b} {b:ticket|tickets} on Saturday. "
+        "How many more tickets were sold on Friday than on Saturday?",
         "{n1} has {a} {a_obj} and {n2} has {b} {b_obj}. "
         "How many more {obj} does {n1} have than {n2}?",
     ),
@@ -150,6 +212,8 @@ COMPARISON_TEMPLATES: dict[Operation, tuple[str, ...]] = {
 TWO_STEP_TEMPLATES: dict[TwoStepShape, tuple[str, ...]] = {
     # ({a} + {b}) + {c}
     (Operation.ADD, Operation.ADD, Unknown.FIRST): (
+        "A school sold {a} {a:ticket|tickets} on Friday, {b} on Saturday and {c} on Sunday. "
+        "How many tickets did the school sell in all?",
         "{n1} had {a} {a_obj}. {n1} found {b} more on Monday and {c} more on Tuesday. "
         "How many {obj} does {n1} have now?",
         "A jar held {a} {a_obj}. {n1} added {b} more, and then {n2} added {c} more. "
@@ -157,6 +221,8 @@ TWO_STEP_TEMPLATES: dict[TwoStepShape, tuple[str, ...]] = {
     ),
     # ({a} - {b}) - {c}
     (Operation.SUBTRACT, Operation.SUBTRACT, Unknown.FIRST): (
+        "A bus had {a} {a:passenger|passengers}. {b} got off at the first stop, and {c} got off "
+        "at the second stop. How many passengers are still on the bus?",
         "{n1} had {a} {a_obj}. {n1} gave {b} to {n2} and then lost {c}. "
         "How many {obj} does {n1} have left?",
         "A box held {a} {a_obj}. {n1} took out {b}, and then {n2} took out {c}. "
@@ -164,6 +230,8 @@ TWO_STEP_TEMPLATES: dict[TwoStepShape, tuple[str, ...]] = {
     ),
     # ({a} - {b}) shared equally into {c} groups
     (Operation.SUBTRACT, Operation.DIVIDE, Unknown.FIRST): (
+        "A baker made {a} {a:muffin|muffins} and sold {b}. The baker put the rest on {c} trays "
+        "with the same number on each tray. How many muffins are on each tray?",
         "{n1} has {a} {a_obj}. {n1} gives {b} to {n2} and then shares the rest equally among {c} "
         "friends. How many {obj} does each friend get?",
         "{n1} had {a} {a_obj} and used {b}. {n1} put the rest into {c} equal groups. "
@@ -173,6 +241,8 @@ TWO_STEP_TEMPLATES: dict[TwoStepShape, tuple[str, ...]] = {
     ),
     # ({a} groups of {b}) + {c}
     (Operation.MULTIPLY, Operation.ADD, Unknown.FIRST): (
+        "{n1} bought {a} packs of {obj} with {b} in each pack. {n2} gave {n1} {c} more {c_obj}. "
+        "How many {obj} does {n1} have now?",
         "{n1} has {a} bags with {b} {obj} in each bag, and {c} more {c_obj} on the table. "
         "How many {obj} does {n1} have in all?",
         "There are {a} boxes with {b} {obj} in each box. {n1} brings {c} more. "
@@ -180,6 +250,7 @@ TWO_STEP_TEMPLATES: dict[TwoStepShape, tuple[str, ...]] = {
     ),
     # {c} - ({a} groups of {b})
     (Operation.MULTIPLY, Operation.SUBTRACT, Unknown.SECOND): (
+        "{n1} had {c} {c_obj} and put {b} in each of {a} boxes. How many {obj} are not in a box?",
         "{n1} had {c} {c_obj}. {n1} gave {a} friends {b} {obj} each. "
         "How many {obj} does {n1} have left?",
         "A store had {c} {c_obj}. It sold {a} packs with {b} {obj} in each pack. "
