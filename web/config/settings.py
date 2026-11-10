@@ -12,6 +12,12 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 
 from pathlib import Path
 
+import django_stubs_ext
+
+# Lets generic Django classes be subscripted at runtime, as django-stubs types them:
+# ModelForm[Message], ModelAdmin[Message].
+django_stubs_ext.monkeypatch()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -37,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "feedback",
     "worksheets",
 ]
 
@@ -126,3 +133,9 @@ MAILERS = {
         "BACKEND": "django.core.mail.backends.console.EmailBackend",
     },
 }
+
+# Feedback form
+MAILER_URL = "<worker URL>"
+MAILER_KEY = "<key from the Worker"
+TURNSTILE_SITE_KEY = "<some site key>"
+TURNSTILE_SECRET_KEY = "<some secret key>"

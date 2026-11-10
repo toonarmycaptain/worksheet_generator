@@ -13,14 +13,16 @@
     .choices { display: inline-block; margin: 0.4rem 0 0.4rem 1.5rem; }
     .choices label { display: inline-block; margin: 0 1rem 0 0; }
     label:has(input:disabled) { color: gray; }
-    input[type=text] { width: 100%; max-width: 28rem; }
+    input[type=text], input[type=email], textarea { width: 100%; max-width: 28rem; }
     input[type=number] { width: 5rem; }
     button { display: block; margin-top: 0.5rem; }
     .warning { color: #9b1c1c; background: #fdecec; border-left: 4px solid #c81e1e; border-radius: 4px; padding: 0.5rem 0.75rem; margin-top: 0.5rem; }
+    footer { margin-top: 2rem; border-top: 1px solid #cbd5e0; text-align: right; }
   </style>
 </head>
 <body>
   {% block nav %}<p><a href="{% url 'home' %}">&larr; All worksheets</a></p>{% endblock %}
   {% block content %}{% endblock %}
+  {% block footer %}<footer><p><a href="{% url 'feedback' %}?from={{ request.get_full_path|urlencode }}">Send feedback</a></p></footer>{% endblock %}
 </body>
 </html>

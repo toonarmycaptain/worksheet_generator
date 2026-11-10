@@ -1437,6 +1437,7 @@ source = { editable = "." }
 dependencies = [
     { name = "django" },
     { name = "django-ninja" },
+    { name = "django-stubs-ext" },
     { name = "jinja2" },
     { name = "numpy" },
     { name = "reportlab" },
@@ -1461,6 +1462,7 @@ dev = [
 requires-dist = [
     { name = "django", specifier = ">=6.1.2" },
     { name = "django-ninja", specifier = ">=1.7.1" },
+    { name = "django-stubs-ext", specifier = ">=6.1.2" },
     { name = "jinja2", specifier = "==3.1.6" },
     { name = "numpy", specifier = "==2.5.3" },
     { name = "reportlab", specifier = ">=5.0.1" },
