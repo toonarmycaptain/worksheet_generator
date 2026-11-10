@@ -314,6 +314,417 @@ def test_word_problem_texts(
                 "How many cards are in the jar now?",
             ],
         ),
+        # the shapes text only shows, beyond the strip diagram's five
+        (
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.ADD, (12, 5), 17),
+                        BasicOperationQuestionData(Operation.SUBTRACT, (17, 8), 9),
+                    ),
+                    Unknown.FIRST,
+                    9,
+                ),
+            ],
+            [
+                "There were 12 cards in a box. Maria put in 5 more, and then Jamal took out 8. "
+                "How many cards are in the box now?"
+            ],
+        ),
+        # the first step's answer is the size of each of {c} groups
+        (
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.ADD, (2, 4), 6),
+                        BasicOperationQuestionData(Operation.MULTIPLY, (3, 6), 18),
+                    ),
+                    Unknown.SECOND,
+                    18,
+                ),
+            ],
+            [
+                "Each of 3 bags has 2 cards from Maria and 4 from Jamal. "
+                "How many cards are in the bags altogether?"
+            ],
+        ),
+        (
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.ADD, (20, 4), 24),
+                        BasicOperationQuestionData(Operation.DIVIDE, (24, 3), 8),
+                    ),
+                    Unknown.FIRST,
+                    8,
+                ),
+            ],
+            [
+                "Maria collected 20 cards and Jamal collected 4 cards. They put them all into 3 "
+                "equal piles. How many cards are in each pile?"
+            ],
+        ),
+        (
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.SUBTRACT, (12, 5), 7),
+                        BasicOperationQuestionData(Operation.ADD, (7, 8), 15),
+                    ),
+                    Unknown.FIRST,
+                    15,
+                ),
+            ],
+            [
+                "There were 12 cards on the shelf. 5 were sold, and then 8 more were put out. "
+                "How many cards are on the shelf now?"
+            ],
+        ),
+        (
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.SUBTRACT, (9, 4), 5),
+                        BasicOperationQuestionData(Operation.MULTIPLY, (3, 5), 15),
+                    ),
+                    Unknown.SECOND,
+                    15,
+                ),
+            ],
+            [
+                "There are 3 boxes with 9 cards in each box. Maria takes 4 out of every box. "
+                "How many cards are left in the boxes?"
+            ],
+        ),
+        (
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.MULTIPLY, (2, 4), 8),
+                        BasicOperationQuestionData(Operation.MULTIPLY, (3, 8), 24),
+                    ),
+                    Unknown.SECOND,
+                    24,
+                ),
+            ],
+            [
+                "Maria buys 3 cartons. Each carton has 2 packs with 4 cards in each pack. "
+                "How many cards did Maria buy?"
+            ],
+        ),
+        (
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.MULTIPLY, (4, 6), 24),
+                        BasicOperationQuestionData(Operation.DIVIDE, (24, 3), 8),
+                    ),
+                    Unknown.FIRST,
+                    8,
+                ),
+            ],
+            [
+                "There are 4 bags with 6 cards in each bag. The cards are put into 3 equal piles. "
+                "How many cards are in each pile?"
+            ],
+        ),
+        (
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.DIVIDE, (24, 4), 6),
+                        BasicOperationQuestionData(Operation.ADD, (6, 3), 9),
+                    ),
+                    Unknown.FIRST,
+                    9,
+                ),
+            ],
+            [
+                "24 cards are put into 4 equal piles. Maria adds 3 more to one pile. "
+                "How many cards are in that pile now?"
+            ],
+        ),
+        (
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.DIVIDE, (24, 4), 6),
+                        BasicOperationQuestionData(Operation.SUBTRACT, (6, 2), 4),
+                    ),
+                    Unknown.FIRST,
+                    4,
+                ),
+            ],
+            [
+                "24 cards are put into 4 equal boxes. Maria takes 2 out of one box. "
+                "How many cards are left in that box?"
+            ],
+        ),
+        (
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.DIVIDE, (12, 3), 4),
+                        BasicOperationQuestionData(Operation.MULTIPLY, (5, 4), 20),
+                    ),
+                    Unknown.SECOND,
+                    20,
+                ),
+            ],
+            [
+                "12 cards fill 3 boxes, with the same number in each box. "
+                "How many cards would fill 5 boxes?"
+            ],
+        ),
+        (
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.DIVIDE, (60, 2), 30),
+                        BasicOperationQuestionData(Operation.DIVIDE, (30, 3), 10),
+                    ),
+                    Unknown.FIRST,
+                    10,
+                ),
+            ],
+            [
+                "Maria puts 60 cards into 2 equal boxes, then splits each box's cards equally "
+                "into 3 bags. How many cards are in each bag?"
+            ],
+        ),
+        # 1 takes the singular in these shapes too
+        (
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.ADD, (1, 5), 6),
+                        BasicOperationQuestionData(Operation.SUBTRACT, (6, 2), 4),
+                    ),
+                    Unknown.FIRST,
+                    4,
+                ),
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.SUBTRACT, (12, 5), 7),
+                        BasicOperationQuestionData(Operation.ADD, (7, 1), 8),
+                    ),
+                    Unknown.FIRST,
+                    8,
+                ),
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.ADD, (20, 1), 21),
+                        BasicOperationQuestionData(Operation.DIVIDE, (21, 3), 7),
+                    ),
+                    Unknown.FIRST,
+                    7,
+                ),
+            ],
+            [
+                "There was 1 card in a box. Maria put in 5 more, and then Jamal took out 2. "
+                "How many cards are in the box now?",
+                "There were 12 cards on the shelf. 5 were sold, and then 1 more was put out. "
+                "How many cards are on the shelf now?",
+                "Maria collected 20 cards and Jamal collected 1 card. They put them all into 3 "
+                "equal piles. How many cards are in each pile?",
+            ],
+        ),
+        # the first step's answer is the number of groups
+        (
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.ADD, (2, 3), 5),
+                        BasicOperationQuestionData(Operation.MULTIPLY, (5, 4), 20),
+                    ),
+                    Unknown.FIRST,
+                    20,
+                ),
+            ],
+            [
+                "A shop put out 2 boxes of cards in the morning and 3 more boxes in the "
+                "afternoon. Each box holds 4 cards. How many cards did the shop put out?"
+            ],
+        ),
+        (
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.ADD, (2, 3), 5),
+                        BasicOperationQuestionData(Operation.DIVIDE, (20, 5), 4),
+                    ),
+                    Unknown.SECOND,
+                    4,
+                ),
+            ],
+            [
+                "20 cards are put into 2 red boxes and 3 blue boxes, with the same number in "
+                "each box. How many cards are in each box?"
+            ],
+        ),
+        (
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.SUBTRACT, (6, 2), 4),
+                        BasicOperationQuestionData(Operation.MULTIPLY, (4, 5), 20),
+                    ),
+                    Unknown.FIRST,
+                    20,
+                ),
+            ],
+            [
+                "Maria filled 6 bags with 5 cards each, then gave away 2 of the bags. "
+                "How many cards are in the bags Maria kept?"
+            ],
+        ),
+        (
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.SUBTRACT, (6, 2), 4),
+                        BasicOperationQuestionData(Operation.DIVIDE, (20, 4), 5),
+                    ),
+                    Unknown.SECOND,
+                    5,
+                ),
+            ],
+            [
+                "Maria had 6 boxes and gave away 2 of them. Maria puts 20 cards equally into the "
+                "boxes that are left. How many cards are in each box?"
+            ],
+        ),
+        (
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.MULTIPLY, (2, 3), 6),
+                        BasicOperationQuestionData(Operation.MULTIPLY, (6, 4), 24),
+                    ),
+                    Unknown.FIRST,
+                    24,
+                ),
+            ],
+            [
+                "Maria stacks 2 rows of boxes with 3 boxes in each row. Each box has 4 cards in "
+                "it. How many cards are in the boxes?"
+            ],
+        ),
+        (
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.MULTIPLY, (2, 3), 6),
+                        BasicOperationQuestionData(Operation.DIVIDE, (24, 6), 4),
+                    ),
+                    Unknown.SECOND,
+                    4,
+                ),
+            ],
+            [
+                "Maria has 2 bags with 3 pockets in each bag, and puts 24 cards equally into all "
+                "the pockets. How many cards are in each pocket?"
+            ],
+        ),
+        (
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.DIVIDE, (8, 2), 4),
+                        BasicOperationQuestionData(Operation.MULTIPLY, (4, 5), 20),
+                    ),
+                    Unknown.FIRST,
+                    20,
+                ),
+            ],
+            [
+                "Maria sorts 8 bags equally onto 2 shelves. Each bag has 5 cards in it. "
+                "How many cards are on each shelf?"
+            ],
+        ),
+        (
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.DIVIDE, (12, 3), 4),
+                        BasicOperationQuestionData(Operation.DIVIDE, (20, 4), 5),
+                    ),
+                    Unknown.SECOND,
+                    5,
+                ),
+            ],
+            [
+                "Maria puts 12 boxes equally onto 3 shelves, and then shares 20 cards equally "
+                "among the boxes on one shelf. How many cards are in each of those boxes?"
+            ],
+        ),
+        # 1 takes the singular here too, in each shape's templates from the last
+        (
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.ADD, (1, 3), 4),
+                        BasicOperationQuestionData(Operation.MULTIPLY, (4, 5), 20),
+                    ),
+                    Unknown.FIRST,
+                    20,
+                ),
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.ADD, (3, 1), 4),
+                        BasicOperationQuestionData(Operation.DIVIDE, (20, 4), 5),
+                    ),
+                    Unknown.SECOND,
+                    5,
+                ),
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.SUBTRACT, (6, 2), 4),
+                        BasicOperationQuestionData(Operation.DIVIDE, (20, 4), 5),
+                    ),
+                    Unknown.SECOND,
+                    5,
+                ),
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.SUBTRACT, (6, 1), 5),
+                        BasicOperationQuestionData(Operation.DIVIDE, (20, 5), 4),
+                    ),
+                    Unknown.SECOND,
+                    4,
+                ),
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.ADD, (1, 2), 3),
+                        BasicOperationQuestionData(Operation.MULTIPLY, (3, 4), 12),
+                    ),
+                    Unknown.FIRST,
+                    12,
+                ),
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.ADD, (1, 3), 4),
+                        BasicOperationQuestionData(Operation.DIVIDE, (12, 4), 3),
+                    ),
+                    Unknown.SECOND,
+                    3,
+                ),
+            ],
+            [
+                "A shop put out 1 box of cards in the morning and 3 more boxes in the afternoon. "
+                "Each box holds 5 cards. How many cards did the shop put out?",
+                "20 cards are put into 3 red boxes and 1 blue box, with the same number in each "
+                "box. How many cards are in each box?",
+                "Maria had 6 boxes and gave away 2 of them. Maria puts 20 cards equally into the "
+                "boxes that are left. How many cards are in each box?",
+                "Maria has 20 cards to share equally among 6 friends, but 1 of them goes home. "
+                "How many cards does each friend who stayed get?",
+                "Maria has 1 red bag and 2 blue bags, with 4 cards in each bag. "
+                "How many cards does Maria have in all?",
+                "Maria shares 12 cards equally among 1 boy and 3 girls. "
+                "How many cards does each child get?",
+            ],
+        ),
     ],
 )
 def test_two_step_texts(
@@ -404,6 +815,120 @@ def test_no_template_repeats_until_all_are_used(
             {"a", "b", "c"},
             TWO_STEP_SLOTS,
             id="multiply then subtract from",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.ADD, Operation.SUBTRACT, Unknown.FIRST],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="add then subtract",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.ADD, Operation.MULTIPLY, Unknown.SECOND],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="add then groups of",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.ADD, Operation.DIVIDE, Unknown.FIRST],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="add then divide",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.SUBTRACT, Operation.ADD, Unknown.FIRST],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="subtract then add",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.SUBTRACT, Operation.MULTIPLY, Unknown.SECOND],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="subtract then groups of",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.MULTIPLY, Operation.MULTIPLY, Unknown.SECOND],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="multiply then groups of",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.MULTIPLY, Operation.DIVIDE, Unknown.FIRST],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="multiply then divide",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.DIVIDE, Operation.ADD, Unknown.FIRST],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="divide then add",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.DIVIDE, Operation.SUBTRACT, Unknown.FIRST],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="divide then subtract",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.DIVIDE, Operation.MULTIPLY, Unknown.SECOND],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="divide then groups of",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.DIVIDE, Operation.DIVIDE, Unknown.FIRST],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="divide then divide",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.ADD, Operation.MULTIPLY, Unknown.FIRST],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="add then that many groups",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.ADD, Operation.DIVIDE, Unknown.SECOND],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="add then share into that many",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.SUBTRACT, Operation.MULTIPLY, Unknown.FIRST],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="subtract then that many groups",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.SUBTRACT, Operation.DIVIDE, Unknown.SECOND],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="subtract then share into that many",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.MULTIPLY, Operation.MULTIPLY, Unknown.FIRST],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="multiply then that many groups",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.MULTIPLY, Operation.DIVIDE, Unknown.SECOND],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="multiply then share into that many",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.DIVIDE, Operation.MULTIPLY, Unknown.FIRST],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="divide then that many groups",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.DIVIDE, Operation.DIVIDE, Unknown.SECOND],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="divide then share into that many",
         ),
     ],
 )

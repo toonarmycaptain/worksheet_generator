@@ -21,6 +21,7 @@ from core.basic_operations.data import (
     Unknown,
 )
 from core.basic_operations.representation import (
+    STRIP_TWO_STEP_SHAPES,
     EquationChoiceQuestion,
     NumberLineChoiceQuestion,
     StripChoiceQuestion,
@@ -811,24 +812,29 @@ def count_possible_two_step_problems(
     largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
     largest_groups: int = WORD_PROBLEM_GROUPS[1],
     split_evenly: bool = False,
+    shapes: Collection[TwoStepShape] | None = None,
 ) -> int:
     """
     Count the two-step word problems ``generate_two_step_problems`` can produce for
-    ``operations``, with its limits, or return 0 if ``two_step_shapes`` has none for them.
+    ``operations``, with its limits and ``shapes``, or return 0 if ``two_step_shapes`` has none
+    for them.
 
     As in ``count_possible_word_problems``, any one shape may be drawn for every problem, so the
     count is the smallest that any one shape allows by itself: its distinct answers with
-    ``distinct_answers``, and otherwise its distinct problems. With ``split_evenly`` and without
-    ``distinct_answers``, each shape needs only enough for its share, so the count is that
-    smallest count for each shape. The count is capped at ``up_to``.
+    ``distinct_answers``, and otherwise its distinct problems. A shape the limits allow no problem
+    of isn't drawn, so it doesn't count: multiplying twice needs a largest number of at least 24,
+    as in 2 groups of 3 groups of 4. With ``split_evenly`` and without ``distinct_answers``, each
+    shape needs only enough for its share, so the count is that smallest count for each shape.
+    The count is capped at ``up_to``.
     """
     counts = [
         _count_shape_problems(shape, distinct_answers, up_to, largest_number, largest_groups)
-        for shape in two_step_shapes(operations)
+        for shape in two_step_shapes(operations, shapes)
     ]
-    possible = min(counts, default=0)
+    drawn = [count for count in counts if count]
+    possible = min(drawn, default=0)
     if split_evenly and not distinct_answers:
-        possible *= len(counts)
+        possible *= len(drawn)
     return min(possible, up_to)
 
 
@@ -840,11 +846,14 @@ def generate_two_step_problems(
     largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
     largest_groups: int = WORD_PROBLEM_GROUPS[1],
     split_evenly: bool = False,
+    shapes: Collection[TwoStepShape] | None = None,
 ) -> list[Question[TwoStepQuestionData, FreeResponse]]:
     """
     Generate ``count`` two-step word problems, each of a shape drawn at random from
-    ``two_step_shapes(operations)``, or with ``split_evenly`` dealt out as evenly as possible, as
-    in ``generate_word_problems``.
+    ``two_step_shapes(operations, shapes)``, or with ``split_evenly`` dealt out as evenly as
+    possible, as in ``generate_word_problems``. ``shapes`` limits them to those a representation
+    can show, such as ``STRIP_TWO_STEP_SHAPES``. A shape the limits allow no problem of isn't
+    drawn.
 
     The first step's answer is carried into the second step as one of its operands. Every number
     in a problem is at most ``largest_number``, the first step's answer and the final answer
@@ -870,19 +879,22 @@ def generate_two_step_problems(
         largest_number=largest_number,
         largest_groups=largest_groups,
         split_evenly=split_evenly,
+        shapes=shapes,
     )
     if count > possible:
         kind = "problems with different answers" if distinct_answers else "different problems"
         raise ValueError(f"Cannot make {count} {kind}: only {possible} possible.")
 
-    shapes = two_step_shapes(operations)
     carried_numbers = {
-        shape: list(_carried_numbers(shape, largest_number, largest_groups)) for shape in shapes
+        shape: list(_carried_numbers(shape, largest_number, largest_groups))
+        for shape in two_step_shapes(operations, shapes)
     }
+    # a shape the limits allow no problem of isn't drawn
+    drawn = [shape for shape, numbers in carried_numbers.items() if numbers]
     unworded: list[TwoStepQuestionData] = []
     seen: set[TwoStepQuestionData] = set()
     answers: set[int] = set()
-    for shape in _deal(shapes, count, split_evenly):
+    for shape in _deal(drawn, count, split_evenly):
         draw = partial(
             _two_step_problem, shape, carried_numbers[shape], largest_number, largest_groups
         )
@@ -907,8 +919,8 @@ def generate_two_step_strip_choice_problems(
     largest_groups: int = STRIP_CHOICE_LARGEST_GROUPS,
 ) -> list[TwoStepStripChoiceQuestion]:
     """
-    Generate ``count`` two-step word problems as ``generate_two_step_problems`` does, with the
-    shapes split evenly, each with its strip diagram to choose from those of
+    Generate ``count`` two-step word problems as ``generate_two_step_problems`` does, of the
+    shapes one strip can show, split evenly, each with its strip diagram to choose from those of
     ``two_step_strip_choices``.
     """
     problems = generate_two_step_problems(
@@ -917,17 +929,23 @@ def generate_two_step_strip_choice_problems(
         largest_number=largest_number,
         largest_groups=largest_groups,
         split_evenly=True,
+        shapes=STRIP_TWO_STEP_SHAPES,
     )
     return [Question(problem.data, two_step_strip_choices(problem.data)) for problem in problems]
 
 
-def two_step_shapes(operations: Collection[Operation]) -> list[TwoStepShape]:
+def two_step_shapes(
+    operations: Collection[Operation], shapes: Collection[TwoStepShape] | None = None
+) -> list[TwoStepShape]:
     """
     Return the shapes of two-step problem with stories in the word-problem bank whose two
-    operations are both in ``operations``.
+    operations are both in ``operations``, and that are among ``shapes`` if given, in the bank's
+    order.
     """
     return [
-        shape for shape in TWO_STEP_TEMPLATES if shape[0] in operations and shape[1] in operations
+        shape
+        for shape in TWO_STEP_TEMPLATES
+        if shape[0] in operations and shape[1] in operations and (shapes is None or shape in shapes)
     ]
 
 
@@ -1068,6 +1086,7 @@ def _count_shape_problems(
     with ``distinct_answers`` their distinct answers, stopping at ``up_to``.
     """
     first_operation, second_operation, carried = shape
+    largest_size = _largest_carried_size(shape, largest_number)
     problems = 0
     answers: set[int] = set()
     for number in _carried_numbers(shape, largest_number, largest_groups):
@@ -1076,10 +1095,11 @@ def _count_shape_problems(
         ):
             if distinct_answers and second.answer in answers:
                 continue
+            firsts = _first_steps(
+                first_operation, number, largest_number, largest_groups, largest_size
+            )
             allowed = (
-                first
-                for first in _first_steps(first_operation, number, largest_number, largest_groups)
-                if _distinct_numbers(_join_steps(shape, first, second))
+                first for first in firsts if _distinct_numbers(_join_steps(shape, first, second))
             )
             if distinct_answers:
                 if next(allowed, None) is not None:
@@ -1150,13 +1170,28 @@ def _followed_first_steps(
     )
     if next(seconds(), None) is None:  # no second step, so nothing to follow any first step
         return
-    for first in _first_steps(first_operation, number, largest_number, largest_groups):
+    largest_size = _largest_carried_size(shape, largest_number)
+    firsts = _first_steps(first_operation, number, largest_number, largest_groups, largest_size)
+    for first in firsts:
         if any(_distinct_numbers(_join_steps(shape, first, second)) for second in seconds()):
             yield first
 
 
+def _largest_carried_size(shape: TwoStepShape, largest_number: int) -> int:
+    """
+    Return the largest answer a ``shape`` problem's first step may have if it's a division: the
+    largest of ``WORD_PROBLEM_GROUP_SIZES``, except in ÷ then ÷, which divides that answer again,
+    so it may be up to ``largest_number``. Otherwise ÷ then ÷'s answers would be at most half the
+    largest group size.
+    """
+    first_operation, second_operation, _ = shape
+    if first_operation is Operation.DIVIDE and second_operation is Operation.DIVIDE:
+        return largest_number
+    return WORD_PROBLEM_GROUP_SIZES[1]
+
+
 def _first_steps(
-    operation: Operation, answer: int, largest_number: int, largest_groups: int
+    operation: Operation, answer: int, largest_number: int, largest_groups: int, largest_size: int
 ) -> Iterator[BasicOperationQuestionData]:
     """
     Yield every first step of a two-step problem whose answer is ``answer``, with every number at
@@ -1164,7 +1199,8 @@ def _first_steps(
 
     Addition and subtraction operands start at ``SMALLEST_WORD_PROBLEM_NUMBER``. Multiplication
     and division are equal groups, as ``_equal_groups_problem`` makes them, of up to
-    ``largest_groups`` groups of ``WORD_PROBLEM_GROUP_SIZES``.
+    ``largest_groups`` groups of ``WORD_PROBLEM_GROUP_SIZES``, except that a division's answer,
+    the size of each group, may be up to ``largest_size``.
     """
     smallest = SMALLEST_WORD_PROBLEM_NUMBER
     match operation:
@@ -1180,7 +1216,7 @@ def _first_steps(
                 if not remainder and size in _GROUP_SIZES:
                     yield _equal_groups_problem(operation, groups, size)
         case Operation.DIVIDE:
-            if answer in _GROUP_SIZES:
+            if WORD_PROBLEM_GROUP_SIZES[0] <= answer <= largest_size:
                 for groups in _group_counts(largest_groups):
                     if groups * answer <= largest_number:
                         yield _equal_groups_problem(operation, groups, answer)

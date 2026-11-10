@@ -43,6 +43,7 @@ from core.basic_operations.generator import (
     generate_word_problems,
 )
 from core.basic_operations.representation import (
+    STRIP_TWO_STEP_SHAPES,
     equation_choices,
     number_line_choices,
     strip_choices,
@@ -52,6 +53,7 @@ from core.basic_operations.word_problems import OBJECTS
 from core.question import FreeResponse, MultipleChoice, Question
 from tests.helpers import (
     choice_returns,
+    choices_in_turn,
     choices_returns,
     choose_last,
     randint_returns,
@@ -2813,6 +2815,14 @@ SUBTRACT_THEN_SUBTRACT = (Operation.SUBTRACT, Operation.SUBTRACT, Unknown.FIRST)
 SUBTRACT_THEN_DIVIDE = (Operation.SUBTRACT, Operation.DIVIDE, Unknown.FIRST)
 MULTIPLY_THEN_ADD = (Operation.MULTIPLY, Operation.ADD, Unknown.FIRST)
 MULTIPLY_THEN_SUBTRACT = (Operation.MULTIPLY, Operation.SUBTRACT, Unknown.SECOND)
+# and some of the shapes only text only shows; in the _GROUPS ones the first step's answer is
+# the number of groups, and otherwise the size of each group
+ADD_THEN_MULTIPLY = (Operation.ADD, Operation.MULTIPLY, Unknown.SECOND)
+ADD_THEN_MULTIPLY_GROUPS = (Operation.ADD, Operation.MULTIPLY, Unknown.FIRST)
+MULTIPLY_THEN_MULTIPLY = (Operation.MULTIPLY, Operation.MULTIPLY, Unknown.SECOND)
+MULTIPLY_THEN_MULTIPLY_GROUPS = (Operation.MULTIPLY, Operation.MULTIPLY, Unknown.FIRST)
+DIVIDE_THEN_SUBTRACT = (Operation.DIVIDE, Operation.SUBTRACT, Unknown.FIRST)
+DIVIDE_THEN_DIVIDE = (Operation.DIVIDE, Operation.DIVIDE, Unknown.FIRST)
 CARDS = ("card", "cards")  # the object chosen for a problem's wording
 
 
@@ -3092,6 +3102,86 @@ CARDS = ("card", "cards")  # the object chosen for a problem's wording
                 ),
             ],
         ),
+        # dividing twice: the first answer, 30, can go past the largest group size, 20
+        (
+            1,
+            [Operation.DIVIDE],
+            [DIVIDE_THEN_DIVIDE],
+            False,
+            999,
+            6,
+            [
+                30,
+                BasicOperationQuestionData(Operation.DIVIDE, (60, 2), 30),
+                BasicOperationQuestionData(Operation.DIVIDE, (30, 3), 10),
+                CARDS,
+            ],
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.DIVIDE, (60, 2), 30),
+                        BasicOperationQuestionData(Operation.DIVIDE, (30, 3), 10),
+                    ),
+                    Unknown.FIRST,
+                    10,
+                    "Maria puts 60 cards into 2 equal boxes, then splits each box's cards equally "
+                    "into 3 bags. How many cards are in each bag?",
+                ),
+            ],
+        ),
+        # the first step's answer is the size of each group, the second step's second operand
+        (
+            1,
+            [Operation.ADD, Operation.MULTIPLY],
+            [ADD_THEN_MULTIPLY],
+            False,
+            999,
+            6,
+            [
+                6,
+                BasicOperationQuestionData(Operation.ADD, (2, 4), 6),
+                BasicOperationQuestionData(Operation.MULTIPLY, (3, 6), 18),
+                CARDS,
+            ],
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.ADD, (2, 4), 6),
+                        BasicOperationQuestionData(Operation.MULTIPLY, (3, 6), 18),
+                    ),
+                    Unknown.SECOND,
+                    18,
+                    "Each of 3 bags has 2 cards from Maria and 4 from Jamal. "
+                    "How many cards are in the bags altogether?",
+                ),
+            ],
+        ),
+        (
+            1,
+            [Operation.SUBTRACT, Operation.DIVIDE],
+            [DIVIDE_THEN_SUBTRACT],
+            False,
+            999,
+            6,
+            [
+                6,
+                BasicOperationQuestionData(Operation.DIVIDE, (24, 4), 6),
+                BasicOperationQuestionData(Operation.SUBTRACT, (6, 2), 4),
+                CARDS,
+            ],
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.DIVIDE, (24, 4), 6),
+                        BasicOperationQuestionData(Operation.SUBTRACT, (6, 2), 4),
+                    ),
+                    Unknown.FIRST,
+                    4,
+                    "24 cards are put into 4 equal boxes. Maria takes 2 out of one box. "
+                    "How many cards are left in that box?",
+                ),
+            ],
+        ),
     ],
 )
 def test_two_step_problems_from_scripted_draws(
@@ -3206,6 +3296,55 @@ def test_two_step_problems_offer_only_steps_that_repeat_no_number(
 
 
 @pytest.mark.parametrize(
+    ("operations", "largest_number", "expected"),
+    [
+        # multiplying twice can't be done within 10, either way, so the other four shapes take
+        # turns
+        (
+            [Operation.ADD, Operation.MULTIPLY],
+            10,
+            [
+                ADD_THEN_ADD,
+                ADD_THEN_MULTIPLY,
+                ADD_THEN_MULTIPLY_GROUPS,
+                MULTIPLY_THEN_ADD,
+                ADD_THEN_ADD,
+                ADD_THEN_MULTIPLY,
+            ],
+        ),
+        # within 36 it can, both ways, with 6 problems each, so each takes its turn
+        (
+            [Operation.ADD, Operation.MULTIPLY],
+            36,
+            [
+                ADD_THEN_ADD,
+                ADD_THEN_MULTIPLY,
+                ADD_THEN_MULTIPLY_GROUPS,
+                MULTIPLY_THEN_ADD,
+                MULTIPLY_THEN_MULTIPLY,
+                MULTIPLY_THEN_MULTIPLY_GROUPS,
+            ],
+        ),
+    ],
+)
+def test_two_step_problems_draw_only_the_shapes_the_limits_allow(
+    operations: list[Operation],
+    largest_number: int,
+    expected: list[TwoStepShape],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """
+    ``choices`` takes the shapes it's offered in turn, in the bank's order, so the problems'
+    shapes show which were offered.
+    """
+    choices_in_turn(monkeypatch)
+
+    questions = generate_two_step_problems(6, operations, largest_number=largest_number)
+
+    assert [question.data.shape for question in questions] == expected
+
+
+@pytest.mark.parametrize(
     ("operations", "count", "largest_number"),
     [
         # tiles: 12 answers with the defaults
@@ -3214,6 +3353,8 @@ def test_two_step_problems_offer_only_steps_that_repeat_no_number(
         ([Operation.SUBTRACT, Operation.DIVIDE], 19, 999),
         # adding three numbers within 20: every answer, 6 to 20
         ([Operation.ADD], 15, 20),
+        # the shapes that only multiply and divide
+        ([Operation.MULTIPLY, Operation.DIVIDE], 12, 999),
     ],
 )
 def test_random_two_step_problems_have_distinct_answers(
@@ -3234,27 +3375,55 @@ def test_random_two_step_problems_have_distinct_answers(
         "largest_number",
         "largest_groups",
         "split_evenly",
+        "shapes",
         "expected",
     ),
     [
         # three different numbers that make at most 6: 1, 2 and 3 in any order, with 1 answer
-        ([Operation.ADD], False, 1000, 6, 6, False, 6),
-        ([Operation.ADD], True, 1000, 6, 6, False, 1),
+        ([Operation.ADD], False, 1000, 6, 6, False, STRIP_TWO_STEP_SHAPES, 6),
+        ([Operation.ADD], True, 1000, 6, 6, False, STRIP_TWO_STEP_SHAPES, 1),
         # 5 is too small for three different numbers
-        ([Operation.ADD], False, 1000, 5, 6, False, 0),
+        ([Operation.ADD], False, 1000, 5, 6, False, STRIP_TWO_STEP_SHAPES, 0),
         # two different numbers taken from a whole of at most 6, leaving 1 to 3
-        ([Operation.SUBTRACT], False, 1000, 6, 6, False, 14),
-        ([Operation.SUBTRACT], True, 1000, 6, 6, False, 3),
+        ([Operation.SUBTRACT], False, 1000, 6, 6, False, STRIP_TWO_STEP_SHAPES, 14),
+        ([Operation.SUBTRACT], True, 1000, 6, 6, False, STRIP_TWO_STEP_SHAPES, 3),
         # the default largest number: sums from 1 + 2 + 3 to 999, and differences from 1 to
         # 999 - 1 - 2
-        ([Operation.ADD], True, 1000, 999, 6, False, 994),
-        ([Operation.SUBTRACT], True, 1000, 999, 6, False, 996),
+        ([Operation.ADD], True, 1000, 999, 6, False, STRIP_TWO_STEP_SHAPES, 994),
+        ([Operation.SUBTRACT], True, 1000, 999, 6, False, STRIP_TWO_STEP_SHAPES, 996),
         # sharing what's left into 2 groups within 20: 4 to 18 left, each in fewer ways
-        ([Operation.SUBTRACT, Operation.DIVIDE], False, 1000, 20, 2, False, 64),
+        (
+            [Operation.SUBTRACT, Operation.DIVIDE],
+            False,
+            1000,
+            20,
+            2,
+            False,
+            STRIP_TWO_STEP_SHAPES,
+            64,
+        ),
         # more groups, more ways
-        ([Operation.SUBTRACT, Operation.DIVIDE], False, 1000, 20, 6, False, 143),
+        (
+            [Operation.SUBTRACT, Operation.DIVIDE],
+            False,
+            1000,
+            20,
+            6,
+            False,
+            STRIP_TWO_STEP_SHAPES,
+            143,
+        ),
         # its answers, the sizes of each group, 2 to 20
-        ([Operation.SUBTRACT, Operation.DIVIDE], True, 1000, 999, 6, False, 19),
+        (
+            [Operation.SUBTRACT, Operation.DIVIDE],
+            True,
+            1000,
+            999,
+            6,
+            False,
+            STRIP_TWO_STEP_SHAPES,
+            19,
+        ),
         # the least of the shapes'
         (
             [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
@@ -3263,15 +3432,25 @@ def test_random_two_step_problems_have_distinct_answers(
             999,
             6,
             False,
+            STRIP_TWO_STEP_SHAPES,
             19,
         ),
         # every shape adds or subtracts
-        ([Operation.MULTIPLY], False, 1000, 999, 6, False, 0),
-        ([Operation.MULTIPLY, Operation.DIVIDE], False, 1000, 999, 6, False, 0),
+        ([Operation.MULTIPLY], False, 1000, 999, 6, False, STRIP_TWO_STEP_SHAPES, 0),
+        (
+            [Operation.MULTIPLY, Operation.DIVIDE],
+            False,
+            1000,
+            999,
+            6,
+            False,
+            STRIP_TWO_STEP_SHAPES,
+            0,
+        ),
         # Split evenly, each shape needs only its share: 6 of each of two shapes. With distinct
         # answers, any shape's answer can be any problem's.
-        ([Operation.ADD, Operation.SUBTRACT], False, 1000, 6, 6, True, 12),
-        ([Operation.ADD, Operation.SUBTRACT], True, 1000, 6, 6, True, 1),
+        ([Operation.ADD, Operation.SUBTRACT], False, 1000, 6, 6, True, STRIP_TWO_STEP_SHAPES, 12),
+        ([Operation.ADD, Operation.SUBTRACT], True, 1000, 6, 6, True, STRIP_TWO_STEP_SHAPES, 1),
         # 2 groups within 12, with a part added: 7 problems, so 7 of each of the five shapes
         (
             [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
@@ -3280,6 +3459,7 @@ def test_random_two_step_problems_have_distinct_answers(
             12,
             2,
             False,
+            STRIP_TWO_STEP_SHAPES,
             7,
         ),
         (
@@ -3289,6 +3469,7 @@ def test_random_two_step_problems_have_distinct_answers(
             12,
             2,
             True,
+            STRIP_TWO_STEP_SHAPES,
             35,
         ),
         # capped
@@ -3299,8 +3480,25 @@ def test_random_two_step_problems_have_distinct_answers(
             999,
             6,
             False,
+            STRIP_TWO_STEP_SHAPES,
             20,
         ),
+        # Every shape, as text only shows them. Multiplying twice within 24, with up to 3 groups:
+        # 2 groups of 4 in 3 groups, and 3 groups of 4 in 2, both 24.
+        ([Operation.MULTIPLY], False, 1000, 24, 3, False, None, 2),
+        ([Operation.MULTIPLY], True, 1000, 24, 3, False, None, 1),
+        ([Operation.MULTIPLY], False, 1000, 23, 3, False, None, 0),
+        # Dividing twice within 60, with up to 3 groups: 2 then 3 groups, or 3 then 2, with each
+        # answer 2 to 10. The first answer can go past 20, up to 30, or there'd be 14.
+        ([Operation.DIVIDE], False, 1000, 60, 3, False, None, 18),
+        # multiplication and division alone make problems too
+        ([Operation.MULTIPLY, Operation.DIVIDE], False, 20, 999, 6, False, None, 20),
+        # Multiplying twice can't be done within 10, either way, so it isn't drawn: the least of
+        # adding three numbers (66), the sum as the size of each group (6) or as the number of
+        # groups (6), and multiplying then adding (6)
+        ([Operation.ADD, Operation.MULTIPLY], False, 1000, 10, 6, False, None, 6),
+        # split evenly among those four
+        ([Operation.ADD, Operation.MULTIPLY], False, 1000, 10, 6, True, None, 24),
     ],
 )
 def test_count_possible_two_step_problems(
@@ -3310,12 +3508,14 @@ def test_count_possible_two_step_problems(
     largest_number: int,
     largest_groups: int,
     split_evenly: bool,
+    shapes: frozenset[TwoStepShape] | None,
     expected: int,
 ) -> None:
     """
     Any one shape may be drawn for every problem, so the count is the least of theirs: its
-    problems with no number repeated, or with distinct answers its answers. The largest number
-    caps every number, the first step's answer too.
+    problems with no number repeated, or with distinct answers its answers. A shape the limits
+    allow no problem of isn't drawn, so it doesn't count. The largest number caps every number,
+    the first step's answer too. ``shapes`` limits the shapes, as a strip diagram's five do.
     """
     possible = count_possible_two_step_problems(
         operations,
@@ -3324,18 +3524,21 @@ def test_count_possible_two_step_problems(
         largest_number=largest_number,
         largest_groups=largest_groups,
         split_evenly=split_evenly,
+        shapes=shapes,
     )
     assert possible == expected
 
 
 @pytest.mark.parametrize(
-    ("operations", "distinct_answers", "count", "largest_number", "message"),
+    ("operations", "distinct_answers", "count", "largest_number", "shapes", "message"),
     [
+        # every shape a strip diagram shows adds or subtracts
         (
             [Operation.MULTIPLY, Operation.DIVIDE],
             False,
             1,
             999,
+            STRIP_TWO_STEP_SHAPES,
             "Cannot make 1 different problems: only 0 possible.",
         ),
         (
@@ -3343,6 +3546,7 @@ def test_count_possible_two_step_problems(
             False,
             7,
             6,
+            None,
             "Cannot make 7 different problems: only 6 possible.",
         ),
         (
@@ -3350,7 +3554,17 @@ def test_count_possible_two_step_problems(
             True,
             2,
             6,
+            None,
             "Cannot make 2 problems with different answers: only 1 possible.",
+        ),
+        # multiplying twice needs at least 2 groups of 3 groups of 4, 24
+        (
+            [Operation.MULTIPLY],
+            False,
+            1,
+            23,
+            None,
+            "Cannot make 1 different problems: only 0 possible.",
         ),
     ],
 )
@@ -3359,6 +3573,7 @@ def test_two_step_sheet_errors(
     distinct_answers: bool,
     count: int,
     largest_number: int,
+    shapes: frozenset[TwoStepShape] | None,
     message: str,
 ) -> None:
     """
@@ -3367,7 +3582,11 @@ def test_two_step_sheet_errors(
     """
     with pytest.raises(ValueError) as error:
         generate_two_step_problems(
-            count, operations, distinct_answers=distinct_answers, largest_number=largest_number
+            count,
+            operations,
+            distinct_answers=distinct_answers,
+            largest_number=largest_number,
+            shapes=shapes,
         )
     assert str(error.value) == message
 
