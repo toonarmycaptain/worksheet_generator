@@ -585,6 +585,47 @@ ADD = BasicOperationQuestionData(
             None,
         ),
         (
+            # Text only shows every shape, so multiplication and division alone make two steps.
+            # Dividing twice, its first answer, 30, goes past the largest group size, 20.
+            "/api/worksheets/word_problems.pdf?representation=none&steps=two&operations=multiply"
+            "&operations=divide&problems=1&answer_key=true&sheet=1ab2c3",
+            [(Operation.DIVIDE, Operation.DIVIDE, Unknown.FIRST)],
+            [],
+            [
+                30,
+                BasicOperationQuestionData(Operation.DIVIDE, (60, 2), 30),
+                BasicOperationQuestionData(Operation.DIVIDE, (30, 3), 10),
+                ("card", "cards"),
+            ],
+            200,
+            None,
+            {
+                "questions": [
+                    TwoStepQuestionData(
+                        (
+                            BasicOperationQuestionData(Operation.DIVIDE, (60, 2), 30),
+                            BasicOperationQuestionData(Operation.DIVIDE, (30, 3), 10),
+                        ),
+                        Unknown.FIRST,
+                        10,
+                        "Maria puts 60 cards into 2 equal boxes, then splits each box's cards "
+                        "equally into 3 bags. How many cards are in each bag?",
+                    ),
+                ],
+                "representation": Representation.NONE,
+                "choices": False,
+                "hints": True,
+                "black_and_white": False,
+                "work_box": False,
+                "slot_of": None,
+                "answer_key": True,
+                "title": "Word Problems",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        (
             # with tiles, three different numbers within 10 make only the answers 6 to 10
             "/api/worksheets/word_problems.pdf?representation=none&steps=two&operations=add"
             "&max_number=10&self_check_tiles=true&problems=12",

@@ -28,9 +28,11 @@ them.
 Two-step problems have their own templates, in ``TWO_STEP_TEMPLATES``, keyed by their shape. They
 take the same slots, with ``{a}`` and ``{b}`` as the first step's operands, plus ``{c}``,
 ``{c_obj}`` and ``{c:...}`` for the second step's other operand. The first step's answer, which
-the second step also uses, is never stated. The generator draws only the shapes that have an
-entry, and each shape needs its strip diagram and wrong choices too, in
-``core.basic_operations.representation``: so far, the five shapes that one bar can show.
+the second step also uses, is never stated. There is an entry for each of the 16 orders of two
+operations. Where the second step multiplies or divides, the first answer can be the size of each
+group or the number of groups, so each of those orders has an entry for each, 24 in all. Text
+only shows them all, and a strip diagram the five that one bar can show (``STRIP_TWO_STEP_SHAPES``
+in ``core.basic_operations.representation``).
 """
 
 import random
@@ -219,6 +221,48 @@ TWO_STEP_TEMPLATES: dict[TwoStepShape, tuple[str, ...]] = {
         "A jar held {a} {a_obj}. {n1} added {b} more, and then {n2} added {c} more. "
         "How many {obj} are in the jar now?",
     ),
+    # ({a} + {b}) - {c}
+    (Operation.ADD, Operation.SUBTRACT, Unknown.FIRST): (
+        "{n1} had {a} {a_obj} and found {b} more. Then {n1} gave {c} to {n2}. "
+        "How many {obj} does {n1} have now?",
+        "There {a:was|were} {a} {a_obj} in a box. {n1} put in {b} more, and then {n2} took out "
+        "{c}. How many {obj} are in the box now?",
+    ),
+    # {c} groups of ({a} + {b})
+    (Operation.ADD, Operation.MULTIPLY, Unknown.SECOND): (
+        "{n1} puts {a} {a_obj} and then {b} more into each of {c} boxes. "
+        "How many {obj} did {n1} pack?",
+        "Each of {c} bags has {a} {a_obj} from {n1} and {b} from {n2}. "
+        "How many {obj} are in the bags altogether?",
+    ),
+    # ({a} + {b}) groups of {c}
+    (Operation.ADD, Operation.MULTIPLY, Unknown.FIRST): (
+        "{n1} has {a} red {a:bag|bags} and {b} blue {b:bag|bags}, with {c} {obj} in each bag. "
+        "How many {obj} does {n1} have in all?",
+        "A shop put out {a} {a:box|boxes} of {obj} in the morning and {b} more {b:box|boxes} in "
+        "the afternoon. Each box holds {c} {obj}. How many {obj} did the shop put out?",
+    ),
+    # ({a} + {b}) shared equally into {c} groups
+    (Operation.ADD, Operation.DIVIDE, Unknown.FIRST): (
+        "{n1} had {a} {a_obj} and got {b} more. {n1} shares them all equally among {c} friends. "
+        "How many {obj} does each friend get?",
+        "{n1} collected {a} {a_obj} and {n2} collected {b} {b_obj}. They put them all into {c} "
+        "equal piles. How many {obj} are in each pile?",
+    ),
+    # {c} shared equally into ({a} + {b}) groups
+    (Operation.ADD, Operation.DIVIDE, Unknown.SECOND): (
+        "{n1} shares {c} {c_obj} equally among {a} {a:boy|boys} and {b} {b:girl|girls}. "
+        "How many {obj} does each child get?",
+        "{c} {c_obj} are put into {a} red {a:box|boxes} and {b} blue {b:box|boxes}, with the same "
+        "number in each box. How many {obj} are in each box?",
+    ),
+    # ({a} - {b}) + {c}
+    (Operation.SUBTRACT, Operation.ADD, Unknown.FIRST): (
+        "{n1} had {a} {a_obj} and gave away {b}. Then {n1} found {c} more. "
+        "How many {obj} does {n1} have now?",
+        "There {a:was|were} {a} {a_obj} on the shelf. {b} {b:was|were} sold, and then {c} more "
+        "{c:was|were} put out. How many {obj} are on the shelf now?",
+    ),
     # ({a} - {b}) - {c}
     (Operation.SUBTRACT, Operation.SUBTRACT, Unknown.FIRST): (
         "A bus had {a} {a:passenger|passengers}. {b} got off at the first stop, and {c} got off "
@@ -227,6 +271,20 @@ TWO_STEP_TEMPLATES: dict[TwoStepShape, tuple[str, ...]] = {
         "How many {obj} does {n1} have left?",
         "A box held {a} {a_obj}. {n1} took out {b}, and then {n2} took out {c}. "
         "How many {obj} are left in the box?",
+    ),
+    # {c} groups of ({a} - {b})
+    (Operation.SUBTRACT, Operation.MULTIPLY, Unknown.SECOND): (
+        "Each of {c} bags had {a} {obj}. {n1} took {b} out of each bag. "
+        "How many {obj} are left in the bags altogether?",
+        "There are {c} boxes with {a} {obj} in each box. {n1} takes {b} out of every box. "
+        "How many {obj} are left in the boxes?",
+    ),
+    # ({a} - {b}) groups of {c}
+    (Operation.SUBTRACT, Operation.MULTIPLY, Unknown.FIRST): (
+        "{n1} had {a} boxes with {c} {obj} in each box, and gave {b} of the boxes to {n2}. "
+        "How many {obj} does {n1} have left?",
+        "{n1} filled {a} bags with {c} {obj} each, then gave away {b} of the bags. "
+        "How many {obj} are in the bags {n1} kept?",
     ),
     # ({a} - {b}) shared equally into {c} groups
     (Operation.SUBTRACT, Operation.DIVIDE, Unknown.FIRST): (
@@ -238,6 +296,13 @@ TWO_STEP_TEMPLATES: dict[TwoStepShape, tuple[str, ...]] = {
         "How many {obj} are in each group?",
         "{n1} has {a} {a_obj}. {b} {b:is|are} in a box, and the rest are in {c} bags with the same "
         "number in each bag. How many {obj} are in each bag?",
+    ),
+    # {c} shared equally into ({a} - {b}) groups
+    (Operation.SUBTRACT, Operation.DIVIDE, Unknown.SECOND): (
+        "{n1} has {c} {c_obj} to share equally among {a} friends, but {b} of them {b:goes|go} "
+        "home. How many {obj} does each friend who stayed get?",
+        "{n1} had {a} boxes and gave away {b} of them. {n1} puts {c} {c_obj} equally into the "
+        "boxes that are left. How many {obj} are in each box?",
     ),
     # ({a} groups of {b}) + {c}
     (Operation.MULTIPLY, Operation.ADD, Unknown.FIRST): (
@@ -255,6 +320,76 @@ TWO_STEP_TEMPLATES: dict[TwoStepShape, tuple[str, ...]] = {
         "How many {obj} does {n1} have left?",
         "A store had {c} {c_obj}. It sold {a} packs with {b} {obj} in each pack. "
         "How many {obj} does the store have left?",
+    ),
+    # {c} groups of ({a} groups of {b})
+    (Operation.MULTIPLY, Operation.MULTIPLY, Unknown.SECOND): (
+        "There are {c} boxes. Each box holds {a} bags, and each bag holds {b} {obj}. "
+        "How many {obj} are in the boxes altogether?",
+        "{n1} buys {c} cartons. Each carton has {a} packs with {b} {obj} in each pack. "
+        "How many {obj} did {n1} buy?",
+    ),
+    # ({a} groups of {b}) groups of {c}
+    (Operation.MULTIPLY, Operation.MULTIPLY, Unknown.FIRST): (
+        "There are {a} shelves with {b} boxes on each shelf, and each box holds {c} {obj}. "
+        "How many {obj} are on the shelves?",
+        "{n1} stacks {a} rows of boxes with {b} boxes in each row. Each box has {c} {obj} in it. "
+        "How many {obj} are in the boxes?",
+    ),
+    # ({a} groups of {b}) shared equally into {c} groups
+    (Operation.MULTIPLY, Operation.DIVIDE, Unknown.FIRST): (
+        "{n1} buys {a} boxes of {obj} with {b} in each box, and shares them equally among {c} "
+        "friends. How many {obj} does each friend get?",
+        "There are {a} bags with {b} {obj} in each bag. The {obj} are put into {c} equal piles. "
+        "How many {obj} are in each pile?",
+    ),
+    # {c} shared equally into ({a} groups of {b})
+    (Operation.MULTIPLY, Operation.DIVIDE, Unknown.SECOND): (
+        "{c} {c_obj} are shared equally among {a} tables with {b} students at each table. "
+        "How many {obj} does each student get?",
+        "{n1} has {a} bags with {b} pockets in each bag, and puts {c} {c_obj} equally into all the "
+        "pockets. How many {obj} are in each pocket?",
+    ),
+    # ({a} shared equally into {b} groups) + {c}
+    (Operation.DIVIDE, Operation.ADD, Unknown.FIRST): (
+        "{n1} shares {a} {obj} equally among {b} friends. Then one friend finds {c} more. "
+        "How many {obj} does that friend have now?",
+        "{a} {obj} are put into {b} equal piles. {n1} adds {c} more to one pile. "
+        "How many {obj} are in that pile now?",
+    ),
+    # ({a} shared equally into {b} groups) - {c}
+    (Operation.DIVIDE, Operation.SUBTRACT, Unknown.FIRST): (
+        "{n1} shares {a} {obj} equally among {b} friends. One friend loses {c} of them. "
+        "How many {obj} does that friend have left?",
+        "{a} {obj} are put into {b} equal boxes. {n1} takes {c} out of one box. "
+        "How many {obj} are left in that box?",
+    ),
+    # {c} groups of ({a} shared equally into {b} groups)
+    (Operation.DIVIDE, Operation.MULTIPLY, Unknown.SECOND): (
+        "{n1} collects {a} {obj} in {b} days, the same number each day. At that rate, how many "
+        "{obj} will {n1} collect in {c} days?",
+        "{a} {obj} fill {b} boxes, with the same number in each box. "
+        "How many {obj} would fill {c} boxes?",
+    ),
+    # ({a} shared equally into {b} groups) groups of {c}
+    (Operation.DIVIDE, Operation.MULTIPLY, Unknown.FIRST): (
+        "{a} boxes are shared equally among {b} friends. Each box holds {c} {obj}. "
+        "How many {obj} does each friend get?",
+        "{n1} sorts {a} bags equally onto {b} shelves. Each bag has {c} {obj} in it. "
+        "How many {obj} are on each shelf?",
+    ),
+    # ({a} shared equally into {b} groups) shared equally into {c} groups
+    (Operation.DIVIDE, Operation.DIVIDE, Unknown.FIRST): (
+        "{a} {obj} are shared equally among {b} classes. Each class shares its {obj} equally "
+        "among {c} tables. How many {obj} does each table get?",
+        "{n1} puts {a} {obj} into {b} equal boxes, then splits each box's {obj} equally into {c} "
+        "bags. How many {obj} are in each bag?",
+    ),
+    # {c} shared equally into ({a} shared equally into {b} groups)
+    (Operation.DIVIDE, Operation.DIVIDE, Unknown.SECOND): (
+        "{a} students are put into {b} equal teams. {n1} shares {c} {c_obj} equally among the "
+        "students on one team. How many {obj} does each of them get?",
+        "{n1} puts {a} boxes equally onto {b} shelves, and then shares {c} {c_obj} equally among "
+        "the boxes on one shelf. How many {obj} are in each of those boxes?",
     ),
 }
 

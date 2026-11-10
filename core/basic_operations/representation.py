@@ -162,6 +162,18 @@ REPRESENTATION_OPERATIONS = {
 # The representations that can show a two-step problem: one bar of strip diagram, or text only
 TWO_STEP_REPRESENTATIONS = frozenset({Representation.STRIP, Representation.NONE})
 
+# The shapes of two-step problem one bar of strip diagram can show: three parts, the whole less a
+# part shared into equal parts, or equal parts and one other. Text only shows every shape.
+STRIP_TWO_STEP_SHAPES: frozenset[TwoStepShape] = frozenset(
+    {
+        (Operation.ADD, Operation.ADD, Unknown.FIRST),
+        (Operation.SUBTRACT, Operation.SUBTRACT, Unknown.FIRST),
+        (Operation.SUBTRACT, Operation.DIVIDE, Unknown.FIRST),
+        (Operation.MULTIPLY, Operation.ADD, Unknown.FIRST),
+        (Operation.MULTIPLY, Operation.SUBTRACT, Unknown.SECOND),
+    }
+)
+
 
 def word_problems_title(representation: Representation, choices: bool = False) -> str:
     """
