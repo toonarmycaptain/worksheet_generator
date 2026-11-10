@@ -1,13 +1,15 @@
 """
 Tests for the arithmetic, missing-number, word-problem, strip-choice and equation-choice
-generators.
+generators, with one step or two.
 
 The ``..._from_scripted_draws`` tests pin the exact output: ``random`` is scripted, so each case
 lists the questions that must be produced. The no-repeats tests,
 ``test_missing_number_sheets_can_always_be_finished``,
 ``test_random_word_problems_have_distinct_answers``,
-``test_random_strip_choice_sheets_can_always_be_finished`` and
-``test_random_equation_choice_sheets_can_always_be_finished`` use real random draws.
+``test_random_strip_choice_sheets_can_always_be_finished``,
+``test_random_equation_choice_sheets_can_always_be_finished``,
+``test_random_two_step_problems_have_distinct_answers`` and
+``test_random_two_step_strip_choice_sheets_can_always_be_finished`` use real random draws.
 """
 
 import pytest
@@ -16,6 +18,8 @@ from core.basic_operations.data import (
     BasicOperationQuestionData,
     MissingNumberQuestionData,
     Operation,
+    TwoStepQuestionData,
+    TwoStepShape,
     Unknown,
 )
 from core.basic_operations.generator import (
@@ -25,16 +29,25 @@ from core.basic_operations.generator import (
     count_possible_questions,
     count_possible_sheet_questions,
     count_possible_strip_choice_problems,
+    count_possible_two_step_problems,
     count_possible_word_problems,
     generate_basic_operation_questions,
     generate_equation_choice_problems,
     generate_missing_number_questions,
     generate_strip_choice_problems,
+    generate_two_step_problems,
+    generate_two_step_strip_choice_problems,
     generate_word_problems,
 )
-from core.basic_operations.representation import equation_choices, strip_choices
+from core.basic_operations.representation import (
+    equation_choices,
+    strip_choices,
+    two_step_strip_choices,
+)
+from core.basic_operations.word_problems import OBJECTS
 from core.question import FreeResponse, MultipleChoice, Question
 from tests.helpers import (
+    choice_returns,
     choices_returns,
     choose_last,
     randint_returns,
@@ -2564,3 +2577,715 @@ def test_equation_choice_sheet_errors(
     with pytest.raises(ValueError) as error:
         generate_equation_choice_problems(count, operations, largest_number=largest_number)
     assert str(error.value) == message
+
+
+# the shapes of two-step problem: the steps' operations, and the second step's operand carried
+ADD_THEN_ADD = (Operation.ADD, Operation.ADD, Unknown.FIRST)
+SUBTRACT_THEN_SUBTRACT = (Operation.SUBTRACT, Operation.SUBTRACT, Unknown.FIRST)
+SUBTRACT_THEN_DIVIDE = (Operation.SUBTRACT, Operation.DIVIDE, Unknown.FIRST)
+MULTIPLY_THEN_ADD = (Operation.MULTIPLY, Operation.ADD, Unknown.FIRST)
+MULTIPLY_THEN_SUBTRACT = (Operation.MULTIPLY, Operation.SUBTRACT, Unknown.SECOND)
+CARDS = ("card", "cards")  # the object chosen for a problem's wording
+
+
+@pytest.mark.parametrize(
+    (
+        "count",
+        "operations",
+        "picks",
+        "distinct_answers",
+        "largest_number",
+        "largest_groups",
+        "chosen",
+        "expected",
+    ),
+    [
+        # what's left of 24 after 6, shared into 3, with the default limits
+        (
+            1,
+            [Operation.SUBTRACT, Operation.DIVIDE],
+            [SUBTRACT_THEN_DIVIDE],
+            False,
+            999,
+            6,
+            [
+                18,
+                BasicOperationQuestionData(Operation.SUBTRACT, (24, 6), 18),
+                BasicOperationQuestionData(Operation.DIVIDE, (18, 3), 6),
+                CARDS,
+            ],
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.SUBTRACT, (24, 6), 18),
+                        BasicOperationQuestionData(Operation.DIVIDE, (18, 3), 6),
+                    ),
+                    Unknown.FIRST,
+                    6,
+                    "Maria has 24 cards. 6 are in a box, and the rest are in 3 bags with the same "
+                    "number in each bag. How many cards are in each bag?",
+                ),
+            ],
+        ),
+        # the first step's answer taken from the whole, the second step's first operand
+        (
+            1,
+            [Operation.SUBTRACT, Operation.MULTIPLY],
+            [MULTIPLY_THEN_SUBTRACT],
+            False,
+            999,
+            6,
+            [
+                15,
+                BasicOperationQuestionData(Operation.MULTIPLY, (3, 5), 15),
+                BasicOperationQuestionData(Operation.SUBTRACT, (45, 15), 30),
+                CARDS,
+            ],
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.MULTIPLY, (3, 5), 15),
+                        BasicOperationQuestionData(Operation.SUBTRACT, (45, 15), 30),
+                    ),
+                    Unknown.SECOND,
+                    30,
+                    "A store had 45 cards. It sold 3 packs with 5 cards in each pack. "
+                    "How many cards does the store have left?",
+                ),
+            ],
+        ),
+        # adding three numbers
+        (
+            1,
+            [Operation.ADD],
+            [ADD_THEN_ADD],
+            False,
+            999,
+            6,
+            [
+                10,
+                BasicOperationQuestionData(Operation.ADD, (4, 6), 10),
+                BasicOperationQuestionData(Operation.ADD, (10, 7), 17),
+                CARDS,
+            ],
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.ADD, (4, 6), 10),
+                        BasicOperationQuestionData(Operation.ADD, (10, 7), 17),
+                    ),
+                    Unknown.FIRST,
+                    17,
+                    "A jar held 4 cards. Maria added 6 more, and then Jamal added 7 more. "
+                    "How many cards are in the jar now?",
+                ),
+            ],
+        ),
+        # equal groups, with a part added
+        (
+            1,
+            [Operation.ADD, Operation.MULTIPLY],
+            [MULTIPLY_THEN_ADD],
+            False,
+            999,
+            6,
+            [
+                15,
+                BasicOperationQuestionData(Operation.MULTIPLY, (3, 5), 15),
+                BasicOperationQuestionData(Operation.ADD, (15, 4), 19),
+                CARDS,
+            ],
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.MULTIPLY, (3, 5), 15),
+                        BasicOperationQuestionData(Operation.ADD, (15, 4), 19),
+                    ),
+                    Unknown.FIRST,
+                    19,
+                    "There are 3 boxes with 5 cards in each box. Maria brings 4 more. "
+                    "How many cards are there now?",
+                ),
+            ],
+        ),
+        # a repeated problem is redrawn, and each problem has its own template
+        (
+            2,
+            [Operation.SUBTRACT],
+            [SUBTRACT_THEN_SUBTRACT, SUBTRACT_THEN_SUBTRACT],
+            False,
+            999,
+            6,
+            [
+                20,
+                BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                BasicOperationQuestionData(Operation.SUBTRACT, (20, 8), 12),
+                20,
+                BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                BasicOperationQuestionData(Operation.SUBTRACT, (20, 8), 12),
+                20,
+                BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                BasicOperationQuestionData(Operation.SUBTRACT, (20, 7), 13),
+                CARDS,
+                CARDS,
+            ],
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                        BasicOperationQuestionData(Operation.SUBTRACT, (20, 8), 12),
+                    ),
+                    Unknown.FIRST,
+                    12,
+                    "A box held 25 cards. Maria took out 5, and then Jamal took out 8. "
+                    "How many cards are left in the box?",
+                ),
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                        BasicOperationQuestionData(Operation.SUBTRACT, (20, 7), 13),
+                    ),
+                    Unknown.FIRST,
+                    13,
+                    "Maria had 25 cards. Maria gave 5 to Jamal and then lost 7. "
+                    "How many cards does Maria have left?",
+                ),
+            ],
+        ),
+        # with distinct answers, a second answer of 17 is redrawn
+        (
+            2,
+            [Operation.ADD, Operation.SUBTRACT],
+            [ADD_THEN_ADD, SUBTRACT_THEN_SUBTRACT],
+            True,
+            999,
+            6,
+            [
+                10,
+                BasicOperationQuestionData(Operation.ADD, (4, 6), 10),
+                BasicOperationQuestionData(Operation.ADD, (10, 7), 17),
+                20,
+                BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                BasicOperationQuestionData(Operation.SUBTRACT, (20, 3), 17),
+                20,
+                BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                BasicOperationQuestionData(Operation.SUBTRACT, (20, 8), 12),
+                CARDS,
+                CARDS,
+            ],
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.ADD, (4, 6), 10),
+                        BasicOperationQuestionData(Operation.ADD, (10, 7), 17),
+                    ),
+                    Unknown.FIRST,
+                    17,
+                    "A jar held 4 cards. Maria added 6 more, and then Jamal added 7 more. "
+                    "How many cards are in the jar now?",
+                ),
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                        BasicOperationQuestionData(Operation.SUBTRACT, (20, 8), 12),
+                    ),
+                    Unknown.FIRST,
+                    12,
+                    "A box held 25 cards. Maria took out 5, and then Jamal took out 8. "
+                    "How many cards are left in the box?",
+                ),
+            ],
+        ),
+        # without, it's kept
+        (
+            2,
+            [Operation.ADD, Operation.SUBTRACT],
+            [ADD_THEN_ADD, SUBTRACT_THEN_SUBTRACT],
+            False,
+            999,
+            6,
+            [
+                10,
+                BasicOperationQuestionData(Operation.ADD, (4, 6), 10),
+                BasicOperationQuestionData(Operation.ADD, (10, 7), 17),
+                20,
+                BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                BasicOperationQuestionData(Operation.SUBTRACT, (20, 3), 17),
+                CARDS,
+                CARDS,
+            ],
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.ADD, (4, 6), 10),
+                        BasicOperationQuestionData(Operation.ADD, (10, 7), 17),
+                    ),
+                    Unknown.FIRST,
+                    17,
+                    "A jar held 4 cards. Maria added 6 more, and then Jamal added 7 more. "
+                    "How many cards are in the jar now?",
+                ),
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                        BasicOperationQuestionData(Operation.SUBTRACT, (20, 3), 17),
+                    ),
+                    Unknown.FIRST,
+                    17,
+                    "A box held 25 cards. Maria took out 5, and then Jamal took out 3. "
+                    "How many cards are left in the box?",
+                ),
+            ],
+        ),
+        # with up to 12 groups, 18 can be shared into 9
+        (
+            1,
+            [Operation.SUBTRACT, Operation.DIVIDE],
+            [SUBTRACT_THEN_DIVIDE],
+            False,
+            999,
+            12,
+            [
+                18,
+                BasicOperationQuestionData(Operation.SUBTRACT, (24, 6), 18),
+                BasicOperationQuestionData(Operation.DIVIDE, (18, 9), 2),
+                CARDS,
+            ],
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.SUBTRACT, (24, 6), 18),
+                        BasicOperationQuestionData(Operation.DIVIDE, (18, 9), 2),
+                    ),
+                    Unknown.FIRST,
+                    2,
+                    "Maria has 24 cards. 6 are in a box, and the rest are in 9 bags with the same "
+                    "number in each bag. How many cards are in each bag?",
+                ),
+            ],
+        ),
+    ],
+)
+def test_two_step_problems_from_scripted_draws(
+    count: int,
+    operations: list[Operation],
+    picks: list[TwoStepShape],
+    distinct_answers: bool,
+    largest_number: int,
+    largest_groups: int,
+    chosen: list[object],
+    expected: list[TwoStepQuestionData],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """
+    Each problem's shape is drawn, as ``picks``. Then ``chosen`` lists the draws: for each
+    problem, the number its first step carries into its second, then each step, redrawn while the
+    problem repeats a problem, or with ``distinct_answers`` an answer; then the object for each
+    problem's wording.
+
+    Every pick must be among those offered, as listed in
+    ``test_two_step_problems_offer_only_steps_that_repeat_no_number``. The wording takes the first
+    two names and each shape's templates from the last. The problems are free response, with no
+    wrong answers.
+    """
+    choices_returns(monkeypatch, picks)
+    choice_returns(monkeypatch, chosen)
+    sample_first(monkeypatch)
+
+    questions = generate_two_step_problems(
+        count,
+        operations,
+        distinct_answers=distinct_answers,
+        largest_number=largest_number,
+        largest_groups=largest_groups,
+    )
+
+    assert questions == [Question(data, FreeResponse()) for data in expected]
+
+
+@pytest.mark.parametrize(
+    ("operations", "picks", "largest_number", "chosen", "offered"),
+    [
+        # Three numbers that make at most 7: 7 can't be carried, as nothing is left to add, and
+        # 4 is 1 + 3 or 3 + 1, but not 2 + 2. After 1 + 3, only 2 can be added, not 1 or 3.
+        (
+            [Operation.ADD],
+            [ADD_THEN_ADD],
+            7,
+            [
+                4,
+                BasicOperationQuestionData(Operation.ADD, (1, 3), 4),
+                BasicOperationQuestionData(Operation.ADD, (4, 2), 6),
+                CARDS,
+            ],
+            [
+                [3, 4, 5, 6],
+                [
+                    BasicOperationQuestionData(Operation.ADD, (1, 3), 4),
+                    BasicOperationQuestionData(Operation.ADD, (3, 1), 4),
+                ],
+                [BasicOperationQuestionData(Operation.ADD, (4, 2), 6)],
+                OBJECTS,
+            ],
+        ),
+        # Equal groups with a part added, within 10: 4 and 9 can't be carried, as 2 groups of 2
+        # and 3 groups of 3 repeat a number. After 2 groups of 3, neither 2 nor 3 can be added.
+        (
+            [Operation.ADD, Operation.MULTIPLY],
+            [MULTIPLY_THEN_ADD],
+            10,
+            [
+                6,
+                BasicOperationQuestionData(Operation.MULTIPLY, (2, 3), 6),
+                BasicOperationQuestionData(Operation.ADD, (6, 4), 10),
+                CARDS,
+            ],
+            [
+                [6, 8],
+                [
+                    BasicOperationQuestionData(Operation.MULTIPLY, (2, 3), 6),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (3, 2), 6),
+                ],
+                [
+                    BasicOperationQuestionData(Operation.ADD, (6, 1), 7),
+                    BasicOperationQuestionData(Operation.ADD, (6, 4), 10),
+                ],
+                OBJECTS,
+            ],
+        ),
+    ],
+)
+def test_two_step_problems_offer_only_steps_that_repeat_no_number(
+    operations: list[Operation],
+    picks: list[TwoStepShape],
+    largest_number: int,
+    chosen: list[object],
+    offered: list[object],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """
+    Each draw offers only what can make a problem that repeats none of its given numbers, so no
+    problem is drawn again for that. ``offered`` lists what each draw is chosen from: the numbers
+    the first step can carry, then the first steps, the second steps, and the objects.
+    """
+    choices_returns(monkeypatch, picks)
+    drawn_from = choice_returns(monkeypatch, chosen)
+    sample_first(monkeypatch)
+
+    generate_two_step_problems(1, operations, largest_number=largest_number)
+
+    assert drawn_from == offered
+
+
+@pytest.mark.parametrize(
+    ("operations", "count", "largest_number"),
+    [
+        # tiles: 12 answers with the defaults
+        ([Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE], 12, 999),
+        # Sharing what's left: every answer, the sizes 2 to 20. The last are found by redrawing.
+        ([Operation.SUBTRACT, Operation.DIVIDE], 19, 999),
+        # adding three numbers within 20: every answer, 6 to 20
+        ([Operation.ADD], 15, 20),
+    ],
+)
+def test_random_two_step_problems_have_distinct_answers(
+    operations: list[Operation], count: int, largest_number: int
+) -> None:
+    """A sheet of the most problems the limits allow is produced with no answer repeated."""
+    questions = generate_two_step_problems(
+        count, operations, distinct_answers=True, largest_number=largest_number
+    )
+    assert len({question.data.answer for question in questions}) == count
+
+
+@pytest.mark.parametrize(
+    (
+        "operations",
+        "distinct_answers",
+        "up_to",
+        "largest_number",
+        "largest_groups",
+        "split_evenly",
+        "expected",
+    ),
+    [
+        # three different numbers that make at most 6: 1, 2 and 3 in any order, with 1 answer
+        ([Operation.ADD], False, 1000, 6, 6, False, 6),
+        ([Operation.ADD], True, 1000, 6, 6, False, 1),
+        # 5 is too small for three different numbers
+        ([Operation.ADD], False, 1000, 5, 6, False, 0),
+        # two different numbers taken from a whole of at most 6, leaving 1 to 3
+        ([Operation.SUBTRACT], False, 1000, 6, 6, False, 14),
+        ([Operation.SUBTRACT], True, 1000, 6, 6, False, 3),
+        # the default largest number: sums from 1 + 2 + 3 to 999, and differences from 1 to
+        # 999 - 1 - 2
+        ([Operation.ADD], True, 1000, 999, 6, False, 994),
+        ([Operation.SUBTRACT], True, 1000, 999, 6, False, 996),
+        # sharing what's left into 2 groups within 20: 4 to 18 left, each in fewer ways
+        ([Operation.SUBTRACT, Operation.DIVIDE], False, 1000, 20, 2, False, 64),
+        # more groups, more ways
+        ([Operation.SUBTRACT, Operation.DIVIDE], False, 1000, 20, 6, False, 143),
+        # its answers, the sizes of each group, 2 to 20
+        ([Operation.SUBTRACT, Operation.DIVIDE], True, 1000, 999, 6, False, 19),
+        # the least of the shapes'
+        (
+            [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
+            True,
+            1000,
+            999,
+            6,
+            False,
+            19,
+        ),
+        # every shape adds or subtracts
+        ([Operation.MULTIPLY], False, 1000, 999, 6, False, 0),
+        ([Operation.MULTIPLY, Operation.DIVIDE], False, 1000, 999, 6, False, 0),
+        # Split evenly, each shape needs only its share: 6 of each of two shapes. With distinct
+        # answers, any shape's answer can be any problem's.
+        ([Operation.ADD, Operation.SUBTRACT], False, 1000, 6, 6, True, 12),
+        ([Operation.ADD, Operation.SUBTRACT], True, 1000, 6, 6, True, 1),
+        # 2 groups within 12, with a part added: 7 problems, so 7 of each of the five shapes
+        (
+            [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
+            False,
+            1000,
+            12,
+            2,
+            False,
+            7,
+        ),
+        (
+            [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
+            False,
+            1000,
+            12,
+            2,
+            True,
+            35,
+        ),
+        # capped
+        (
+            [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
+            False,
+            20,
+            999,
+            6,
+            False,
+            20,
+        ),
+    ],
+)
+def test_count_possible_two_step_problems(
+    operations: list[Operation],
+    distinct_answers: bool,
+    up_to: int,
+    largest_number: int,
+    largest_groups: int,
+    split_evenly: bool,
+    expected: int,
+) -> None:
+    """
+    Any one shape may be drawn for every problem, so the count is the least of theirs: its
+    problems with no number repeated, or with distinct answers its answers. The largest number
+    caps every number, the first step's answer too.
+    """
+    possible = count_possible_two_step_problems(
+        operations,
+        distinct_answers=distinct_answers,
+        up_to=up_to,
+        largest_number=largest_number,
+        largest_groups=largest_groups,
+        split_evenly=split_evenly,
+    )
+    assert possible == expected
+
+
+@pytest.mark.parametrize(
+    ("operations", "distinct_answers", "count", "largest_number", "message"),
+    [
+        (
+            [Operation.MULTIPLY, Operation.DIVIDE],
+            False,
+            1,
+            999,
+            "Cannot make 1 different problems: only 0 possible.",
+        ),
+        (
+            [Operation.ADD],
+            False,
+            7,
+            6,
+            "Cannot make 7 different problems: only 6 possible.",
+        ),
+        (
+            [Operation.ADD],
+            True,
+            2,
+            6,
+            "Cannot make 2 problems with different answers: only 1 possible.",
+        ),
+    ],
+)
+def test_two_step_sheet_errors(
+    operations: list[Operation],
+    distinct_answers: bool,
+    count: int,
+    largest_number: int,
+    message: str,
+) -> None:
+    """
+    Requesting more problems than the operations and limits allow raises ``ValueError`` saying
+    how many.
+    """
+    with pytest.raises(ValueError) as error:
+        generate_two_step_problems(
+            count, operations, distinct_answers=distinct_answers, largest_number=largest_number
+        )
+    assert str(error.value) == message
+
+
+@pytest.mark.parametrize(
+    ("count", "operations", "largest_number", "largest_groups", "chosen", "expected"),
+    [
+        # the defaults, a largest number of 100 and 12 groups: one of each shape, then the sheet
+        # is shuffled
+        (
+            2,
+            [Operation.ADD, Operation.SUBTRACT],
+            100,
+            12,
+            [
+                20,
+                BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                BasicOperationQuestionData(Operation.SUBTRACT, (20, 8), 12),
+                10,
+                BasicOperationQuestionData(Operation.ADD, (4, 6), 10),
+                BasicOperationQuestionData(Operation.ADD, (10, 7), 17),
+                CARDS,
+                CARDS,
+            ],
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                        BasicOperationQuestionData(Operation.SUBTRACT, (20, 8), 12),
+                    ),
+                    Unknown.FIRST,
+                    12,
+                    "A box held 25 cards. Maria took out 5, and then Jamal took out 8. "
+                    "How many cards are left in the box?",
+                ),
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.ADD, (4, 6), 10),
+                        BasicOperationQuestionData(Operation.ADD, (10, 7), 17),
+                    ),
+                    Unknown.FIRST,
+                    17,
+                    "A jar held 4 cards. Maria added 6 more, and then Jamal added 7 more. "
+                    "How many cards are in the jar now?",
+                ),
+            ],
+        ),
+        # 3 problems split between 2 shapes: the extra goes to the last, sharing what's left,
+        # which can share 18 into 9 with up to 12 groups
+        (
+            3,
+            [Operation.SUBTRACT, Operation.DIVIDE],
+            100,
+            12,
+            [
+                18,
+                BasicOperationQuestionData(Operation.SUBTRACT, (24, 6), 18),
+                BasicOperationQuestionData(Operation.DIVIDE, (18, 9), 2),
+                18,
+                BasicOperationQuestionData(Operation.SUBTRACT, (24, 6), 18),
+                BasicOperationQuestionData(Operation.DIVIDE, (18, 3), 6),
+                20,
+                BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                BasicOperationQuestionData(Operation.SUBTRACT, (20, 8), 12),
+                CARDS,
+                CARDS,
+                CARDS,
+            ],
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.SUBTRACT, (24, 6), 18),
+                        BasicOperationQuestionData(Operation.DIVIDE, (18, 9), 2),
+                    ),
+                    Unknown.FIRST,
+                    2,
+                    "Maria has 24 cards. 6 are in a box, and the rest are in 9 bags with the same "
+                    "number in each bag. How many cards are in each bag?",
+                ),
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.SUBTRACT, (24, 6), 18),
+                        BasicOperationQuestionData(Operation.DIVIDE, (18, 3), 6),
+                    ),
+                    Unknown.FIRST,
+                    6,
+                    "Maria had 24 cards and used 6. Maria put the rest into 3 equal groups. "
+                    "How many cards are in each group?",
+                ),
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                        BasicOperationQuestionData(Operation.SUBTRACT, (20, 8), 12),
+                    ),
+                    Unknown.FIRST,
+                    12,
+                    "A box held 25 cards. Maria took out 5, and then Jamal took out 8. "
+                    "How many cards are left in the box?",
+                ),
+            ],
+        ),
+    ],
+)
+def test_two_step_strip_choice_problems_from_scripted_draws(
+    count: int,
+    operations: list[Operation],
+    largest_number: int,
+    largest_groups: int,
+    chosen: list[object],
+    expected: list[TwoStepQuestionData],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """
+    The shapes are split evenly, then the sheet is shuffled, and each problem is drawn as in
+    ``test_two_step_problems_from_scripted_draws``.
+
+    ``sample`` keeps the shapes' order, so any extra problems go to the last, and ``shuffle``
+    reverses the sheet and each problem's choices. Each problem's choices are those of
+    ``two_step_strip_choices``, tested in ``test_representation``.
+    """
+    choice_returns(monkeypatch, chosen)
+    sample_first(monkeypatch)
+    reverse_shuffle(monkeypatch)
+
+    questions = generate_two_step_strip_choice_problems(
+        count, operations, largest_number=largest_number, largest_groups=largest_groups
+    )
+
+    assert questions == [Question(data, two_step_strip_choices(data)) for data in expected]
+
+
+@pytest.mark.parametrize(
+    ("operations", "count", "largest_number", "largest_groups"),
+    [
+        # the most problems allowed, 20, with the defaults
+        ([Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE], 20, 100, 12),
+        # every multiplication with a part added within 12 in 2 groups, 7, and as many sums of
+        # three numbers
+        ([Operation.ADD, Operation.MULTIPLY], 14, 12, 2),
+    ],
+)
+def test_random_two_step_strip_choice_sheets_can_always_be_finished(
+    operations: list[Operation], count: int, largest_number: int, largest_groups: int
+) -> None:
+    """A sheet of the most problems the limits allow is produced, with no problem repeated."""
+    questions = generate_two_step_strip_choice_problems(
+        count, operations, largest_number=largest_number, largest_groups=largest_groups
+    )
+    assert len({question.data.steps for question in questions}) == count
