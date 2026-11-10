@@ -13,7 +13,7 @@ Temporary: the phase 5 CLI and the shared core replace these adapters.
 from __future__ import annotations
 
 import random
-from collections.abc import Callable, Mapping, Sequence
+from collections.abc import Callable, Collection, Mapping, Sequence
 from dataclasses import dataclass
 from io import BytesIO
 from typing import Annotated, Any, BinaryIO, Literal, Self
@@ -30,7 +30,7 @@ from core.base_ten_blocks import (
     count_possible_blocks_questions,
     generate_blocks_questions,
 )
-from core.basic_operations.data import Operation, Unknown
+from core.basic_operations.data import Operation, TwoStepShape, Unknown
 from core.basic_operations.generator import (
     DEFAULT_LARGEST_DIVIDEND,
     DEFAULT_LARGEST_DIVISOR,
@@ -65,6 +65,7 @@ from core.basic_operations.representation import (
     REPRESENTATION_NAMES,
     REPRESENTATION_OPERATIONS,
     STRIP_CHOICE_NAME,
+    STRIP_TWO_STEP_SHAPES,
     TWO_STEP_REPRESENTATIONS,
     Prompt,
     Representation,
@@ -221,12 +222,16 @@ def _operations(ticked: Sequence[str]) -> list[Operation]:
     return [operation for operation in Operation if operation.value in ticked]
 
 
-def _two_steps_can_be_made(operations: Sequence[Operation]) -> None:
+def _two_steps_can_be_made(
+    operations: Sequence[Operation], shapes: Collection[TwoStepShape] | None
+) -> None:
     """
-    Raise ``ValueError`` if no shape of two-step problem has both its operations in
-    ``operations``: every shape so far adds or subtracts.
+    Raise ``ValueError`` if no shape of two-step problem among ``shapes``, or among all if
+    ``None``, has both its operations in ``operations``. Every shape a strip diagram shows adds or
+    subtracts. Every operation has a shape of its own, such as multiplying twice, so among all
+    shapes there is always one.
     """
-    if not two_step_shapes(operations):
+    if not two_step_shapes(operations, shapes):
         raise ValueError("operations: two steps need addition or subtraction")
 
 
@@ -481,6 +486,16 @@ class WordProblemOptions(HeaderOptions):
         return LARGEST_WORD_PROBLEM_NUMBER
 
     @property
+    def shapes(self) -> frozenset[TwoStepShape] | None:
+        """
+        The shapes of two-step problem the representation can show: a strip diagram's five, or
+        with text only, all of them.
+        """
+        if Representation(self.representation) is Representation.STRIP:
+            return STRIP_TWO_STEP_SHAPES
+        return None
+
+    @property
     def choices(self) -> bool:
         """Whether each problem's representation is chosen from lettered ones."""
         return self.response == "multiple_choice"
@@ -541,7 +556,7 @@ class WordProblemOptions(HeaderOptions):
         # distinct answer.
         operations = _operations(self.operations)
         if self.steps == "two":
-            _two_steps_can_be_made(operations)
+            _two_steps_can_be_made(operations, self.shapes)
 
         def possible_with(largest: int) -> int:
             if self.steps == "two":
@@ -550,6 +565,7 @@ class WordProblemOptions(HeaderOptions):
                     distinct_answers=self.self_check_tiles,
                     up_to=self.problems,
                     largest_number=largest,
+                    shapes=self.shapes,
                 )
             if self.choices and Representation(self.representation) is Representation.NUMBER_LINE:
                 return count_possible_number_line_choice_problems(
@@ -621,7 +637,7 @@ class StripChoiceOptions(HeaderOptions):
         operations = _operations(self.operations)
         two_steps = self.steps == "two"
         if two_steps:
-            _two_steps_can_be_made(operations)
+            _two_steps_can_be_made(operations, STRIP_TWO_STEP_SHAPES)
 
         def possible_with(largest: int, groups: int) -> int:
             if two_steps:
@@ -631,6 +647,7 @@ class StripChoiceOptions(HeaderOptions):
                     largest_number=largest,
                     largest_groups=groups,
                     split_evenly=True,
+                    shapes=STRIP_TWO_STEP_SHAPES,
                 )
             return count_possible_strip_choice_problems(
                 operations, up_to=self.problems, largest_number=largest, largest_groups=groups
@@ -969,6 +986,7 @@ def _word_problems(o: WordProblemOptions, out: BinaryIO) -> None:
             _operations(o.operations),
             distinct_answers=o.self_check_tiles,
             largest_number=o.max_number,
+            shapes=o.shapes,
         )
     else:
         questions = generate_word_problems(
