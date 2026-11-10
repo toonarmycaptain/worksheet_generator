@@ -2,8 +2,8 @@
 Tests for the strip choice worksheet PDFs, rendered from hand-built questions.
 
 The question generator is not used. Questions are built by hand, with their wording, and each
-has the strip diagrams of ``strip_choices``. ``reverse_shuffle`` fixes their order by reversing
-them, so the correct strip is always D.
+has the strip diagrams of ``strip_choices``, or for two steps ``two_step_strip_choices``.
+``reverse_shuffle`` fixes their order by reversing them, so the correct strip is always D.
 
 Each case's output is stored as text decoded from the PDF, in one file with a section per case:
 ``goldens/strip_choice_worksheet_pdf_expecteds.txt``. The text includes the instruction, every
@@ -14,7 +14,12 @@ regenerate sections after an intended change, uncomment the ``write_section`` li
 
 import pytest
 
-from core.basic_operations.data import BasicOperationQuestionData, Operation
+from core.basic_operations.data import (
+    BasicOperationQuestionData,
+    Operation,
+    TwoStepQuestionData,
+    Unknown,
+)
 from core.basic_operations.representation import Prompt
 from tests.helpers import GOLDENS, pdf_text, read_sections, render_strip_choice, reverse_shuffle
 
@@ -68,6 +73,96 @@ AT_THEIR_LIMITS = [
     ),
 ]
 
+# one two-step problem of each shape, so five, and the fifth starts a second page
+TWO_STEPS = [
+    TwoStepQuestionData(
+        (
+            BasicOperationQuestionData(Operation.ADD, (14, 26), 40),
+            BasicOperationQuestionData(Operation.ADD, (40, 9), 49),
+        ),
+        Unknown.FIRST,
+        49,
+        "A jar held 14 marbles. Maria added 26 more, and then Jamal added 9 more. "
+        "How many marbles are in the jar now?",
+    ),
+    TwoStepQuestionData(
+        (
+            BasicOperationQuestionData(Operation.SUBTRACT, (64, 15), 49),
+            BasicOperationQuestionData(Operation.SUBTRACT, (49, 23), 26),
+        ),
+        Unknown.FIRST,
+        26,
+        "A box held 64 crayons. Priya took out 15, and then Leo took out 23. "
+        "How many crayons are left in the box?",
+    ),
+    TwoStepQuestionData(
+        (
+            BasicOperationQuestionData(Operation.SUBTRACT, (38, 8), 30),
+            BasicOperationQuestionData(Operation.DIVIDE, (30, 5), 6),
+        ),
+        Unknown.FIRST,
+        6,
+        "Sofia has 38 stickers. 8 are in a box, and the rest are in 5 bags with the same number "
+        "in each bag. How many stickers are in each bag?",
+    ),
+    TwoStepQuestionData(
+        (
+            BasicOperationQuestionData(Operation.MULTIPLY, (4, 6), 24),
+            BasicOperationQuestionData(Operation.ADD, (24, 7), 31),
+        ),
+        Unknown.FIRST,
+        31,
+        "There are 4 boxes with 6 apples in each box. Kai brings 7 more. "
+        "How many apples are there now?",
+    ),
+    TwoStepQuestionData(
+        (
+            BasicOperationQuestionData(Operation.MULTIPLY, (6, 12), 72),
+            BasicOperationQuestionData(Operation.SUBTRACT, (90, 72), 18),
+        ),
+        Unknown.SECOND,
+        18,
+        "A store had 90 pencils. It sold 6 packs with 12 pencils in each pack. "
+        "How many pencils does the store have left?",
+    ),
+]
+
+# 100 less 4 shared into 12, and 12 groups of 8 with 4 more: their choices of one equal part too
+# many have 14 parts, each an equal share of the strip. 1 + 2 + 97: its narrow parts are widened
+# to fit their numbers.
+TWO_STEPS_AT_THEIR_LIMITS = [
+    TwoStepQuestionData(
+        (
+            BasicOperationQuestionData(Operation.SUBTRACT, (100, 4), 96),
+            BasicOperationQuestionData(Operation.DIVIDE, (96, 12), 8),
+        ),
+        Unknown.FIRST,
+        8,
+        "Maria has 100 beads. 4 are in a box, and the rest are in 12 bags with the same number "
+        "in each bag. How many beads are in each bag?",
+    ),
+    TwoStepQuestionData(
+        (
+            BasicOperationQuestionData(Operation.MULTIPLY, (12, 8), 96),
+            BasicOperationQuestionData(Operation.ADD, (96, 4), 100),
+        ),
+        Unknown.FIRST,
+        100,
+        "There are 12 boxes with 8 cards in each box. Leo brings 4 more. "
+        "How many cards are there now?",
+    ),
+    TwoStepQuestionData(
+        (
+            BasicOperationQuestionData(Operation.ADD, (1, 2), 3),
+            BasicOperationQuestionData(Operation.ADD, (3, 97), 100),
+        ),
+        Unknown.FIRST,
+        100,
+        "A jar held 1 bead. Sam added 2 more, and then Ivy added 97 more. "
+        "How many beads are in the jar now?",
+    ),
+]
+
 EXPECTED = GOLDENS / "strip_choice_worksheet_pdf_expecteds.txt"
 
 
@@ -84,11 +179,23 @@ EXPECTED = GOLDENS / "strip_choice_worksheet_pdf_expecteds.txt"
         ("at_their_limits", AT_THEIR_LIMITS, Prompt.WORD_PROBLEM, False, TITLE, "Sheet A"),
         # the title and label are the ones given
         ("title_and_label", FOUR_OPERATIONS, Prompt.WORD_PROBLEM, True, "Strip Practice", "Week 3"),
+        # Two steps: each choice is one bar, with its whole in a box over its parts. The
+        # equation has the first step in brackets, and the key has each step and the letter.
+        ("two_steps_both_answer_key", TWO_STEPS, Prompt.BOTH, True, TITLE, "Sheet A"),
+        ("two_steps_word_problem", TWO_STEPS, Prompt.WORD_PROBLEM, False, TITLE, "Sheet A"),
+        (
+            "two_steps_at_their_limits",
+            TWO_STEPS_AT_THEIR_LIMITS,
+            Prompt.WORD_PROBLEM,
+            False,
+            TITLE,
+            "Sheet A",
+        ),
     ],
 )
 def test_pdf_draws_the_expected_text(
     case_name: str,
-    questions: list[BasicOperationQuestionData],
+    questions: list[BasicOperationQuestionData | TwoStepQuestionData],
     prompt: Prompt,
     answer_key: bool,
     title: str,

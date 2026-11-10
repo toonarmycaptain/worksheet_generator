@@ -66,6 +66,8 @@ def test_pages(client: Client) -> None:
                 b"operations",
                 b"max_number",
                 b"representation",
+                b"steps",  # a radio button for each choice
+                b"steps",
                 b"no_hints",
                 b"work_box",
                 b"black_and_white",
@@ -83,6 +85,8 @@ def test_pages(client: Client) -> None:
                 b"operations",
                 b"operations",
                 b"max_number",
+                b"steps",  # a radio button for each choice
+                b"steps",
                 b"max_groups",
                 b"prompt",  # a radio button for each choice
                 b"prompt",
@@ -197,6 +201,18 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
                 (b"word_problem", b" checked", b"Word problem"),
                 (b"equation", b"", b"Equation"),
                 (b"both", b"", b"Both"),
+            ],
+        ),
+        # one step by default, on the word problems and strip choice forms
+        (
+            "/basic-operations/",
+            "steps",
+            [
+                (b"one", b" checked", b"One step"),
+                (b"two", b"", b"Two steps"),
+                # the strip choice form
+                (b"one", b" checked", b"One step"),
+                (b"two", b"", b"Two steps"),
             ],
         ),
         # a grid by default

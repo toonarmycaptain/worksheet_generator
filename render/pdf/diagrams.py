@@ -17,7 +17,12 @@ from reportlab.pdfgen.canvas import Canvas
 
 from core.base_ten_blocks import BLOCK_NAMES, BaseTenBlocks, BlocksDiagram
 from core.basic_operations.data import Operation
-from core.basic_operations.representation import SYMBOLS, EqualStripDiagram, StripDiagram
+from core.basic_operations.representation import (
+    SYMBOLS,
+    EqualStripDiagram,
+    StripDiagram,
+    TwoStepStripDiagram,
+)
 from render.pdf.page import BOLD_FONT, FONT, ITALIC_FONT, TEXT_INDENT, TEXT_WIDTH
 
 UNKNOWN_LABEL = "?"
@@ -35,6 +40,9 @@ BRACKET_COLOUR = HexColor("#718096")
 OUTLINE_COLOUR = HexColor("#2d3748")
 PART_LABEL_SIZE = 12  # a part's number, unless the part is too narrow for it
 PART_LABEL_PADDING = 4  # the least room left beside a narrow part's number
+# A two-step strip's whole is in a box over its bar, where a strip's whole label and bracket are.
+WHOLE_BOX_HEIGHT = STRIP_HEIGHT - STRIP_BAR_HEIGHT
+TWO_STEP_PART_WIDTH = 24  # the least width of a two-step strip's part, while there's room
 
 NUMBER_LINE_WIDTH = TEXT_WIDTH
 NUMBER_LINE_HEIGHT = 74  # from the top of the jump labels to the bottom of the answer caption
@@ -90,15 +98,20 @@ def draw_strip_diagram(
     pdf: Canvas,
     x: float,
     top: float,
-    diagram: StripDiagram | EqualStripDiagram,
+    diagram: StripDiagram | EqualStripDiagram | TwoStepStripDiagram,
     width: float = STRIP_WIDTH,
 ) -> None:
-    """Draw ``diagram`` with ``draw_strip`` or ``draw_equal_strip``, whichever kind it is."""
+    """
+    Draw ``diagram`` with ``draw_strip``, ``draw_equal_strip`` or ``draw_two_step_strip``,
+    whichever kind it is. Each is ``STRIP_HEIGHT`` high, with its bar at the bottom.
+    """
     match diagram:
         case StripDiagram():
             draw_strip(pdf, x, top, diagram, width)
         case EqualStripDiagram():
             draw_equal_strip(pdf, x, top, diagram, width)
+        case TwoStepStripDiagram():
+            draw_two_step_strip(pdf, x, top, diagram, width)
         case _:
             assert_never(diagram)
 
@@ -164,14 +177,96 @@ def draw_equal_strip(
     for index in range(strip.groups):
         pdf.rect(x + index * part_width, bottom, part_width, STRIP_BAR_HEIGHT, stroke=1, fill=1)
     pdf.setFillColor("black")
-    full_width = stringWidth(part_label, BOLD_FONT, PART_LABEL_SIZE)
-    size = min(PART_LABEL_SIZE, PART_LABEL_SIZE * (part_width - PART_LABEL_PADDING) / full_width)
+    size = _label_size(part_label, part_width)
     pdf.setFont(BOLD_FONT, size)
     label_y = bottom + STRIP_BAR_HEIGHT / 2 - size / 3
     for index in range(strip.groups):
         pdf.drawCentredString(x + (index + 0.5) * part_width, label_y, part_label)
 
     pdf.restoreState()
+
+
+def draw_two_step_strip(
+    pdf: Canvas, x: float, top: float, strip: TwoStepStripDiagram, width: float = STRIP_WIDTH
+) -> None:
+    """
+    Draw ``strip`` with its top-left corner at (``x``, ``top``), ``width`` wide and
+    ``STRIP_HEIGHT`` high: its whole in a box ``WHOLE_BOX_HEIGHT`` high, over a bar of its parts
+    ``STRIP_BAR_HEIGHT`` high.
+
+    Each part is as wide as ``_part_widths`` makes it. An unknown value is shown as "?", and
+    filled with ``UNKNOWN_FILL``. A known part is filled with ``KNOWN_FILL``, and a known whole
+    is left white. Each number is ``PART_LABEL_SIZE``, or smaller if its box is too narrow for it.
+    """
+    bottom = top - STRIP_HEIGHT
+    pdf.saveState()
+    pdf.setStrokeColor(OUTLINE_COLOUR)
+    pdf.setLineWidth(1.2)
+    pdf.setFillColor(UNKNOWN_FILL if strip.whole is None else "white")
+    pdf.rect(x, bottom + STRIP_BAR_HEIGHT, width, WHOLE_BOX_HEIGHT, stroke=1, fill=1)
+    _draw_centred_label(pdf, x + width / 2, top - WHOLE_BOX_HEIGHT / 2, _label(strip.whole), width)
+
+    # the parts, side by side
+    left = x
+    for value, part_width in zip(strip.parts, _part_widths(strip, width), strict=True):
+        pdf.setFillColor(UNKNOWN_FILL if value is None else KNOWN_FILL)
+        pdf.rect(left, bottom, part_width, STRIP_BAR_HEIGHT, stroke=1, fill=1)
+        middle = bottom + STRIP_BAR_HEIGHT / 2
+        _draw_centred_label(pdf, left + part_width / 2, middle, _label(value), part_width)
+        left += part_width
+
+    pdf.restoreState()
+
+
+def _part_widths(strip: TwoStepStripDiagram, width: float) -> list[float]:
+    """
+    Return the widths of a two-step strip's parts, ``width`` in all.
+
+    Each part's width is in proportion to its value. An unknown part's value is what the whole
+    leaves after the known parts, shared among the unknown parts, or 0 if the whole leaves none,
+    as in an impossible wrong choice. No part is narrower than ``TWO_STEP_PART_WIDTH``, or than an
+    equal share of ``width`` if there are too many parts for that: the room for a narrow part is
+    taken from the others, in proportion.
+    """
+    known = [value for value in strip.parts if value is not None]
+    unknowns = len(strip.parts) - len(known)
+    left_over = 0 if strip.whole is None else max(strip.whole - sum(known), 0)
+    values = [left_over / unknowns if value is None else value for value in strip.parts]
+    narrowest = min(TWO_STEP_PART_WIDTH, width / len(values))
+    narrow: set[int] = set()
+    while True:
+        # The parts that aren't narrow share what the narrow ones leave, in proportion.
+        others = [index for index in range(len(values)) if index not in narrow]
+        room = width - narrowest * len(narrow)
+        total = sum(values[index] for index in others)
+        widths = [
+            narrowest
+            if index in narrow
+            else room * values[index] / total
+            if total
+            else room / len(others)
+            for index in range(len(values))
+        ]
+        too_narrow = {index for index in others if widths[index] < narrowest}
+        if not too_narrow:
+            return widths
+        narrow |= too_narrow
+
+
+def _label_size(label: str, room: float) -> float:
+    """Return the size of ``label`` that fits ``room``: ``PART_LABEL_SIZE``, or smaller."""
+    full_width = stringWidth(label, BOLD_FONT, PART_LABEL_SIZE)
+    return min(PART_LABEL_SIZE, PART_LABEL_SIZE * (room - PART_LABEL_PADDING) / full_width)
+
+
+def _draw_centred_label(
+    pdf: Canvas, centre_x: float, middle_y: float, label: str, room: float
+) -> None:
+    """Draw ``label`` in black, centred on (``centre_x``, ``middle_y``), sized to fit ``room``."""
+    size = _label_size(label, room)
+    pdf.setFillColor("black")
+    pdf.setFont(BOLD_FONT, size)
+    pdf.drawCentredString(centre_x, middle_y - size / 3, label)
 
 
 def _label(value: int | None) -> str:

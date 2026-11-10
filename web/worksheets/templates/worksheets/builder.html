@@ -237,10 +237,24 @@
     window.addEventListener("pageshow", greyOutOperations);
     greyOutOperations();
 
+    // Only strip diagrams and text only show two steps, so the steps radios show only for them,
+    // and are disabled otherwise, so they aren't sent.
+    const steps = [...form.querySelectorAll("input[name=steps]")];
+    function showSteps() {
+      const show = ["strip", "none"].includes(representation.value);
+      for (const radio of steps) radio.disabled = !show;
+      steps[0].closest("[role=radiogroup]").style.display = show ? "" : "none";
+    }
+    representation.addEventListener("change", showSteps);
+    window.addEventListener("pageshow", showSteps);
+    showSteps();
+
     // The largest number is for addition and subtraction, so it shows only while one of them is
-    // ticked, and is disabled otherwise, so it isn't sent.
+    // ticked, and is disabled otherwise, so it isn't sent. Two steps share a number, so with two
+    // steps it caps every number, and always shows.
     function showLargestNumber() {
-      const show = operations.some(
+      const twoSteps = steps.some((radio) => radio.checked && !radio.disabled && radio.value === "two");
+      const show = twoSteps || operations.some(
         (box) => box.checked && !box.disabled && ["add", "subtract"].includes(box.value),
       );
       form.elements.max_number.disabled = !show;
@@ -248,6 +262,10 @@
       form.elements.max_number.closest("label").style.display = show ? "" : "none";
     }
     for (const box of operations) box.addEventListener("change", showLargestNumber);
+    for (const radio of steps) radio.addEventListener("change", showLargestNumber);
+    // after showSteps, which the operations' change events, sent on a change of representation,
+    // run ahead of
+    representation.addEventListener("change", showLargestNumber);
     window.addEventListener("pageshow", showLargestNumber);
     showLargestNumber();
   </script>

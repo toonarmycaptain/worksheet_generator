@@ -2,11 +2,13 @@
 Tests for the strip choice endpoint: its options reach the core and the renderer intact.
 
 The tests script ``random``. ``randint`` returns the numbers listed, ``sample`` keeps the
-operations' order, so any extra problems go to the last, and ``shuffle`` reverses, both the sheet
-and each problem's choices. The wording takes the first two names, the last object and each
-operation's last template. The PDF must then match what the renderer draws for the same
-questions. Disallowed options get Ninja's JSON error. The renderer's output is tested in
-``test_strip_choice_worksheet``.
+operations' or two-step shapes' order, so any extra problems go to the last, and ``shuffle``
+reverses, both the sheet and each problem's choices. ``choice`` returns the draws listed as
+chosen: for each two-step problem, the number its first step carries, then each step, and then
+each problem's object. The wording takes the first two names and each operation's or shape's
+last template. The PDF must then match what the renderer
+draws for the same questions. Disallowed options get Ninja's JSON error. The renderer's output is
+tested in ``test_strip_choice_worksheet``.
 """
 
 from typing import Any
@@ -14,10 +16,15 @@ from typing import Any
 import pytest
 from django.test import Client
 
-from core.basic_operations.data import BasicOperationQuestionData, Operation
+from core.basic_operations.data import (
+    BasicOperationQuestionData,
+    Operation,
+    TwoStepQuestionData,
+    Unknown,
+)
 from core.basic_operations.representation import Prompt
 from tests.helpers import (
-    choose_last,
+    choice_returns,
     pdf_text,
     randint_returns,
     refused,
@@ -28,13 +35,14 @@ from tests.helpers import (
 
 
 @pytest.mark.parametrize(
-    ("url", "drawn", "status", "expected_json", "pdf_data", "filename"),
+    ("url", "drawn", "chosen", "status", "expected_json", "pdf_data", "filename"),
     [
         (
             # the defaults: one of each operation, then shuffled, with an addition's or
             # subtraction's smaller number at most 12
             "/api/worksheets/strip_choice.pdf?sheet=1ab2c3",
             [3, 4, 3, 4, 47, 9, 47, 5],
+            [("card", "cards"), ("card", "cards"), ("card", "cards"), ("card", "cards")],
             200,
             None,
             {
@@ -82,6 +90,7 @@ from tests.helpers import (
             "&max_groups=5&prompt=both&problems=2&answer_key=true&name_line=true"
             "&title=Strip+Practice&label=Week+3&sheet=1ab2c3",
             [5, 5, 4, 5, 2, 2, 3, 6],
+            [("card", "cards"), ("card", "cards")],
             200,
             None,
             {
@@ -113,6 +122,7 @@ from tests.helpers import (
             "/api/worksheets/strip_choice.pdf?operations=add&prompt=equation&problems=1"
             "&sheet=1ab2c3",
             [47, 5],
+            [("card", "cards")],
             200,
             None,
             {
@@ -139,6 +149,7 @@ from tests.helpers import (
             "/api/worksheets/strip_choice.pdf?operations=subtract&max_groups=3&problems=1"
             "&sheet=1ab2c3",
             [47, 3],
+            [("card", "cards")],
             200,
             None,
             {
@@ -165,6 +176,7 @@ from tests.helpers import (
             "/api/worksheets/strip_choice.pdf?operations=add&operations=multiply&max_number=6"
             "&max_groups=2&problems=2&sheet=1ab2c3",
             [2, 3, 4, 2],
+            [("card", "cards"), ("card", "cards")],
             200,
             None,
             {
@@ -196,6 +208,7 @@ from tests.helpers import (
             "/api/worksheets/strip_choice.pdf?operations=add&operations=multiply&max_number=6"
             "&max_groups=2&problems=3",
             [],
+            [],
             422,
             refused(
                 "problems: at most 2 without repeats for that largest number and largest number "
@@ -210,6 +223,7 @@ from tests.helpers import (
             "/api/worksheets/strip_choice.pdf?operations=subtract&max_number=10&max_groups=5"
             "&problems=12",
             [],
+            [],
             422,
             refused(
                 "problems: at most 9 without repeats for that largest number. Lower problems to "
@@ -221,6 +235,7 @@ from tests.helpers import (
         (
             # 2 groups of 20 is the most in 2 groups, so only the groups can be raised
             "/api/worksheets/strip_choice.pdf?operations=multiply&max_groups=2&problems=20",
+            [],
             [],
             422,
             refused(
@@ -234,6 +249,7 @@ from tests.helpers import (
             # the groups are at their most, so only the largest number can be raised
             "/api/worksheets/strip_choice.pdf?operations=multiply&max_number=10&problems=20",
             [],
+            [],
             422,
             refused(
                 "problems: at most 7 without repeats for that largest number and largest number "
@@ -246,6 +262,7 @@ from tests.helpers import (
             "/api/worksheets/strip_choice.pdf?operations=multiply&max_number=20&max_groups=2"
             "&problems=12",
             [],
+            [],
             422,
             refused(
                 "problems: at most 8 without repeats for that largest number and largest number "
@@ -256,8 +273,173 @@ from tests.helpers import (
             None,
         ),
         (
+            # two steps with the defaults: 4 problems among the 5 shapes, so the first, adding
+            # three numbers, has none, and then the sheet is shuffled
+            "/api/worksheets/strip_choice.pdf?steps=two&sheet=1ab2c3",
+            [],
+            [
+                15,
+                BasicOperationQuestionData(Operation.MULTIPLY, (3, 5), 15),
+                BasicOperationQuestionData(Operation.SUBTRACT, (45, 15), 30),
+                15,
+                BasicOperationQuestionData(Operation.MULTIPLY, (3, 5), 15),
+                BasicOperationQuestionData(Operation.ADD, (15, 4), 19),
+                18,
+                BasicOperationQuestionData(Operation.SUBTRACT, (24, 6), 18),
+                BasicOperationQuestionData(Operation.DIVIDE, (18, 3), 6),
+                20,
+                BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                BasicOperationQuestionData(Operation.SUBTRACT, (20, 8), 12),
+                ("card", "cards"),
+                ("card", "cards"),
+                ("card", "cards"),
+                ("card", "cards"),
+            ],
+            200,
+            None,
+            {
+                "questions": [
+                    TwoStepQuestionData(
+                        (
+                            BasicOperationQuestionData(Operation.MULTIPLY, (3, 5), 15),
+                            BasicOperationQuestionData(Operation.SUBTRACT, (45, 15), 30),
+                        ),
+                        Unknown.SECOND,
+                        30,
+                        "A store had 45 cards. It sold 3 packs with 5 cards in each pack. "
+                        "How many cards does the store have left?",
+                    ),
+                    TwoStepQuestionData(
+                        (
+                            BasicOperationQuestionData(Operation.MULTIPLY, (3, 5), 15),
+                            BasicOperationQuestionData(Operation.ADD, (15, 4), 19),
+                        ),
+                        Unknown.FIRST,
+                        19,
+                        "There are 3 boxes with 5 cards in each box. Maria brings 4 more. "
+                        "How many cards are there now?",
+                    ),
+                    TwoStepQuestionData(
+                        (
+                            BasicOperationQuestionData(Operation.SUBTRACT, (24, 6), 18),
+                            BasicOperationQuestionData(Operation.DIVIDE, (18, 3), 6),
+                        ),
+                        Unknown.FIRST,
+                        6,
+                        "Maria has 24 cards. 6 are in a box, and the rest are in 3 bags with the "
+                        "same number in each bag. How many cards are in each bag?",
+                    ),
+                    TwoStepQuestionData(
+                        (
+                            BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                            BasicOperationQuestionData(Operation.SUBTRACT, (20, 8), 12),
+                        ),
+                        Unknown.FIRST,
+                        12,
+                        "A box held 25 cards. Maria took out 5, and then Jamal took out 8. "
+                        "How many cards are left in the box?",
+                    ),
+                ],
+                "prompt": Prompt.WORD_PROBLEM,
+                "answer_key": False,
+                "title": "Strip Diagram multiple choice",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "strip_choice-sheet-a.pdf",
+        ),
+        (
+            # two steps with every option: 8 groups of 4 within 40, and two answers of 39, as
+            # strip choice sheets have no tiles
+            "/api/worksheets/strip_choice.pdf?operations=add&operations=multiply&steps=two"
+            "&max_number=40&max_groups=8&prompt=both&problems=2&answer_key=true&name_line=true"
+            "&title=Strip+Practice&label=Week+3&sheet=1ab2c3",
+            [],
+            [
+                32,
+                BasicOperationQuestionData(Operation.MULTIPLY, (8, 4), 32),
+                BasicOperationQuestionData(Operation.ADD, (32, 7), 39),
+                30,
+                BasicOperationQuestionData(Operation.ADD, (12, 18), 30),
+                BasicOperationQuestionData(Operation.ADD, (30, 9), 39),
+                ("card", "cards"),
+                ("card", "cards"),
+            ],
+            200,
+            None,
+            {
+                "questions": [
+                    TwoStepQuestionData(
+                        (
+                            BasicOperationQuestionData(Operation.MULTIPLY, (8, 4), 32),
+                            BasicOperationQuestionData(Operation.ADD, (32, 7), 39),
+                        ),
+                        Unknown.FIRST,
+                        39,
+                        "There are 8 boxes with 4 cards in each box. Maria brings 7 more. "
+                        "How many cards are there now?",
+                    ),
+                    TwoStepQuestionData(
+                        (
+                            BasicOperationQuestionData(Operation.ADD, (12, 18), 30),
+                            BasicOperationQuestionData(Operation.ADD, (30, 9), 39),
+                        ),
+                        Unknown.FIRST,
+                        39,
+                        "A jar held 12 cards. Maria added 18 more, and then Jamal added 9 more. "
+                        "How many cards are in the jar now?",
+                    ),
+                ],
+                "prompt": Prompt.BOTH,
+                "answer_key": True,
+                "title": "Strip Practice",
+                "label": "Week 3",
+                "name_line": True,
+            },
+            "strip_choice-week-3.pdf",
+        ),
+        (
+            # every shape of two steps adds or subtracts
+            "/api/worksheets/strip_choice.pdf?operations=multiply&operations=divide&steps=two",
+            [],
+            [],
+            422,
+            refused("operations: two steps need addition or subtraction"),
+            None,
+            None,
+        ),
+        (
+            # adding three numbers depends on the largest number only
+            "/api/worksheets/strip_choice.pdf?operations=add&steps=two&max_number=6&problems=7",
+            [],
+            [],
+            422,
+            refused(
+                "problems: at most 6 without repeats for that largest number. Lower problems to "
+                "6, or raise the largest number to 7."
+            ),
+            None,
+            None,
+        ),
+        (
+            # 7 multiplications with a part added, within 12 in 2 groups, and as many sums
+            "/api/worksheets/strip_choice.pdf?operations=add&operations=multiply&steps=two"
+            "&max_number=12&max_groups=2&problems=15",
+            [],
+            [],
+            422,
+            refused(
+                "problems: at most 14 without repeats for that largest number and largest number "
+                "of groups. Lower problems to 14, or raise the largest number to 13, or raise the "
+                "largest number of groups to 3."
+            ),
+            None,
+            None,
+        ),
+        (
             # as many groups as a choice's strip has room for
             "/api/worksheets/strip_choice.pdf?max_groups=13",
+            [],
             [],
             422,
             {
@@ -276,6 +458,7 @@ from tests.helpers import (
         (
             "/api/worksheets/strip_choice.pdf?max_groups=1",
             [],
+            [],
             422,
             {
                 "detail": [
@@ -292,6 +475,7 @@ from tests.helpers import (
         ),
         (
             "/api/worksheets/strip_choice.pdf?max_number=1000",
+            [],
             [],
             422,
             {
@@ -310,6 +494,7 @@ from tests.helpers import (
         (
             # no mixed until the wording axis is settled
             "/api/worksheets/strip_choice.pdf?prompt=mixed",
+            [],
             [],
             422,
             {
@@ -330,6 +515,7 @@ from tests.helpers import (
 def test_strip_choice_pdf(
     url: str,
     drawn: list[int],
+    chosen: list[object],
     status: int,
     expected_json: dict[str, Any] | None,
     pdf_data: dict[str, Any] | None,
@@ -347,7 +533,7 @@ def test_strip_choice_pdf(
     randint_returns(monkeypatch, drawn)
     sample_first(monkeypatch)
     reverse_shuffle(monkeypatch)
-    choose_last(monkeypatch)
+    choice_returns(monkeypatch, chosen)
 
     response = client.get(url)
 
