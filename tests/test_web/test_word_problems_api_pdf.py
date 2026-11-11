@@ -1,16 +1,30 @@
 """
-Tests for the word problems endpoint: its options reach the core and the renderer intact.
+Tests for the word problems PDF endpoint.
 
-The tests script ``random``. ``choices`` returns the operations, or two-step shapes, listed as
-picks, ``randint`` the operands listed, and ``shuffle`` reverses, so the complex tile pattern runs
-from L to A, and a multiple choice sheet, whose operations are split evenly instead, comes in
-the reverse of the ticked order. ``choice`` returns the draws listed as chosen: for each
-two-step problem, the number its first step carries, then each step, and then each problem's
-object, and for number lines to choose from, the side of the answer each wrong landing tries
-first. The wording takes the first two names and each operation's or shape's last template.
-``conventional_slot_of`` gives the slots of a real case. The PDF must then match what the
-renderer draws for the same questions. Disallowed options get Ninja's JSON error. The renderer's
-output is tested in ``test_word_problems_worksheet``.
+A valid request must return a PDF with the expected filename and cache header, and its
+``pdf_text`` must equal that of the PDF the renderer makes from the questions listed in the
+test case. With ``random`` scripted, an option that the endpoint drops or passes on incorrectly
+changes the generated questions and fails that comparison. An invalid request must return 422
+with the Django Ninja validation error and no PDF headers. The renderer itself is tested in
+``test_word_problems_worksheet``.
+
+The PDF tests replace these functions:
+
+- ``random.choices`` returns the operations or two-step shapes listed in the test case as
+  ``picks``, and raises ``ValueError`` for picks that are not ``k`` items of its population.
+- ``random.randint`` returns the operands listed in the test case, and raises ``ValueError`` for
+  an operand outside the bounds of its call.
+- ``random.shuffle`` reverses the list. The complex tile pattern therefore runs from L to A, and
+  a multiple choice sheet, whose operations are split evenly rather than picked, lists them in
+  the reverse of the ticked order.
+- ``random.sample`` returns the first items, in order, so the wording uses the first two names
+  and the templates of each operation or shape from last to first.
+- ``random.choice`` returns the ``chosen`` values listed in the test case, and raises
+  ``ValueError`` for a value its call did not offer. They are, for each two-step problem, the
+  number its first step carries and then each step, followed by the object of each problem, and,
+  for number lines to choose from, the side of the answer that each wrong landing tries first.
+- ``conventional_slot_of``, which gives the slots of the simple tile pattern, returns the slots
+  of a real case.
 """
 
 from typing import Any

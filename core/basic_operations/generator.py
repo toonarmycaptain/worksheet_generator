@@ -20,6 +20,10 @@ from core.basic_operations.data import (
     TwoStepShape,
     Unknown,
 )
+from core.basic_operations.multiplication_models import (
+    MultiplicationModelsQuestion,
+    multiplication_model_choices,
+)
 from core.basic_operations.representation import (
     STRIP_TWO_STEP_SHAPES,
     EquationChoiceQuestion,
@@ -64,6 +68,16 @@ STRIP_CHOICE_EXCLUDED_OPERANDS = frozenset({(2, 2)})
 # 4 - 2 and 4 ÷ 2 are both 2. An equation-choice sheet leaves them out, for every operation, so
 # 4 + 2 and 4 groups of 2 go too.
 EQUATION_CHOICE_EXCLUDED_OPERANDS = frozenset({(2, 2), (4, 2)})
+# A multiplication-models sheet's smallest factor, and its default and most for the largest
+# factor. Its largest product is TEKS 3.4(K)'s "within 100" by default, and at most the largest
+# factor squared, as no fact has a larger one.
+MULTIPLICATION_MODELS_SMALLEST_FACTOR = 2
+MULTIPLICATION_MODELS_LARGEST_FACTOR = 12
+MULTIPLICATION_MODELS_DEFAULT_LARGEST_PRODUCT = 100
+MULTIPLICATION_MODELS_LARGEST_PRODUCT = MULTIPLICATION_MODELS_LARGEST_FACTOR**2
+# 2 groups of 2 has one wrong model of each kind, 3 groups of 2, so a multiplication-models sheet
+# leaves it out
+MULTIPLICATION_MODELS_EXCLUDED_OPERANDS = frozenset({(2, 2)})
 # Every size of equal group in a multiplication or division word problem
 _GROUP_SIZES = range(WORD_PROBLEM_GROUP_SIZES[0], WORD_PROBLEM_GROUP_SIZES[1] + 1)
 
@@ -802,6 +816,73 @@ def generate_number_line_choice_problems(
         larger_first=True,
     )
     return [Question(problem.data, number_line_choices(problem.data)) for problem in problems]
+
+
+def count_possible_multiplication_model_problems(
+    *,
+    up_to: int,
+    largest_factor: int = MULTIPLICATION_MODELS_LARGEST_FACTOR,
+    largest_product: int = MULTIPLICATION_MODELS_DEFAULT_LARGEST_PRODUCT,
+) -> int:
+    """
+    Count the problems ``generate_multiplication_model_problems`` can produce: its facts, each
+    counted once with its turn (3 groups of 4 with 4 groups of 3). The count is capped at
+    ``up_to``.
+    """
+    facts = _multiplication_facts(largest_factor, largest_product)
+    return min(len({(min(fact), max(fact)) for fact in facts}), up_to)
+
+
+def generate_multiplication_model_problems(
+    count: int,
+    *,
+    largest_factor: int = MULTIPLICATION_MODELS_LARGEST_FACTOR,
+    largest_product: int = MULTIPLICATION_MODELS_DEFAULT_LARGEST_PRODUCT,
+) -> list[MultiplicationModelsQuestion]:
+    """
+    Generate ``count`` multiplication word problems, each with its models to choose from those of
+    ``multiplication_model_choices``.
+
+    Each problem is a number of equal groups and the size of each, drawn at random from
+    ``_multiplication_facts``. No fact comes twice on a sheet, turned round or not, because 3
+    groups of 4 and 4 groups of 3 share their arrays.
+
+    Raises ``ValueError`` if the limits allow fewer than ``count`` such problems, as counted by
+    ``count_possible_multiplication_model_problems``.
+    """
+    possible = count_possible_multiplication_model_problems(
+        up_to=count, largest_factor=largest_factor, largest_product=largest_product
+    )
+    if count > possible:
+        raise ValueError(f"Cannot make {count} different problems: only {possible} possible.")
+
+    facts = _multiplication_facts(largest_factor, largest_product)
+    unworded = []
+    for _ in range(count):
+        groups, size = random.choice(facts)
+        facts = [fact for fact in facts if fact not in {(groups, size), (size, groups)}]
+        unworded.append(_equal_groups_problem(Operation.MULTIPLY, groups, size))
+    texts = word_problem_texts(unworded)
+    return [
+        Question(replace(data, question_text=text), multiplication_model_choices(data))
+        for data, text in zip(unworded, texts, strict=True)
+    ]
+
+
+def _multiplication_facts(largest_factor: int, largest_product: int) -> list[tuple[int, int]]:
+    """
+    Return every number of groups and size of each, both from
+    ``MULTIPLICATION_MODELS_SMALLEST_FACTOR`` to ``largest_factor``, with a product of at most
+    ``largest_product``, except those in ``MULTIPLICATION_MODELS_EXCLUDED_OPERANDS``.
+    """
+    factors = range(MULTIPLICATION_MODELS_SMALLEST_FACTOR, largest_factor + 1)
+    return [
+        (groups, size)
+        for groups in factors
+        for size in factors
+        if groups * size <= largest_product
+        and (groups, size) not in MULTIPLICATION_MODELS_EXCLUDED_OPERANDS
+    ]
 
 
 def count_possible_two_step_problems(

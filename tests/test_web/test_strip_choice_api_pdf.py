@@ -1,14 +1,25 @@
 """
-Tests for the strip choice endpoint: its options reach the core and the renderer intact.
+Tests for the strip choice PDF endpoint.
 
-The tests script ``random``. ``randint`` returns the numbers listed, ``sample`` keeps the
-operations' or two-step shapes' order, so any extra problems go to the last, and ``shuffle``
-reverses, both the sheet and each problem's choices. ``choice`` returns the draws listed as
-chosen: for each two-step problem, the number its first step carries, then each step, and then
-each problem's object. The wording takes the first two names and each operation's or shape's
-last template. The PDF must then match what the renderer
-draws for the same questions. Disallowed options get Ninja's JSON error. The renderer's output is
-tested in ``test_strip_choice_worksheet``.
+A valid request must return a PDF with the expected filename and cache header, and its
+``pdf_text`` must equal that of the PDF the renderer makes from the questions listed in the
+test case. With ``random`` scripted, an option that the endpoint drops or passes on incorrectly
+changes the generated questions and fails that comparison. An invalid request must return 422
+with the Django Ninja validation error and no PDF headers. The renderer itself is tested in
+``test_strip_choice_worksheet``.
+
+The PDF tests replace these functions:
+
+- ``random.randint`` returns the numbers listed in the test case, and raises ``ValueError`` for
+  a number outside the bounds of its call.
+- ``random.sample`` returns the first items, in order. The operations or two-step shapes
+  therefore keep their order, so any extra problems go to the last of them, and the wording uses
+  the first two names and the templates of each operation or shape from last to first.
+- ``random.shuffle`` reverses the list: the problems on the sheet, and the choices of each
+  problem.
+- ``random.choice`` returns the ``chosen`` values listed in the test case, and raises
+  ``ValueError`` for a value its call did not offer. They are, for each two-step problem, the
+  number its first step carries and then each step, followed by the object of each problem.
 """
 
 from typing import Any

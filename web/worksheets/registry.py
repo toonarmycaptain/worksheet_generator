@@ -37,12 +37,16 @@ from core.basic_operations.generator import (
     DEFAULT_LARGEST_OPERAND,
     LARGEST_WORD_PROBLEM_NUMBER,
     MAXIMUM_OPERAND,
+    MULTIPLICATION_MODELS_DEFAULT_LARGEST_PRODUCT,
+    MULTIPLICATION_MODELS_LARGEST_FACTOR,
+    MULTIPLICATION_MODELS_LARGEST_PRODUCT,
     SMALLEST_WORD_PROBLEM_NUMBER,
     STRIP_CHOICE_LARGEST_GROUPS,
     STRIP_CHOICE_LARGEST_NUMBER,
     WORD_PROBLEM_GROUPS,
     count_possible_equation_choice_problems,
     count_possible_missing_number_questions,
+    count_possible_multiplication_model_problems,
     count_possible_number_line_choice_problems,
     count_possible_sheet_questions,
     count_possible_strip_choice_problems,
@@ -51,6 +55,7 @@ from core.basic_operations.generator import (
     generate_basic_operation_questions,
     generate_equation_choice_problems,
     generate_missing_number_questions,
+    generate_multiplication_model_problems,
     generate_number_line_choice_problems,
     generate_strip_choice_problems,
     generate_two_step_problems,
@@ -58,6 +63,7 @@ from core.basic_operations.generator import (
     generate_word_problems,
     two_step_shapes,
 )
+from core.basic_operations.multiplication_models import MULTIPLICATION_MODELS_NAME
 from core.basic_operations.regrouping import REGROUPING_NAMES, Regrouping
 from core.basic_operations.representation import (
     CHOICE_NAMES,
@@ -98,6 +104,7 @@ from render.pdf.basic_operations_worksheet import (
 )
 from render.pdf.data_displays import NumberListStyle
 from render.pdf.data_graphs_worksheet import render_data_graphs_worksheet
+from render.pdf.multiplication_models_worksheet import render_multiplication_models_worksheet
 from render.pdf.page import Header
 from render.pdf.place_value_worksheet import render_place_value_worksheet
 from render.pdf.self_check_tiles_worksheet import render_self_check_tiles_worksheet
@@ -683,6 +690,57 @@ class StripChoiceOptions(HeaderOptions):
         raise _too_many_problems(possible, "repeats", " and ".join(limits), raises)
 
 
+class MultiplicationModelsOptions(HeaderOptions):
+    """
+    Options for the kind where three models of each multiplication word problem are chosen from
+    six, built on the core. There is no seed: every sheet is new.
+    """
+
+    title: Title = MULTIPLICATION_MODELS_NAME
+    problems: Problems = 4
+    # At least 3 and 6, so there is always a fact other than 2 x 2 to draw from.
+    max_factor: int = Field(
+        MULTIPLICATION_MODELS_LARGEST_FACTOR,
+        ge=3,
+        le=MULTIPLICATION_MODELS_LARGEST_FACTOR,
+        title="Largest factor",
+    )
+    max_product: int = Field(
+        MULTIPLICATION_MODELS_DEFAULT_LARGEST_PRODUCT,
+        ge=6,
+        le=MULTIPLICATION_MODELS_LARGEST_PRODUCT,
+        title="Largest product",
+    )
+    no_jump_labels: bool = Field(False, title="Leave the number-line jumps unnumbered")
+    answer_key: AnswerKey = False
+
+    @model_validator(mode="after")
+    def _enough_different_problems(self) -> Self:
+        def possible_with(factor: int, product: int) -> int:
+            return count_possible_multiplication_model_problems(
+                up_to=self.problems, largest_factor=factor, largest_product=product
+            )
+
+        possible = possible_with(self.max_factor, self.max_product)
+        if self.problems <= possible:
+            return self
+        raises = {
+            "largest factor": _smallest_raise(
+                lambda factor: possible_with(factor, self.max_product),
+                self.problems,
+                self.max_factor,
+                MULTIPLICATION_MODELS_LARGEST_FACTOR,
+            ),
+            "largest product": _smallest_raise(
+                lambda product: possible_with(self.max_factor, product),
+                self.problems,
+                self.max_product,
+                MULTIPLICATION_MODELS_LARGEST_PRODUCT,
+            ),
+        }
+        raise _too_many_problems(possible, "repeats", "largest factor and largest product", raises)
+
+
 class BaseTenBlocksOptions(HeaderOptions):
     """
     Options for the base-ten blocks kind, built on the core. There is no seed: every sheet is new.
@@ -1037,6 +1095,18 @@ def _strip_choice(o: StripChoiceOptions, out: BinaryIO) -> None:
     )
 
 
+def _multiplication_models(o: MultiplicationModelsOptions, out: BinaryIO) -> None:
+    render_multiplication_models_worksheet(
+        questions=generate_multiplication_model_problems(
+            o.problems, largest_factor=o.max_factor, largest_product=o.max_product
+        ),
+        path=out,
+        header=o.header(),
+        answer_key=o.answer_key,
+        jump_labels=not o.no_jump_labels,
+    )
+
+
 def _base_ten_blocks(o: BaseTenBlocksOptions, out: BinaryIO) -> None:
     render_base_ten_blocks_worksheet(
         questions=generate_blocks_questions(
@@ -1238,5 +1308,6 @@ CORE_KINDS: dict[str, CoreKind[Any]] = {
     "word_problems": CoreKind(WordProblemOptions, _word_problems),
     "strip_choice": CoreKind(StripChoiceOptions, _strip_choice),
     "base_ten_blocks": CoreKind(BaseTenBlocksOptions, _base_ten_blocks),
+    "multiplication_models": CoreKind(MultiplicationModelsOptions, _multiplication_models),
     "data_graphs": CoreKind(DataGraphsOptions, _data_graphs),
 }

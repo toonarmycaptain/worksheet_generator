@@ -159,6 +159,10 @@ TEMPLATES: dict[Operation, tuple[str, ...]] = {
     ),
     # {a} groups of {b}: the whole is to find
     Operation.MULTIPLY: (
+        "A frog hops {b} spaces each time it jumps. It jumps {a} times. "
+        "How many spaces does the frog move in all?",
+        "There are {a} tables in the classroom. {b} students sit at each table. "
+        "How many students are there in all?",
         "A classroom has {a} rows of desks with {b} desks in each row. "
         "How many desks are in the classroom?",
         "{n1} reads {b} pages each day for {a} days. How many pages does {n1} read in all?",

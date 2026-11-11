@@ -1,13 +1,24 @@
 """
-Tests for the data and graphs endpoint: its options reach the core and the renderer intact.
+Tests for the data and graphs PDF endpoint.
 
-The tests use the test topics and names in ``tests.data`` in place of the banks', and script
-``random``: ``randint`` and ``random`` return the values listed, ``choice`` returns the last item,
-``sample`` takes the first items in order, and ``shuffle`` reverses. The first value drawn is
-how far along the displays the one to complete is, so 1 makes a table completed in a pictograph,
-and 3 a list completed in a number-line dot plot. The PDF must then match what the renderer draws
-for the same problems. Disallowed options get Ninja's JSON error. The renderer's output is tested
-in ``test_data_graphs_worksheet``.
+A valid request must return a PDF with the expected filename and cache header, and its
+``pdf_text`` must equal that of the PDF the renderer makes from the problems listed in the test
+case. With ``random`` scripted, an option that the endpoint drops or passes on incorrectly
+changes the generated problems and fails that comparison. An invalid request must return 422
+with the Django Ninja validation error and no PDF headers. The renderer itself is tested in
+``test_data_graphs_worksheet``.
+
+The PDF tests use the topics and names in ``tests.data`` in place of the banks, and replace
+these functions:
+
+- ``random.randint`` returns the values listed in the test case, and raises ``ValueError`` for a
+  value outside the bounds of its call. The first value is the shift from each given display to
+  the display to complete, in the order table, pictograph, bar graph, dot plot: 1 completes a
+  table as a pictograph, and 3 completes a number list as a number-line dot plot.
+- ``random.random`` returns the values listed in the test case.
+- ``random.choice`` returns the last item.
+- ``random.sample`` returns the first items, in order.
+- ``random.shuffle`` reverses the list.
 """
 
 from typing import Any
