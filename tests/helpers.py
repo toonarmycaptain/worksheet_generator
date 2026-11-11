@@ -28,6 +28,7 @@ from core.basic_operations.data import (
     MissingNumberQuestionData,
     TwoStepQuestionData,
 )
+from core.basic_operations.multiplication_models import MultiplicationModelsQuestion
 from core.basic_operations.representation import (
     Prompt,
     Representation,
@@ -55,6 +56,7 @@ from render.pdf.basic_operations_worksheet import (
 )
 from render.pdf.data_displays import NumberListStyle
 from render.pdf.data_graphs_worksheet import render_data_graphs_worksheet
+from render.pdf.multiplication_models_worksheet import render_multiplication_models_worksheet
 from render.pdf.page import Header
 from render.pdf.place_value_worksheet import render_place_value_worksheet
 from render.pdf.self_check_tiles_worksheet import render_self_check_tiles_worksheet
@@ -398,6 +400,28 @@ def render_strip_choice(
         header=Header(title=title, label=label, name_line=name_line),
         answer_key=answer_key,
         prompt=prompt,
+    )
+    return out.getvalue()
+
+
+def render_multiplication_models(
+    questions: list[MultiplicationModelsQuestion],
+    jump_labels: bool,
+    answer_key: bool,
+    title: str,
+    label: str,
+    name_line: bool = True,
+) -> bytes:
+    """
+    Render the multiplication models sheet, each question with the models given to choose from.
+    """
+    out = BytesIO()
+    render_multiplication_models_worksheet(
+        questions=questions,
+        path=out,
+        header=Header(title=title, label=label, name_line=name_line),
+        answer_key=answer_key,
+        jump_labels=jump_labels,
     )
     return out.getvalue()
 

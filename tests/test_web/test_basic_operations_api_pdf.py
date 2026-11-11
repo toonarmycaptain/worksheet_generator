@@ -1,15 +1,25 @@
 """
-Tests for the basic operations worksheet endpoint: its options reach the core and the renderer
-intact.
+Tests for the basic operations PDF endpoint.
 
-The questions are random, so ``test_basic_operations_pdf`` scripts ``random.randint`` (the operands)
-and makes ``random.sample`` take the top of the allowed wrong-answer range, which exposes the
-operation's and ``max_number``'s limits in the PDF. The PDF must then match what the renderer
-draws for the same questions. Disallowed options get Ninja's JSON error. The renderer's output
-is tested in ``test_basic_operations_worksheet``.
+A valid request must return a PDF with the expected filename and cache header, and its
+``pdf_text`` must equal that of the PDF the matching renderer makes from the questions listed
+in the test case. With ``random`` scripted, an option that the endpoint drops or passes on
+incorrectly changes the generated questions and fails that comparison. An invalid request must
+return 422 with the Django Ninja validation error and no PDF headers. The renderers themselves
+are tested in ``test_basic_operations_worksheet``.
 
-A request needs a ``sheet`` token to receive the PDF; without one, it is redirected to a URL
-with a token, which ``test_sheet_redirect`` tests.
+The PDF tests replace these functions:
+
+- ``random.randint`` returns the operands listed in the test case, or a divisor and then a
+  quotient, and raises ``ValueError`` for a value outside the bounds of its call.
+- ``random.choices`` returns the ticked operations in turn.
+- ``random.sample`` returns the last items, the top of the allowed wrong-answer range, so the PDF
+  also shows the limits of the operation and of ``max_number``.
+- ``random.shuffle`` reverses the list: the options of each question, or the equations on a
+  missing-number sheet.
+
+A request without a ``sheet`` token is redirected to a URL with one, so every PDF URL here
+carries a token. The redirect is tested in ``test_sheet_redirect``.
 """
 
 from typing import Any
