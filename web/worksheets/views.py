@@ -14,6 +14,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
 from core.basic_operations.data import Operation
+from core.basic_operations.multiplication_models import MULTIPLICATION_MODELS_NAME
 from core.basic_operations.representation import (
     CHOICE_NAMES,
     REPRESENTATION_OPERATIONS,
@@ -57,6 +58,7 @@ HEADINGS = {
     "word_problems": "Word Problems",
     "strip_choice": STRIP_CHOICE_NAME,
     "base_ten_blocks": "Base-Ten Blocks",
+    "multiplication_models": MULTIPLICATION_MODELS_NAME,
     "data_graphs": "Read, Complete, Solve",
 }
 LEGACY_HEADINGS = {
@@ -140,6 +142,7 @@ def basic_operations(request: HttpRequest) -> HttpResponse:
                 "word_problems": CORE_KINDS["word_problems"],
                 "strip_choice": CORE_KINDS["strip_choice"],
                 "base_ten_blocks": CORE_KINDS["base_ten_blocks"],
+                "multiplication_models": CORE_KINDS["multiplication_models"],
             }
         ),
         "self_check_tiles_problems": SLOTS,

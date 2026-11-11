@@ -1,12 +1,23 @@
 """
-Tests for the place-value worksheet endpoint: its options reach the core and the renderers intact.
+Tests for the place-value PDF endpoint.
 
-The tests script the first call to ``random.sample``, which draws all of a sheet's numbers at
-once, and make later calls take the top of the range for wrong answers, so the PDF shows the
-range's limits. ``random.choice`` takes the last form offered, so a mixed form reveals which
-forms it was chosen from. The PDF must then match what the renderer draws for the same
-questions. Disallowed options get Ninja's JSON error. The renderers' output is tested in
-``test_place_value_worksheet`` and ``test_self_check_tiles_worksheet``.
+A valid request must return a PDF with the expected filename and cache header, and its
+``pdf_text`` must equal that of the PDF the matching renderer makes from the questions listed
+in the test case. With ``random`` scripted, an option that the endpoint drops or passes on
+incorrectly changes the generated questions and fails that comparison. An invalid request must
+return 422 with the Django Ninja validation error and no PDF headers. The renderers themselves
+are tested in ``test_place_value_worksheet`` and ``test_self_check_tiles_worksheet``.
+
+The PDF tests replace these functions:
+
+- The first ``random.sample`` call, which draws all the numbers on a sheet at once, returns the
+  numbers listed in the test case. Later calls return the last items, the top of the
+  wrong-answer range, so the PDF shows the limits of that range.
+- ``random.choice`` returns the last item, so a mixed-form question takes the last form offered,
+  which shows the forms it was chosen from.
+- ``random.shuffle`` reverses the list.
+- ``conventional_slot_of``, which gives the slots of the simple tile pattern, returns the slots
+  of a real case in the self-check tiles test.
 """
 
 import random

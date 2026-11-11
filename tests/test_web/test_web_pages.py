@@ -37,6 +37,7 @@ def test_pages(client: Client) -> None:
                 b"/api/worksheets/word_problems.pdf",
                 b"/api/worksheets/strip_choice.pdf",
                 b"/api/worksheets/base_ten_blocks.pdf",
+                b"/api/worksheets/multiplication_models.pdf",
             ],
             [
                 b"title",
@@ -112,6 +113,15 @@ def test_pages(client: Client) -> None:
                 b"self_check_tiles",
                 b"tile_pattern",
                 b"tile_pattern",
+                # the multiplication models form
+                b"title",
+                b"label",
+                b"name_line",
+                b"problems",
+                b"max_factor",
+                b"max_product",
+                b"no_jump_labels",
+                b"answer_key",
             ],
         ),
         (
@@ -500,6 +510,7 @@ def test_the_representation_script_s_data(
                 (b"/api/worksheets/word_problems.pdf", b" data-check-first"),
                 (b"/api/worksheets/strip_choice.pdf", b" data-check-first"),
                 (b"/api/worksheets/base_ten_blocks.pdf", b" data-check-first"),
+                (b"/api/worksheets/multiplication_models.pdf", b" data-check-first"),
             ],
         ),
         ("/place-value/", [(b"/api/worksheets/place_value.pdf", b" data-check-first")]),
@@ -583,6 +594,15 @@ def test_each_field_carries_its_label_for_the_check_first_messages(client: Clien
         (b"black_and_white", b"Black and white blocks"),
         (b"answer_key", b"Add an answer key page"),
         (b"self_check_tiles", b"Self-check tile answers"),
+        # the multiplication models form
+        (b"title", b"Title"),
+        (b"label", b"Label"),
+        (b"name_line", b"Add Name/Date blanks"),
+        (b"problems", b"Problems"),
+        (b"max_factor", b"Largest factor"),
+        (b"max_product", b"Largest product"),
+        (b"no_jump_labels", b"Leave the number-line jumps unnumbered"),
+        (b"answer_key", b"Add an answer key page"),
     ]
 
 

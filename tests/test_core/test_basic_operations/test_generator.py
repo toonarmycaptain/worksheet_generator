@@ -1,6 +1,6 @@
 """
-Tests for the arithmetic, missing-number, word-problem, strip-choice, equation-choice and
-number-line-choice generators, with one step or two.
+Tests for the arithmetic, missing-number, word-problem, strip-choice, equation-choice,
+number-line-choice and multiplication-model generators, with one step or two.
 
 The ``..._from_scripted_draws`` tests pin the exact output: ``random`` is scripted, so each case
 lists the questions that must be produced. The no-repeats tests,
@@ -9,6 +9,7 @@ lists the questions that must be produced. The no-repeats tests,
 ``test_random_strip_choice_sheets_can_always_be_finished``,
 ``test_random_equation_choice_sheets_can_always_be_finished``,
 ``test_random_number_line_choice_sheets_can_always_be_finished``,
+``test_random_multiplication_model_sheets_can_always_be_finished``,
 ``test_random_two_step_problems_have_distinct_answers`` and
 ``test_random_two_step_strip_choice_sheets_can_always_be_finished`` use real random draws.
 """
@@ -27,6 +28,7 @@ from core.basic_operations.generator import (
     count_possible_answers,
     count_possible_equation_choice_problems,
     count_possible_missing_number_questions,
+    count_possible_multiplication_model_problems,
     count_possible_number_line_choice_problems,
     count_possible_questions,
     count_possible_sheet_questions,
@@ -36,12 +38,14 @@ from core.basic_operations.generator import (
     generate_basic_operation_questions,
     generate_equation_choice_problems,
     generate_missing_number_questions,
+    generate_multiplication_model_problems,
     generate_number_line_choice_problems,
     generate_strip_choice_problems,
     generate_two_step_problems,
     generate_two_step_strip_choice_problems,
     generate_word_problems,
 )
+from core.basic_operations.multiplication_models import multiplication_model_choices
 from core.basic_operations.representation import (
     STRIP_TWO_STEP_SHAPES,
     equation_choices,
@@ -2806,6 +2810,165 @@ def test_number_line_choice_sheet_errors(
     """
     with pytest.raises(ValueError) as error:
         generate_number_line_choice_problems(count, operations, largest_number=largest_number)
+    assert str(error.value) == message
+
+
+@pytest.mark.parametrize(
+    ("count", "largest_factor", "largest_product", "expected"),
+    [
+        # the defaults: 12 groups of 8, the last fact within 100, then 12 groups of 7
+        (
+            2,
+            12,
+            100,
+            [
+                BasicOperationQuestionData(
+                    Operation.MULTIPLY,
+                    (12, 8),
+                    96,
+                    "12 friends each have 8 cards. How many cards do they have together?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.MULTIPLY,
+                    (12, 7),
+                    84,
+                    "Maria buys 12 packs of cards with 7 in each pack. How many cards in all?",
+                ),
+            ],
+        ),
+        # Every fact with factors up to 4 within 12. No fact comes after its turn, so 3 groups of
+        # 4 never comes, nor 2 groups of 4, nor 2 groups of 3. 4 groups of 4 is over 12, and 2
+        # groups of 2 is left out.
+        (
+            4,
+            4,
+            12,
+            [
+                BasicOperationQuestionData(
+                    Operation.MULTIPLY,
+                    (4, 3),
+                    12,
+                    "4 friends each have 3 cards. How many cards do they have together?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.MULTIPLY,
+                    (4, 2),
+                    8,
+                    "Maria buys 4 packs of cards with 2 in each pack. How many cards in all?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.MULTIPLY,
+                    (3, 3),
+                    9,
+                    "Each basket has 3 cards. How many cards are in 3 baskets?",
+                ),
+                BasicOperationQuestionData(
+                    Operation.MULTIPLY,
+                    (3, 2),
+                    6,
+                    "Maria plants 3 rows with 2 flowers in each row. How many flowers did Maria "
+                    "plant?",
+                ),
+            ],
+        ),
+    ],
+)
+def test_multiplication_model_problems_from_scripted_draws(
+    count: int,
+    largest_factor: int,
+    largest_product: int,
+    expected: list[BasicOperationQuestionData],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """
+    Each problem is a fact drawn from those within the limits, with no fact or its turn drawn
+    twice, and 2 groups of 2 left out.
+
+    ``choice`` takes the last of the facts left, ordered by groups and then size, and the last
+    object. The wording takes the first two names and the multiplication templates from the
+    last. Each problem's choices are those of ``multiplication_model_choices``, with ``choice``
+    taking the last, ``sample`` the first and ``shuffle`` reversing, tested in
+    ``test_multiplication_models``.
+    """
+    choose_last(monkeypatch)
+    sample_first(monkeypatch)
+    reverse_shuffle(monkeypatch)
+
+    questions = generate_multiplication_model_problems(
+        count, largest_factor=largest_factor, largest_product=largest_product
+    )
+
+    assert questions == [Question(data, multiplication_model_choices(data)) for data in expected]
+
+
+@pytest.mark.parametrize(
+    ("count", "largest_factor", "largest_product"),
+    [
+        # 2 x 3, 2 x 4, 3 x 3 and 3 x 4, every fact with factors up to 4 within 12
+        (4, 4, 12),
+        # only 2 x 3
+        (1, 3, 6),
+        # the most problems allowed, 20, with the defaults
+        (20, 12, 100),
+    ],
+)
+def test_random_multiplication_model_sheets_can_always_be_finished(
+    count: int, largest_factor: int, largest_product: int
+) -> None:
+    """
+    A sheet of the most problems the limits allow is produced, with no fact repeated, turned
+    round or not.
+    """
+    questions = generate_multiplication_model_problems(
+        count, largest_factor=largest_factor, largest_product=largest_product
+    )
+    facts = {tuple(sorted(question.data.operands)) for question in questions}
+    assert len(facts) == count
+
+
+@pytest.mark.parametrize(
+    ("up_to", "largest_factor", "largest_product", "expected"),
+    [
+        # the 59 facts with factors 2 to 12 within 100, 3 x 4 and 4 x 3 counted once, and 2 x 2
+        # left out
+        (100, 12, 100, 59),
+        # within 20: 2 x 3 to 2 x 10, 3 x 3 to 3 x 6, 4 x 4 and 4 x 5
+        (100, 12, 20, 14),
+        # 2 x 3, 2 x 4, 3 x 3 and 3 x 4
+        (100, 4, 12, 4),
+        # only 2 x 3
+        (100, 3, 6, 1),
+        # only 2 x 2, which is left out
+        (100, 2, 100, 0),
+        # capped
+        (20, 12, 100, 20),
+    ],
+)
+def test_count_possible_multiplication_model_problems(
+    up_to: int, largest_factor: int, largest_product: int, expected: int
+) -> None:
+    """Each fact within the limits counts once with its turn, and 2 x 2 is left out."""
+    possible = count_possible_multiplication_model_problems(
+        up_to=up_to, largest_factor=largest_factor, largest_product=largest_product
+    )
+    assert possible == expected
+
+
+@pytest.mark.parametrize(
+    ("count", "largest_factor", "largest_product", "message"),
+    [
+        (5, 4, 12, "Cannot make 5 different problems: only 4 possible."),
+        (1, 2, 100, "Cannot make 1 different problems: only 0 possible."),
+    ],
+)
+def test_multiplication_model_sheet_errors(
+    count: int, largest_factor: int, largest_product: int, message: str
+) -> None:
+    """Requesting more problems than the limits allow raises ``ValueError`` saying how many."""
+    with pytest.raises(ValueError) as error:
+        generate_multiplication_model_problems(
+            count, largest_factor=largest_factor, largest_product=largest_product
+        )
     assert str(error.value) == message
 
 
