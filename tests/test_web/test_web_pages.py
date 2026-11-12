@@ -14,6 +14,8 @@ def test_pages(client: Client) -> None:
     """
     Recursively fetch pages, ensuring every link in the site works
 
+    External links are skipped, since the test client only reaches this site.
+
     run with uv run pytest -s test_web_pages.py to see successful output
     """
     home = client.get("/")
@@ -21,6 +23,8 @@ def test_pages(client: Client) -> None:
     links = get_links(home.content)
 
     for link in links:
+        if not link.startswith("/"):
+            continue
         page = client.get(link)
         assert page.status_code == 200, link
         print(f"successfully reached {link=}")
@@ -160,8 +164,8 @@ def test_pages(client: Client) -> None:
 )
 def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], client: Client) -> None:
     """
-    A builder page has a form for each of its kinds, a link home, the feedback link and no seed
-    field.
+    A builder page has a form for each of its kinds, a link home, the feedback link, the Buy Me a
+    Coffee link and no seed field.
 
     Each form targets its kind's PDF endpoint, with a field for each option in order and none
     for a seed, since every sheet of a core kind is new.
@@ -170,7 +174,11 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
 
     assert re.findall(rb'action="([^"]+)"', content) == actions
     assert re.findall(rb'<(?:input|select) [^>]*?name="([^"]+)"', content) == fields
-    assert get_links(content) == ["/", f"/feedback/?from={url}"]
+    assert get_links(content) == [
+        "/",
+        f"/feedback/?from={url}",
+        "https://buymeacoffee.com/toonarmycaptain",
+    ]
 
 
 @pytest.mark.parametrize(
@@ -608,8 +616,8 @@ def test_each_field_carries_its_label_for_the_check_first_messages(client: Clien
 
 def test_legacy_page(client: Client) -> None:
     """
-    The legacy page has a form for each of the nine imported scripts, a link home and the feedback
-    link.
+    The legacy page has a form for each of the nine imported scripts, a link home, the feedback
+    link and the Buy Me a Coffee link.
 
     The form actions are compared as a whole, in order, so an omitted script, or the basic
     operations form appearing here, makes them differ.
@@ -627,4 +635,8 @@ def test_legacy_page(client: Client) -> None:
         b"/api/worksheets/data_graph_mc.pdf",
         b"/api/worksheets/worksheet.pdf",
     ]
-    assert get_links(content) == ["/", "/feedback/?from=/legacy/"]
+    assert get_links(content) == [
+        "/",
+        "/feedback/?from=/legacy/",
+        "https://buymeacoffee.com/toonarmycaptain",
+    ]

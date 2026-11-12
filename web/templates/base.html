@@ -1,0 +1,20 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Worksheet generator{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <main>
+    {% block nav %}<p><a href="{% url 'home' %}">&larr; All worksheets</a></p>{% endblock %}
+    {% block content %}{% endblock %}
+  </main>
+  {% block footer %}<footer>
+    {% block feedback_link %}<p><a href="{% url 'feedback' %}?from={{ request.get_full_path|urlencode }}">Send feedback</a></p>{% endblock %}
+    <p class="bmc">{% block coffee_text %}If this has been helpful to you or saved you some time, you might...{% endblock %}
+      <a href="https://buymeacoffee.com/toonarmycaptain" target="_blank" rel="noopener"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee"></a></p>
+  </footer>{% endblock %}
+</body>
+</html>
