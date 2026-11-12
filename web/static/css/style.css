@@ -1,0 +1,16 @@
+body { font-family: system-ui, sans-serif; line-height: 1.4; margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
+main { box-sizing: border-box; width: 100%; max-width: 44rem; margin: 2rem auto; padding: 0 1rem; }
+section { border: 1px solid #cbd5e0; border-radius: 6px; padding: 0.75rem 1rem; margin: 1rem 0; }
+h2 { font-size: 1.1rem; margin: 0 0 0.5rem; }
+label { display: block; margin: 0.4rem 0; }
+label:has(+ .choices) { display: inline-block; }
+.choices { display: inline-block; margin: 0.4rem 0 0.4rem 1.5rem; }
+.choices label { display: inline-block; margin: 0 1rem 0 0; }
+label:has(input:disabled) { color: gray; }
+input[type=text], input[type=email], textarea { width: 100%; max-width: 28rem; }
+input[type=number] { width: 5rem; }
+button { display: block; margin-top: 0.5rem; }
+.warning { color: #9b1c1c; background: #fdecec; border-left: 4px solid #c81e1e; border-radius: 4px; padding: 0.5rem 0.75rem; margin-top: 0.5rem; }
+footer { margin-top: auto; padding: 0 1rem; text-align: right; }
+.bmc { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 0.5rem; font-size: 0.9rem; }
+.bmc img { height: 36px; display: block; }
