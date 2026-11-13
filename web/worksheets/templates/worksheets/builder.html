@@ -69,6 +69,32 @@
       window.addEventListener("pageshow", limitProblems);
     }
   </script>
+
+  <script type="module">
+    // Self-check tiles and multiple choice are either/or: each choice's letter would need coding
+    // as a number. On a form with a multiple choice box (word problems have radios, with a
+    // script of their own), ticked tiles hide it, and disable it so it isn't sent, and ticked
+    // multiple choice greys out the tiles box and pattern.
+    for (const form of document.querySelectorAll(
+      "form:has(input[name=multiple_choice]):has(input[name=self_check_tiles])",
+    )) {
+      const choices = form.elements.multiple_choice;
+      const tiles = form.elements.self_check_tiles;
+      const patterns = [...form.querySelectorAll("input[name=tile_pattern]")];
+      function eitherOr() {
+        choices.disabled = tiles.checked;
+        // the page's CSS shows labels as blocks, which would win over the hidden attribute
+        choices.closest("label").style.display = tiles.checked ? "none" : "";
+        tiles.disabled = choices.checked;
+        for (const radio of patterns) radio.disabled = choices.checked;
+      }
+      choices.addEventListener("change", eitherOr);
+      tiles.addEventListener("change", eitherOr);
+      // also when the browser restores the choices, going back to the page
+      window.addEventListener("pageshow", eitherOr);
+      eitherOr();
+    }
+  </script>
   {% endif %}
 
   {% if distinct_forms %}

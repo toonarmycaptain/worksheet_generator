@@ -416,14 +416,18 @@ class PlaceValueOptions(HeaderOptions):
     max_number: int = Field(DEFAULT_LARGEST_NUMBER, ge=1, le=LARGEST_NUMBER, title="Largest number")
     answer_key: AnswerKey = False
     multiple_choice: bool = Field(False, title="Multiple choice")
-    # Tiles replace the answer lines or options, so they take precedence over multiple choice.
+    # Tiles replace the answer lines with an answer bank page.
     self_check_tiles: SelfCheckTiles = False
     tile_pattern: TilePattern = "simple"
 
-    @property
-    def shows_choices(self) -> bool:
-        """Whether the questions list options: multiple choice is ticked and tiles are not."""
-        return self.multiple_choice and not self.self_check_tiles
+    @model_validator(mode="after")
+    def _tiles_are_available(self) -> Self:
+        # Not built for multiple choice: each choice's letter would need coding as a number. The
+        # page hides multiple choice while tiles are ticked, and greys out the tiles while it is.
+        # Runs first, so a request with both is told so before anything else.
+        if self.self_check_tiles and self.multiple_choice:
+            raise ValueError("self_check_tiles: not available with multiple choice")
+        return self
 
     @model_validator(mode="after")
     def _a_question_can_be_made(self) -> Self:
@@ -437,7 +441,7 @@ class PlaceValueOptions(HeaderOptions):
             raises = {"largest number": needed if needed <= LARGEST_NUMBER else None}
             raise _too_many_problems(possible, "repeats", "range of numbers", raises)
         # The wrong answers come from the same range, and are never the correct one.
-        if self.shows_choices and self.max_number - self.min_number < WRONG_ANSWER_COUNT:
+        if self.multiple_choice and self.max_number - self.min_number < WRONG_ANSWER_COUNT:
             raise ValueError(
                 f"max_number: must be at least {WRONG_ANSWER_COUNT} more than the smallest "
                 f"number, for {WRONG_ANSWER_COUNT} wrong answers"
@@ -988,7 +992,7 @@ def _place_value(o: PlaceValueOptions, out: BinaryIO) -> None:
         _form(o.asked),
         low=o.min_number,
         high=o.max_number,
-        wrong_answer_count=WRONG_ANSWER_COUNT if o.shows_choices else 0,
+        wrong_answer_count=WRONG_ANSWER_COUNT if o.multiple_choice else 0,
     )
     if o.self_check_tiles:
         _render_tiles(o, [place_value_tile_question(question.data) for question in questions], out)
