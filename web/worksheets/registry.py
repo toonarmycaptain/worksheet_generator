@@ -188,7 +188,6 @@ REGROUPING_LABELS: dict[str, JsonValue] = {
 }
 NumberListStyleChoice = Literal["grid", "commas"]  # a NumberListStyle value
 NUMBER_LIST_STYLE_LABELS: dict[str, JsonValue] = {"grid": "Grid", "commas": "Commas"}
-MOST_DATA_GRAPHS_PROBLEMS = 8  # each problem takes about half a page
 AnswerKey = Annotated[bool, Field(title="Add an answer key page")]
 NameDateLine = Annotated[bool, Field(title="Add Name/Date blanks")]
 SelfCheckTiles = Annotated[bool, Field(title="Self-check tile answers")]
@@ -846,7 +845,7 @@ class DataGraphsOptions(HeaderOptions):
     """
 
     title: Title = "Data and Graphs — Read, Complete, Solve"
-    problems: int = Field(4, ge=1, le=MOST_DATA_GRAPHS_PROBLEMS, title="Problems")
+    problems: Problems = 4
     list_style: NumberListStyleChoice = Field(
         "grid",
         title="Show lists of numbers as",
