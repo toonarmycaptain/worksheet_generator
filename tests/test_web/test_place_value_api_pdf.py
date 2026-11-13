@@ -350,17 +350,12 @@ def test_place_value_pdf(
             False,
         ),
         (
-            # tiles win over multiple choice, so a range too small for wrong answers is fine
-            "/api/worksheets/place_value.pdf?self_check_tiles=true&multiple_choice=true"
-            "&tile_pattern=complex&min_number=1&max_number=2&problems=2&sheet=1ab2c3",
-            [1, 2],
-            200,
+            "/api/worksheets/place_value.pdf?self_check_tiles=true&multiple_choice=true",
+            [],
+            422,
+            refused("self_check_tiles: not available with multiple choice"),
             None,
-            [
-                PlaceValueQuestionData(1, STANDARD, EXPANDED),
-                PlaceValueQuestionData(2, STANDARD, EXPANDED),
-            ],
-            (11, 10),
+            None,
             False,
             False,
         ),
