@@ -928,80 +928,82 @@ class WorksheetOptions(Options):
         return self
 
 
-def _basic_operations(o: BasicOperationOptions, out: BinaryIO) -> None:
+def _basic_operations(options: BasicOperationOptions, out: BinaryIO) -> None:
     # Division's largest operand is its dividend. Only division uses largest_divisor.
-    if o.missing_number != "answer":
-        _missing_number(o, Operation.DIVIDE, out)
-    elif o.self_check_tiles:
+    if options.missing_number != "answer":
+        _missing_number(options, Operation.DIVIDE, out)
+    elif options.self_check_tiles:
         # The answer bank replaces the options, so there are no wrong answers.
         questions = generate_basic_operation_questions(
-            o.problems,
-            o.chosen_operations,
-            high=o.max_number,
-            largest_dividend=o.largest_dividend,
-            largest_divisor=o.largest_divisor,
+            options.problems,
+            options.chosen_operations,
+            high=options.max_number,
+            largest_dividend=options.largest_dividend,
+            largest_divisor=options.largest_divisor,
             wrong_answer_count=0,
             distinct_answers=True,
         )
         _render_tiles(
-            o, [basic_operation_tile_question(question.data) for question in questions], out
+            options, [basic_operation_tile_question(question.data) for question in questions], out
         )
     else:
         questions = generate_basic_operation_questions(
-            o.problems,
-            o.chosen_operations,
-            high=o.max_number,
-            largest_dividend=o.largest_dividend,
-            largest_divisor=o.largest_divisor,
+            options.problems,
+            options.chosen_operations,
+            high=options.max_number,
+            largest_dividend=options.largest_dividend,
+            largest_divisor=options.largest_divisor,
         )
         render_basic_operations_worksheet(
             questions=questions,
             path=out,
-            header=o.header(),
-            answer_key=o.answer_key,
+            header=options.header(),
+            answer_key=options.answer_key,
         )
 
 
-def _missing_number(o: BasicOperationOptions, operation: Operation, out: BinaryIO) -> None:
+def _missing_number(options: BasicOperationOptions, operation: Operation, out: BinaryIO) -> None:
     """Render missing-number equations, as a fill-in sheet or a self-check tiles sheet."""
     questions = generate_missing_number_questions(
-        o.problems,
+        options.problems,
         operation,
-        MISSING_NUMBERS[o.missing_number],
-        high=o.largest_dividend,
-        largest_divisor=o.largest_divisor,
-        distinct_answers=o.self_check_tiles,
+        MISSING_NUMBERS[options.missing_number],
+        high=options.largest_dividend,
+        largest_divisor=options.largest_divisor,
+        distinct_answers=options.self_check_tiles,
     )
-    if o.self_check_tiles:
+    if options.self_check_tiles:
         _render_tiles(
-            o, [missing_number_tile_question(question.data) for question in questions], out
+            options, [missing_number_tile_question(question.data) for question in questions], out
         )
     else:
         render_missing_number_worksheet(
             questions=questions,
             path=out,
-            header=o.header(),
-            answer_key=o.answer_key,
+            header=options.header(),
+            answer_key=options.answer_key,
         )
 
 
-def _place_value(o: PlaceValueOptions, out: BinaryIO) -> None:
+def _place_value(options: PlaceValueOptions, out: BinaryIO) -> None:
     questions = generate_place_value_questions(
-        o.problems,
-        _form(o.given),
-        _form(o.asked),
-        low=o.min_number,
-        high=o.max_number,
-        wrong_answer_count=WRONG_ANSWER_COUNT if o.multiple_choice else 0,
+        options.problems,
+        _form(options.given),
+        _form(options.asked),
+        low=options.min_number,
+        high=options.max_number,
+        wrong_answer_count=WRONG_ANSWER_COUNT if options.multiple_choice else 0,
     )
-    if o.self_check_tiles:
-        _render_tiles(o, [place_value_tile_question(question.data) for question in questions], out)
+    if options.self_check_tiles:
+        _render_tiles(
+            options, [place_value_tile_question(question.data) for question in questions], out
+        )
     else:
         render_place_value_worksheet(
             questions=questions,
             path=out,
-            header=o.header(),
-            answer_key=o.answer_key,
+            header=options.header(),
+            answer_key=options.answer_key,
         )
 
 
@@ -1011,257 +1013,265 @@ def _form(choice: FormChoice) -> PlaceValueForm | None:
 
 
 def _render_tiles(
-    o: BasicOperationOptions | PlaceValueOptions, questions: Sequence[TileQuestion], out: BinaryIO
+    options: BasicOperationOptions | PlaceValueOptions,
+    questions: Sequence[TileQuestion],
+    out: BinaryIO,
 ) -> None:
     """Render a self-check tiles sheet for ``questions``, with slots for the requested pattern."""
     render_self_check_tiles_worksheet(
         questions=questions,
-        slot_of=_tile_slots(o),
+        slot_of=_tile_slots(options),
         path=out,
-        header=o.header(),
-        answer_key=o.answer_key,
+        header=options.header(),
+        answer_key=options.answer_key,
     )
 
 
 def _tile_slots(
-    o: BasicOperationOptions | PlaceValueOptions | WordProblemOptions | BaseTenBlocksOptions,
+    options: BasicOperationOptions | PlaceValueOptions | WordProblemOptions | BaseTenBlocksOptions,
 ) -> Sequence[int]:
     """Return the slot of each question's answer, for the requested tile pattern."""
-    make_slots = conventional_slot_of if o.tile_pattern == "simple" else random_slot_of
-    return make_slots(o.problems)
+    make_slots = conventional_slot_of if options.tile_pattern == "simple" else random_slot_of
+    return make_slots(options.problems)
 
 
-def _word_problems(o: WordProblemOptions, out: BinaryIO) -> None:
-    representation = Representation(o.representation)
+def _word_problems(options: WordProblemOptions, out: BinaryIO) -> None:
+    representation = Representation(options.representation)
     questions: Sequence[WordProblemQuestion]
-    if o.choices and representation is Representation.NUMBER_LINE:
+    if options.choices and representation is Representation.NUMBER_LINE:
         questions = generate_number_line_choice_problems(
-            o.problems, _operations(o.operations), largest_number=o.max_number
+            options.problems, _operations(options.operations), largest_number=options.max_number
         )
-    elif o.choices:
+    elif options.choices:
         questions = generate_equation_choice_problems(
-            o.problems, _operations(o.operations), largest_number=o.max_number
+            options.problems, _operations(options.operations), largest_number=options.max_number
         )
-    elif o.steps == "two":
+    elif options.steps == "two":
         questions = generate_two_step_problems(
-            o.problems,
-            _operations(o.operations),
-            distinct_answers=o.self_check_tiles,
-            largest_number=o.max_number,
-            shapes=o.shapes,
+            options.problems,
+            _operations(options.operations),
+            distinct_answers=options.self_check_tiles,
+            largest_number=options.max_number,
+            shapes=options.shapes,
         )
     else:
         questions = generate_word_problems(
-            o.problems,
-            _operations(o.operations),
-            distinct_answers=o.self_check_tiles,
+            options.problems,
+            _operations(options.operations),
+            distinct_answers=options.self_check_tiles,
             # No comparisons on strip or blocks sheets: a strip shows parts making a whole, and
             # blocks show the first number with the second crossed out, taken away.
             comparisons=representation not in (Representation.STRIP, Representation.BLOCKS),
-            largest_number=o.max_number,
-            largest_operand=o.largest_operand,
+            largest_number=options.max_number,
+            largest_operand=options.largest_operand,
         )
     render_word_problems_worksheet(
         questions=questions,
         path=out,
-        header=o.header(),
-        answer_key=o.answer_key,
+        header=options.header(),
+        answer_key=options.answer_key,
         representation=representation,
-        hints=not o.no_hints,
-        slot_of=_tile_slots(o) if o.self_check_tiles else None,
-        black_and_white=o.black_and_white,
-        work_box=o.work_box,
+        hints=not options.no_hints,
+        slot_of=_tile_slots(options) if options.self_check_tiles else None,
+        black_and_white=options.black_and_white,
+        work_box=options.work_box,
     )
 
 
-def _strip_choice(o: StripChoiceOptions, out: BinaryIO) -> None:
+def _strip_choice(options: StripChoiceOptions, out: BinaryIO) -> None:
     questions: Sequence[StripChoiceQuestion | TwoStepStripChoiceQuestion]
-    if o.steps == "two":
+    if options.steps == "two":
         questions = generate_two_step_strip_choice_problems(
-            o.problems,
-            _operations(o.operations),
-            largest_number=o.max_number,
-            largest_groups=o.max_groups,
+            options.problems,
+            _operations(options.operations),
+            largest_number=options.max_number,
+            largest_groups=options.max_groups,
         )
     else:
         questions = generate_strip_choice_problems(
-            o.problems,
-            _operations(o.operations),
-            largest_number=o.max_number,
-            largest_groups=o.max_groups,
+            options.problems,
+            _operations(options.operations),
+            largest_number=options.max_number,
+            largest_groups=options.max_groups,
         )
     render_strip_choice_worksheet(
         questions=questions,
         path=out,
-        header=o.header(),
-        answer_key=o.answer_key,
-        prompt=Prompt(o.prompt),
+        header=options.header(),
+        answer_key=options.answer_key,
+        prompt=Prompt(options.prompt),
     )
 
 
-def _multiplication_models(o: MultiplicationModelsOptions, out: BinaryIO) -> None:
+def _multiplication_models(options: MultiplicationModelsOptions, out: BinaryIO) -> None:
     render_multiplication_models_worksheet(
         questions=generate_multiplication_model_problems(
-            o.problems, largest_factor=o.max_factor, largest_product=o.max_product
+            options.problems, largest_factor=options.max_factor, largest_product=options.max_product
         ),
         path=out,
-        header=o.header(),
-        answer_key=o.answer_key,
-        jump_labels=not o.no_jump_labels,
+        header=options.header(),
+        answer_key=options.answer_key,
+        jump_labels=not options.no_jump_labels,
     )
 
 
-def _base_ten_blocks(o: BaseTenBlocksOptions, out: BinaryIO) -> None:
+def _base_ten_blocks(options: BaseTenBlocksOptions, out: BinaryIO) -> None:
     render_base_ten_blocks_worksheet(
         questions=generate_blocks_questions(
-            o.problems,
-            _blocks_question_types(o.questions),
-            smallest=o.min_number,
-            largest=o.max_number,
-            regrouping=Regrouping(o.regrouping),
-            distinct_answers=o.self_check_tiles,
+            options.problems,
+            _blocks_question_types(options.questions),
+            smallest=options.min_number,
+            largest=options.max_number,
+            regrouping=Regrouping(options.regrouping),
+            distinct_answers=options.self_check_tiles,
         ),
         path=out,
-        header=o.header(),
-        answer_key=o.answer_key,
-        slot_of=_tile_slots(o) if o.self_check_tiles else None,
-        black_and_white=o.black_and_white,
+        header=options.header(),
+        answer_key=options.answer_key,
+        slot_of=_tile_slots(options) if options.self_check_tiles else None,
+        black_and_white=options.black_and_white,
     )
 
 
-def _data_graphs(o: DataGraphsOptions, out: BinaryIO) -> None:
+def _data_graphs(options: DataGraphsOptions, out: BinaryIO) -> None:
     render_data_graphs_worksheet(
-        problems=generate_discrete_data_problems(o.problems),
+        problems=generate_discrete_data_problems(options.problems),
         path=out,
-        header=o.header(),
-        answer_key=o.answer_key,
-        list_style=NumberListStyle(o.list_style),
+        header=options.header(),
+        answer_key=options.answer_key,
+        list_style=NumberListStyle(options.list_style),
     )
 
 
-def _block(o: BlockOptions, seed: int, out: BinaryIO) -> None:
-    problems = block.build_problems(random.Random(seed), o.problems)
+def _block(options: BlockOptions, seed: int, out: BinaryIO) -> None:
+    problems = block.build_problems(random.Random(seed), options.problems)
     block.render(
         problems=problems,
         path=out,
-        title=o.title,
-        label=o.label,
-        name_line=o.name_line,
+        title=options.title,
+        label=options.label,
+        name_line=options.name_line,
         teks="Texas TEKS 2.2(A), 3.4(A)",
         seed=seed,
     )
 
 
-def _word(o: WordOptions, seed: int, out: BinaryIO) -> None:
-    problems = word.build_problems(random.Random(seed), o.problems)
+def _word(options: WordOptions, seed: int, out: BinaryIO) -> None:
+    problems = word.build_problems(random.Random(seed), options.problems)
     word.render(
         problems=problems,
         path=out,
-        title=o.title,
-        label=o.label,
-        name_line=o.name_line,
+        title=options.title,
+        label=options.label,
+        name_line=options.name_line,
         teks="Texas TEKS 3.4(A)",
         seed=seed,
     )
 
 
-def _strip(o: StripOptions, seed: int, out: BinaryIO) -> None:
-    problems = wp_common.build_problems(random.Random(seed), o.problems, hundreds_cap=9)
+def _strip(options: StripOptions, seed: int, out: BinaryIO) -> None:
+    problems = wp_common.build_problems(random.Random(seed), options.problems, hundreds_cap=9)
     strip.render(
         problems=problems,
         path=out,
-        title=o.title,
-        label=o.label,
-        name_line=o.name_line,
+        title=options.title,
+        label=options.label,
+        name_line=options.name_line,
         teks="Texas TEKS 3.5(A)",
         seed=seed,
-        answer_key=o.answer_key,
+        answer_key=options.answer_key,
     )
 
 
-def _number_line(o: NumberLineOptions, seed: int, out: BinaryIO) -> None:
-    problems = wp_common.build_problems(random.Random(seed), o.problems, hundreds_cap=9)
+def _number_line(options: NumberLineOptions, seed: int, out: BinaryIO) -> None:
+    problems = wp_common.build_problems(random.Random(seed), options.problems, hundreds_cap=9)
     number_line.render(
         problems=problems,
         path=out,
-        title=o.title,
-        label=o.label,
-        name_line=o.name_line,
+        title=options.title,
+        label=options.label,
+        name_line=options.name_line,
         teks="Texas TEKS 3.4(A), 3.5(A)",
         seed=seed,
     )
 
 
-def _number_line_mc(o: NumberLineMCOptions, seed: int, out: BinaryIO) -> None:
+def _number_line_mc(options: NumberLineMCOptions, seed: int, out: BinaryIO) -> None:
     problems = wp_common.build_problems(
-        random.Random(seed), o.problems, hundreds_cap=9, add_sorted=True
+        random.Random(seed), options.problems, hundreds_cap=9, add_sorted=True
     )
     number_line_mc.render(
         problems=problems,
         path=out,
-        title=o.title,
-        label=o.label,
-        name_line=o.name_line,
+        title=options.title,
+        label=options.label,
+        name_line=options.name_line,
         teks="Texas TEKS 3.4(A), 3.5(A)",
         seed=seed,
     )
 
 
-def _multiplication_mc(o: MultiplicationMCOptions, seed: int, out: BinaryIO) -> None:
+def _multiplication_mc(options: MultiplicationMCOptions, seed: int, out: BinaryIO) -> None:
     problems = multiplication_mc.build_problems(
-        random.Random(seed), o.problems, o.max_factor, o.max_product
+        random.Random(seed), options.problems, options.max_factor, options.max_product
     )
     multiplication_mc.render(
         problems=problems,
         path=out,
-        title=o.title,
-        label=o.label,
-        name_line=o.name_line,
+        title=options.title,
+        label=options.label,
+        name_line=options.name_line,
         teks="Texas TEKS 3.4(K)",
         seed=seed,
-        jump_labels=not o.no_jump_labels,
+        jump_labels=not options.no_jump_labels,
     )
 
 
-def _data_graph(o: DataGraphOptions, seed: int, out: BinaryIO) -> None:
-    problems = data_graph.build_problems(random.Random(seed), o.problems, o.list_style)
+def _data_graph(options: DataGraphOptions, seed: int, out: BinaryIO) -> None:
+    problems = data_graph.build_problems(random.Random(seed), options.problems, options.list_style)
     data_graph.render(
         problems=problems,
         path=out,
-        title=o.title,
-        label=o.label,
-        name_line=o.name_line,
+        title=options.title,
+        label=options.label,
+        name_line=options.name_line,
         teks="Texas TEKS 3.8(A), 3.8(B)",
         seed=seed,
     )
 
 
-def _data_graph_mc(o: DataGraphMCOptions, seed: int, out: BinaryIO) -> None:
-    problems = data_graph_mc.build_problems(random.Random(seed), o.problems, o.list_style)
+def _data_graph_mc(options: DataGraphMCOptions, seed: int, out: BinaryIO) -> None:
+    problems = data_graph_mc.build_problems(
+        random.Random(seed), options.problems, options.list_style
+    )
     data_graph_mc.render(
         problems=problems,
         path=out,
-        title=o.title,
-        label=o.label,
-        name_line=o.name_line,
+        title=options.title,
+        label=options.label,
+        name_line=options.name_line,
         teks="Texas TEKS 3.8(A)",
         seed=seed,
     )
 
 
-def _worksheet(o: WorksheetOptions, seed: int, out: BinaryIO) -> None:
+def _worksheet(options: WorksheetOptions, seed: int, out: BinaryIO) -> None:
     problems = worksheet.build_problems(
-        random.Random(seed), o.represent, o.add, o.sub, regroup=not o.no_regroup
+        random.Random(seed),
+        options.represent,
+        options.add,
+        options.sub,
+        regroup=not options.no_regroup,
     )
     worksheet.render(
         problems=problems,
         path=out,
-        title=o.title,
+        title=options.title,
         subtitle="Represent, add, and subtract numbers within 1,000 using base-ten blocks.",
-        name_line=o.name_line,
+        name_line=options.name_line,
         teks="Texas TEKS 2.2(A), 2.4(C)",
         seed=seed,
-        col=worksheet.BW if o.bw else worksheet.COLOR,
+        col=worksheet.BW if options.bw else worksheet.COLOR,
     )
 
 
