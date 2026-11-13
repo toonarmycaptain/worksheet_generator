@@ -169,7 +169,7 @@ COINS_LIST = discrete_data_problem(
             "data_graphs-week-3.pdf",
         ),
         (
-            "/api/worksheets/data_graphs.pdf?problems=9",
+            "/api/worksheets/data_graphs.pdf?problems=21",
             [],
             [],
             422,
@@ -178,8 +178,8 @@ COINS_LIST = discrete_data_problem(
                     {
                         "type": "less_than_equal",
                         "loc": ["query", "problems"],
-                        "msg": "Input should be less than or equal to 8",
-                        "ctx": {"le": 8},
+                        "msg": "Input should be less than or equal to 20",
+                        "ctx": {"le": 20},
                     },
                 ],
             },
