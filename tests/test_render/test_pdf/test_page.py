@@ -1,12 +1,22 @@
 """Tests for the shared page layout: text measurement and wrapping, and answer key page breaks."""
 
 from io import BytesIO
+from unittest.mock import call, create_autospec
 
 import pytest
 from reportlab.pdfgen.canvas import Canvas
 
 from core.question import BLANK
-from render.pdf.page import TEXT_SIZE, TEXT_WIDTH, Header, draw_answer_key, text_width, wrap
+from render.pdf.page import (
+    BOLD_FONT,
+    TEXT_SIZE,
+    TEXT_WIDTH,
+    Header,
+    draw_answer_key,
+    fit_font,
+    text_width,
+    wrap,
+)
 from tests.data import TIMES
 
 # 777,777 in expanded notation: one line at the full width
@@ -37,6 +47,26 @@ UNIT_TO_WORD = (
 )
 def test_text_width(text: str, size: float, blank_side: float | None, width: float) -> None:
     assert text_width(text, size, blank_side) == pytest.approx(width)
+
+
+@pytest.mark.parametrize(
+    ("width", "size"),
+    [
+        # "Number of Paddleboats" in bold is 112.24 wide at 10
+        (120, 10),
+        # 101.02 at 9 is too wide for 100, and 95.4 at 8.5 fits
+        (100, 8.5),
+        # too wide even at the smallest size, 6, which is used anyway
+        (40, 6),
+    ],
+)
+def test_fit_font(width: float, size: float) -> None:
+    """The font is set at the size asked for if the text fits, else smaller, down to 6."""
+    pdf = create_autospec(Canvas, instance=True)
+
+    fit_font(pdf, "Number of Paddleboats", BOLD_FONT, 10, width)
+
+    assert pdf.setFont.call_args_list == [call(BOLD_FONT, size)]
 
 
 @pytest.mark.parametrize(

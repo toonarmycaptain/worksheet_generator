@@ -39,5 +39,11 @@ urlpatterns = [
     ),
     path("place-value/", views.sheet, {"kind": "place_value"}, name="place_value"),
     path("data-and-graphs/", views.sheet, {"kind": "data_graphs"}, name="data_graphs"),
+    path(
+        "input-output-tables/",
+        views.sheet,
+        {"kind": "input_output_tables"},
+        name="input_output_tables",
+    ),
     path("legacy/", views.legacy, name="legacy"),
 ]

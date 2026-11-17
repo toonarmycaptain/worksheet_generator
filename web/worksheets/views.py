@@ -23,6 +23,7 @@ from core.basic_operations.representation import (
     operations_name,
     word_problems_title,
 )
+from core.input_output_tables.representation import INPUT_OUTPUT_TABLES_NAME
 from core.self_check_tiles import SLOTS
 
 from .registry import CORE_KINDS, LEGACY_KINDS, CoreKind, Kind
@@ -57,6 +58,12 @@ BUILDERS: list[dict[str, Any]] = [
         "same data, then solve problems about it.",
         "sheets": ["data_graphs"],
     },
+    {
+        "title": INPUT_OUTPUT_TABLES_NAME,
+        "description": "Fill in tables of number pairs that follow a rule about a real "
+        "situation, or choose the table that matches the rule.",
+        "sheets": ["input_output_tables"],
+    },
 ]
 
 HEADINGS = {
@@ -67,6 +74,7 @@ HEADINGS = {
     "base_ten_blocks": "Base-Ten Blocks",
     "multiplication_models": MULTIPLICATION_MODELS_NAME,
     "data_graphs": "Read, Complete, Solve",
+    "input_output_tables": INPUT_OUTPUT_TABLES_NAME,
 }
 LEGACY_HEADINGS = {
     "block": "Addition & Subtraction Word Problems — Base-Ten Blocks",
@@ -170,6 +178,7 @@ SCRIPT_DATA: dict[str, dict[str, Any]] = {
         },
     },
     "place_value": {"distinct_forms": True},
+    "input_output_tables": {"choice_fields": True},
 }
 
 

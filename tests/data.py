@@ -1,12 +1,59 @@
 """Test data shared by more than one test module."""
 
+from core.basic_operations.data import Operation
 from core.discrete_data.topics import FriendsTopic, NumberListTopic, SurveyTopic
+from core.input_output_tables.contexts import TableContext
 from core.placevalue.data import PlaceValueForm
 
 STANDARD, EXPANDED, UNIT, EXPANDED_NOTATION, WORD, BLOCKS = PlaceValueForm  # in the enum's order
 
 TIMES = "\N{MULTIPLICATION SIGN}"
 MINUS = "\N{MINUS SIGN}"
+DIVIDED_BY = "\N{DIVISION SIGN}"
+
+# Table contexts standing in for the bank's, which grows, so that a new context doesn't change
+# what a test expects
+SOCKS = TableContext(
+    title="Packages of Socks",
+    smaller="Number of Packages",
+    larger="Number of Socks",
+    smaller_noun="the number of packages",
+    larger_noun="the number of socks",
+    rule="There are {n} socks in each package.",
+)
+ORANGES = TableContext(
+    title="Oranges",
+    smaller="Number of Bags",
+    larger="Number of Oranges",
+    smaller_noun="the number of bags",
+    larger_noun="the number of oranges",
+    rule="There are {n} oranges in each bag.",
+)
+READING = TableContext(
+    title="{name}'s Reading",
+    smaller="Number of Months",
+    larger="Books Read",
+    smaller_noun="the number of months",
+    larger_noun="the number of books {name} reads",
+    rule="{name} reads {n} books every month.",
+)
+SALE = TableContext(
+    title="Book Sale",
+    smaller="Sale Price ($)",
+    larger="Regular Price ($)",
+    smaller_noun="the sale price",
+    larger_noun="the regular price",
+    rule="The sale price of each book is ${n} less than the regular price.",
+)
+GIFTS = TableContext(
+    title="{name}'s Orders",
+    smaller="Items Ordered",
+    larger="Items Sent",
+    smaller_noun="the number of items ordered",
+    larger_noun="the number of items sent",
+    rule="{name} sends {n} free {n:gift|gifts} with each order.",
+)
+TABLE_CONTEXTS = {Operation.ADD: (SALE, GIFTS), Operation.MULTIPLY: (SOCKS, ORANGES, READING)}
 
 # Data-set topics and names standing in for the banks', which grow, so that a new topic or name
 # doesn't change what a test expects

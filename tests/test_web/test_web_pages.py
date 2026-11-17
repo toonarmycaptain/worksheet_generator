@@ -174,6 +174,31 @@ def test_pages(client: Client) -> None:
                 b"answer_key",
             ],
         ),
+        (
+            "/worksheets/input-output-tables/",
+            [b"/api/worksheets/input_output_tables.pdf"],
+            [
+                b"title",
+                b"label",
+                b"name_line",
+                b"problems",
+                b"operations",  # a checkbox for each operation
+                b"operations",
+                b"operations",
+                b"operations",
+                b"blanks",  # a radio button for each choice
+                b"blanks",
+                b"blanks",
+                b"multiple_choice",
+                b"question_types",  # a checkbox for each type
+                b"question_types",
+                b"question_types",
+                b"answer_key",
+                b"self_check_tiles",
+                b"tile_pattern",  # a radio button for each pattern
+                b"tile_pattern",
+            ],
+        ),
     ],
 )
 def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], client: Client) -> None:
@@ -200,6 +225,7 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
         "/worksheets/basic-operations/multiplication-models/",
         "/worksheets/place-value/",
         "/worksheets/data-and-graphs/",
+        "/worksheets/input-output-tables/",
         # the footer
         f"/feedback/?from={url}",
         "https://toonarmycaptain.com",
@@ -230,6 +256,21 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
             "/worksheets/place-value/",
             "tile_pattern",
             [(b"simple", b" checked", b"simple"), (b"complex", b"", b"complex")],
+        ),
+        (
+            "/worksheets/input-output-tables/",
+            "tile_pattern",
+            [(b"simple", b" checked", b"simple"), (b"complex", b"", b"complex")],
+        ),
+        # the input-output tables form's Missing table values: inputs and outputs by default
+        (
+            "/worksheets/input-output-tables/",
+            "blanks",
+            [
+                (b"inputs", b"", b"Inputs"),
+                (b"outputs", b"", b"Outputs"),
+                (b"inputs_and_outputs", b" checked", b"Inputs and outputs"),
+            ],
         ),
         # none, some, all, with mixed by default
         (
@@ -398,6 +439,31 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
             ],
             True,
         ),
+        # all four by default on the input-output tables form, with an All box
+        (
+            "/worksheets/input-output-tables/",
+            b"/api/worksheets/input_output_tables.pdf",
+            "operations",
+            [
+                (b"add", b" checked", b"Addition"),
+                (b"subtract", b" checked", b"Subtraction"),
+                (b"multiply", b" checked", b"Multiplication"),
+                (b"divide", b" checked", b"Division"),
+            ],
+            True,
+        ),
+        # every multiple-choice question type by default, with an All box for the three
+        (
+            "/worksheets/input-output-tables/",
+            b"/api/worksheets/input_output_tables.pdf",
+            "question_types",
+            [
+                (b"table", b" checked", b"Choose the table that matches a rule"),
+                (b"sentence", b" checked", b"Complete a sentence about a table"),
+                (b"statement", b" checked", b"Choose the true statement about a table"),
+            ],
+            True,
+        ),
         # every type of question by default, with an All box for the three
         (
             "/worksheets/basic-operations/base-ten-blocks/",
@@ -453,6 +519,7 @@ def test_a_checkbox_group_sends_each_ticked_choice_s_id_and_shows_its_name(
         ("/worksheets/basic-operations/multiplication-models/", False),
         ("/worksheets/place-value/", True),
         ("/worksheets/data-and-graphs/", False),
+        ("/worksheets/input-output-tables/", False),
         ("/worksheets/legacy/", False),
     ],
 )
@@ -469,6 +536,34 @@ def test_the_place_value_page_keeps_from_and_to_different(
 
 
 @pytest.mark.parametrize(
+    ("url", "script"),
+    [
+        ("/worksheets/basic-operations/arithmetic/", False),
+        ("/worksheets/basic-operations/word-problems/", False),
+        ("/worksheets/basic-operations/strip-choice/", False),
+        ("/worksheets/basic-operations/base-ten-blocks/", False),
+        ("/worksheets/basic-operations/multiplication-models/", False),
+        ("/worksheets/place-value/", False),
+        ("/worksheets/data-and-graphs/", False),
+        ("/worksheets/input-output-tables/", True),
+        ("/worksheets/legacy/", False),
+    ],
+)
+def test_the_input_output_tables_page_swaps_fields_for_multiple_choice(
+    client: Client, url: str, script: bool
+) -> None:
+    """
+    Only the input-output tables page includes the script that hides the Missing table values
+    radio buttons while multiple choice, which shows complete tables, is ticked, and shows the
+    question types only then.
+
+    Whether the script works is checked manually in a browser.
+    """
+    content = client.get(url).content
+    assert (b"function showChoiceFields()" in content) is script
+
+
+@pytest.mark.parametrize(
     ("url", "tiles_script", "titles_script", "representation_script"),
     [
         ("/worksheets/basic-operations/arithmetic/", True, True, False),
@@ -478,6 +573,7 @@ def test_the_place_value_page_keeps_from_and_to_different(
         ("/worksheets/basic-operations/multiplication-models/", False, False, False),
         ("/worksheets/place-value/", True, False, False),
         ("/worksheets/data-and-graphs/", False, False, False),
+        ("/worksheets/input-output-tables/", True, False, False),
         ("/worksheets/legacy/", False, False, False),
     ],
 )
@@ -485,8 +581,8 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
     client: Client, url: str, tiles_script: bool, titles_script: bool, representation_script: bool
 ) -> None:
     """
-    The arithmetic, word problems, base-ten blocks and place-value pages include the script that
-    sets problems to 12 for tiles.
+    The arithmetic, word problems, base-ten blocks, place-value and input-output tables pages
+    include the script that sets problems to 12 for tiles.
 
     The other pages have no self-check tiles box, and so no script. Whether the script works is
     checked manually in a browser. Only the arithmetic page has the operation names that its other
@@ -534,6 +630,8 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
         ("/worksheets/place-value/", "choice-titles", None),
         ("/worksheets/data-and-graphs/", "representation-operations", None),
         ("/worksheets/data-and-graphs/", "choice-titles", None),
+        ("/worksheets/input-output-tables/", "representation-operations", None),
+        ("/worksheets/input-output-tables/", "choice-titles", None),
     ],
 )
 def test_the_representation_script_s_data(
@@ -578,6 +676,10 @@ def test_the_representation_script_s_data(
         (
             "/worksheets/data-and-graphs/",
             [(b"/api/worksheets/data_graphs.pdf", b" data-check-first")],
+        ),
+        (
+            "/worksheets/input-output-tables/",
+            [(b"/api/worksheets/input_output_tables.pdf", b" data-check-first")],
         ),
         (
             "/worksheets/legacy/",
@@ -682,6 +784,18 @@ def test_only_core_forms_check_their_options_before_opening_a_tab(
                 (b"answer_key", b"Add an answer key page"),
             ],
         ),
+        (
+            "/worksheets/input-output-tables/",
+            [
+                (b"title", b"Title"),
+                (b"label", b"Label"),
+                (b"name_line", b"Add Name/Date blanks"),
+                (b"problems", b"Problems"),
+                (b"multiple_choice", b"Multiple choice"),
+                (b"answer_key", b"Add an answer key page"),
+                (b"self_check_tiles", b"Self-check tile answers"),
+            ],
+        ),
     ],
 )
 def test_each_field_carries_its_label_for_the_check_first_messages(
@@ -730,6 +844,7 @@ def test_legacy_page(client: Client) -> None:
         "/worksheets/basic-operations/multiplication-models/",
         "/worksheets/place-value/",
         "/worksheets/data-and-graphs/",
+        "/worksheets/input-output-tables/",
         # the footer
         "/feedback/?from=/worksheets/legacy/",
         "https://toonarmycaptain.com",

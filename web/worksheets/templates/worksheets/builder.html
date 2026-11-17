@@ -133,6 +133,29 @@
   </script>
   {% endif %}
 
+  {% if choice_fields %}
+  <script type="module">
+    // The input-output tables form: multiple choice shows complete tables, so the Missing table
+    // values radios show only while it's unticked, and the question types only while it's ticked.
+    // Hidden, they're disabled so they aren't sent.
+    const choices = document.querySelector("input[name=multiple_choice]");
+    const blanks = [...choices.form.querySelectorAll("input[name=blanks]")];
+    const types = [...choices.form.querySelectorAll("input[name=question_types]")];
+    function showChoiceFields() {
+      for (const radio of blanks) radio.disabled = choices.checked;
+      blanks[0].closest("[role=radiogroup]").style.display = choices.checked ? "none" : "";
+      for (const box of types) box.disabled = !choices.checked;
+      types[0].closest("[role=group]").style.display = choices.checked ? "" : "none";
+      // setting disabled doesn't fire change, which the checkboxes script listens for
+      types[0].dispatchEvent(new Event("change"));
+    }
+    choices.addEventListener("change", showChoiceFields);
+    // also when the browser restores the choices, going back to the page
+    window.addEventListener("pageshow", showChoiceFields);
+    showChoiceFields();
+  </script>
+  {% endif %}
+
   {% if operation_titles %}
   {{ operation_titles|json_script:"operation-titles" }}
   <script type="module">
@@ -361,20 +384,26 @@
     // A group of checkboxes, such as the operations, needs at least one ticked: while none is,
     // the form's button is greyed out, with a note saying why. A group of more than two has an
     // All box, which ticks or clears them all, and is ticked while they all are. A box that is
-    // greyed out isn't sent, so it doesn't count, and All leaves it alone.
+    // greyed out isn't sent, so it doesn't count, and All leaves it alone; a group whose boxes
+    // are all greyed out, being hidden, asks for none. A form with several groups keeps its
+    // button greyed out while any of them asks.
     for (const group of document.querySelectorAll("[data-checkboxes]")) {
       const boxes = [...group.querySelectorAll("input[name]")];
       const usable = () => boxes.filter((box) => !box.disabled);
       const all = group.querySelector("input[data-all]");
-      const button = group.closest("form").querySelector("button");
+      const form = group.closest("form");
+      const button = form.querySelector("button");
       const note = document.createElement("span");
+      note.dataset.checkboxesNote = "";
       note.textContent = ` Tick at least one of the ${group.dataset.checkboxes.toLowerCase()}.`;
       button.after(note);
       const update = () => {
         const count = usable().filter((box) => box.checked).length;
-        button.disabled = count === 0;
-        note.hidden = count > 0;
-        if (all) all.checked = count === usable().length;
+        note.hidden = count > 0 || usable().length === 0;
+        button.disabled = [...form.querySelectorAll("[data-checkboxes-note]")].some(
+          (each) => !each.hidden,
+        );
+        if (all) all.checked = usable().length > 0 && count === usable().length;
       };
       for (const box of boxes) box.addEventListener("change", update);
       all?.addEventListener("change", () => {

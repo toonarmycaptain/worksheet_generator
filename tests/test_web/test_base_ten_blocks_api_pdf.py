@@ -25,7 +25,9 @@ from typing import Any, get_args
 import pytest
 from django.test import Client
 from worksheets.registry import (
+    BlanksChoice,
     BlocksQuestionChoice,
+    ChoiceTypeChoice,
     NumberListStyleChoice,
     PromptChoice,
     RegroupingChoice,
@@ -35,6 +37,7 @@ from core.base_ten_blocks import BlocksQuestionType
 from core.basic_operations.data import BasicOperationQuestionData, Operation
 from core.basic_operations.regrouping import Regrouping
 from core.basic_operations.representation import Prompt
+from core.input_output_tables.data import Blanks, ChoiceType
 from core.placevalue.data import PlaceValueQuestionData
 from render.pdf.data_displays import NumberListStyle
 from tests.data import BLOCKS, REAL_CASE_SLOTS, STANDARD
@@ -342,6 +345,8 @@ def test_base_ten_blocks_pdf(
         (RegroupingChoice, Regrouping),
         (NumberListStyleChoice, NumberListStyle),
         (PromptChoice, Prompt),
+        (BlanksChoice, Blanks),
+        (ChoiceTypeChoice, ChoiceType),
     ],
 )
 def test_the_choices_are_every_value_in_order(choice: Any, enum: type[StrEnum]) -> None:
