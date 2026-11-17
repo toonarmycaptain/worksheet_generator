@@ -1,5 +1,6 @@
 """
-The word-problem bank: the names, objects and templates that word a basic-operation question.
+The word-problem bank: the objects and templates that word a basic-operation question. The names
+come from ``core.names``.
 
 Every template takes the same slots, and may use any of them:
 - ``{n1}`` and ``{n2}``: two different names;
@@ -15,11 +16,11 @@ number meets a noun or a verb. Multiplication and division operands start at 2, 
 templates use ``{obj}``. A new template is one more string in its operation's tuple, and a new
 operation is one more entry in ``TEMPLATES``.
 
-New templates and objects go at the top of their tuples, and new names at the end. The tests
-script ``random`` to take each tuple's templates from the end, the last object and the first two
-names, so their wording stays the same. Comparisons are the exception: with comparisons on, the
-tests take them first, so a new comparison changes the wording of any test with more problems of
-its operation than there were comparisons.
+New templates and objects go at the top of their tuples, and new names at the end of ``NAMES``.
+The tests script ``random`` to take each tuple's templates from the end, the last object and the
+first two names, so their wording stays the same. Comparisons are the exception: with comparisons
+on, the tests take them first, so a new comparison changes the wording of any test with more
+problems of its operation than there were comparisons.
 
 Comparisons, which ask how many more one has than another, are kept apart in
 ``COMPARISON_TEMPLATES``: a part-part-whole representation, such as the strip diagram, can't show
@@ -45,41 +46,8 @@ from core.basic_operations.data import (
     TwoStepShape,
     Unknown,
 )
+from core.names import NAMES
 
-NAMES = (
-    "Maria",
-    "Jamal",
-    "Priya",
-    "Liam",
-    "Sofia",
-    "Chen",
-    "Aisha",
-    "Diego",
-    "Emma",
-    "Noah",
-    "Zoe",
-    "Omar",
-    "Ava",
-    "Kai",
-    "Lucia",
-    "Malik",
-    "Hana",
-    "Leo",
-    "Nina",
-    "Theo",
-    "Rosa",
-    "Sam",
-    "Ivy",
-    "Dev",
-    "Mateo",
-    "Grace",
-    "Ravi",
-    "Elena",
-    "Jonah",
-    "Mia",
-    "Tariq",
-    "Lily",
-)
 # Each object, singular and plural
 OBJECTS = (
     ("eraser", "erasers"),

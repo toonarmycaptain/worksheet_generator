@@ -46,6 +46,11 @@ from core.discrete_data.data import (
     NumericalDataProblemData,
     SummarizeDataQuestionData,
 )
+from core.input_output_tables.data import (
+    InputOutputQuestion,
+    InputOutputQuestionData,
+    InputOutputRuleQuestionData,
+)
 from core.placevalue.data import PlaceValueQuestionData
 from core.question import FreeResponse, Question, QuestionData, multiple_choice
 from core.self_check_tiles import TileQuestion
@@ -56,6 +61,7 @@ from render.pdf.basic_operations_worksheet import (
 )
 from render.pdf.data_displays import NumberListStyle
 from render.pdf.data_graphs_worksheet import render_data_graphs_worksheet
+from render.pdf.input_output_tables_worksheet import render_input_output_tables_worksheet
 from render.pdf.multiplication_models_worksheet import render_multiplication_models_worksheet
 from render.pdf.page import Header
 from render.pdf.place_value_worksheet import render_place_value_worksheet
@@ -114,6 +120,27 @@ def sample_last(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(
         random, "sample", lambda population, k: list(population[len(population) - k :])
     )
+
+
+def sample_returns(monkeypatch: pytest.MonkeyPatch, picks: list[list[Any]]) -> list[Sequence[Any]]:
+    """
+    Make ``random.sample`` return ``picks`` in order, and return the population of each call.
+
+    A pick that is not ``k`` different items of the population raises ``ValueError``, as the
+    real ``sample`` never returns one, so a pick also shows that the code offered it.
+    """
+    values = iter(picks)
+    populations: list[Sequence[Any]] = []
+
+    def sample(population: Sequence[Any], k: int) -> list[Any]:
+        populations.append(population)
+        pick = next(values)
+        if len(pick) != k or len(set(pick)) != k or any(item not in population for item in pick):
+            raise ValueError(f"{pick} is not {k} picks from {population}")
+        return list(pick)
+
+    monkeypatch.setattr(random, "sample", sample)
+    return populations
 
 
 def reverse_shuffle(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -479,6 +506,39 @@ def render_data_graphs(
         list_style=list_style,
     )
     return out.getvalue()
+
+
+def render_input_output_tables(
+    questions: Sequence[tuple[InputOutputQuestionData, tuple[Any, ...]]],
+    slot_of: tuple[int, ...] | None,
+    answer_key: bool,
+    title: str,
+    label: str,
+    name_line: bool = True,
+) -> bytes:
+    """
+    Render the input-output tables sheet. Each question is multiple choice among its answer, a
+    table or a rule, and its wrong options; with none, it is free response: a table to complete,
+    or a sentence to complete with the rule.
+    """
+    out = BytesIO()
+    render_input_output_tables_worksheet(
+        questions=[_input_output_question(data, wrong) for data, wrong in questions],
+        path=out,
+        header=Header(title=title, label=label, name_line=name_line),
+        answer_key=answer_key,
+        slot_of=slot_of,
+    )
+    return out.getvalue()
+
+
+def _input_output_question(
+    data: InputOutputQuestionData, wrong: tuple[Any, ...]
+) -> InputOutputQuestion:
+    """Pair an input-output question with its response, as ``render_input_output_tables`` says."""
+    if isinstance(data, InputOutputRuleQuestionData):
+        return Question(data, multiple_choice((data.answer,), wrong) if wrong else FreeResponse())
+    return Question(data, multiple_choice((data.answer,), wrong) if wrong else FreeResponse())
 
 
 def refused(message: str) -> dict[str, Any]:

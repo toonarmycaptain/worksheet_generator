@@ -25,19 +25,17 @@ from core.discrete_data.representation import (
     labels,
     pictograph_key,
 )
-from render.pdf.page import BOLD_FONT, FONT, ITALIC_FONT, wrap
+from render.pdf.page import BOLD_FONT, FONT, ITALIC_FONT, fit_font, wrap
+from render.pdf.tables import OUTLINE_COLOUR, draw_table
 
-OUTLINE_COLOUR = HexColor("#2d3748")  # near black
 MARK_COLOUR = HexColor("#2b6cb0")  # blue: pictograph symbols and dot plot Xs
 BAR_FILL = HexColor("#cfe3f7")  # light blue
-HEADER_FILL = HexColor("#edf2f7")  # very light grey
 GRID_COLOUR = HexColor("#cbd5e0")  # light grey
 KEY_COLOUR = HexColor("#718096")  # grey, for a dot plot's "Each X = 1 student"
 
 TITLE_SIZE = 10
 TITLE_DROP = 10  # from the panel's top down to the title's baseline
 BODY_DROP = 16  # from the panel's top down to the display under the title
-SMALLEST_LABEL_SIZE = 6  # a label too wide for its space shrinks, down to this size
 
 TABLE_WIDTH = 200  # at most; a table is centred in its panel
 TABLE_LABEL_SHARE = 0.45  # of the table's width, for the categories' column
@@ -121,13 +119,6 @@ def _draw_title(pdf: Canvas, x: float, top: float, width: float, title: str) -> 
     pdf.drawCentredString(x + width / 2, top - TITLE_DROP, title)
 
 
-def _fit_font(pdf: Canvas, text: str, font: str, size: float, width: float) -> None:
-    """Set ``font`` at ``size``, or smaller if needed for ``text`` to fit ``width``."""
-    while size > SMALLEST_LABEL_SIZE and stringWidth(text, font, size) > width:
-        size -= 0.5
-    pdf.setFont(font, size)
-
-
 def _draw_table(
     pdf: Canvas,
     x: float,
@@ -139,39 +130,24 @@ def _draw_table(
 ) -> None:
     """A frequency table: a header row, then each category beside its count."""
     table_width = min(width, TABLE_WIDTH)
-    table_x = x + (width - table_width) / 2
     label_width = table_width * TABLE_LABEL_SHARE
-    count_centre = table_x + label_width + (table_width - label_width) / 2
-    rows = len(dataset.counts) + 1
-    row_height = min(TABLE_ROW_HEIGHT, (height - 18) / rows)
-    table_top = top - BODY_DROP
-    table_bottom = table_top - rows * row_height
-
-    pdf.setFillColor(HEADER_FILL)
-    pdf.rect(table_x, table_top - row_height, table_width, row_height, stroke=0, fill=1)
-    pdf.setFillColor("black")
-    header_baseline = table_top - row_height / 2 - 3
-    category_heading = category_header(dataset)
-    _fit_font(pdf, category_heading, BOLD_FONT, 9, label_width - 6)
-    pdf.drawCentredString(table_x + label_width / 2, header_baseline, category_heading)
-    count_heading = count_header(dataset)
-    _fit_font(pdf, count_heading, BOLD_FONT, 9, table_width - label_width - 6)
-    pdf.drawCentredString(count_centre, header_baseline, count_heading)
-    for row, (label, count) in enumerate(zip(labels(dataset), dataset.counts, strict=True), 1):
-        baseline = table_top - row * row_height - row_height / 2 - 3
-        _fit_font(pdf, label, FONT, 10, label_width - 6)
-        pdf.drawCentredString(table_x + label_width / 2, baseline, label)
-        if row - 1 not in blanks:
-            pdf.setFont(FONT, 10)
-            pdf.drawCentredString(count_centre, baseline, str(count))
-
-    pdf.setStrokeColor(OUTLINE_COLOUR)
-    pdf.setLineWidth(1)
-    pdf.rect(table_x, table_bottom, table_width, rows * row_height, stroke=1, fill=0)
-    pdf.line(table_x + label_width, table_top, table_x + label_width, table_bottom)
-    for row in range(1, rows):
-        row_y = table_top - row * row_height
-        pdf.line(table_x, row_y, table_x + table_width, row_y)
+    cells: list[list[str | None]] = [[category_header(dataset), count_header(dataset)]]
+    cells += [
+        [label, None if index in blanks else str(count)]
+        for index, (label, count) in enumerate(zip(labels(dataset), dataset.counts, strict=True))
+    ]
+    row_height = min(TABLE_ROW_HEIGHT, (height - 18) / len(cells))
+    draw_table(
+        pdf,
+        x + (width - table_width) / 2,
+        top - BODY_DROP,
+        [label_width, table_width - label_width],
+        [row_height] * len(cells),
+        cells,
+        heading_row=True,
+        heading_size=9,
+        body_size=10,
+    )
 
 
 def _draw_pictograph(
@@ -205,7 +181,7 @@ def _draw_pictograph(
             pdf.setStrokeColor(GRID_COLOUR)
             pdf.line(x, row_top, x + width, row_top)
         pdf.setFillColor("black")
-        _fit_font(pdf, label, FONT, 10, PICTOGRAPH_LABEL_WIDTH - 8)
+        fit_font(pdf, label, FONT, 10, PICTOGRAPH_LABEL_WIDTH - 8)
         pdf.drawString(x + 5, row_top - row_height / 2 - 3.5, label)
         if row in blanks:
             continue
@@ -296,7 +272,7 @@ def _draw_bar_graph(
                 centre - bar_width / 2, bottom, bar_width, y_for(count) - bottom, stroke=1, fill=1
             )
         pdf.setFillColor("black")
-        _fit_font(pdf, label, FONT, 8, slot - 2)
+        fit_font(pdf, label, FONT, 8, slot - 2)
         pdf.drawCentredString(centre, bottom - 10, label)
 
     pdf.setStrokeColor(OUTLINE_COLOUR)
@@ -335,7 +311,7 @@ def _draw_dot_plot(
         pdf.setStrokeColor(OUTLINE_COLOUR)
         pdf.line(column_x, baseline - 3, column_x, baseline + 3)
         pdf.setFillColor("black")
-        _fit_font(pdf, label, FONT, 8, slot - 2)
+        fit_font(pdf, label, FONT, 8, slot - 2)
         pdf.drawCentredString(column_x, baseline - 11, label)
         if index not in blanks:
             _draw_xs(pdf, column_x, baseline + 3, count, x_step)

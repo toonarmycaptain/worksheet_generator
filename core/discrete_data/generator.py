@@ -5,7 +5,6 @@ from collections.abc import Iterator, Sequence
 from itertools import combinations
 from typing import assert_never
 
-from core.basic_operations.word_problems import NAMES
 from core.discrete_data.data import (
     CategoricalData,
     CategoricalDataProblemData,
@@ -24,6 +23,7 @@ from core.discrete_data.topics import (
     NumberListTopic,
     SurveyTopic,
 )
+from core.names import NAMES
 from core.question import FreeResponse, Question
 
 # The displays a categorical data set is shown in. The given and target displays rotate through

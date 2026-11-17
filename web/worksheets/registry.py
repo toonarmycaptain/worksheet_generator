@@ -84,6 +84,16 @@ from core.basic_operations.representation import (
     word_problems_title,
 )
 from core.discrete_data.generator import generate_discrete_data_problems
+from core.input_output_tables.data import Blanks, ChoiceType
+from core.input_output_tables.generator import (
+    count_possible_answers,
+    generate_input_output_table_questions,
+)
+from core.input_output_tables.representation import (
+    BLANKS_NAMES,
+    CHOICE_TYPE_NAMES,
+    INPUT_OUTPUT_TABLES_NAME,
+)
 from core.placevalue.data import PlaceValueForm
 from core.placevalue.generator import (
     DEFAULT_LARGEST_NUMBER,
@@ -104,6 +114,7 @@ from render.pdf.basic_operations_worksheet import (
 )
 from render.pdf.data_displays import NumberListStyle
 from render.pdf.data_graphs_worksheet import render_data_graphs_worksheet
+from render.pdf.input_output_tables_worksheet import render_input_output_tables_worksheet
 from render.pdf.multiplication_models_worksheet import render_multiplication_models_worksheet
 from render.pdf.page import Header
 from render.pdf.place_value_worksheet import render_place_value_worksheet
@@ -188,6 +199,14 @@ REGROUPING_LABELS: dict[str, JsonValue] = {
 }
 NumberListStyleChoice = Literal["grid", "commas"]  # a NumberListStyle value
 NUMBER_LIST_STYLE_LABELS: dict[str, JsonValue] = {"grid": "Grid", "commas": "Commas"}
+BlanksChoice = Literal["inputs", "outputs", "inputs_and_outputs"]  # a Blanks value
+# Missing table values radio button labels: each choice's name
+BLANKS_LABELS: dict[str, JsonValue] = {blanks.value: name for blanks, name in BLANKS_NAMES.items()}
+ChoiceTypeChoice = Literal["table", "sentence", "statement"]  # a ChoiceType value
+# Question types checkbox labels: each type's name
+CHOICE_TYPE_LABELS: dict[str, JsonValue] = {
+    choice_type.value: name for choice_type, name in CHOICE_TYPE_NAMES.items()
+}
 AnswerKey = Annotated[bool, Field(title="Add an answer key page")]
 NameDateLine = Annotated[bool, Field(title="Add Name/Date blanks")]
 SelfCheckTiles = Annotated[
@@ -873,6 +892,65 @@ class DataGraphsOptions(HeaderOptions):
     answer_key: AnswerKey = False
 
 
+class InputOutputTableOptions(HeaderOptions):
+    """
+    Options for the input-output tables kind, built on the core. There is no seed: every sheet is
+    new.
+    """
+
+    title: Title = INPUT_OUTPUT_TABLES_NAME
+    problems: Problems = 6
+    # Each problem's operation is drawn at random from those ticked.
+    operations: Operations = Field(["add", "subtract", "multiply", "divide"])
+    # Tables to fill in only: multiple choice shows complete tables, so the page hides this
+    # while it's ticked.
+    blanks: BlanksChoice = Field(
+        "inputs_and_outputs",
+        title="Missing table values",
+        json_schema_extra={"input": "radio", "labels": BLANKS_LABELS},
+    )
+    multiple_choice: bool = Field(
+        False,
+        title="Multiple choice",
+        description="Instead of tables to fill in, asks the question types ticked below.",
+    )
+    # Multiple choice only, so the page shows these only while it's ticked. The problems are
+    # shared evenly among the ticked types, each asked in a mix of STAAR's forms.
+    question_types: list[ChoiceTypeChoice] = Field(
+        ["table", "sentence", "statement"],
+        min_length=1,
+        title="Question types",
+        json_schema_extra={"labels": CHOICE_TYPE_LABELS},
+    )
+    answer_key: AnswerKey = False
+    # Tiles leave one number out of each table, and add an answer bank page.
+    self_check_tiles: SelfCheckTiles = False
+    tile_pattern: TilePattern = "simple"
+
+    @model_validator(mode="after")
+    def _tiles_are_available(self) -> Self:
+        # Not built for multiple choice: each choice's letter would need coding as a number. The
+        # page hides multiple choice while tiles are ticked, and greys out the tiles while it is.
+        # Runs first, so a request with both is told so before anything else.
+        if self.self_check_tiles and self.multiple_choice:
+            raise ValueError("self_check_tiles: not available with multiple choice")
+        return self
+
+    @model_validator(mode="after")
+    def _enough_different_answers(self) -> Self:
+        # With tiles, each table leaves out one number, and no two tables the same one. Division
+        # with outputs only, and multiplication with inputs only, can run short: those numbers
+        # are 1 to 10.
+        if self.self_check_tiles:
+            _at_most_one_question_per_tile(self.problems)
+            operations = _operations(self.operations)
+            possible = count_possible_answers(operations, Blanks(self.blanks))
+            if self.problems > possible:
+                limits = "choice of operations and missing table values"
+                raise _too_many_problems(possible, "repeated answers", limits, {})
+        return self
+
+
 class BlockOptions(Options):
     title: Title = "Base-Ten Block Word Problems"
     label: Label = "Sheet A"
@@ -1045,7 +1123,11 @@ def _render_tiles(
 
 
 def _tile_slots(
-    options: BasicOperationOptions | PlaceValueOptions | WordProblemOptions | BaseTenBlocksOptions,
+    options: BasicOperationOptions
+    | PlaceValueOptions
+    | WordProblemOptions
+    | BaseTenBlocksOptions
+    | InputOutputTableOptions,
 ) -> Sequence[int]:
     """Return the slot of each question's answer, for the requested tile pattern."""
     make_slots = conventional_slot_of if options.tile_pattern == "simple" else random_slot_of
@@ -1157,6 +1239,26 @@ def _data_graphs(options: DataGraphsOptions, out: BinaryIO) -> None:
         header=options.header(),
         answer_key=options.answer_key,
         list_style=NumberListStyle(options.list_style),
+    )
+
+
+def _input_output_tables(options: InputOutputTableOptions, out: BinaryIO) -> None:
+    render_input_output_tables_worksheet(
+        questions=generate_input_output_table_questions(
+            options.problems,
+            _operations(options.operations),
+            blanks=Blanks(options.blanks),
+            choice_types=[
+                choice_type
+                for choice_type in ChoiceType
+                if options.multiple_choice and choice_type.value in options.question_types
+            ],
+            distinct_answers=options.self_check_tiles,
+        ),
+        path=out,
+        header=options.header(),
+        answer_key=options.answer_key,
+        slot_of=_tile_slots(options) if options.self_check_tiles else None,
     )
 
 
@@ -1341,4 +1443,5 @@ CORE_KINDS: dict[str, CoreKind[Any]] = {
     "base_ten_blocks": CoreKind(BaseTenBlocksOptions, _base_ten_blocks),
     "multiplication_models": CoreKind(MultiplicationModelsOptions, _multiplication_models),
     "data_graphs": CoreKind(DataGraphsOptions, _data_graphs),
+    "input_output_tables": CoreKind(InputOutputTableOptions, _input_output_tables),
 }

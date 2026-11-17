@@ -2,8 +2,8 @@
 Page layout shared by every PDF worksheet.
 
 Defines the page geometry and fonts, and draws the header and footer, a sheet's instruction,
-wrapped text, a problem's number and text, and the answer key pages. Also starts a new page when
-a problem won't fit, and letters multiple-choice options.
+wrapped text, a problem's number and text, and the answer key pages. Also shrinks text to fit
+its space, starts a new page when a problem won't fit, and letters multiple-choice options.
 """
 
 import re
@@ -33,6 +33,7 @@ HEADER_ROW = 30  # from the title to the Name/Date line, and from either to the 
 INSTRUCTION_SIZE = 12
 INSTRUCTION_LINE_HEIGHT = 16
 INSTRUCTION_GAP = 10  # extra space between the instruction and the first problem
+SMALLEST_FIT_SIZE = 6  # fit_font shrinks text too wide for its space down to this size
 
 # A word with its preceding whitespace. A bracketed term, such as (3 x 10,000), is one word.
 _WORD = re.compile(r"(\s*)(\([^)]*\)|\S+)")
@@ -70,6 +71,16 @@ def text_width(text: str, size: float, blank_side: float | None = None) -> float
     pieces = text.split(BLANK)
     widths = sum(stringWidth(piece, FONT, size) for piece in pieces)
     return float(widths) + (len(pieces) - 1) * _square_side(size, blank_side)
+
+
+def fit_font(pdf: Canvas, text: str, font: str, size: float, width: float) -> None:
+    """
+    Set ``font`` at ``size``, or if ``text`` is wider than ``width`` at that size, at the largest
+    smaller size in steps of 0.5 at which it fits, down to ``SMALLEST_FIT_SIZE``.
+    """
+    while size > SMALLEST_FIT_SIZE and stringWidth(text, font, size) > width:
+        size -= 0.5
+    pdf.setFont(font, size)
 
 
 def _square_side(size: float, blank_side: float | None) -> float:
