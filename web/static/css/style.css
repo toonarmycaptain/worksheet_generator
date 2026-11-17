@@ -123,19 +123,33 @@ main > .card { max-width: 48rem; }
 .cards h2 { color: var(--accent); }
 .cards p { margin: 0; color: var(--muted); }
 
-/* Builder forms: fields flow in a grid. Checkbox groups and the button row take a whole row;
-   text boxes, radio groups, checkboxes with a hint and fields with others under them take two
-   columns once the card has room (a dropdown's hint wraps in its column, so pairs such as From
-   and To stay side by side). */
-.card:has(> .fields) { container-type: inline-size; }
-.fields { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: 1.1rem 1.75rem; align-items: start; }
-.fields > :is([role=group], .actions) { grid-column: 1 / -1; }
-@container (min-width: 26rem) {
+/* Builder forms. A sheet's page has the header (Title, Label and Name/Date) in a row, then the
+   questions beside the answers, once the card has room; otherwise each stacks. The legacy
+   page's forms list their fields as they come. */
+.card:has(> .builder) { container-type: inline-size; }
+.builder { display: grid; gap: 1.1rem; }
+.header { display: grid; gap: 1.1rem 1.75rem; align-items: end; }
+.halves { display: grid; gap: 1.1rem 2.5rem; align-items: start; }
+@container (min-width: 40rem) {
+  .header { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; }
+  /* Name/Date: raised by a box's padding and border, its text lines up with theirs rather than
+     with their captions */
+  .header > label:has(> input[type=checkbox]) { margin-bottom: calc(0.45rem + 1px); }
+  .halves { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+/* Fields flow in a grid within their section. Checkbox groups take a whole row; text boxes,
+   radio groups, checkboxes with a hint and fields with others under them take two columns once
+   the section has room for two, 2 × 13rem and the gap (a dropdown's hint wraps in its column,
+   so pairs such as From and To stay side by side). */
+.fields { container-type: inline-size; display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: 1.1rem 1.75rem; align-items: start; }
+.fields > [role=group] { grid-column: 1 / -1; }
+@container (min-width: 27.75rem) {
   .fields > :is(label:has(> input[type=text]), [role=radiogroup], label:has(> input[type=checkbox]):has(> .hint), .nest) { grid-column: span 2; }
-  /* Name/Date sits beside text and number boxes: raised by a box's padding and border, its text
-     lines up with theirs rather than with their captions */
+  /* the legacy page's Name/Date, beside its Title box, lines up with it as in a sheet's header */
   .fields > label:has(> input[name=name_line]) { align-self: end; margin-bottom: calc(0.45rem + 1px); }
 }
+/* the answers stack in their order, from how students answer down */
+.answers { display: flex; flex-direction: column; }
 /* the fields under another are indented to line up with its text, like its hint */
 .nest > * + * { margin: 0.75rem 0 0 1.45rem; }
 /* a field's hint: under the field, lined up with a checkbox's text */
@@ -152,7 +166,7 @@ input:is([type=text], [type=number], [type=email]), select, textarea {
   background: var(--field); color: inherit; font: inherit;
 }
 input[type=text], input[type=email], textarea { width: 100%; max-width: 28rem; }
-.fields input[type=text] { max-width: none; }
+.builder input[type=text] { max-width: none; }
 input[type=number] { width: 7rem; }
 select { max-width: 100%; }
 input[type=checkbox], input[type=radio] { width: 1rem; height: 1rem; margin: 0 0.45rem 0 0; vertical-align: -2px; accent-color: var(--accent); }

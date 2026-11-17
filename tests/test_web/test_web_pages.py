@@ -70,13 +70,13 @@ def test_pages(client: Client) -> None:
                 b"operations",
                 b"max_number",
                 b"representation",
-                b"response",  # a radio button for each choice
-                b"response",
                 b"steps",  # a radio button for each choice
                 b"steps",
                 b"no_hints",
-                b"work_box",
                 b"black_and_white",
+                b"response",  # a radio button for each choice
+                b"response",
+                b"work_box",
                 b"answer_key",
                 b"self_check_tiles",
                 b"tile_pattern",  # a radio button for each pattern
@@ -154,8 +154,8 @@ def test_pages(client: Client) -> None:
                 b"asked",
                 b"min_number",
                 b"max_number",
-                b"answer_key",
                 b"multiple_choice",
+                b"answer_key",
                 b"self_check_tiles",
                 b"tile_pattern",  # a radio button for each pattern
                 b"tile_pattern",
@@ -189,10 +189,10 @@ def test_pages(client: Client) -> None:
                 b"blanks",  # a radio button for each choice
                 b"blanks",
                 b"blanks",
-                b"multiple_choice",
                 b"question_types",  # a checkbox for each type
                 b"question_types",
                 b"question_types",
+                b"multiple_choice",
                 b"answer_key",
                 b"self_check_tiles",
                 b"tile_pattern",  # a radio button for each pattern
@@ -206,8 +206,9 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
     A sheet's page has its kind's form, the top bar, the catalogue sidebar, the feedback link,
     toonarmycaptain.com, the Buy Me a Coffee link and no seed field.
 
-    The form targets its kind's PDF endpoint, with a field for each option in order and none for
-    a seed, since every sheet of a core kind is new.
+    The form targets its kind's PDF endpoint, with a field for each option and none for a seed,
+    since every sheet of a core kind is new. The fields come in the page's order: the header,
+    the questions, then the answers.
     """
     content = client.get(url).content
 
@@ -739,8 +740,8 @@ def test_only_core_forms_check_their_options_before_opening_a_tab(
                 (b"max_number", b"Largest number"),
                 (b"representation", b"Representation"),
                 (b"no_hints", b"Leave out the hints"),
-                (b"work_box", b"Include working out space"),
                 (b"black_and_white", b"Black and white blocks"),
+                (b"work_box", b"Include working out space"),
                 (b"answer_key", b"Add an answer key page"),
                 (b"self_check_tiles", b"Self-check tile answers"),
             ],

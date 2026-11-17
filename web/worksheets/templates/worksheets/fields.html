@@ -1,0 +1,12 @@
+{# a list of fields, from views._forms; builder.html includes this per section #}
+{% for field in fields %}
+{% if field.nested %}
+{# a field with others under it, such as the tiles box and its pattern: one grid cell #}
+<div class="nest">
+  {% include "worksheets/field.html" %}
+  {% for nested in field.nested %}{% include "worksheets/field.html" with field=nested %}{% endfor %}
+</div>
+{% else %}
+{% include "worksheets/field.html" %}
+{% endif %}
+{% endfor %}

@@ -125,6 +125,27 @@ def _field(name: str, schema: dict[str, Any]) -> dict[str, Any]:
     return field | {"input": "number" if schema["type"] == "integer" else "text", "attrs": attrs}
 
 
+# A core page's sections, by field name, so a field such as multiple choice is in the same spot
+# on every page: the header, then the questions beside the answers (see builder.html). The
+# answers go in this order, from how students answer down; every other field is a question.
+HEADER_FIELDS = ("title", "label", "name_line")
+ANSWER_FIELDS = ("multiple_choice", "response", "work_box", "answer_key", "self_check_tiles")
+
+
+def _sections(fields: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+    """Return a core page's fields by section: the header, the questions and the answers."""
+    return {
+        "header": [field for field in fields if field["name"] in HEADER_FIELDS],
+        "questions": [
+            field for field in fields if field["name"] not in HEADER_FIELDS + ANSWER_FIELDS
+        ],
+        "answers": sorted(
+            (field for field in fields if field["name"] in ANSWER_FIELDS),
+            key=lambda field: ANSWER_FIELDS.index(field["name"]),
+        ),
+    }
+
+
 def _forms(kinds: Mapping[str, Kind[Any] | CoreKind[Any]]) -> list[dict[str, Any]]:
     """Return one form for each kind, in the given order."""
     forms = []
@@ -133,19 +154,21 @@ def _forms(kinds: Mapping[str, Kind[Any] | CoreKind[Any]]) -> list[dict[str, Any
         # no seed field: each sheet gets a random one
         fields = [_field(n, s) for n, s in properties.items() if n != "seed"]
         # A field marked as under another goes in that field's cell of the grid, so it stays
-        # under it (see builder.html).
+        # under it (see fields.html).
         for field in fields:
             field["nested"] = [each for each in fields if each["under"] == field["name"]]
-        forms.append(
-            {
-                "heading": HEADINGS[kind],
-                "url_name": f"api:{kind}_pdf",
-                # Core kinds refuse bad options before drawing anything, so the page checks
-                # them before opening a tab (see builder.html). Legacy kinds draw at once.
-                "check_first": isinstance(spec, CoreKind),
-                "fields": [field for field in fields if not field["under"]],
-            }
-        )
+        form: dict[str, Any] = {
+            "heading": HEADINGS[kind],
+            "url_name": f"api:{kind}_pdf",
+            # Core kinds refuse bad options before drawing anything, so the page checks them
+            # before opening a tab (see builder.html). Legacy kinds draw at once.
+            "check_first": isinstance(spec, CoreKind),
+            "fields": [field for field in fields if not field["under"]],
+        }
+        # the legacy page's forms list their fields as they come
+        if isinstance(spec, CoreKind):
+            form["sections"] = _sections(form["fields"])
+        forms.append(form)
     return forms
 
 

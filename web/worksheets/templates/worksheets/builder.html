@@ -13,18 +13,17 @@
       <section class="card">
         {# a sheet's page has one form, which its h1 names; the legacy page has several #}
         {% if forms|length > 1 %}<h2>{{ form.heading }}</h2>{% endif %}
-        <form class="fields" method="get" action="{% url form.url_name %}" target="_blank"{% if form.check_first %} data-check-first{% endif %}>
-          {% for field in form.fields %}
-            {% if field.nested %}
-            {# a field with others under it, such as the tiles box and its pattern: one grid cell #}
-            <div class="nest">
-              {% include "worksheets/field.html" %}
-              {% for nested in field.nested %}{% include "worksheets/field.html" with field=nested %}{% endfor %}
-            </div>
-            {% else %}
-            {% include "worksheets/field.html" %}
-            {% endif %}
-          {% endfor %}
+        <form class="builder" method="get" action="{% url form.url_name %}" target="_blank"{% if form.check_first %} data-check-first{% endif %}>
+          {% if form.sections %}
+          {# the header, then the questions beside the answers (see views.HEADER_FIELDS) #}
+          <div class="header">{% include "worksheets/fields.html" with fields=form.sections.header %}</div>
+          <div class="halves">
+            <div class="fields">{% include "worksheets/fields.html" with fields=form.sections.questions %}</div>
+            <div class="fields answers">{% include "worksheets/fields.html" with fields=form.sections.answers %}</div>
+          </div>
+          {% else %}
+          <div class="fields">{% include "worksheets/fields.html" with fields=form.fields %}</div>
+          {% endif %}
           {# the scripts put their notes and status after the button, inside this row #}
           <div class="actions"><button>Make PDF</button></div>
         </form>
