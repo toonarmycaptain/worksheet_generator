@@ -218,9 +218,11 @@ SelfCheckTiles = Annotated[
         "for fewer, such as 2 or 4, and the other tiles go unused.",
     ),
 ]
-# simple: a conventional picture; complex: tiles in arbitrary slots
+# simple: a conventional picture; complex: tiles in arbitrary slots. The page shows it under the
+# tiles box.
 TilePattern = Annotated[
-    Literal["simple", "complex"], Field(title="Pattern", json_schema_extra={"input": "radio"})
+    Literal["simple", "complex"],
+    Field(title="Pattern", json_schema_extra={"input": "radio", "under": "self_check_tiles"}),
 ]
 
 

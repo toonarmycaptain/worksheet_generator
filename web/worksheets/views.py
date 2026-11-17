@@ -100,6 +100,8 @@ def _field(name: str, schema: dict[str, Any]) -> dict[str, Any]:
         "label": schema["title"],
         "value": schema["default"],
         "hint": schema.get("description", ""),
+        # the field it shows under, such as the tiles box for their pattern (see _forms)
+        "under": schema.get("under"),
     }
     if schema.get("type") == "array":
         # A list of choices renders as a checkbox for each, and the page sends those ticked.
@@ -128,6 +130,12 @@ def _forms(kinds: Mapping[str, Kind[Any] | CoreKind[Any]]) -> list[dict[str, Any
     forms = []
     for kind, spec in kinds.items():
         properties = spec.options.model_json_schema()["properties"]
+        # no seed field: each sheet gets a random one
+        fields = [_field(n, s) for n, s in properties.items() if n != "seed"]
+        # A field marked as under another goes in that field's cell of the grid, so it stays
+        # under it (see builder.html).
+        for field in fields:
+            field["nested"] = [each for each in fields if each["under"] == field["name"]]
         forms.append(
             {
                 "heading": HEADINGS[kind],
@@ -135,8 +143,7 @@ def _forms(kinds: Mapping[str, Kind[Any] | CoreKind[Any]]) -> list[dict[str, Any
                 # Core kinds refuse bad options before drawing anything, so the page checks
                 # them before opening a tab (see builder.html). Legacy kinds draw at once.
                 "check_first": isinstance(spec, CoreKind),
-                # no seed field: each sheet gets a random one
-                "fields": [_field(n, s) for n, s in properties.items() if n != "seed"],
+                "fields": [field for field in fields if not field["under"]],
             }
         )
     return forms
