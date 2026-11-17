@@ -1,4 +1,4 @@
-"""Tests for the site's pages: the home page links to each builder, and each has its forms."""
+"""Tests for the site's pages: every link works, and each sheet's page has its form."""
 
 import re
 
@@ -35,14 +35,8 @@ def test_pages(client: Client) -> None:
     ("url", "actions", "fields"),
     [
         (
-            "/basic-operations/",
-            [
-                b"/api/worksheets/basic_operations.pdf",
-                b"/api/worksheets/word_problems.pdf",
-                b"/api/worksheets/strip_choice.pdf",
-                b"/api/worksheets/base_ten_blocks.pdf",
-                b"/api/worksheets/multiplication_models.pdf",
-            ],
+            "/worksheets/basic-operations/arithmetic/",
+            [b"/api/worksheets/basic_operations.pdf"],
             [
                 b"title",
                 b"label",
@@ -60,7 +54,12 @@ def test_pages(client: Client) -> None:
                 b"self_check_tiles",
                 b"tile_pattern",  # a radio button for each pattern
                 b"tile_pattern",
-                # the word problems form
+            ],
+        ),
+        (
+            "/worksheets/basic-operations/word-problems/",
+            [b"/api/worksheets/word_problems.pdf"],
+            [
                 b"title",
                 b"label",
                 b"name_line",
@@ -80,9 +79,14 @@ def test_pages(client: Client) -> None:
                 b"black_and_white",
                 b"answer_key",
                 b"self_check_tiles",
+                b"tile_pattern",  # a radio button for each pattern
                 b"tile_pattern",
-                b"tile_pattern",
-                # the strip choice form
+            ],
+        ),
+        (
+            "/worksheets/basic-operations/strip-choice/",
+            [b"/api/worksheets/strip_choice.pdf"],
+            [
                 b"title",
                 b"label",
                 b"name_line",
@@ -99,7 +103,12 @@ def test_pages(client: Client) -> None:
                 b"prompt",
                 b"prompt",
                 b"answer_key",
-                # the base-ten blocks form
+            ],
+        ),
+        (
+            "/worksheets/basic-operations/base-ten-blocks/",
+            [b"/api/worksheets/base_ten_blocks.pdf"],
+            [
                 b"title",
                 b"label",
                 b"name_line",
@@ -115,9 +124,14 @@ def test_pages(client: Client) -> None:
                 b"black_and_white",
                 b"answer_key",
                 b"self_check_tiles",
+                b"tile_pattern",  # a radio button for each pattern
                 b"tile_pattern",
-                b"tile_pattern",
-                # the multiplication models form
+            ],
+        ),
+        (
+            "/worksheets/basic-operations/multiplication-models/",
+            [b"/api/worksheets/multiplication_models.pdf"],
+            [
                 b"title",
                 b"label",
                 b"name_line",
@@ -129,7 +143,7 @@ def test_pages(client: Client) -> None:
             ],
         ),
         (
-            "/place-value/",
+            "/worksheets/place-value/",
             [b"/api/worksheets/place_value.pdf"],
             [
                 b"title",
@@ -148,7 +162,7 @@ def test_pages(client: Client) -> None:
             ],
         ),
         (
-            "/data-and-graphs/",
+            "/worksheets/data-and-graphs/",
             [b"/api/worksheets/data_graphs.pdf"],
             [
                 b"title",
@@ -164,19 +178,31 @@ def test_pages(client: Client) -> None:
 )
 def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], client: Client) -> None:
     """
-    A builder page has a form for each of its kinds, a link home, the feedback link, the Buy Me a
-    Coffee link and no seed field.
+    A sheet's page has its kind's form, the top bar, the catalogue sidebar, the feedback link,
+    toonarmycaptain.com, the Buy Me a Coffee link and no seed field.
 
-    Each form targets its kind's PDF endpoint, with a field for each option in order and none
-    for a seed, since every sheet of a core kind is new.
+    The form targets its kind's PDF endpoint, with a field for each option in order and none for
+    a seed, since every sheet of a core kind is new.
     """
     content = client.get(url).content
 
     assert re.findall(rb'action="([^"]+)"', content) == actions
     assert re.findall(rb'<(?:input|select) [^>]*?name="([^"]+)"', content) == fields
     assert get_links(content) == [
+        # the top bar
         "/",
+        "/worksheets/",
+        # the sidebar
+        "/worksheets/basic-operations/arithmetic/",
+        "/worksheets/basic-operations/word-problems/",
+        "/worksheets/basic-operations/strip-choice/",
+        "/worksheets/basic-operations/base-ten-blocks/",
+        "/worksheets/basic-operations/multiplication-models/",
+        "/worksheets/place-value/",
+        "/worksheets/data-and-graphs/",
+        # the footer
         f"/feedback/?from={url}",
+        "https://toonarmycaptain.com",
         "https://buymeacoffee.com/toonarmycaptain",
     ]
 
@@ -184,29 +210,30 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
 @pytest.mark.parametrize(
     ("url", "name", "expected"),
     [
-        # simple by default, on each form with tiles
+        # simple by default, on each sheet with tiles
         (
-            "/basic-operations/",
+            "/worksheets/basic-operations/arithmetic/",
             "tile_pattern",
-            [
-                (b"simple", b" checked", b"simple"),
-                (b"complex", b"", b"complex"),
-                # the word problems form
-                (b"simple", b" checked", b"simple"),
-                (b"complex", b"", b"complex"),
-                # the base-ten blocks form
-                (b"simple", b" checked", b"simple"),
-                (b"complex", b"", b"complex"),
-            ],
+            [(b"simple", b" checked", b"simple"), (b"complex", b"", b"complex")],
         ),
         (
-            "/place-value/",
+            "/worksheets/basic-operations/word-problems/",
+            "tile_pattern",
+            [(b"simple", b" checked", b"simple"), (b"complex", b"", b"complex")],
+        ),
+        (
+            "/worksheets/basic-operations/base-ten-blocks/",
+            "tile_pattern",
+            [(b"simple", b" checked", b"simple"), (b"complex", b"", b"complex")],
+        ),
+        (
+            "/worksheets/place-value/",
             "tile_pattern",
             [(b"simple", b" checked", b"simple"), (b"complex", b"", b"complex")],
         ),
         # none, some, all, with mixed by default
         (
-            "/basic-operations/",
+            "/worksheets/basic-operations/base-ten-blocks/",
             "regrouping",
             [
                 (b"never", b"", b"Never"),
@@ -216,7 +243,7 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
         ),
         # the word problems form's Response: free response by default
         (
-            "/basic-operations/",
+            "/worksheets/basic-operations/word-problems/",
             "response",
             [
                 (b"free_response", b" checked", b"Free response"),
@@ -225,7 +252,7 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
         ),
         # the strip choice form's Show: the wording by default
         (
-            "/basic-operations/",
+            "/worksheets/basic-operations/strip-choice/",
             "prompt",
             [
                 (b"word_problem", b" checked", b"Word problem"),
@@ -235,19 +262,18 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
         ),
         # one step by default, on the word problems and strip choice forms
         (
-            "/basic-operations/",
+            "/worksheets/basic-operations/word-problems/",
             "steps",
-            [
-                (b"one", b" checked", b"One step"),
-                (b"two", b"", b"Two steps"),
-                # the strip choice form
-                (b"one", b" checked", b"One step"),
-                (b"two", b"", b"Two steps"),
-            ],
+            [(b"one", b" checked", b"One step"), (b"two", b"", b"Two steps")],
+        ),
+        (
+            "/worksheets/basic-operations/strip-choice/",
+            "steps",
+            [(b"one", b" checked", b"One step"), (b"two", b"", b"Two steps")],
         ),
         # a grid by default
         (
-            "/data-and-graphs/",
+            "/worksheets/data-and-graphs/",
             "list_style",
             [(b"grid", b" checked", b"Grid"), (b"commas", b"", b"Commas")],
         ),
@@ -273,7 +299,7 @@ def test_radio_buttons_send_each_choice_s_id_and_show_its_name(
     ("url", "name", "expected"),
     [
         (
-            "/basic-operations/",
+            "/worksheets/basic-operations/word-problems/",
             "representation",
             [
                 (b"strip", b"", b"Strip Diagrams"),
@@ -284,7 +310,7 @@ def test_radio_buttons_send_each_choice_s_id_and_show_its_name(
             ],
         ),
         (
-            "/place-value/",
+            "/worksheets/place-value/",
             "given",
             [
                 (b"standard", b" selected", b"standard form"),
@@ -296,7 +322,7 @@ def test_radio_buttons_send_each_choice_s_id_and_show_its_name(
             ],
         ),
         (
-            "/place-value/",
+            "/worksheets/place-value/",
             "asked",
             [
                 (b"standard", b"", b"standard form"),
@@ -335,7 +361,7 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
     [
         # addition by default, with an All box for the four
         (
-            "/basic-operations/",
+            "/worksheets/basic-operations/arithmetic/",
             b"/api/worksheets/basic_operations.pdf",
             "operations",
             [
@@ -348,7 +374,7 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
         ),
         # addition and subtraction by default, with an All box for the four
         (
-            "/basic-operations/",
+            "/worksheets/basic-operations/word-problems/",
             b"/api/worksheets/word_problems.pdf",
             "operations",
             [
@@ -361,7 +387,7 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
         ),
         # all four by default on the strip choice form, with an All box
         (
-            "/basic-operations/",
+            "/worksheets/basic-operations/strip-choice/",
             b"/api/worksheets/strip_choice.pdf",
             "operations",
             [
@@ -374,7 +400,7 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
         ),
         # every type of question by default, with an All box for the three
         (
-            "/basic-operations/",
+            "/worksheets/basic-operations/base-ten-blocks/",
             b"/api/worksheets/base_ten_blocks.pdf",
             "questions",
             [
@@ -420,10 +446,14 @@ def test_a_checkbox_group_sends_each_ticked_choice_s_id_and_shows_its_name(
 @pytest.mark.parametrize(
     ("url", "script"),
     [
-        ("/basic-operations/", False),
-        ("/place-value/", True),
-        ("/data-and-graphs/", False),
-        ("/legacy/", False),
+        ("/worksheets/basic-operations/arithmetic/", False),
+        ("/worksheets/basic-operations/word-problems/", False),
+        ("/worksheets/basic-operations/strip-choice/", False),
+        ("/worksheets/basic-operations/base-ten-blocks/", False),
+        ("/worksheets/basic-operations/multiplication-models/", False),
+        ("/worksheets/place-value/", True),
+        ("/worksheets/data-and-graphs/", False),
+        ("/worksheets/legacy/", False),
     ],
 )
 def test_the_place_value_page_keeps_from_and_to_different(
@@ -441,23 +471,28 @@ def test_the_place_value_page_keeps_from_and_to_different(
 @pytest.mark.parametrize(
     ("url", "tiles_script", "titles_script", "representation_script"),
     [
-        ("/basic-operations/", True, True, True),
-        ("/place-value/", True, False, False),
-        ("/data-and-graphs/", False, False, False),
-        ("/legacy/", False, False, False),
+        ("/worksheets/basic-operations/arithmetic/", True, True, False),
+        ("/worksheets/basic-operations/word-problems/", True, False, True),
+        ("/worksheets/basic-operations/strip-choice/", False, False, False),
+        ("/worksheets/basic-operations/base-ten-blocks/", True, False, False),
+        ("/worksheets/basic-operations/multiplication-models/", False, False, False),
+        ("/worksheets/place-value/", True, False, False),
+        ("/worksheets/data-and-graphs/", False, False, False),
+        ("/worksheets/legacy/", False, False, False),
     ],
 )
 def test_ticking_self_check_tiles_asks_for_12_questions(
     client: Client, url: str, tiles_script: bool, titles_script: bool, representation_script: bool
 ) -> None:
     """
-    The basic operations and place-value pages include the script that sets problems to 12 for
-    tiles.
+    The arithmetic, word problems, base-ten blocks and place-value pages include the script that
+    sets problems to 12 for tiles.
 
-    The legacy page has no self-check tiles box, and so no script. Whether the script works is
-    checked manually in a browser. Only the basic operations page has the operation names that its
-    other script puts in the title, and the word problems titles that its representation script puts
-    in the title (that script also hides "Leave out the hints" for text only).
+    The other pages have no self-check tiles box, and so no script. Whether the script works is
+    checked manually in a browser. Only the arithmetic page has the operation names that its other
+    script puts in the title, and only the word problems page has the titles that its
+    representation script puts in the title (that script also hides "Leave out the hints" for
+    text only).
     """
     content = client.get(url).content
     assert (b"selfCheckTiles.checked ? 12 : problems.defaultValue" in content) is tiles_script
@@ -470,7 +505,7 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
     [
         # the operations each representation can show, for the script to grey out the others
         (
-            "/basic-operations/",
+            "/worksheets/basic-operations/word-problems/",
             "representation-operations",
             b'<script id="representation-operations" type="application/json">'
             b'{"strip": ["add", "subtract", "multiply", "divide"], '
@@ -481,23 +516,31 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
         ),
         # the title of a sheet choosing each representation offered as multiple choice
         (
-            "/basic-operations/",
+            "/worksheets/basic-operations/word-problems/",
             "choice-titles",
             b'<script id="choice-titles" type="application/json">'
             b'{"number_line": "Word Problems \\u2014 Number Line multiple choice", '
             b'"equation": "Word Problems \\u2014 Equation multiple choice"}</script>',
         ),
-        ("/place-value/", "representation-operations", None),
-        ("/place-value/", "choice-titles", None),
-        ("/data-and-graphs/", "representation-operations", None),
-        ("/data-and-graphs/", "choice-titles", None),
+        ("/worksheets/basic-operations/arithmetic/", "representation-operations", None),
+        ("/worksheets/basic-operations/arithmetic/", "choice-titles", None),
+        ("/worksheets/basic-operations/strip-choice/", "representation-operations", None),
+        ("/worksheets/basic-operations/strip-choice/", "choice-titles", None),
+        ("/worksheets/basic-operations/base-ten-blocks/", "representation-operations", None),
+        ("/worksheets/basic-operations/base-ten-blocks/", "choice-titles", None),
+        ("/worksheets/basic-operations/multiplication-models/", "representation-operations", None),
+        ("/worksheets/basic-operations/multiplication-models/", "choice-titles", None),
+        ("/worksheets/place-value/", "representation-operations", None),
+        ("/worksheets/place-value/", "choice-titles", None),
+        ("/worksheets/data-and-graphs/", "representation-operations", None),
+        ("/worksheets/data-and-graphs/", "choice-titles", None),
     ],
 )
 def test_the_representation_script_s_data(
     client: Client, url: str, script_id: str, expected: bytes | None
 ) -> None:
     """
-    The basic operations page has the data its representation script needs: the operations each
+    The word problems page has the data its representation script needs: the operations each
     representation can show, to grey out the others, and the title of a sheet choosing each
     representation offered as multiple choice. Whether the script works is checked manually in a
     browser.
@@ -512,19 +555,32 @@ def test_the_representation_script_s_data(
     ("url", "forms"),
     [
         (
-            "/basic-operations/",
-            [
-                (b"/api/worksheets/basic_operations.pdf", b" data-check-first"),
-                (b"/api/worksheets/word_problems.pdf", b" data-check-first"),
-                (b"/api/worksheets/strip_choice.pdf", b" data-check-first"),
-                (b"/api/worksheets/base_ten_blocks.pdf", b" data-check-first"),
-                (b"/api/worksheets/multiplication_models.pdf", b" data-check-first"),
-            ],
+            "/worksheets/basic-operations/arithmetic/",
+            [(b"/api/worksheets/basic_operations.pdf", b" data-check-first")],
         ),
-        ("/place-value/", [(b"/api/worksheets/place_value.pdf", b" data-check-first")]),
-        ("/data-and-graphs/", [(b"/api/worksheets/data_graphs.pdf", b" data-check-first")]),
         (
-            "/legacy/",
+            "/worksheets/basic-operations/word-problems/",
+            [(b"/api/worksheets/word_problems.pdf", b" data-check-first")],
+        ),
+        (
+            "/worksheets/basic-operations/strip-choice/",
+            [(b"/api/worksheets/strip_choice.pdf", b" data-check-first")],
+        ),
+        (
+            "/worksheets/basic-operations/base-ten-blocks/",
+            [(b"/api/worksheets/base_ten_blocks.pdf", b" data-check-first")],
+        ),
+        (
+            "/worksheets/basic-operations/multiplication-models/",
+            [(b"/api/worksheets/multiplication_models.pdf", b" data-check-first")],
+        ),
+        ("/worksheets/place-value/", [(b"/api/worksheets/place_value.pdf", b" data-check-first")]),
+        (
+            "/worksheets/data-and-graphs/",
+            [(b"/api/worksheets/data_graphs.pdf", b" data-check-first")],
+        ),
+        (
+            "/worksheets/legacy/",
             [
                 (b"/api/worksheets/block.pdf", b""),
                 (b"/api/worksheets/word.pdf", b""),
@@ -553,76 +609,103 @@ def test_only_core_forms_check_their_options_before_opening_a_tab(
     assert re.findall(rb'<form [^>]*?action="([^"]+)"[^>]*?( data-check-first)?>', content) == forms
 
 
-def test_each_field_carries_its_label_for_the_check_first_messages(client: Client) -> None:
+@pytest.mark.parametrize(
+    ("url", "expected"),
+    [
+        (
+            "/worksheets/basic-operations/arithmetic/",
+            [
+                (b"title", b"Title"),
+                (b"label", b"Label"),
+                (b"name_line", b"Add Name/Date blanks"),
+                (b"problems", b"Problems"),
+                (b"missing_number", b"Missing number"),
+                (b"max_number", b"Largest number"),
+                (b"largest_dividend", b"Largest dividend"),
+                (b"largest_divisor", b"Largest divisor"),
+                (b"answer_key", b"Add an answer key page"),
+                (b"self_check_tiles", b"Self-check tile answers"),
+            ],
+        ),
+        (
+            "/worksheets/basic-operations/word-problems/",
+            [
+                (b"title", b"Title"),
+                (b"label", b"Label"),
+                (b"name_line", b"Add Name/Date blanks"),
+                (b"problems", b"Problems"),
+                (b"max_number", b"Largest number"),
+                (b"representation", b"Representation"),
+                (b"no_hints", b"Leave out the hints"),
+                (b"work_box", b"Include working out space"),
+                (b"black_and_white", b"Black and white blocks"),
+                (b"answer_key", b"Add an answer key page"),
+                (b"self_check_tiles", b"Self-check tile answers"),
+            ],
+        ),
+        (
+            "/worksheets/basic-operations/strip-choice/",
+            [
+                (b"title", b"Title"),
+                (b"label", b"Label"),
+                (b"name_line", b"Add Name/Date blanks"),
+                (b"problems", b"Problems"),
+                (b"max_number", b"Largest number"),
+                (b"max_groups", b"Largest number of groups"),
+                (b"answer_key", b"Add an answer key page"),
+            ],
+        ),
+        (
+            "/worksheets/basic-operations/base-ten-blocks/",
+            [
+                (b"title", b"Title"),
+                (b"label", b"Label"),
+                (b"name_line", b"Add Name/Date blanks"),
+                (b"problems", b"Problems"),
+                (b"min_number", b"Smallest number"),
+                (b"max_number", b"Largest number"),
+                (b"black_and_white", b"Black and white blocks"),
+                (b"answer_key", b"Add an answer key page"),
+                (b"self_check_tiles", b"Self-check tile answers"),
+            ],
+        ),
+        (
+            "/worksheets/basic-operations/multiplication-models/",
+            [
+                (b"title", b"Title"),
+                (b"label", b"Label"),
+                (b"name_line", b"Add Name/Date blanks"),
+                (b"problems", b"Problems"),
+                (b"max_factor", b"Largest factor"),
+                (b"max_product", b"Largest product"),
+                (b"no_jump_labels", b"Leave the number-line jumps unnumbered"),
+                (b"answer_key", b"Add an answer key page"),
+            ],
+        ),
+    ],
+)
+def test_each_field_carries_its_label_for_the_check_first_messages(
+    client: Client, url: str, expected: list[tuple[bytes, bytes]]
+) -> None:
     """
     Each field's data-label supplies the label that begins a rejected option's message.
 
     The tile pattern's radio buttons and the operations' checkboxes have none, as no message
     names them.
     """
-    content = client.get("/basic-operations/").content
-    assert re.findall(rb'name="(\w+)" data-label="([^"]+)"', content) == [
-        (b"title", b"Title"),
-        (b"label", b"Label"),
-        (b"name_line", b"Add Name/Date blanks"),
-        (b"problems", b"Problems"),
-        (b"missing_number", b"Missing number"),
-        (b"max_number", b"Largest number"),
-        (b"largest_dividend", b"Largest dividend"),
-        (b"largest_divisor", b"Largest divisor"),
-        (b"answer_key", b"Add an answer key page"),
-        (b"self_check_tiles", b"Self-check tile answers"),
-        # the word problems form
-        (b"title", b"Title"),
-        (b"label", b"Label"),
-        (b"name_line", b"Add Name/Date blanks"),
-        (b"problems", b"Problems"),
-        (b"max_number", b"Largest number"),
-        (b"representation", b"Representation"),
-        (b"no_hints", b"Leave out the hints"),
-        (b"work_box", b"Include working out space"),
-        (b"black_and_white", b"Black and white blocks"),
-        (b"answer_key", b"Add an answer key page"),
-        (b"self_check_tiles", b"Self-check tile answers"),
-        # the strip choice form
-        (b"title", b"Title"),
-        (b"label", b"Label"),
-        (b"name_line", b"Add Name/Date blanks"),
-        (b"problems", b"Problems"),
-        (b"max_number", b"Largest number"),
-        (b"max_groups", b"Largest number of groups"),
-        (b"answer_key", b"Add an answer key page"),
-        # the base-ten blocks form
-        (b"title", b"Title"),
-        (b"label", b"Label"),
-        (b"name_line", b"Add Name/Date blanks"),
-        (b"problems", b"Problems"),
-        (b"min_number", b"Smallest number"),
-        (b"max_number", b"Largest number"),
-        (b"black_and_white", b"Black and white blocks"),
-        (b"answer_key", b"Add an answer key page"),
-        (b"self_check_tiles", b"Self-check tile answers"),
-        # the multiplication models form
-        (b"title", b"Title"),
-        (b"label", b"Label"),
-        (b"name_line", b"Add Name/Date blanks"),
-        (b"problems", b"Problems"),
-        (b"max_factor", b"Largest factor"),
-        (b"max_product", b"Largest product"),
-        (b"no_jump_labels", b"Leave the number-line jumps unnumbered"),
-        (b"answer_key", b"Add an answer key page"),
-    ]
+    content = client.get(url).content
+    assert re.findall(rb'name="(\w+)" data-label="([^"]+)"', content) == expected
 
 
 def test_legacy_page(client: Client) -> None:
     """
-    The legacy page has a form for each of the nine imported scripts, a link home, the feedback
-    link and the Buy Me a Coffee link.
+    The legacy page has a form for each of the nine imported scripts, the top bar, the catalogue
+    sidebar, the feedback link, toonarmycaptain.com and the Buy Me a Coffee link.
 
     The form actions are compared as a whole, in order, so an omitted script, or the basic
     operations form appearing here, makes them differ.
     """
-    content = client.get("/legacy/").content
+    content = client.get("/worksheets/legacy/").content
 
     assert re.findall(rb'action="([^"]+)"', content) == [
         b"/api/worksheets/block.pdf",
@@ -636,7 +719,19 @@ def test_legacy_page(client: Client) -> None:
         b"/api/worksheets/worksheet.pdf",
     ]
     assert get_links(content) == [
+        # the top bar
         "/",
-        "/feedback/?from=/legacy/",
+        "/worksheets/",
+        # the sidebar
+        "/worksheets/basic-operations/arithmetic/",
+        "/worksheets/basic-operations/word-problems/",
+        "/worksheets/basic-operations/strip-choice/",
+        "/worksheets/basic-operations/base-ten-blocks/",
+        "/worksheets/basic-operations/multiplication-models/",
+        "/worksheets/place-value/",
+        "/worksheets/data-and-graphs/",
+        # the footer
+        "/feedback/?from=/worksheets/legacy/",
+        "https://toonarmycaptain.com",
         "https://buymeacoffee.com/toonarmycaptain",
     ]

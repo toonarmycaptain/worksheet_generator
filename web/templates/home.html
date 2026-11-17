@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Maths Resources{% endblock %}
+
+{# the landing page is above the sections, so no section is current and there's no catalogue #}
+{% block worksheets_current %}{% endblock %}
+
+{% block sidebar %}{% endblock %}
+
+{% block content %}
+  <h1>Maths Resources</h1>
+
+  <div class="cards">
+    <a href="{% url 'worksheets' %}" class="card">
+      <h2>Worksheets</h2>
+      <p>Printable PDF worksheets, with new problems every time.</p>
+    </a>
+  </div>
+{% endblock %}
