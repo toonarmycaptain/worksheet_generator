@@ -7,12 +7,13 @@
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-  {# the top bar: the maths site's sections; the brand links home until /maths/ has a page #}
+  {# the top bar: the brand links to the site's landing page, then come the maths site's sections; #}
+  {# a page outside the worksheets section empties worksheets_current #}
   <header class="site-header">
     <div class="bar">
       <a href="{% url 'home' %}" class="brand">Maths Resources</a>
       <nav aria-label="Sections">
-        <a href="{% url 'home' %}" aria-current="true">Worksheets</a>
+        <a href="{% url 'worksheets' %}"{% block worksheets_current %} aria-current="true"{% endblock %}>Worksheets</a>
       </nav>
     </div>
   </header>
