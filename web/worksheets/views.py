@@ -1,5 +1,5 @@
 """
-The site's pages: a home page, and a page of forms for each group of worksheet builders.
+The site's pages: a home page, a page for each sheet, grouped by builder, and the legacy page.
 
 Each form opens its PDF in a new tab. The forms are generated from each kind's options schema,
 so their defaults, limits and labels always match what the API accepts. Temporary, like the
@@ -24,36 +24,43 @@ from core.basic_operations.representation import (
     word_problems_title,
 )
 from core.self_check_tiles import SLOTS
-from core.wrong_answers import WRONG_ANSWER_COUNT
 
 from .registry import CORE_KINDS, LEGACY_KINDS, CoreKind, Kind
 
-# Home page entries: each builder's title, description and page (a URL name).
-BUILDERS = [
+# The worksheets catalogue, for the sidebar and the home page's cards: each builder's title,
+# description and sheets, by kind, which is also each sheet's URL name. A builder's own page is
+# its first sheet.
+BUILDERS: list[dict[str, Any]] = [
     {
         "title": "Basic Operations",
         "description": "Addition, subtraction, multiplication and division questions, as a "
         "printable multiple-choice sheet, or an answer sheet for self-check tiles. Division can "
         "also leave out the dividend or the divisor for students to fill in. All four also come "
         "as word problems.",
-        "url_name": "basic_operations",
+        "sheets": [
+            "basic_operations",
+            "word_problems",
+            "strip_choice",
+            "base_ten_blocks",
+            "multiplication_models",
+        ],
     },
     {
         "title": "Place Value",
         "description": "Write numbers in standard, expanded, unit or word form, or in expanded "
         "notation, from another of those forms.",
-        "url_name": "place_value",
+        "sheets": ["place_value"],
     },
     {
         "title": "Data and Graphs",
         "description": "Read data in a table, graph or list, complete another display of the "
         "same data, then solve problems about it.",
-        "url_name": "data_graphs",
+        "sheets": ["data_graphs"],
     },
 ]
 
 HEADINGS = {
-    "basic_operations": "Addition, Subtraction, Multiplication and Division",
+    "basic_operations": "Addition, Subtraction, Multiplication, and Division",
     "place_value": "Write the Number in Another Form",
     "word_problems": "Word Problems",
     "strip_choice": STRIP_CHOICE_NAME,
@@ -80,7 +87,12 @@ LIMITS = {"minimum": "min", "maximum": "max", "minLength": "minlength", "maxLeng
 
 def _field(name: str, schema: dict[str, Any]) -> dict[str, Any]:
     """Return the template context for one option's input, from its JSON schema entry."""
-    field = {"name": name, "label": schema["title"], "value": schema["default"]}
+    field = {
+        "name": name,
+        "label": schema["title"],
+        "value": schema["default"],
+        "hint": schema.get("description", ""),
+    }
     if schema.get("type") == "array":
         # A list of choices renders as a checkbox for each, and the page sends those ticked.
         labels = schema.get("labels", {})
@@ -122,36 +134,24 @@ def _forms(kinds: Mapping[str, Kind[Any] | CoreKind[Any]]) -> list[dict[str, Any
     return forms
 
 
-def home(request: HttpRequest) -> HttpResponse:
-    return render(request, "worksheets/home.html", {"builders": BUILDERS})
+# Every sheet's intro, under its heading. What a field does is its hint, under the field: its
+# description in the options class.
+OPENS_IN_A_TAB = (
+    "The PDF opens in a new tab, where you can print or save it. Every click makes a new sheet."
+)
 
-
-def basic_operations(request: HttpRequest) -> HttpResponse:
-    context = {
-        "page_title": "Basic Operations",
-        "intro": "Tick the operations and pick the size of the numbers. The PDF opens in a new "
-        "tab, where you can print or save it. Every click makes a new sheet. Tick Self-check "
-        "tile answers to swap the choices for an answer bank and a picture to match against the "
-        f"flipped case. That sets the questions to {SLOTS}, one for each tile: ask for fewer, "
-        "such as 2 or 4, and the other tiles go unused. With division by itself, Missing number "
-        "can leave out the dividend or the divisor instead of the answer, as a square to write "
-        "it in. Division uses the largest dividend and divisor instead of the largest number.",
-        "forms": _forms(
-            {
-                "basic_operations": CORE_KINDS["basic_operations"],
-                "word_problems": CORE_KINDS["word_problems"],
-                "strip_choice": CORE_KINDS["strip_choice"],
-                "base_ten_blocks": CORE_KINDS["base_ten_blocks"],
-                "multiplication_models": CORE_KINDS["multiplication_models"],
-            }
-        ),
-        "self_check_tiles_problems": SLOTS,
+# Each sheet's data for its scripts in builder.html, beyond its form. The self-check tiles
+# script's data goes to every sheet with tiles (see sheet).
+SCRIPT_DATA: dict[str, dict[str, Any]] = {
+    "basic_operations": {
         # each combination of ticked operations, as their values joined by commas -> its title
         "operation_titles": {
             ",".join(operation.value for operation in ticked): operations_name(ticked)
             for size in range(1, len(Operation) + 1)
             for ticked in combinations(Operation, size)
         },
+    },
+    "word_problems": {
         # each representation's value -> the title of word problems drawn with it
         "representation_titles": {
             representation.value: word_problems_title(representation)
@@ -168,36 +168,26 @@ def basic_operations(request: HttpRequest) -> HttpResponse:
             representation.value: [operation.value for operation in Operation if operation in shown]
             for representation, shown in REPRESENTATION_OPERATIONS.items()
         },
-    }
-    return render(request, "worksheets/builder.html", context)
+    },
+    "place_value": {"distinct_forms": True},
+}
 
 
-def place_value(request: HttpRequest) -> HttpResponse:
+def home(request: HttpRequest) -> HttpResponse:
+    return render(request, "worksheets/home.html")
+
+
+def sheet(request: HttpRequest, kind: str) -> HttpResponse:
+    """Return a sheet's page: its heading, intro and form, with its scripts' data."""
+    forms = _forms({kind: CORE_KINDS[kind]})
     context = {
-        "page_title": "Place Value",
-        "intro": "Pick the form each number is shown in and the form to write it in. Mixed "
-        "picks a form for each question, never the same one twice in a question. The PDF opens "
-        "in a new tab, where you can print or save it. Every click makes a new sheet. Tick "
-        f"Multiple choice to list {WRONG_ANSWER_COUNT + 1} choices under each number instead of "
-        "an answer line: the "
-        "wrong ones are random numbers from the range. Tick Self-check tile answers to swap "
-        "the answer lines or choices for an answer bank and a picture to "
-        f"match against the flipped case. That sets the questions to {SLOTS}, one for each "
-        "tile: ask for fewer, such as 2 or 4, and the other tiles go unused.",
-        "forms": _forms({"place_value": CORE_KINDS["place_value"]}),
-        "self_check_tiles_problems": SLOTS,
-        "distinct_forms": True,
+        "page_title": HEADINGS[kind],
+        "intro": OPENS_IN_A_TAB,
+        "forms": forms,
+        **SCRIPT_DATA.get(kind, {}),
     }
-    return render(request, "worksheets/builder.html", context)
-
-
-def data_graphs(request: HttpRequest) -> HttpResponse:
-    context = {
-        "page_title": "Data and Graphs",
-        "intro": "Pick how many problems. The PDF opens in a new tab, where you can print or "
-        "save it. Every click makes a new sheet.",
-        "forms": _forms({"data_graphs": CORE_KINDS["data_graphs"]}),
-    }
+    if any(field["name"] == "self_check_tiles" for field in forms[0]["fields"]):
+        context["self_check_tiles_problems"] = SLOTS
     return render(request, "worksheets/builder.html", context)
 
 
@@ -205,7 +195,7 @@ def legacy(request: HttpRequest) -> HttpResponse:
     context = {
         "page_title": "Legacy PDF generators",
         "intro": "Pick a worksheet and set its options. The PDF opens in a new tab, where you "
-        "can print or save it. Every click makes a new sheet.",
+        "can print or save it. Each click makes a new sheet.",
         "forms": _forms(LEGACY_KINDS),
     }
     return render(request, "worksheets/builder.html", context)

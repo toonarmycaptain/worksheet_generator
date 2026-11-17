@@ -7,14 +7,48 @@
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-  <main>
-    {% block nav %}<p><a href="{% url 'home' %}">&larr; All worksheets</a></p>{% endblock %}
-    {% block content %}{% endblock %}
-  </main>
-  {% block footer %}<footer>
-    {% block feedback_link %}<p><a href="{% url 'feedback' %}?from={{ request.get_full_path|urlencode }}">Send feedback</a></p>{% endblock %}
-    <p class="bmc">{% block coffee_text %}If this has been helpful to you or saved you some time, you might...{% endblock %}
-      <a href="https://buymeacoffee.com/toonarmycaptain" target="_blank" rel="noopener"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee"></a></p>
+  {# the top bar: the maths site's sections; the brand links home until /maths/ has a page #}
+  <header class="site-header">
+    <div class="bar">
+      <a href="{% url 'home' %}" class="brand">Maths Resources</a>
+      <nav aria-label="Sections">
+        <a href="{% url 'home' %}" aria-current="true">Worksheets</a>
+      </nav>
+    </div>
+  </header>
+  <div class="page">
+    {# the worksheets catalogue, from the catalogue context processor: a group with several sheets #}
+    {# opens to list them, and is open on one of their pages; a group of one links to its sheet #}
+    {% block sidebar %}<nav class="sidebar" aria-label="Worksheets">
+      <ul>
+        {% for group in catalogue %}
+        <li>
+          {% if group.sheets|length > 1 %}
+          <details{% if group.current %} open{% endif %}>
+            <summary>{{ group.title }}</summary>
+            <ul>
+              {% for sheet in group.sheets %}
+              <li><a href="{% url sheet.url_name %}"{% if sheet.current %} aria-current="page"{% endif %}>{{ sheet.title }}</a></li>
+              {% endfor %}
+            </ul>
+          </details>
+          {% else %}
+          <a href="{% url group.sheets.0.url_name %}" class="group"{% if group.current %} aria-current="page"{% endif %}>{{ group.title }}</a>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    </nav>{% endblock %}
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+  {% block footer %}<footer class="site-footer">
+    <div class="bar">
+      <p class="links">{% block feedback_link %}<a href="{% url 'feedback' %}?from={{ request.get_full_path|urlencode }}">Send feedback</a> · {% endblock %}<a href="https://toonarmycaptain.com">toonarmycaptain.com</a> · © {% now "Y" %} toonarmycaptain</p>
+      <p class="bmc">{% block coffee_text %}If this has been helpful to you or saved you some time, you might...{% endblock %}
+        <a href="https://buymeacoffee.com/toonarmycaptain" target="_blank" rel="noopener"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee"></a></p>
+    </div>
   </footer>{% endblock %}
 </body>
 </html>

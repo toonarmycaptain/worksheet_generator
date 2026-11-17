@@ -1,16 +1,189 @@
-body { font-family: system-ui, sans-serif; line-height: 1.4; margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
-main { box-sizing: border-box; width: 100%; max-width: 44rem; margin: 2rem auto; padding: 0 1rem; }
-section { border: 1px solid #cbd5e0; border-radius: 6px; padding: 0.75rem 1rem; margin: 1rem 0; }
-h2 { font-size: 1.1rem; margin: 0 0 0.5rem; }
-label { display: block; margin: 0.4rem 0; }
-label:has(+ .choices) { display: inline-block; }
-.choices { display: inline-block; margin: 0.4rem 0 0.4rem 1.5rem; }
-.choices label { display: inline-block; margin: 0 1rem 0 0; }
-label:has(input:disabled) { color: gray; }
+/* Colours: chalkboard green on warm paper, with a chalk-yellow mark for the current section.
+   The dark set follows the browser's or OS's preference. */
+:root {
+  color-scheme: light dark;
+  --bg: #f6f4ee;
+  --surface: #fffdf8;
+  --field: #ffffff;
+  --text: #22302a;
+  --muted: #5e6b64;
+  --faint: #a3ada7;
+  --border: #ddd8cc;
+  --accent: #2f7d5b;
+  --accent-dark: #23634a;
+  --accent-tint: #e4f0e9;
+  --on-accent: #ffffff;
+  --header-bg: #1f4d3a;
+  --header-text: #f6f4ee;
+  --highlight: #f4d35e;
+  --disabled-bg: #c3c9c4;
+  --disabled-text: #ffffff;
+  --shadow: rgb(0 0 0 / 0.05);
+  --shadow-hover: rgb(0 0 0 / 0.1);
+  --warning-text: #9b1c1c;
+  --warning-bg: #fdecec;
+  --warning-edge: #c81e1e;
+  --radius: 8px;
+  --gutter: clamp(1rem, 3vw, 2.5rem);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121915;
+    --surface: #1a231e;
+    --field: #141c18;
+    --text: #e4ece7;
+    --muted: #a3b3aa;
+    --faint: #6c7b73;
+    --border: #2f3d35;
+    --accent: #6fc79b;
+    --accent-dark: #94d8b5;
+    --accent-tint: #1d3329;
+    --on-accent: #0d1f16;
+    --header-bg: #16291f;
+    --header-text: #e4ece7;
+    --highlight: #f4d35e;
+    --disabled-bg: #34423a;
+    --disabled-text: #86958d;
+    --shadow: rgb(0 0 0 / 0.3);
+    --shadow-hover: rgb(0 0 0 / 0.5);
+    --warning-text: #fecaca;
+    --warning-bg: #3b1d1f;
+    --warning-edge: #f87171;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  font-family: system-ui, sans-serif; line-height: 1.45; margin: 0; min-height: 100vh;
+  display: flex; flex-direction: column; background: var(--bg); color: var(--text);
+}
+a { color: var(--accent); }
+h1 { font-size: 1.6rem; line-height: 1.2; margin: 0 0 1.25rem; }
+h2 { font-size: 1.1rem; margin: 0 0 0.75rem; }
+
+/* The header, page and footer span the window, with the same side padding, so they line up. */
+.bar, .page { width: 100%; padding-inline: var(--gutter); }
+
+/* Menu bar */
+.site-header { background: var(--header-bg); color: var(--header-text); }
+.site-header .bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 2.5rem; padding-block: 0.8rem; }
+.site-header a { color: inherit; text-decoration: none; }
+.brand { font-size: 1.15rem; font-weight: 700; }
+.site-header nav { display: flex; flex-wrap: wrap; gap: 0.25rem 1.75rem; }
+.site-header nav a { padding-block: 0.2rem; border-bottom: 2px solid transparent; opacity: 0.85; }
+.site-header nav a:hover { border-bottom-color: currentColor; opacity: 1; }
+.site-header nav a[aria-current] { border-bottom-color: var(--highlight); opacity: 1; }
+
+/* Page: the sidebar, then the content */
+.page { flex: 1; padding-block: 2rem; }
+.page:has(> .sidebar) { display: grid; grid-template-columns: 16rem minmax(0, 1fr); gap: 2.5rem; align-items: start; }
+main { min-width: 0; }
+main > .card { max-width: 48rem; }
+
+/* The catalogue: groups that open to list their sheets, and groups of one that link to theirs */
+.sidebar { position: sticky; top: 1rem; max-height: calc(100vh - 2rem); overflow-y: auto; }
+.sidebar ul { list-style: none; margin: 0; padding: 0; }
+.sidebar :is(summary, a) { display: block; padding: 0.4rem 0.75rem; border-radius: var(--radius); color: var(--text); text-decoration: none; }
+.sidebar :is(summary, .group) { font-weight: 600; cursor: pointer; }
+.sidebar :is(summary, a):hover { background: var(--accent-tint); }
+/* a group's marker turns down while it's open; a group of one is indented to line up with it */
+.sidebar summary { list-style: none; }
+.sidebar summary::-webkit-details-marker { display: none; }
+.sidebar summary::before { content: "\25B8"; display: inline-block; width: 1rem; color: var(--muted); }
+.sidebar details[open] > summary::before { content: "\25BE"; }
+.sidebar .group { padding-left: 1.75rem; }
+.sidebar details ul { margin: 0.15rem 0 0.5rem 1.25rem; padding-left: 0.5rem; border-left: 1px solid var(--border); }
+.sidebar details a { padding-block: 0.35rem; font-size: 0.95rem; }
+.sidebar a[aria-current] { background: var(--accent-tint); color: var(--accent); font-weight: 600; }
+
+.card {
+  margin: 0 0 1.25rem; padding: 1.25rem 1.5rem; border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface); box-shadow: 0 1px 2px var(--shadow);
+}
+
+/* A sheet's page: the intro, then the forms; on wide screens the intro moves to the right. */
+.intro { color: var(--muted); }
+.intro p { margin: 0 0 1.25rem; max-width: 70ch; }
+@media (min-width: 75rem) {
+  .sheet { display: grid; grid-template-columns: minmax(0, 1fr) 20rem; gap: 2rem; align-items: start; }
+  .sheet > .forms { grid-row: 1; grid-column: 1; }
+  .sheet > .intro {
+    grid-row: 1; grid-column: 2; position: sticky; top: 1rem; padding: 1rem 1.25rem;
+    border-left: 3px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0;
+    background: var(--accent-tint); font-size: 0.95rem;
+  }
+  .sheet > .intro p { margin: 0; }
+}
+
+/* Home page: a card for each builder */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr)); gap: 1.25rem; margin-top: 1.5rem; }
+.cards .card { display: block; margin: 0; color: inherit; text-decoration: none; transition: border-color 0.15s, box-shadow 0.15s; }
+.cards .card:hover { border-color: var(--accent); box-shadow: 0 2px 8px var(--shadow-hover); }
+.cards h2 { color: var(--accent); }
+.cards p { margin: 0; color: var(--muted); }
+
+/* Builder forms: fields flow in a grid. Checkbox groups and the button row take a whole row;
+   text boxes, radio groups and checkboxes with a hint take two columns once the card has room
+   (a dropdown's hint wraps in its column, so pairs such as From and To stay side by side). */
+.card:has(> .fields) { container-type: inline-size; }
+.fields { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: 1.1rem 1.75rem; align-items: start; }
+.fields > :is([role=group], .actions) { grid-column: 1 / -1; }
+@container (min-width: 26rem) {
+  .fields > :is(label:has(> input[type=text]), [role=radiogroup], label:has(> input[type=checkbox]):has(> .hint)) { grid-column: span 2; }
+}
+/* a field's hint: under the field, lined up with a checkbox's text */
+.hint { display: block; flex-basis: 100%; margin-top: 0.3rem; color: var(--muted); font-size: 0.85rem; font-weight: normal; line-height: 1.35; }
+label:has(> input[type=checkbox]) > .hint { padding-left: 1.45rem; }
+label:has(input:disabled) > .hint { color: var(--faint); }
+/* labels are blocks, which the scripts rely on: they show and hide a field by its label's display */
+label { display: block; }
+label > :is(input[type=text], input[type=number], input[type=email], select) { display: block; margin-top: 0.3rem; }
+label:has(input:disabled) { color: var(--faint); }
+
+input:is([type=text], [type=number], [type=email]), select, textarea {
+  padding: 0.45rem 0.6rem; border: 1px solid var(--border); border-radius: 6px;
+  background: var(--field); color: inherit; font: inherit;
+}
 input[type=text], input[type=email], textarea { width: 100%; max-width: 28rem; }
-input[type=number] { width: 5rem; }
-button { display: block; margin-top: 0.5rem; }
-.warning { color: #9b1c1c; background: #fdecec; border-left: 4px solid #c81e1e; border-radius: 4px; padding: 0.5rem 0.75rem; margin-top: 0.5rem; }
-footer { margin-top: auto; padding: 0 1rem; text-align: right; }
-.bmc { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 0.5rem; font-size: 0.9rem; }
-.bmc img { height: 36px; display: block; }
+.fields input[type=text] { max-width: none; }
+input[type=number] { width: 7rem; }
+select { max-width: 100%; }
+input[type=checkbox], input[type=radio] { width: 1rem; height: 1rem; margin: 0 0.45rem 0 0; vertical-align: -2px; accent-color: var(--accent); }
+:is(input, select, textarea, button):focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+.choices { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1.5rem; }
+.group-label { flex-basis: 100%; font-weight: 600; }
+
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; padding-top: 1.1rem; border-top: 1px solid var(--border); }
+.actions span { color: var(--muted); }
+.actions [role=status] { flex-basis: 100%; }
+.actions [role=status]:empty { display: none; }
+
+button {
+  padding: 0.6rem 1.5rem; border: 0; border-radius: 6px; cursor: pointer;
+  background: var(--accent); color: var(--on-accent); font: inherit; font-weight: 600;
+}
+button:hover { background: var(--accent-dark); }
+button:disabled { background: var(--disabled-bg); color: var(--disabled-text); cursor: not-allowed; }
+form > button { margin-top: 0.75rem; }
+
+.warning {
+  padding: 0.5rem 0.75rem; border-left: 4px solid var(--warning-edge); border-radius: 4px;
+  background: var(--warning-bg); color: var(--warning-text);
+}
+
+/* Footer */
+.site-footer { border-top: 1px solid var(--border); background: var(--surface); color: var(--muted); font-size: 0.9rem; }
+.site-footer .bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 2rem; padding-block: 1rem; }
+.site-footer p { margin: 0; }
+.bmc { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.bmc img { display: block; height: 36px; }
+
+/* Phones: the sidebar goes above the content. */
+@media (max-width: 48rem) {
+  .page { padding-block: 1.25rem; }
+  .page:has(> .sidebar) { display: block; }
+  .sidebar { position: static; max-height: none; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+  .card { padding: 1rem; }
+}
