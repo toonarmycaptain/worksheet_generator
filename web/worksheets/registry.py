@@ -190,7 +190,15 @@ NumberListStyleChoice = Literal["grid", "commas"]  # a NumberListStyle value
 NUMBER_LIST_STYLE_LABELS: dict[str, JsonValue] = {"grid": "Grid", "commas": "Commas"}
 AnswerKey = Annotated[bool, Field(title="Add an answer key page")]
 NameDateLine = Annotated[bool, Field(title="Add Name/Date blanks")]
-SelfCheckTiles = Annotated[bool, Field(title="Self-check tile answers")]
+SelfCheckTiles = Annotated[
+    bool,
+    Field(
+        title="Self-check tile answers",
+        description="Swaps the answer lines or choices for an answer bank and a picture to match "
+        f"against the flipped case. That sets the questions to {SLOTS}, one for each tile: ask "
+        "for fewer, such as 2 or 4, and the other tiles go unused.",
+    ),
+]
 # simple: a conventional picture; complex: tiles in arbitrary slots
 TilePattern = Annotated[
     Literal["simple", "complex"], Field(title="Pattern", json_schema_extra={"input": "radio"})
@@ -297,7 +305,10 @@ class BasicOperationOptions(HeaderOptions):
     operations: Operations = Field(["add"])
     # Division alone: any value but answer produces fill-in equations, such as □ ÷ 4 = 7
     missing_number: Literal["answer", "dividend", "divisor", "mixed"] = Field(
-        "answer", title="Missing number"
+        "answer",
+        title="Missing number",
+        description="Can leave out the dividend or the divisor instead of the answer, as a "
+        "square to write it in.",
     )
     max_number: int = Field(
         DEFAULT_LARGEST_OPERAND, ge=1, le=MAXIMUM_OPERAND, title="Largest number"
@@ -404,7 +415,10 @@ class PlaceValueOptions(HeaderOptions):
     title: Title = "Place Value"
     problems: Problems = 8
     given: FormChoice = Field(
-        "standard", title="From", json_schema_extra={"labels": FORM_CHOICE_LABELS}
+        "standard",
+        title="From",
+        description="Mixed picks a form for each question, never the same one twice in a question.",
+        json_schema_extra={"labels": FORM_CHOICE_LABELS},
     )
     asked: FormChoice = Field(
         "expanded", title="To", json_schema_extra={"labels": FORM_CHOICE_LABELS}
@@ -414,7 +428,12 @@ class PlaceValueOptions(HeaderOptions):
     )
     max_number: int = Field(DEFAULT_LARGEST_NUMBER, ge=1, le=LARGEST_NUMBER, title="Largest number")
     answer_key: AnswerKey = False
-    multiple_choice: bool = Field(False, title="Multiple choice")
+    multiple_choice: bool = Field(
+        False,
+        title="Multiple choice",
+        description=f"Lists {WRONG_ANSWER_COUNT + 1} choices under each number instead of an "
+        "answer line: the wrong ones are random numbers from the range.",
+    )
     # Tiles replace the answer lines with an answer bank page.
     self_check_tiles: SelfCheckTiles = False
     tile_pattern: TilePattern = "simple"

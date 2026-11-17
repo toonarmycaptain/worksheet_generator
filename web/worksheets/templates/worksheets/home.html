@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
-{% block nav %}{% endblock %}
-
 {% block content %}
   <h1>Worksheet generator</h1>
   <p>Pick the kind of worksheet to make.</p>
 
-  {% for builder in builders %}
-  <section>
-    <h2><a href="{% url builder.url_name %}">{{ builder.title }}</a></h2>
-    <p>{{ builder.description }}</p>
-  </section>
-  {% endfor %}
+  <div class="cards">
+    {% for group in catalogue %}
+    <a href="{% url group.sheets.0.url_name %}" class="card">
+      <h2>{{ group.title }}</h2>
+      <p>{{ group.description }}</p>
+    </a>
+    {% endfor %}
+  </div>
 {% endblock %}
