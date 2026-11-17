@@ -914,7 +914,7 @@ class InputOutputTableOptions(HeaderOptions):
     multiple_choice: bool = Field(
         False,
         title="Multiple choice",
-        description="Instead of tables to fill in, asks the question types ticked below.",
+        description="Instead of tables to fill in, asks the ticked question types.",
     )
     # Multiple choice only, so the page shows these only while it's ticked. The problems are
     # shared evenly among the ticked types, each asked in a mix of STAAR's forms.
