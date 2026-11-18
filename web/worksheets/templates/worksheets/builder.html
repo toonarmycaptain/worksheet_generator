@@ -127,6 +127,28 @@
   </script>
   {% endif %}
 
+  {% if intercept_answers %}
+  <script type="module">
+    // The slope and intercepts form's Intercepts as: only while the y- or x-intercept is ticked.
+    // Hidden, they're disabled so they aren't sent.
+    const asked = [...document.querySelectorAll("input[name=asked]")];
+    const shapes = [...document.querySelectorAll("input[name=intercept_answers]")];
+    function showInterceptAnswers() {
+      const show = asked.some(
+        (box) => box.checked && ["y_intercept", "x_intercept"].includes(box.value),
+      );
+      for (const box of shapes) box.disabled = !show;
+      shapes[0].closest("[role=group]").style.display = show ? "" : "none";
+      // the checkboxes script counts only the boxes that aren't greyed out
+      shapes[0].dispatchEvent(new Event("change"));
+    }
+    for (const box of asked) box.addEventListener("change", showInterceptAnswers);
+    // also when the browser restores the choices, going back to the page
+    window.addEventListener("pageshow", showInterceptAnswers);
+    showInterceptAnswers();
+  </script>
+  {% endif %}
+
   {% if operation_titles %}
   {{ operation_titles|json_script:"operation-titles" }}
   <script type="module">

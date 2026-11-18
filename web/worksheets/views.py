@@ -24,6 +24,10 @@ from core.basic_operations.representation import (
     word_problems_title,
 )
 from core.input_output_tables.representation import INPUT_OUTPUT_TABLES_NAME
+from core.line_equations.representation import (
+    SLOPE_AND_INTERCEPTS_NAME,
+    WRITING_LINEAR_EQUATIONS_NAME,
+)
 from core.self_check_tiles import SLOTS
 
 from .registry import CORE_KINDS, LEGACY_KINDS, CoreKind, Kind
@@ -59,10 +63,11 @@ BUILDERS: list[dict[str, Any]] = [
         "sheets": ["data_graphs"],
     },
     {
-        "title": INPUT_OUTPUT_TABLES_NAME,
+        "title": "Algebra and Functions",
         "description": "Fill in tables of number pairs that follow a rule about a real "
-        "situation, or choose the table that matches the rule.",
-        "sheets": ["input_output_tables"],
+        "situation, or choose the table that matches the rule. Find the slope and intercepts of "
+        "a line from its equation or points, or write its equation.",
+        "sheets": ["input_output_tables", "slope_and_intercepts", "writing_linear_equations"],
     },
 ]
 
@@ -75,6 +80,8 @@ HEADINGS = {
     "multiplication_models": MULTIPLICATION_MODELS_NAME,
     "data_graphs": "Read, Complete, Solve",
     "input_output_tables": INPUT_OUTPUT_TABLES_NAME,
+    "slope_and_intercepts": SLOPE_AND_INTERCEPTS_NAME,
+    "writing_linear_equations": WRITING_LINEAR_EQUATIONS_NAME,
 }
 LEGACY_HEADINGS = {
     "block": "Addition & Subtraction Word Problems — Base-Ten Blocks",
@@ -209,6 +216,7 @@ SCRIPT_DATA: dict[str, dict[str, Any]] = {
     },
     "place_value": {"distinct_forms": True},
     "input_output_tables": {"choice_fields": True},
+    "slope_and_intercepts": {"intercept_answers": True},
 }
 
 

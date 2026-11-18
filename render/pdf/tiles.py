@@ -7,6 +7,7 @@ which slot, and the pattern itself, come from ``core.self_check_tiles``.
 """
 
 from collections.abc import Sequence
+from fractions import Fraction
 from string import ascii_uppercase
 
 from reportlab.lib.colors import HexColor, gray, white
@@ -26,10 +27,13 @@ from render.pdf.page import (
     BOLD_FONT,
     CONTENT_WIDTH,
     FONT,
+    FRACTION_ROOM,
     MARGIN,
     PAGE_WIDTH,
     TEXT_SIZE,
     Header,
+    draw_pieces,
+    pieces_width,
     start_page,
     wrap,
 )
@@ -46,12 +50,16 @@ CAPTION = "Close the case and flip it over. If every answer is right, the back l
 INSTRUCTION = "Put each numbered tile in the slot whose letter matches the answer to its question."
 BLOCKED_NOTE = " Shaded boxes are not used."
 
+# An answer in the bank: text, wrapped to fit its box, or pieces drawn on one line, each fraction
+# stacked (see ``draw_pieces``)
+type BankAnswer = str | tuple[str | Fraction, ...]
+
 COLORS = {"yellow": HexColor("#f0be00"), "red": HexColor("#d9262c"), "blue": HexColor("#003cc8")}
 BLOCKED = HexColor("#d9d9d9")  # fill for a slot that no question uses
 
 
 def draw_tiles(
-    pdf: Canvas, answers: Sequence[str], slot_of: Sequence[int], top: float = BANK_TOP
+    pdf: Canvas, answers: Sequence[BankAnswer], slot_of: Sequence[int], top: float = BANK_TOP
 ) -> None:
     """
     Draw the answer bank with its top edge at ``top``, under its heading, and the pattern below.
@@ -66,7 +74,7 @@ def draw_tiles(
 
 
 def draw_tiles_page(
-    pdf: Canvas, header: Header, answers: Sequence[str], slot_of: Sequence[int]
+    pdf: Canvas, header: Header, answers: Sequence[BankAnswer], slot_of: Sequence[int]
 ) -> None:
     """
     Start a new page with ``header`` and draw the answer bank and pattern on it, as
@@ -84,25 +92,72 @@ def tile_solutions(questions: Sequence[TileQuestion], slot_of: Sequence[int]) ->
     ]
 
 
-def _bank_lines(answers: Sequence[str]) -> tuple[int, dict[str, list[str]], float]:
+def _bank_lines(
+    answers: Sequence[BankAnswer],
+) -> tuple[int, dict[BankAnswer, list[BankAnswer]], float]:
     """
-    Return the font size for every answer, each answer's lines, and the box height.
+    Return the font size for every answer, each answer's lines, and the box height. Text is
+    wrapped as ``wrap`` does, and pieces after a comma.
 
     The size is the largest of ``BANK_SIZES`` at which every answer fits within its box's
     padding at ``BOX_HEIGHT``. If none does, the smallest size is used and the boxes grow to fit
-    the answer with the most lines.
+    the tallest answer. A line with a stacked fraction is taller, as ``_line_height`` says.
     """
     width = BOX_WIDTH - 2 * BOX_PADDING
     for size in BANK_SIZES:
-        lines = {answer: wrap(answer, size, width) for answer in answers}
-        widest = max(stringWidth(line, FONT, size) for each in lines.values() for line in each)
-        most_lines = max(len(each) for each in lines.values())
-        if widest <= width and most_lines * (size + 2) <= BOX_HEIGHT - 2 * BOX_PADDING:
+        lines: dict[BankAnswer, list[BankAnswer]] = {
+            answer: list(wrap(answer, size, width))
+            if isinstance(answer, str)
+            else list(_wrap_pieces(answer, size, width))
+            for answer in answers
+        }
+        widest = max(_width(line, size) for each in lines.values() for line in each)
+        tallest = max(sum(_line_height(line, size) for line in each) for each in lines.values())
+        if widest <= width and tallest <= BOX_HEIGHT - 2 * BOX_PADDING:
             return size, lines, BOX_HEIGHT
-    return size, lines, max(BOX_HEIGHT, most_lines * (size + 2) + 2 * BOX_PADDING)
+    return size, lines, max(BOX_HEIGHT, tallest + 2 * BOX_PADDING)
 
 
-def _draw_answer_bank(pdf: Canvas, bank: Sequence[str | None], top: float) -> float:
+def _line_height(line: BankAnswer, size: float) -> float:
+    """
+    Return the height of a line of an answer in the bank: the size and a gap of 2, with room
+    above and below for a stacked fraction, in proportion to ``FRACTION_ROOM`` at ``TEXT_SIZE``.
+    """
+    if isinstance(line, str) or not any(isinstance(piece, Fraction) for piece in line):
+        return size + 2
+    return size + 2 + 2 * FRACTION_ROOM * size / TEXT_SIZE
+
+
+def _wrap_pieces(
+    pieces: tuple[str | Fraction, ...], size: float, width: float
+) -> list[tuple[str | Fraction, ...]]:
+    """
+    Split ``pieces`` after each comma into lines no wider than ``width``, as far as those breaks
+    allow: "m = -3/4, b = 2" can become "m = -3/4," over "b = 2".
+    """
+    segments: list[list[str | Fraction]] = [[]]
+    for piece in pieces:
+        if isinstance(piece, str) and ", " in piece:
+            first, *rest = piece.split(", ")
+            segments[-1].append(f"{first},")
+            segments += [[part] for part in rest]
+        else:
+            segments[-1].append(piece)
+    lines: list[list[str | Fraction]] = []
+    for segment in segments:
+        if lines and pieces_width([*lines[-1], " ", *segment], size) <= width:
+            lines[-1] += [" ", *segment]
+        else:
+            lines.append(segment)
+    return [tuple(line) for line in lines]
+
+
+def _width(line: BankAnswer, size: float) -> float:
+    """Return the width of a line of an answer in the bank: text, or pieces."""
+    return stringWidth(line, FONT, size) if isinstance(line, str) else pieces_width(line, size)
+
+
+def _draw_answer_bank(pdf: Canvas, bank: Sequence[BankAnswer | None], top: float) -> float:
     """
     Draw the answer bank as the case's slots: two rows of boxes, lettered along the outer edges.
 
@@ -127,11 +182,18 @@ def _draw_answer_bank(pdf: Canvas, bank: Sequence[str | None], top: float) -> fl
         if answer is not None:
             lines = lines_of[answer]
             pdf.setFont(FONT, size)
-            # centre the block of lines vertically in the box
-            baseline = y + height / 2 + (len(lines) - 1) * (size + 2) / 2 - size * 5 / 16
-            for line in lines:
-                pdf.drawCentredString(x + BOX_WIDTH / 2, baseline, line)
-                baseline -= size + 2
+            # centre the block of lines vertically in the box, each line in the middle of its
+            # own height
+            heights = [_line_height(line, size) for line in lines]
+            baseline = y + height / 2 + (sum(heights) - heights[0]) / 2 - size * 5 / 16
+            for number, line in enumerate(lines):
+                if isinstance(line, str):
+                    pdf.drawCentredString(x + BOX_WIDTH / 2, baseline, line)
+                else:
+                    left = x + (BOX_WIDTH - pieces_width(line, size)) / 2
+                    draw_pieces(pdf, left, baseline, line, size)
+                if number + 1 < len(lines):
+                    baseline -= (heights[number] + heights[number + 1]) / 2
         pdf.setFont(BOLD_FONT, 12)
         # slot letters go above the top row and below the bottom row
         slot_letter_y = y + height + 4 if row == 0 else y - 14

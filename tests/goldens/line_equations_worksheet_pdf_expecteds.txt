@@ -1,0 +1,1789 @@
+=== each_form_shown_answer_key ===
+title: Slope and Intercepts
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Slope and Intercepts) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Find the slope of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 652 Tm (y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 115.446 658.58 Tm (3) Tj T* ET
+BT 1 0 0 1 115.446 645.252 Tm (4) Tj T* ET
+n 114.046 656.2 m 123.4624 656.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 124.8624 652 Tm (x + 2) Tj T* ET
+n 82 612 m 558 612 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 588 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 588 Tm (Find the slope of this function:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 568 Tm (f\(x\) = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (0.75x + 2) Tj T* ET
+n 82 534 m 558 534 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 510 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 510 Tm (Find the slope of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 490 Tm (2x ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( y = 3) Tj T* ET
+n 82 456 m 558 456 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 432 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 432 Tm (Find the y-intercept of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 406 Tm (y ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 5 = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 138.7 412.58 Tm (3) Tj T* ET
+BT 1 0 0 1 138.7 399.252 Tm (4) Tj T* ET
+n 137.3 410.2 m 146.7164 410.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 148.1164 406 Tm (\(x + 4\)) Tj T* ET
+n 82 366 m 558 366 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 342 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 342 Tm (Find the y-intercept of the line with this point and slope:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 316 Tm (point \() Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (4, 5\), slope ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 212.228 322.58 Tm (3) Tj T* ET
+BT 1 0 0 1 212.228 309.252 Tm (4) Tj T* ET
+n 210.828 320.2 m 220.2444 320.2 l S
+BT /F1 14 Tf 16.8 TL ET
+n 82 276 m 558 276 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 252 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 252 Tm (Find the slope of the line through these points:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 232 Tm (\() Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (4, 5\) and \(4, ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (1\)) Tj T* ET
+n 82 198 m 558 198 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 174 Tm (7.) Tj T* ET
+BT 1 0 0 1 82 174 Tm (Find the slope of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 154 Tm (x = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (4) Tj T* ET
+n 82 120 m 558 120 l S
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Slope and Intercepts) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (8.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Find the y-intercept of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 658 Tm (y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (3.6) Tj T* ET
+n 82 624 m 558 624 l S
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Slope and Intercepts: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 702 Tm (1.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 702 Tm /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 92.486 708.58 Tm (3) Tj T* ET
+BT 1 0 0 1 92.486 695.252 Tm (4) Tj T* ET
+n 91.086 706.2 m 100.5024 706.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 676 Tm (2.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 676 Tm /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (0.75) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 656 Tm (3.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 656 Tm (2) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 636 Tm (4.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 636 Tm (2) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 616 Tm (5.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 616 Tm (2) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 590 Tm (6.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 590 Tm /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 92.486 596.58 Tm (3) Tj T* ET
+BT 1 0 0 1 92.486 583.252 Tm (4) Tj T* ET
+n 91.086 594.2 m 100.5024 594.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 564 Tm (7.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 564 Tm (undefined) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 544 Tm (8.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 544 Tm /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (3.6) Tj T* ET
+
+=== each_question_asked_answer_key ===
+title: Slope and Intercepts
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Slope and Intercepts) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Find the rate of change of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 658 Tm (3x + 4y = 8) Tj T* ET
+n 82 624 m 558 624 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 600 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 600 Tm (Find the y-intercept of this line as an ordered pair:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 580 Tm (3x + 4y = 8) Tj T* ET
+n 82 546 m 558 546 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 522 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 522 Tm (Find the x-intercept of this line as an ordered pair:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 502 Tm (3x + 4y = 8) Tj T* ET
+n 82 468 m 558 468 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 444 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 444 Tm (Find the zero of this function:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 424 Tm (3x + 4y = 8) Tj T* ET
+n 82 390 m 558 390 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 366 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 366 Tm (Find the slope of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 346 Tm (x = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (4) Tj T* ET
+n 82 312 m 558 312 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 288 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 288 Tm (Find the slope and y-intercept of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 262 Tm (y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 115.446 268.58 Tm (3) Tj T* ET
+BT 1 0 0 1 115.446 255.252 Tm (4) Tj T* ET
+n 114.046 266.2 m 123.4624 266.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 124.8624 262 Tm (x + 2) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 212 Tm (Slope: ______________) Tj T* ET
+BT 1 0 0 1 320 212 Tm (y-intercept: ______________) Tj T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Slope and Intercepts: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 702 Tm (1.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 702 Tm /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 92.486 708.58 Tm (3) Tj T* ET
+BT 1 0 0 1 92.486 695.252 Tm (4) Tj T* ET
+n 91.086 706.2 m 100.5024 706.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 676 Tm (2.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 676 Tm (\(0, 2\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 650 Tm (3.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 650 Tm (\() Tj T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 89.462 656.58 Tm (8) Tj T* ET
+BT 1 0 0 1 89.462 643.252 Tm (3) Tj T* ET
+n 88.062 654.2 m 97.4784 654.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 98.8784 650 Tm (, 0\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 618 Tm (4.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 84.8 624.58 Tm (8) Tj T* ET
+BT 1 0 0 1 84.8 611.252 Tm (3) Tj T* ET
+n 83.4 622.2 m 92.8164 622.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 592 Tm (5.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 592 Tm (undefined) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 566 Tm (6.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 566 Tm (slope ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 129.838 572.58 Tm (3) Tj T* ET
+BT 1 0 0 1 129.838 559.252 Tm (4) Tj T* ET
+n 128.438 570.2 m 137.8544 570.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 139.2544 566 Tm (, y-intercept 2) Tj T* ET
+
+=== choices_answer_key ===
+title: Slope and Intercepts
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Slope and Intercepts) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Find the slope of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 658 Tm (3x + 4y = 8) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 632 Tm (A\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 106.8 638.58 Tm (4) Tj T* ET
+BT 1 0 0 1 106.8 625.252 Tm (3) Tj T* ET
+n 105.4 636.2 m 114.8164 636.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 201 632 Tm (B\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 225.8 638.58 Tm (3) Tj T* ET
+BT 1 0 0 1 225.8 625.252 Tm (4) Tj T* ET
+n 224.4 636.2 m 233.8164 636.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 320 632 Tm (C\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 342 632 Tm /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 352.486 638.58 Tm (4) Tj T* ET
+BT 1 0 0 1 352.486 625.252 Tm (3) Tj T* ET
+n 351.086 636.2 m 360.5024 636.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 439 632 Tm (D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 461 632 Tm /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 471.486 638.58 Tm (3) Tj T* ET
+BT 1 0 0 1 471.486 625.252 Tm (4) Tj T* ET
+n 470.086 636.2 m 479.5024 636.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 588 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 588 Tm (Find the slope of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 568 Tm (y = 3) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 548 Tm (A\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 548 Tm /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (3) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 201 548 Tm (B\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 223 548 Tm (3) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 320 548 Tm (C\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 342 548 Tm (undefined) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 439 548 Tm (D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 461 548 Tm (0) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 510 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 510 Tm (Find the y-intercept of this line as an ordered pair:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 490 Tm (3x + 4y = 8) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 464 Tm (A\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 464 Tm (\() Tj T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 111.462 470.58 Tm (8) Tj T* ET
+BT 1 0 0 1 111.462 457.252 Tm (3) Tj T* ET
+n 110.062 468.2 m 119.4784 468.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 120.8784 464 Tm (, 0\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 201 464 Tm (B\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 223 464 Tm (\(0, ) Tj T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 246.03 470.58 Tm (8) Tj T* ET
+BT 1 0 0 1 246.03 457.252 Tm (3) Tj T* ET
+n 244.63 468.2 m 254.0464 468.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 255.4464 464 Tm (\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 320 464 Tm (C\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 342 464 Tm (\(2, 0\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 439 464 Tm (D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 461 464 Tm (\(0, 2\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 420 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 420 Tm (Find the slope and y-intercept of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 400 Tm (3x + 4y = 8) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 374 Tm (A\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 374 Tm (The slope is ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 193.852 380.58 Tm (4) Tj T* ET
+BT 1 0 0 1 193.852 367.252 Tm (3) Tj T* ET
+n 192.452 378.2 m 201.8684 378.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 203.2684 374 Tm (, and the y-intercept is ) Tj T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 347.6924 380.58 Tm (8) Tj T* ET
+BT 1 0 0 1 347.6924 367.252 Tm (3) Tj T* ET
+n 346.2924 378.2 m 355.7088 378.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 357.1088 374 Tm (.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 342 Tm (B\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 342 Tm (The slope is ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 193.852 348.58 Tm (3) Tj T* ET
+BT 1 0 0 1 193.852 335.252 Tm (4) Tj T* ET
+n 192.452 346.2 m 201.8684 346.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 203.2684 342 Tm (, and the y-intercept is ) Tj T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 347.6924 348.58 Tm (8) Tj T* ET
+BT 1 0 0 1 347.6924 335.252 Tm (3) Tj T* ET
+n 346.2924 346.2 m 355.7088 346.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 357.1088 342 Tm (.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 310 Tm (C\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 310 Tm (The slope is ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 193.852 316.58 Tm (4) Tj T* ET
+BT 1 0 0 1 193.852 303.252 Tm (3) Tj T* ET
+n 192.452 314.2 m 201.8684 314.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 203.2684 310 Tm (, and the y-intercept is 2.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 278 Tm (D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 278 Tm (The slope is ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 193.852 284.58 Tm (3) Tj T* ET
+BT 1 0 0 1 193.852 271.252 Tm (4) Tj T* ET
+n 192.452 282.2 m 201.8684 282.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 203.2684 278 Tm (, and the y-intercept is 2.) Tj T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Slope and Intercepts: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 702 Tm (1.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 702 Tm (D\) ) Tj T* ET
+BT 1 0 0 1 100.662 702 Tm /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 111.148 708.58 Tm (3) Tj T* ET
+BT 1 0 0 1 111.148 695.252 Tm (4) Tj T* ET
+n 109.748 706.2 m 119.1644 706.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 676 Tm (2.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 676 Tm (D\) ) Tj T* ET
+BT 1 0 0 1 100.662 676 Tm (0) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 656 Tm (3.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 656 Tm (D\) ) Tj T* ET
+BT 1 0 0 1 100.662 656 Tm (\(0, 2\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 630 Tm (4.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 630 Tm (D\) ) Tj T* ET
+BT 1 0 0 1 100.662 630 Tm (The slope is ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 190.514 636.58 Tm (3) Tj T* ET
+BT 1 0 0 1 190.514 623.252 Tm (4) Tj T* ET
+n 189.114 634.2 m 198.5304 634.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 199.9304 630 Tm (, and the y-intercept is 2.) Tj T* ET
+
+=== tiles_answer_key ===
+title: Slope and Intercepts
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Slope and Intercepts) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Find the y-intercept of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 658 Tm (y = x + 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 624 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 624 Tm (Find the y-intercept of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 604 Tm (y = x + 2) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 570 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 570 Tm (Find the y-intercept of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 550 Tm (y = x + 3) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 516 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 516 Tm (Find the y-intercept of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 496 Tm (y = x + 4) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 462 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 462 Tm (Find the y-intercept of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 442 Tm (y = x + 5) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 408 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 408 Tm (Find the y-intercept of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 388 Tm (y = x + 6) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 354 Tm (7.) Tj T* ET
+BT 1 0 0 1 82 354 Tm (Find the y-intercept of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 334 Tm (y = x + 7) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 300 Tm (8.) Tj T* ET
+BT 1 0 0 1 82 300 Tm (Find the y-intercept of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 280 Tm (y = x + 8) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 246 Tm (9.) Tj T* ET
+BT 1 0 0 1 82 246 Tm (Find the y-intercept of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 226 Tm (y = x + 9) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 192 Tm (10.) Tj T* ET
+BT 1 0 0 1 82 192 Tm (Find the y-intercept of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 172 Tm (y = x + 10) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 138 Tm (11.) Tj T* ET
+BT 1 0 0 1 82 138 Tm (Find the slope of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 118 Tm (3x + 4y = 8) Tj T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Slope and Intercepts) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (12.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Find the slope and y-intercept of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 652 Tm (y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 115.446 658.58 Tm (3) Tj T* ET
+BT 1 0 0 1 115.446 645.252 Tm (4) Tj T* ET
+n 114.046 656.2 m 123.4624 656.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 124.8624 652 Tm (x + 2) Tj T* ET
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Slope and Intercepts) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (Answer bank) Tj T* ET
+BT /F1 11 Tf 13.2 TL ET
+BT 1 0 0 1 54 662 Tm (Put each numbered tile in the slot whose letter matches the answer to its question.) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 578 84 44 re S
+Q
+BT /F1 10 Tf 12 TL ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 93.22 596.875 Tm (1) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.668 626 Tm (A) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 578 84 44 re S
+Q
+BT /F1 10 Tf 12 TL ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 177.22 596.875 Tm (2) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 626 Tm (B) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 578 84 44 re S
+Q
+BT /F1 10 Tf 12 TL ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 261.22 596.875 Tm (3) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 259.668 626 Tm (C) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 578 84 44 re S
+Q
+BT /F1 10 Tf 12 TL ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 345.22 596.875 Tm (4) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 343.668 626 Tm (D) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 578 84 44 re S
+Q
+BT /F1 10 Tf 12 TL ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 429.22 596.875 Tm (5) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.998 626 Tm (E) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 578 84 44 re S
+Q
+BT /F1 10 Tf 12 TL ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 513.22 596.875 Tm (6) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 626 Tm (F) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 534 84 44 re S
+Q
+BT /F1 10 Tf 12 TL ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 93.22 552.875 Tm (7) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.332 520 Tm (G) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 534 84 44 re S
+Q
+BT /F1 10 Tf 12 TL ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 177.22 552.875 Tm (8) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 520 Tm (H) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 534 84 44 re S
+Q
+BT /F1 10 Tf 12 TL ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 261.22 552.875 Tm (9) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 262.332 520 Tm (I) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 534 84 44 re S
+Q
+BT /F1 10 Tf 12 TL ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 342.44 552.875 Tm (10) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 344.664 520 Tm (J) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 534 84 44 re S
+Q
+BT /F1 10 Tf 12 TL ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 424.892 552.875 Tm /F3 10 Tf 12 TL (-) Tj /F1 10 Tf 12 TL T* ET
+BT /F1 8.5 Tf 10.2 TL ET
+BT 1 0 0 1 432.382 557.575 Tm (3) Tj T* ET
+BT 1 0 0 1 432.382 548.055 Tm (4) Tj T* ET
+n 431.382 555.875 m 438.108 555.875 l S
+BT /F1 10 Tf 12 TL ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.668 520 Tm (K) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 534 84 44 re S
+Q
+BT /F1 10 Tf 12 TL ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 484.987 552.875 Tm (m = ) Tj /F3 10 Tf 12 TL (-) Tj /F1 10 Tf 12 TL T* ET
+BT /F1 8.5 Tf 10.2 TL ET
+BT 1 0 0 1 512.207 557.575 Tm (3) Tj T* ET
+BT 1 0 0 1 512.207 548.055 Tm (4) Tj T* ET
+n 511.207 555.875 m 517.933 555.875 l S
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 518.933 552.875 Tm (,) Tj T* ET
+BT 1 0 0 1 521.713 552.875 Tm ( ) Tj T* ET
+BT 1 0 0 1 524.493 552.875 Tm (b = 2) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 520 Tm (L) Tj T* ET
+q
+1 1 1 rg
+n 318 432 40 40 re f*
+.941176 .745098 0 rg
+n 358 432 m 338 432 l 338 452 l 318 472 l 358 472 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 358 432 40 40 re f*
+0 .235294 .784314 rg
+n 358 432 m 378 432 l 378 452 l 398 472 l 358 472 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 398 432 40 40 re f*
+.85098 .14902 .172549 rg
+n 398 472 m 418 472 l 418 452 l 438 432 l 398 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 438 432 40 40 re f*
+.941176 .745098 0 rg
+n 438 432 m 458 432 l 458 452 l 478 472 l 438 472 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 478 432 40 40 re f*
+.85098 .14902 .172549 rg
+n 478 432 m 498 432 l 498 452 l 518 472 l 478 472 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 518 432 40 40 re f*
+0 .235294 .784314 rg
+n 558 432 m 538 432 l 538 452 l 518 472 l 558 472 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 318 392 40 40 re f*
+.941176 .745098 0 rg
+n 318 432 m 338 432 l 338 412 l 358 392 l 318 392 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 392 40 40 re S
+Q
+q
+1 1 1 rg
+n 358 392 40 40 re f*
+0 .235294 .784314 rg
+n 358 432 m 378 432 l 378 412 l 398 392 l 358 392 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 392 40 40 re S
+Q
+q
+1 1 1 rg
+n 398 392 40 40 re f*
+.85098 .14902 .172549 rg
+n 438 432 m 418 432 l 418 412 l 398 392 l 438 392 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 392 40 40 re S
+Q
+q
+1 1 1 rg
+n 438 392 40 40 re f*
+.941176 .745098 0 rg
+n 478 432 m 458 432 l 458 412 l 438 392 l 478 392 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 392 40 40 re S
+Q
+q
+1 1 1 rg
+n 478 392 40 40 re f*
+.85098 .14902 .172549 rg
+n 518 392 m 498 392 l 498 412 l 478 432 l 518 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 392 40 40 re S
+Q
+q
+1 1 1 rg
+n 518 392 40 40 re f*
+0 .235294 .784314 rg
+n 558 432 m 538 432 l 538 412 l 518 392 l 558 392 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 392 40 40 re S
+Q
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 458 Tm (Close the case and flip it over. If every) Tj T* ET
+BT 1 0 0 1 54 443 Tm (answer is right, the back looks like this.) Tj T* ET
+--- stream 4
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Slope and Intercepts: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 708 Tm (1) Tj T* ET
+BT 1 0 0 1 89.784 708 Tm (    \(A\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 688 Tm (2) Tj T* ET
+BT 1 0 0 1 89.784 688 Tm (    \(B\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 668 Tm (3.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 668 Tm (3) Tj T* ET
+BT 1 0 0 1 89.784 668 Tm (    \(C\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 648 Tm (4.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 648 Tm (4) Tj T* ET
+BT 1 0 0 1 89.784 648 Tm (    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 628 Tm (5.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 628 Tm (5) Tj T* ET
+BT 1 0 0 1 89.784 628 Tm (    \(E\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 608 Tm (6.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 608 Tm (6) Tj T* ET
+BT 1 0 0 1 89.784 608 Tm (    \(F\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 588 Tm (7.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 588 Tm (7) Tj T* ET
+BT 1 0 0 1 89.784 588 Tm (    \(G\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 568 Tm (8.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 568 Tm (8) Tj T* ET
+BT 1 0 0 1 89.784 568 Tm (    \(H\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 548 Tm (9.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 548 Tm (9) Tj T* ET
+BT 1 0 0 1 89.784 548 Tm (    \(I\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 528 Tm (10.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 528 Tm (10) Tj T* ET
+BT 1 0 0 1 97.568 528 Tm (    \(J\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 502 Tm (11.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 502 Tm /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 92.486 508.58 Tm (3) Tj T* ET
+BT 1 0 0 1 92.486 495.252 Tm (4) Tj T* ET
+n 91.086 506.2 m 100.5024 506.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 101.9024 502 Tm (    \(K\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 470 Tm (12.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 470 Tm (slope ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 129.838 476.58 Tm (3) Tj T* ET
+BT 1 0 0 1 129.838 463.252 Tm (4) Tj T* ET
+n 128.438 474.2 m 137.8544 474.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 139.2544 470 Tm (, y-intercept 2) Tj T* ET
+BT 1 0 0 1 224.0664 470 Tm (    \(L\)) Tj T* ET
+
+=== other_title_and_label ===
+title: Lines
+media boxes: 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Lines) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Day 2) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Find the rate of change of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 658 Tm (3x + 4y = 8) Tj T* ET
+n 82 624 m 558 624 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 600 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 600 Tm (Find the y-intercept of this line as an ordered pair:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 580 Tm (3x + 4y = 8) Tj T* ET
+n 82 546 m 558 546 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 522 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 522 Tm (Find the x-intercept of this line as an ordered pair:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 502 Tm (3x + 4y = 8) Tj T* ET
+n 82 468 m 558 468 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 444 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 444 Tm (Find the zero of this function:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 424 Tm (3x + 4y = 8) Tj T* ET
+n 82 390 m 558 390 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 366 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 366 Tm (Find the slope of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 346 Tm (x = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (4) Tj T* ET
+n 82 312 m 558 312 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 288 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 288 Tm (Find the slope and y-intercept of this line:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 262 Tm (y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 115.446 268.58 Tm (3) Tj T* ET
+BT 1 0 0 1 115.446 255.252 Tm (4) Tj T* ET
+n 114.046 266.2 m 123.4624 266.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 124.8624 262 Tm (x + 2) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 212 Tm (Slope: ______________) Tj T* ET
+BT 1 0 0 1 320 212 Tm (y-intercept: ______________) Tj T* ET
+
+=== each_equation_given_answer_key ===
+title: Writing Linear Equations
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Writing Linear Equations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Write this equation in standard form:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 652 Tm (y = ) Tj T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 107.76 658.58 Tm (3) Tj T* ET
+BT 1 0 0 1 107.76 645.252 Tm (4) Tj T* ET
+n 106.36 656.2 m 115.7764 656.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 117.1764 652 Tm (x + ) Tj T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 142.9364 658.58 Tm (5) Tj T* ET
+BT 1 0 0 1 142.9364 645.252 Tm (4) Tj T* ET
+n 141.5364 656.2 m 150.9528 656.2 l S
+BT /F1 14 Tf 16.8 TL ET
+n 82 612 m 558 612 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 588 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 588 Tm (Write this equation in slope-intercept form:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 568 Tm (7x + 4y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (28) Tj T* ET
+n 82 534 m 558 534 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 510 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 510 Tm (Write this equation in slope-intercept form:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 484 Tm (y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 115.446 490.58 Tm (3) Tj T* ET
+BT 1 0 0 1 115.446 477.252 Tm (4) Tj T* ET
+n 114.046 488.2 m 123.4624 488.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 124.8624 484 Tm (\(x + 4\) + 5) Tj T* ET
+n 82 444 m 558 444 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 420 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 420 Tm (Write this equation in standard form:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 400 Tm (y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (2\(x ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 3\)) Tj T* ET
+n 82 366 m 558 366 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 342 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 342 Tm (Write the equation of the line with this point and slope in point-slope form:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 316 Tm (point \() Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (4, 5\), slope ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 212.228 322.58 Tm (3) Tj T* ET
+BT 1 0 0 1 212.228 309.252 Tm (4) Tj T* ET
+n 210.828 320.2 m 220.2444 320.2 l S
+BT /F1 14 Tf 16.8 TL ET
+n 82 276 m 558 276 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 252 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 252 Tm (Write the equation of the line through these points in point-slope form, using) Tj T* ET
+BT 1 0 0 1 82 232 Tm (the first point:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 212 Tm (\() Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (4, 5\) and \(4, ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (1\)) Tj T* ET
+n 82 178 m 558 178 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 154 Tm (7.) Tj T* ET
+BT 1 0 0 1 82 154 Tm (Write the equation of the line through these points:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 134 Tm (\(3, 7\) and \(3, ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (2\)) Tj T* ET
+n 82 100 m 558 100 l S
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Writing Linear Equations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (8.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Write the equation of the line with this point and slope:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 658 Tm (point \() Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (4, 2\), slope undefined) Tj T* ET
+n 82 624 m 558 624 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 600 Tm (9.) Tj T* ET
+BT 1 0 0 1 82 600 Tm (Write the equation of the line through \(2, ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (2\) that is perpendicular to this line,) Tj T* ET
+BT 1 0 0 1 82 580 Tm (in slope-intercept form:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 554 Tm (y = ) Tj T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 107.76 560.58 Tm (2) Tj T* ET
+BT 1 0 0 1 107.76 547.252 Tm (5) Tj T* ET
+n 106.36 558.2 m 115.7764 558.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 117.1764 554 Tm (x + 2) Tj T* ET
+n 82 514 m 558 514 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 490 Tm (10.) Tj T* ET
+BT 1 0 0 1 82 490 Tm (Write the equation of the line through \(3, 4\) that is parallel to this line, in) Tj T* ET
+BT 1 0 0 1 82 470 Tm (standard form:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 450 Tm (2x + 3y = 6) Tj T* ET
+n 82 416 m 558 416 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 392 Tm (11.) Tj T* ET
+BT 1 0 0 1 82 392 Tm (Write the equation of the line through this point that is perpendicular to the) Tj T* ET
+BT 1 0 0 1 82 372 Tm (y-axis:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 352 Tm (\(3, 7\)) Tj T* ET
+n 82 318 m 558 318 l S
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Writing Linear Equations: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 708 Tm (3x ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 4y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (5) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 688 Tm (y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (1.75x ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 7) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 662 Tm (3.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 662 Tm (y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 115.446 668.58 Tm (3) Tj T* ET
+BT 1 0 0 1 115.446 655.252 Tm (4) Tj T* ET
+n 114.046 666.2 m 123.4624 666.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 124.8624 662 Tm (x + 2) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 636 Tm (4.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 636 Tm (2x + y = 6) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 610 Tm (5.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 610 Tm (y ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 5 = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 138.7 616.58 Tm (3) Tj T* ET
+BT 1 0 0 1 138.7 603.252 Tm (4) Tj T* ET
+n 137.3 614.2 m 146.7164 614.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 148.1164 610 Tm (\(x + 4\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 578 Tm (6.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 578 Tm (y ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 5 = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 138.7 584.58 Tm (3) Tj T* ET
+BT 1 0 0 1 138.7 571.252 Tm (4) Tj T* ET
+n 137.3 582.2 m 146.7164 582.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 148.1164 578 Tm (\(x + 4\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 552 Tm (7.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 552 Tm (x = 3) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 532 Tm (8.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 532 Tm (x = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (4) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 506 Tm (9.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 506 Tm (y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 115.446 512.58 Tm (5) Tj T* ET
+BT 1 0 0 1 115.446 499.252 Tm (2) Tj T* ET
+n 114.046 510.2 m 123.4624 510.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 124.8624 506 Tm (x + 3) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 480 Tm (10.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 480 Tm (2x + 3y = 18) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 460 Tm (11.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 460 Tm (y = 7) Tj T* ET
+
+=== equation_choices_answer_key ===
+title: Writing Linear Equations
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Writing Linear Equations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Write the equation of the line through these points in slope-intercept form:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 658 Tm (\() Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (4, 2\) and \(12, 6\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 632 Tm (A\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 632 Tm (y = 4x + 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 201 632 Tm (B\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 223 632 Tm (y = 4x + 3) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 320 632 Tm (C\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 342 632 Tm (y = ) Tj T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 367.76 638.58 Tm (1) Tj T* ET
+BT 1 0 0 1 367.76 625.252 Tm (4) Tj T* ET
+n 366.36 636.2 m 375.7764 636.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 377.1764 632 Tm (x + 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 439 632 Tm (D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 461 632 Tm (y = ) Tj T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 486.76 638.58 Tm (1) Tj T* ET
+BT 1 0 0 1 486.76 625.252 Tm (4) Tj T* ET
+n 485.36 636.2 m 494.7764 636.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 496.1764 632 Tm (x + 3) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 588 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 588 Tm (Write the equation of the line through \() Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (3, ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (6\) that is parallel to this line, in) Tj T* ET
+BT 1 0 0 1 82 568 Tm (point-slope form:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 542 Tm (y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 115.446 548.58 Tm (8) Tj T* ET
+BT 1 0 0 1 115.446 535.252 Tm (9) Tj T* ET
+n 114.046 546.2 m 123.4624 546.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 124.8624 542 Tm (x + 4) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 510 Tm (A\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 510 Tm (y ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 6 = ) Tj T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 153.014 516.58 Tm (9) Tj T* ET
+BT 1 0 0 1 153.014 503.252 Tm (8) Tj T* ET
+n 151.614 514.2 m 161.0304 514.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 162.4304 510 Tm (\(x ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 3\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 478 Tm (B\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 478 Tm (y + 6 = ) Tj T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 153.504 484.58 Tm (9) Tj T* ET
+BT 1 0 0 1 153.504 471.252 Tm (8) Tj T* ET
+n 152.104 482.2 m 161.5204 482.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 162.9204 478 Tm (\(x + 3\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 446 Tm (C\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 446 Tm (y ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 6 = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 160.7 452.58 Tm (8) Tj T* ET
+BT 1 0 0 1 160.7 439.252 Tm (9) Tj T* ET
+n 159.3 450.2 m 168.7164 450.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 170.1164 446 Tm (\(x ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 3\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 414 Tm (D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 414 Tm (y + 6 = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 161.19 420.58 Tm (8) Tj T* ET
+BT 1 0 0 1 161.19 407.252 Tm (9) Tj T* ET
+n 159.79 418.2 m 169.2064 418.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 170.6064 414 Tm (\(x + 3\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 370 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 370 Tm (Write this equation in standard form:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 344 Tm (y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 115.446 350.58 Tm (7) Tj T* ET
+BT 1 0 0 1 115.446 337.252 Tm (3) Tj T* ET
+n 114.046 348.2 m 123.4624 348.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 124.8624 344 Tm (x ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( ) Tj T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 150.1324 350.58 Tm (14) Tj T* ET
+BT 1 0 0 1 153.4406 337.252 Tm (3) Tj T* ET
+n 148.7324 348.2 m 164.7652 348.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 318 Tm (A\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 318 Tm (7x ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 3y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (14) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 298 Tm (B\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 298 Tm (7x ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 3y = 14) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 278 Tm (C\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 278 Tm (7x + 3y = 14) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 258 Tm (D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 258 Tm (7x + 3y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (14) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 220 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 220 Tm (Write the equation of the line through this point that is parallel to the x-axis:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 200 Tm (\(3, 7\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 180 Tm (A\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 180 Tm (x = 3) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 201 180 Tm (B\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 223 180 Tm (x = 7) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 320 180 Tm (C\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 342 180 Tm (y = 3) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 439 180 Tm (D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 461 180 Tm (y = 7) Tj T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Writing Linear Equations: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 702 Tm (1.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 702 Tm (D\) ) Tj T* ET
+BT 1 0 0 1 100.662 702 Tm (y = ) Tj T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 126.422 708.58 Tm (1) Tj T* ET
+BT 1 0 0 1 126.422 695.252 Tm (4) Tj T* ET
+n 125.022 706.2 m 134.4384 706.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 135.8384 702 Tm (x + 3) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 670 Tm (2.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 670 Tm (D\) ) Tj T* ET
+BT 1 0 0 1 100.662 670 Tm (y + 6 = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 157.852 676.58 Tm (8) Tj T* ET
+BT 1 0 0 1 157.852 663.252 Tm (9) Tj T* ET
+n 156.452 674.2 m 165.8684 674.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 167.2684 670 Tm (\(x + 3\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 644 Tm (3.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 644 Tm (D\) ) Tj T* ET
+BT 1 0 0 1 100.662 644 Tm (7x + 3y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (14) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 624 Tm (4.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 624 Tm (D\) ) Tj T* ET
+BT 1 0 0 1 100.662 624 Tm (y = 7) Tj T* ET
+
+=== equation_tiles_answer_key ===
+title: Writing Linear Equations
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Writing Linear Equations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Write this equation in standard form:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 658 Tm (y = x + 1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 624 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 624 Tm (Write this equation in standard form:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 604 Tm (y = x + 2) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 570 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 570 Tm (Write this equation in standard form:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 550 Tm (y = x + 3) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 516 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 516 Tm (Write this equation in standard form:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 496 Tm (y = x + 4) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 462 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 462 Tm (Write this equation in standard form:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 442 Tm (y = x + 5) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 408 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 408 Tm (Write this equation in standard form:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 388 Tm (y = x + 6) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 354 Tm (7.) Tj T* ET
+BT 1 0 0 1 82 354 Tm (Write this equation in standard form:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 334 Tm (y = x + 7) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 300 Tm (8.) Tj T* ET
+BT 1 0 0 1 82 300 Tm (Write this equation in standard form:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 280 Tm (y = x + 8) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 246 Tm (9.) Tj T* ET
+BT 1 0 0 1 82 246 Tm (Write this equation in standard form:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 226 Tm (y = x + 9) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 192 Tm (10.) Tj T* ET
+BT 1 0 0 1 82 192 Tm (Write this equation in standard form:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 172 Tm (y = x + 10) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 138 Tm (11.) Tj T* ET
+BT 1 0 0 1 82 138 Tm (Write this equation in slope-intercept form:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 118 Tm (3x + 4y = 8) Tj T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Writing Linear Equations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (12.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Write the equation of the line with this point and slope in point-slope form:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 652 Tm (point \() Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (4, 5\), slope ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 212.228 658.58 Tm (3) Tj T* ET
+BT 1 0 0 1 212.228 645.252 Tm (4) Tj T* ET
+n 210.828 656.2 m 220.2444 656.2 l S
+BT /F1 14 Tf 16.8 TL ET
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Writing Linear Equations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (Answer bank) Tj T* ET
+BT /F1 11 Tf 13.2 TL ET
+BT 1 0 0 1 54 662 Tm (Put each numbered tile in the slot whose letter matches the answer to its question.) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 578 84 44 re S
+Q
+BT /F1 9 Tf 10.8 TL ET
+BT /F1 9 Tf 10.8 TL ET
+BT 1 0 0 1 76.425 597.1875 Tm (x ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL ( y = ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL (1) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.668 626 Tm (A) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 578 84 44 re S
+Q
+BT /F1 9 Tf 10.8 TL ET
+BT /F1 9 Tf 10.8 TL ET
+BT 1 0 0 1 160.425 597.1875 Tm (x ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL ( y = ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL (2) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 626 Tm (B) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 578 84 44 re S
+Q
+BT /F1 9 Tf 10.8 TL ET
+BT /F1 9 Tf 10.8 TL ET
+BT 1 0 0 1 244.425 597.1875 Tm (x ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL ( y = ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL (3) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 259.668 626 Tm (C) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 578 84 44 re S
+Q
+BT /F1 9 Tf 10.8 TL ET
+BT /F1 9 Tf 10.8 TL ET
+BT 1 0 0 1 328.425 597.1875 Tm (x ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL ( y = ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL (4) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 343.668 626 Tm (D) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 578 84 44 re S
+Q
+BT /F1 9 Tf 10.8 TL ET
+BT /F1 9 Tf 10.8 TL ET
+BT 1 0 0 1 412.425 597.1875 Tm (x ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL ( y = ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL (5) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.998 626 Tm (E) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 578 84 44 re S
+Q
+BT /F1 9 Tf 10.8 TL ET
+BT /F1 9 Tf 10.8 TL ET
+BT 1 0 0 1 496.425 597.1875 Tm (x ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL ( y = ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL (6) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 626 Tm (F) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 534 84 44 re S
+Q
+BT /F1 9 Tf 10.8 TL ET
+BT /F1 9 Tf 10.8 TL ET
+BT 1 0 0 1 76.425 553.1875 Tm (x ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL ( y = ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL (7) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.332 520 Tm (G) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 534 84 44 re S
+Q
+BT /F1 9 Tf 10.8 TL ET
+BT /F1 9 Tf 10.8 TL ET
+BT 1 0 0 1 160.425 553.1875 Tm (x ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL ( y = ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL (8) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 520 Tm (H) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 534 84 44 re S
+Q
+BT /F1 9 Tf 10.8 TL ET
+BT /F1 9 Tf 10.8 TL ET
+BT 1 0 0 1 244.425 553.1875 Tm (x ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL ( y = ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL (9) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 262.332 520 Tm (I) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 534 84 44 re S
+Q
+BT /F1 9 Tf 10.8 TL ET
+BT /F1 9 Tf 10.8 TL ET
+BT 1 0 0 1 325.923 553.1875 Tm (x ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL ( y = ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL (10) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 344.664 520 Tm (J) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 534 84 44 re S
+Q
+BT /F1 9 Tf 10.8 TL ET
+BT /F1 9 Tf 10.8 TL ET
+BT 1 0 0 1 408.3408 553.1875 Tm (y = ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL T* ET
+BT /F1 7.65 Tf 9.18 TL ET
+BT 1 0 0 1 429.8418 557.4175 Tm (3) Tj T* ET
+BT 1 0 0 1 429.8418 548.8495 Tm (4) Tj T* ET
+n 428.9418 555.8875 m 434.9952 555.8875 l S
+BT /F1 9 Tf 10.8 TL ET
+BT 1 0 0 1 435.8952 553.1875 Tm (x + 2) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.668 520 Tm (K) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 534 84 44 re S
+Q
+BT /F1 9 Tf 10.8 TL ET
+BT /F1 9 Tf 10.8 TL ET
+BT 1 0 0 1 481.8693 553.1875 Tm (y ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL ( 5 = ) Tj /F3 9 Tf 10.8 TL (-) Tj /F1 9 Tf 10.8 TL T* ET
+BT /F1 7.65 Tf 9.18 TL ET
+BT 1 0 0 1 518.3193 557.4175 Tm (3) Tj T* ET
+BT 1 0 0 1 518.3193 548.8495 Tm (4) Tj T* ET
+n 517.4193 555.8875 m 523.4727 555.8875 l S
+BT /F1 9 Tf 10.8 TL ET
+BT 1 0 0 1 524.3727 553.1875 Tm (\(x + 4\)) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 520 Tm (L) Tj T* ET
+q
+1 1 1 rg
+n 318 432 40 40 re f*
+.941176 .745098 0 rg
+n 358 432 m 338 432 l 338 452 l 318 472 l 358 472 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 358 432 40 40 re f*
+0 .235294 .784314 rg
+n 358 432 m 378 432 l 378 452 l 398 472 l 358 472 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 398 432 40 40 re f*
+.85098 .14902 .172549 rg
+n 398 472 m 418 472 l 418 452 l 438 432 l 398 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 438 432 40 40 re f*
+.941176 .745098 0 rg
+n 438 432 m 458 432 l 458 452 l 478 472 l 438 472 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 478 432 40 40 re f*
+.85098 .14902 .172549 rg
+n 478 432 m 498 432 l 498 452 l 518 472 l 478 472 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 518 432 40 40 re f*
+0 .235294 .784314 rg
+n 558 432 m 538 432 l 538 452 l 518 472 l 558 472 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 318 392 40 40 re f*
+.941176 .745098 0 rg
+n 318 432 m 338 432 l 338 412 l 358 392 l 318 392 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 392 40 40 re S
+Q
+q
+1 1 1 rg
+n 358 392 40 40 re f*
+0 .235294 .784314 rg
+n 358 432 m 378 432 l 378 412 l 398 392 l 358 392 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 392 40 40 re S
+Q
+q
+1 1 1 rg
+n 398 392 40 40 re f*
+.85098 .14902 .172549 rg
+n 438 432 m 418 432 l 418 412 l 398 392 l 438 392 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 392 40 40 re S
+Q
+q
+1 1 1 rg
+n 438 392 40 40 re f*
+.941176 .745098 0 rg
+n 478 432 m 458 432 l 458 412 l 438 392 l 478 392 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 392 40 40 re S
+Q
+q
+1 1 1 rg
+n 478 392 40 40 re f*
+.85098 .14902 .172549 rg
+n 518 392 m 498 392 l 498 412 l 478 432 l 518 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 392 40 40 re S
+Q
+q
+1 1 1 rg
+n 518 392 40 40 re f*
+0 .235294 .784314 rg
+n 558 432 m 538 432 l 538 412 l 518 392 l 558 392 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 392 40 40 re S
+Q
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 458 Tm (Close the case and flip it over. If every) Tj T* ET
+BT 1 0 0 1 54 443 Tm (answer is right, the back looks like this.) Tj T* ET
+--- stream 4
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Writing Linear Equations: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 708 Tm (x ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (1) Tj T* ET
+BT 1 0 0 1 142.9 708 Tm (    \(A\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 688 Tm (x ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (2) Tj T* ET
+BT 1 0 0 1 142.9 688 Tm (    \(B\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 668 Tm (3.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 668 Tm (x ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (3) Tj T* ET
+BT 1 0 0 1 142.9 668 Tm (    \(C\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 648 Tm (4.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 648 Tm (x ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (4) Tj T* ET
+BT 1 0 0 1 142.9 648 Tm (    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 628 Tm (5.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 628 Tm (x ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (5) Tj T* ET
+BT 1 0 0 1 142.9 628 Tm (    \(E\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 608 Tm (6.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 608 Tm (x ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (6) Tj T* ET
+BT 1 0 0 1 142.9 608 Tm (    \(F\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 588 Tm (7.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 588 Tm (x ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (7) Tj T* ET
+BT 1 0 0 1 142.9 588 Tm (    \(G\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 568 Tm (8.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 568 Tm (x ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (8) Tj T* ET
+BT 1 0 0 1 142.9 568 Tm (    \(H\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 548 Tm (9.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 548 Tm (x ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (9) Tj T* ET
+BT 1 0 0 1 142.9 548 Tm (    \(I\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 528 Tm (10.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 528 Tm (x ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (10) Tj T* ET
+BT 1 0 0 1 150.684 528 Tm (    \(J\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 502 Tm (11.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 502 Tm (y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 115.446 508.58 Tm (3) Tj T* ET
+BT 1 0 0 1 115.446 495.252 Tm (4) Tj T* ET
+n 114.046 506.2 m 123.4624 506.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 124.8624 502 Tm (x + 2) Tj T* ET
+BT 1 0 0 1 155.6064 502 Tm (    \(K\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 470 Tm (12.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 470 Tm (y ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 5 = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 138.7 476.58 Tm (3) Tj T* ET
+BT 1 0 0 1 138.7 463.252 Tm (4) Tj T* ET
+n 137.3 474.2 m 146.7164 474.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 148.1164 470 Tm (\(x + 4\)) Tj T* ET
+BT 1 0 0 1 188.1844 470 Tm (    \(L\)) Tj T* ET
+
