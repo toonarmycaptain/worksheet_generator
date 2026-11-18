@@ -175,7 +175,7 @@ def test_pages(client: Client) -> None:
             ],
         ),
         (
-            "/worksheets/input-output-tables/",
+            "/worksheets/algebra-and-functions/input-output-tables/",
             [b"/api/worksheets/input_output_tables.pdf"],
             [
                 b"title",
@@ -192,6 +192,73 @@ def test_pages(client: Client) -> None:
                 b"question_types",  # a checkbox for each type
                 b"question_types",
                 b"question_types",
+                b"multiple_choice",
+                b"answer_key",
+                b"self_check_tiles",
+                b"tile_pattern",  # a radio button for each pattern
+                b"tile_pattern",
+            ],
+        ),
+        (
+            "/worksheets/algebra-and-functions/slope-and-intercepts/",
+            [b"/api/worksheets/slope_and_intercepts.pdf"],
+            [
+                b"title",
+                b"label",
+                b"name_line",
+                b"problems",
+                b"given",  # a checkbox for each form
+                b"given",
+                b"given",
+                b"given",
+                b"given",
+                b"given",
+                b"given",
+                b"asked",  # a checkbox for each question
+                b"asked",
+                b"asked",
+                b"asked",
+                b"asked",
+                b"asked",
+                b"intercept_answers",  # a checkbox for each shape
+                b"intercept_answers",
+                b"largest_coordinate",
+                b"largest_denominator",
+                b"whole_intercepts",
+                b"number_styles",  # a checkbox for each style
+                b"number_styles",
+                b"multiple_choice",
+                b"answer_key",
+                b"self_check_tiles",
+                b"tile_pattern",  # a radio button for each pattern
+                b"tile_pattern",
+            ],
+        ),
+        (
+            "/worksheets/algebra-and-functions/writing-linear-equations/",
+            [b"/api/worksheets/writing_linear_equations.pdf"],
+            [
+                b"title",
+                b"label",
+                b"name_line",
+                b"problems",
+                b"given",  # a checkbox for each given
+                b"given",
+                b"given",
+                b"given",
+                b"given",
+                b"given",
+                b"given",
+                b"asked",  # a checkbox for each form
+                b"asked",
+                b"asked",
+                b"asked",
+                b"asked",
+                b"largest_coordinate",
+                b"largest_denominator",
+                b"whole_intercepts",
+                b"number_styles",  # a checkbox for each style
+                b"number_styles",
                 b"multiple_choice",
                 b"answer_key",
                 b"self_check_tiles",
@@ -226,7 +293,9 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
         "/worksheets/basic-operations/multiplication-models/",
         "/worksheets/place-value/",
         "/worksheets/data-and-graphs/",
-        "/worksheets/input-output-tables/",
+        "/worksheets/algebra-and-functions/input-output-tables/",
+        "/worksheets/algebra-and-functions/slope-and-intercepts/",
+        "/worksheets/algebra-and-functions/writing-linear-equations/",
         # the footer
         f"/feedback/?from={url}",
         "https://toonarmycaptain.com",
@@ -259,13 +328,23 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
             [(b"simple", b" checked", b"simple"), (b"complex", b"", b"complex")],
         ),
         (
-            "/worksheets/input-output-tables/",
+            "/worksheets/algebra-and-functions/input-output-tables/",
+            "tile_pattern",
+            [(b"simple", b" checked", b"simple"), (b"complex", b"", b"complex")],
+        ),
+        (
+            "/worksheets/algebra-and-functions/slope-and-intercepts/",
+            "tile_pattern",
+            [(b"simple", b" checked", b"simple"), (b"complex", b"", b"complex")],
+        ),
+        (
+            "/worksheets/algebra-and-functions/writing-linear-equations/",
             "tile_pattern",
             [(b"simple", b" checked", b"simple"), (b"complex", b"", b"complex")],
         ),
         # the input-output tables form's Missing table values: inputs and outputs by default
         (
-            "/worksheets/input-output-tables/",
+            "/worksheets/algebra-and-functions/input-output-tables/",
             "blanks",
             [
                 (b"inputs", b"", b"Inputs"),
@@ -442,7 +521,7 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
         ),
         # all four by default on the input-output tables form, with an All box
         (
-            "/worksheets/input-output-tables/",
+            "/worksheets/algebra-and-functions/input-output-tables/",
             b"/api/worksheets/input_output_tables.pdf",
             "operations",
             [
@@ -455,13 +534,122 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
         ),
         # every multiple-choice question type by default, with an All box for the three
         (
-            "/worksheets/input-output-tables/",
+            "/worksheets/algebra-and-functions/input-output-tables/",
             b"/api/worksheets/input_output_tables.pdf",
             "question_types",
             [
                 (b"table", b" checked", b"Choose the table that matches a rule"),
                 (b"sentence", b" checked", b"Complete a sentence about a table"),
                 (b"statement", b" checked", b"Choose the true statement about a table"),
+            ],
+            True,
+        ),
+        # every form by default, with an All box
+        (
+            "/worksheets/algebra-and-functions/slope-and-intercepts/",
+            b"/api/worksheets/slope_and_intercepts.pdf",
+            "given",
+            [
+                (b"slope_intercept", b" checked", b"Slope-intercept form (y = mx + b)"),
+                (b"standard", b" checked", b"Standard form (Ax + By = C)"),
+                (
+                    b"point_slope",
+                    b" checked",
+                    "Point-slope form (y \N{MINUS SIGN} y\N{SUBSCRIPT ONE} = "
+                    "m(x \N{MINUS SIGN} x\N{SUBSCRIPT ONE}))".encode(),
+                ),
+                (b"point_and_slope", b" checked", b"A point and the slope"),
+                (b"two_points", b" checked", b"Two points"),
+                (b"vertical", b" checked", b"Vertical lines (x = a)"),
+                (b"horizontal", b" checked", b"Horizontal lines (y = b)"),
+            ],
+            True,
+        ),
+        # every question by default, with an All box
+        (
+            "/worksheets/algebra-and-functions/slope-and-intercepts/",
+            b"/api/worksheets/slope_and_intercepts.pdf",
+            "asked",
+            [
+                (b"slope", b" checked", b"Slope"),
+                (b"rate_of_change", b" checked", b"Rate of change"),
+                (b"y_intercept", b" checked", b"y-intercept"),
+                (b"x_intercept", b" checked", b"x-intercept"),
+                (b"zero", b" checked", b"Zero"),
+                (b"slope_and_y_intercept", b" checked", b"Slope and y-intercept"),
+            ],
+            True,
+        ),
+        # numbers and ordered pairs by default
+        (
+            "/worksheets/algebra-and-functions/slope-and-intercepts/",
+            b"/api/worksheets/slope_and_intercepts.pdf",
+            "intercept_answers",
+            [
+                (b"number", b" checked", b"Numbers (2)"),
+                (b"point", b" checked", b"Ordered pairs ((0, 2))"),
+            ],
+            True,
+        ),
+        # fractions and decimals by default: two, so no All box of their own, though the form's
+        # other groups have one
+        (
+            "/worksheets/algebra-and-functions/slope-and-intercepts/",
+            b"/api/worksheets/slope_and_intercepts.pdf",
+            "number_styles",
+            [
+                (b"fraction", b" checked", b"Fractions (5/2)"),
+                (b"decimal", b" checked", b"Decimals (2.5)"),
+            ],
+            True,
+        ),
+        # every given by default, with an All box
+        (
+            "/worksheets/algebra-and-functions/writing-linear-equations/",
+            b"/api/worksheets/writing_linear_equations.pdf",
+            "given",
+            [
+                (b"slope_intercept", b" checked", b"Slope-intercept form (y = mx + b)"),
+                (b"standard", b" checked", b"Standard form (Ax + By = C)"),
+                (
+                    b"point_slope",
+                    b" checked",
+                    "Point-slope form (y \N{MINUS SIGN} y\N{SUBSCRIPT ONE} = "
+                    "m(x \N{MINUS SIGN} x\N{SUBSCRIPT ONE}))".encode(),
+                ),
+                (b"point_and_slope", b" checked", b"A point and the slope"),
+                (b"two_points", b" checked", b"Two points"),
+                (b"parallel", b" checked", b"A point and a parallel line"),
+                (b"perpendicular", b" checked", b"A point and a perpendicular line"),
+            ],
+            True,
+        ),
+        # every form by default, with an All box
+        (
+            "/worksheets/algebra-and-functions/writing-linear-equations/",
+            b"/api/worksheets/writing_linear_equations.pdf",
+            "asked",
+            [
+                (b"slope_intercept", b" checked", b"Slope-intercept form (y = mx + b)"),
+                (b"standard", b" checked", b"Standard form (Ax + By = C)"),
+                (
+                    b"point_slope",
+                    b" checked",
+                    "Point-slope form (y \N{MINUS SIGN} y\N{SUBSCRIPT ONE} = "
+                    "m(x \N{MINUS SIGN} x\N{SUBSCRIPT ONE}))".encode(),
+                ),
+                (b"vertical", b" checked", b"Vertical lines (x = a)"),
+                (b"horizontal", b" checked", b"Horizontal lines (y = b)"),
+            ],
+            True,
+        ),
+        (
+            "/worksheets/algebra-and-functions/writing-linear-equations/",
+            b"/api/worksheets/writing_linear_equations.pdf",
+            "number_styles",
+            [
+                (b"fraction", b" checked", b"Fractions (5/2)"),
+                (b"decimal", b" checked", b"Decimals (2.5)"),
             ],
             True,
         ),
@@ -520,7 +708,9 @@ def test_a_checkbox_group_sends_each_ticked_choice_s_id_and_shows_its_name(
         ("/worksheets/basic-operations/multiplication-models/", False),
         ("/worksheets/place-value/", True),
         ("/worksheets/data-and-graphs/", False),
-        ("/worksheets/input-output-tables/", False),
+        ("/worksheets/algebra-and-functions/input-output-tables/", False),
+        ("/worksheets/algebra-and-functions/slope-and-intercepts/", False),
+        ("/worksheets/algebra-and-functions/writing-linear-equations/", False),
         ("/worksheets/legacy/", False),
     ],
 )
@@ -546,7 +736,9 @@ def test_the_place_value_page_keeps_from_and_to_different(
         ("/worksheets/basic-operations/multiplication-models/", False),
         ("/worksheets/place-value/", False),
         ("/worksheets/data-and-graphs/", False),
-        ("/worksheets/input-output-tables/", True),
+        ("/worksheets/algebra-and-functions/input-output-tables/", True),
+        ("/worksheets/algebra-and-functions/slope-and-intercepts/", False),
+        ("/worksheets/algebra-and-functions/writing-linear-equations/", False),
         ("/worksheets/legacy/", False),
     ],
 )
@@ -565,6 +757,35 @@ def test_the_input_output_tables_page_swaps_fields_for_multiple_choice(
 
 
 @pytest.mark.parametrize(
+    ("url", "script"),
+    [
+        ("/worksheets/basic-operations/arithmetic/", False),
+        ("/worksheets/basic-operations/word-problems/", False),
+        ("/worksheets/basic-operations/strip-choice/", False),
+        ("/worksheets/basic-operations/base-ten-blocks/", False),
+        ("/worksheets/basic-operations/multiplication-models/", False),
+        ("/worksheets/place-value/", False),
+        ("/worksheets/data-and-graphs/", False),
+        ("/worksheets/algebra-and-functions/input-output-tables/", False),
+        ("/worksheets/algebra-and-functions/slope-and-intercepts/", True),
+        ("/worksheets/algebra-and-functions/writing-linear-equations/", False),
+        ("/worksheets/legacy/", False),
+    ],
+)
+def test_the_slope_and_intercepts_page_shows_intercepts_as_only_for_an_intercept(
+    client: Client, url: str, script: bool
+) -> None:
+    """
+    Only the slope and intercepts page includes the script that shows the Intercepts as
+    checkboxes while the y- or x-intercept is ticked, and hides them otherwise.
+
+    Whether the script works is checked manually in a browser.
+    """
+    content = client.get(url).content
+    assert (b"function showInterceptAnswers()" in content) is script
+
+
+@pytest.mark.parametrize(
     ("url", "tiles_script", "titles_script", "representation_script"),
     [
         ("/worksheets/basic-operations/arithmetic/", True, True, False),
@@ -574,7 +795,9 @@ def test_the_input_output_tables_page_swaps_fields_for_multiple_choice(
         ("/worksheets/basic-operations/multiplication-models/", False, False, False),
         ("/worksheets/place-value/", True, False, False),
         ("/worksheets/data-and-graphs/", False, False, False),
-        ("/worksheets/input-output-tables/", True, False, False),
+        ("/worksheets/algebra-and-functions/input-output-tables/", True, False, False),
+        ("/worksheets/algebra-and-functions/slope-and-intercepts/", True, False, False),
+        ("/worksheets/algebra-and-functions/writing-linear-equations/", True, False, False),
         ("/worksheets/legacy/", False, False, False),
     ],
 )
@@ -582,8 +805,9 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
     client: Client, url: str, tiles_script: bool, titles_script: bool, representation_script: bool
 ) -> None:
     """
-    The arithmetic, word problems, base-ten blocks, place-value and input-output tables pages
-    include the script that sets problems to 12 for tiles.
+    The arithmetic, word problems, base-ten blocks, place-value, input-output tables, slope and
+    intercepts, and writing linear equations pages include the script that sets problems to 12
+    for tiles.
 
     The other pages have no self-check tiles box, and so no script. Whether the script works is
     checked manually in a browser. Only the arithmetic page has the operation names that its other
@@ -631,8 +855,24 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
         ("/worksheets/place-value/", "choice-titles", None),
         ("/worksheets/data-and-graphs/", "representation-operations", None),
         ("/worksheets/data-and-graphs/", "choice-titles", None),
-        ("/worksheets/input-output-tables/", "representation-operations", None),
-        ("/worksheets/input-output-tables/", "choice-titles", None),
+        (
+            "/worksheets/algebra-and-functions/input-output-tables/",
+            "representation-operations",
+            None,
+        ),
+        ("/worksheets/algebra-and-functions/input-output-tables/", "choice-titles", None),
+        (
+            "/worksheets/algebra-and-functions/slope-and-intercepts/",
+            "representation-operations",
+            None,
+        ),
+        ("/worksheets/algebra-and-functions/slope-and-intercepts/", "choice-titles", None),
+        (
+            "/worksheets/algebra-and-functions/writing-linear-equations/",
+            "representation-operations",
+            None,
+        ),
+        ("/worksheets/algebra-and-functions/writing-linear-equations/", "choice-titles", None),
     ],
 )
 def test_the_representation_script_s_data(
@@ -641,7 +881,7 @@ def test_the_representation_script_s_data(
     """
     The word problems page has the data its representation script needs: the operations each
     representation can show, to grey out the others, and the title of a sheet choosing each
-    representation offered as multiple choice. Whether the script works is checked manually in a
+    representation offered as multiple choice. Whether the scripts work is checked manually in a
     browser.
     """
     found = re.search(
@@ -679,8 +919,16 @@ def test_the_representation_script_s_data(
             [(b"/api/worksheets/data_graphs.pdf", b" data-check-first")],
         ),
         (
-            "/worksheets/input-output-tables/",
+            "/worksheets/algebra-and-functions/input-output-tables/",
             [(b"/api/worksheets/input_output_tables.pdf", b" data-check-first")],
+        ),
+        (
+            "/worksheets/algebra-and-functions/slope-and-intercepts/",
+            [(b"/api/worksheets/slope_and_intercepts.pdf", b" data-check-first")],
+        ),
+        (
+            "/worksheets/algebra-and-functions/writing-linear-equations/",
+            [(b"/api/worksheets/writing_linear_equations.pdf", b" data-check-first")],
         ),
         (
             "/worksheets/legacy/",
@@ -786,12 +1034,42 @@ def test_only_core_forms_check_their_options_before_opening_a_tab(
             ],
         ),
         (
-            "/worksheets/input-output-tables/",
+            "/worksheets/algebra-and-functions/input-output-tables/",
             [
                 (b"title", b"Title"),
                 (b"label", b"Label"),
                 (b"name_line", b"Add Name/Date blanks"),
                 (b"problems", b"Problems"),
+                (b"multiple_choice", b"Multiple choice"),
+                (b"answer_key", b"Add an answer key page"),
+                (b"self_check_tiles", b"Self-check tile answers"),
+            ],
+        ),
+        (
+            "/worksheets/algebra-and-functions/slope-and-intercepts/",
+            [
+                (b"title", b"Title"),
+                (b"label", b"Label"),
+                (b"name_line", b"Add Name/Date blanks"),
+                (b"problems", b"Problems"),
+                (b"largest_coordinate", b"Largest number in a point"),
+                (b"largest_denominator", b"Largest denominator"),
+                (b"whole_intercepts", b"Whole-number intercepts only"),
+                (b"multiple_choice", b"Multiple choice"),
+                (b"answer_key", b"Add an answer key page"),
+                (b"self_check_tiles", b"Self-check tile answers"),
+            ],
+        ),
+        (
+            "/worksheets/algebra-and-functions/writing-linear-equations/",
+            [
+                (b"title", b"Title"),
+                (b"label", b"Label"),
+                (b"name_line", b"Add Name/Date blanks"),
+                (b"problems", b"Problems"),
+                (b"largest_coordinate", b"Largest number in a point"),
+                (b"largest_denominator", b"Largest denominator"),
+                (b"whole_intercepts", b"Whole-number intercepts only"),
                 (b"multiple_choice", b"Multiple choice"),
                 (b"answer_key", b"Add an answer key page"),
                 (b"self_check_tiles", b"Self-check tile answers"),
@@ -845,9 +1123,33 @@ def test_legacy_page(client: Client) -> None:
         "/worksheets/basic-operations/multiplication-models/",
         "/worksheets/place-value/",
         "/worksheets/data-and-graphs/",
-        "/worksheets/input-output-tables/",
+        "/worksheets/algebra-and-functions/input-output-tables/",
+        "/worksheets/algebra-and-functions/slope-and-intercepts/",
+        "/worksheets/algebra-and-functions/writing-linear-equations/",
         # the footer
         "/feedback/?from=/worksheets/legacy/",
         "https://toonarmycaptain.com",
         "https://buymeacoffee.com/toonarmycaptain",
     ]
+
+
+@pytest.mark.parametrize(
+    ("url", "location"),
+    [
+        # a group of several sheets sends its own path on to its first sheet
+        ("/worksheets/basic-operations/", "/worksheets/basic-operations/arithmetic/"),
+        (
+            "/worksheets/algebra-and-functions/",
+            "/worksheets/algebra-and-functions/input-output-tables/",
+        ),
+        # where input-output tables were before their group had a second sheet
+        (
+            "/worksheets/input-output-tables/",
+            "/worksheets/algebra-and-functions/input-output-tables/",
+        ),
+    ],
+)
+def test_group_and_old_paths_redirect(client: Client, url: str, location: str) -> None:
+    """A group's own path, and a sheet's old one, redirect to the sheet's page."""
+    response = client.get(url)
+    assert (response.status_code, response["Location"]) == (302, location)

@@ -51,6 +51,7 @@ from core.input_output_tables.data import (
     InputOutputQuestionData,
     InputOutputRuleQuestionData,
 )
+from core.line_equations.data import LineAnswer, LineQuestionData, answer_of
 from core.placevalue.data import PlaceValueQuestionData
 from core.question import FreeResponse, Question, QuestionData, multiple_choice
 from core.self_check_tiles import TileQuestion
@@ -62,6 +63,7 @@ from render.pdf.basic_operations_worksheet import (
 from render.pdf.data_displays import NumberListStyle
 from render.pdf.data_graphs_worksheet import render_data_graphs_worksheet
 from render.pdf.input_output_tables_worksheet import render_input_output_tables_worksheet
+from render.pdf.line_equations_worksheet import render_line_equations_worksheet
 from render.pdf.multiplication_models_worksheet import render_multiplication_models_worksheet
 from render.pdf.page import Header
 from render.pdf.place_value_worksheet import render_place_value_worksheet
@@ -539,6 +541,35 @@ def _input_output_question(
     if isinstance(data, InputOutputRuleQuestionData):
         return Question(data, multiple_choice((data.answer,), wrong) if wrong else FreeResponse())
     return Question(data, multiple_choice((data.answer,), wrong) if wrong else FreeResponse())
+
+
+def render_line_questions(
+    cases: Sequence[tuple[LineQuestionData, tuple[LineAnswer, ...]]],
+    answer_key: bool,
+    title: str,
+    label: str,
+    slot_of: tuple[int, ...] | None = None,
+    name_line: bool = True,
+) -> bytes:
+    """
+    Render a line sheet: slope and intercepts, or writing linear equations. Each question is
+    multiple choice among its answer and its wrong answers; with none, it is free response.
+    """
+    out = BytesIO()
+    render_line_equations_worksheet(
+        questions=[
+            Question(
+                data,
+                multiple_choice((answer_of(data),), wrong) if wrong else FreeResponse(),
+            )
+            for data, wrong in cases
+        ],
+        path=out,
+        header=Header(title=title, label=label, name_line=name_line),
+        answer_key=answer_key,
+        slot_of=slot_of,
+    )
+    return out.getvalue()
 
 
 def refused(message: str) -> dict[str, Any]:

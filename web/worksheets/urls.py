@@ -39,11 +39,26 @@ urlpatterns = [
     ),
     path("place-value/", views.sheet, {"kind": "place_value"}, name="place_value"),
     path("data-and-graphs/", views.sheet, {"kind": "data_graphs"}, name="data_graphs"),
+    path("algebra-and-functions/", RedirectView.as_view(pattern_name="input_output_tables")),
     path(
-        "input-output-tables/",
+        "algebra-and-functions/input-output-tables/",
         views.sheet,
         {"kind": "input_output_tables"},
         name="input_output_tables",
     ),
+    path(
+        "algebra-and-functions/slope-and-intercepts/",
+        views.sheet,
+        {"kind": "slope_and_intercepts"},
+        name="slope_and_intercepts",
+    ),
+    path(
+        "algebra-and-functions/writing-linear-equations/",
+        views.sheet,
+        {"kind": "writing_linear_equations"},
+        name="writing_linear_equations",
+    ),
+    # where input-output tables were before they had a group of their own
+    path("input-output-tables/", RedirectView.as_view(pattern_name="input_output_tables")),
     path("legacy/", views.legacy, name="legacy"),
 ]

@@ -2,13 +2,15 @@
 Page layout shared by every PDF worksheet.
 
 Defines the page geometry and fonts, and draws the header and footer, a sheet's instruction,
-wrapped text, a problem's number and text, and the answer key pages. Also shrinks text to fit
-its space, starts a new page when a problem won't fit, and letters multiple-choice options.
+wrapped text, stacked fractions, a problem's number and text, and the answer key pages. Also
+shrinks text to fit its space, starts a new page when a problem won't fit, and letters
+multiple-choice options.
 """
 
 import re
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, replace
+from fractions import Fraction
 from string import ascii_uppercase
 from typing import Any, BinaryIO
 
@@ -34,6 +36,8 @@ INSTRUCTION_SIZE = 12
 INSTRUCTION_LINE_HEIGHT = 16
 INSTRUCTION_GAP = 10  # extra space between the instruction and the first problem
 SMALLEST_FIT_SIZE = 6  # fit_font shrinks text too wide for its space down to this size
+FRACTION_SCALE = 0.85  # a stacked fraction's numbers, as a share of the text's size
+FRACTION_ROOM = 6  # the extra space a line with a stacked fraction needs above and below
 
 # A word with its preceding whitespace. A bracketed term, such as (3 x 10,000), is one word.
 _WORD = re.compile(r"(\s*)(\([^)]*\)|\S+)")
@@ -59,6 +63,61 @@ def draw_text(
         x += side
         pdf.drawString(x, y, piece)
         x += stringWidth(piece, FONT, size)
+
+
+def draw_fraction(pdf: Canvas, x: float, y: float, fraction: Fraction, size: float) -> float:
+    """
+    Draw ``fraction`` stacked, from ``x`` beside text on baseline ``y`` in ``FONT`` at ``size``,
+    and return the x after it. The numerator and denominator are centred over and under a bar at
+    the height of a minus sign, at ``FRACTION_SCALE`` of ``size``. The fraction is drawn as given,
+    so a sign goes in the text before it.
+    """
+    small = size * FRACTION_SCALE
+    numerator, denominator = f"{fraction.numerator:,}", f"{fraction.denominator:,}"
+    width = fraction_width(fraction, size)
+    middle = x + width / 2
+    bar = y + size * 0.3
+    gap = small * 0.2  # between the bar and each number
+    pdf.setFont(FONT, small)
+    pdf.drawCentredString(middle, bar + gap, numerator)
+    pdf.drawCentredString(middle, bar - gap - small * 0.72, denominator)  # 0.72: a digit's height
+    pdf.line(x + size * 0.1, bar, x + width - size * 0.1, bar)
+    pdf.setFont(FONT, size)
+    return x + width
+
+
+def fraction_width(fraction: Fraction, size: float) -> float:
+    """Return the width ``draw_fraction`` takes for ``fraction`` beside text at ``size``."""
+    small = size * FRACTION_SCALE
+    numbers = (f"{fraction.numerator:,}", f"{fraction.denominator:,}")
+    return max(stringWidth(number, FONT, small) for number in numbers) + size * 0.4
+
+
+def draw_pieces(
+    pdf: Canvas, x: float, y: float, pieces: Iterable[str | Fraction], size: float
+) -> float:
+    """
+    Draw ``pieces`` one after another from ``x`` on baseline ``y`` in ``FONT`` at ``size``: each
+    string as text and each fraction stacked, by ``draw_fraction``. Return the x after them.
+    """
+    pdf.setFont(FONT, size)
+    for piece in pieces:
+        if isinstance(piece, Fraction):
+            x = draw_fraction(pdf, x, y, piece, size)
+        else:
+            pdf.drawString(x, y, piece)
+            x += stringWidth(piece, FONT, size)
+    return x
+
+
+def pieces_width(pieces: Iterable[str | Fraction], size: float) -> float:
+    """Return the width ``draw_pieces`` takes for ``pieces`` at ``size``."""
+    return sum(
+        fraction_width(piece, size)
+        if isinstance(piece, Fraction)
+        else float(stringWidth(piece, FONT, size))
+        for piece in pieces
+    )
 
 
 def text_width(text: str, size: float, blank_side: float | None = None) -> float:

@@ -94,6 +94,34 @@ from core.input_output_tables.representation import (
     CHOICE_TYPE_NAMES,
     INPUT_OUTPUT_TABLES_NAME,
 )
+from core.line_equations.data import (
+    EQUATION_FORMS,
+    EQUATION_GIVENS,
+    LineFeature,
+    LineForm,
+    NumberStyle,
+    Relation,
+)
+from core.line_equations.generator import (
+    DEFAULT_LARGEST_COORDINATE,
+    DEFAULT_LARGEST_DENOMINATOR,
+    can_ask,
+    can_write,
+    count_possible_equations,
+    count_possible_lines,
+    generate_equation_questions,
+    generate_line_questions,
+)
+from core.line_equations.representation import (
+    EQUATION_GIVEN_NAMES,
+    FEATURE_NAMES,
+    NUMBER_STYLE_NAMES,
+    SLOPE_AND_INTERCEPTS_NAME,
+    WRITING_LINEAR_EQUATIONS_NAME,
+)
+from core.line_equations.representation import (
+    FORM_NAMES as LINE_FORM_NAMES,
+)
 from core.placevalue.data import PlaceValueForm
 from core.placevalue.generator import (
     DEFAULT_LARGEST_NUMBER,
@@ -115,6 +143,7 @@ from render.pdf.basic_operations_worksheet import (
 from render.pdf.data_displays import NumberListStyle
 from render.pdf.data_graphs_worksheet import render_data_graphs_worksheet
 from render.pdf.input_output_tables_worksheet import render_input_output_tables_worksheet
+from render.pdf.line_equations_worksheet import render_line_equations_worksheet
 from render.pdf.multiplication_models_worksheet import render_multiplication_models_worksheet
 from render.pdf.page import Header
 from render.pdf.place_value_worksheet import render_place_value_worksheet
@@ -207,6 +236,98 @@ ChoiceTypeChoice = Literal["table", "sentence", "statement"]  # a ChoiceType val
 CHOICE_TYPE_LABELS: dict[str, JsonValue] = {
     choice_type.value: name for choice_type, name in CHOICE_TYPE_NAMES.items()
 }
+# a LineForm value
+LineFormChoice = Literal[
+    "slope_intercept",
+    "standard",
+    "point_slope",
+    "point_and_slope",
+    "two_points",
+    "vertical",
+    "horizontal",
+]
+# Lines given as checkbox labels: each form's name, with what it looks like
+LINE_FORM_LABELS: dict[str, JsonValue] = {
+    form.value: name for form, name in LINE_FORM_NAMES.items()
+}
+LineFeatureChoice = Literal[
+    "slope", "rate_of_change", "y_intercept", "x_intercept", "zero", "slope_and_y_intercept"
+]
+# Questions ask for checkbox labels: each feature's name
+LINE_FEATURE_LABELS: dict[str, JsonValue] = {
+    feature.value: name for feature, name in FEATURE_NAMES.items()
+}
+InterceptAnswerChoice = Literal["number", "point"]
+# Intercepts as checkbox labels: each shows what the answer looks like
+INTERCEPT_ANSWER_LABELS: dict[str, JsonValue] = {
+    "number": "Numbers (2)",
+    "point": "Ordered pairs ((0, 2))",
+}
+LineNumberStyleChoice = Literal["fraction", "decimal"]  # a NumberStyle value lines are written in
+LINE_NUMBER_STYLE_LABELS: dict[str, JsonValue] = {
+    style.value: NUMBER_STYLE_NAMES[style] for style in (NumberStyle.FRACTION, NumberStyle.DECIMAL)
+}
+# a LineForm or Relation value a line's equation is written from
+EquationGivenChoice = Literal[
+    "slope_intercept",
+    "standard",
+    "point_slope",
+    "point_and_slope",
+    "two_points",
+    "parallel",
+    "perpendicular",
+]
+# Lines given as checkbox labels, on the writing equations sheet: each form's name, with what it
+# looks like, or each relation's
+EQUATION_GIVEN_LABELS: dict[str, JsonValue] = {
+    given.value: name for given, name in EQUATION_GIVEN_NAMES.items()
+}
+# a LineForm value an equation is written in
+EquationFormChoice = Literal["slope_intercept", "standard", "point_slope", "vertical", "horizontal"]
+# Write equations in checkbox labels: each form's name, with what it looks like
+EQUATION_FORM_LABELS: dict[str, JsonValue] = {
+    form.value: LINE_FORM_NAMES[form] for form in EQUATION_FORMS
+}
+SMALLEST_LARGEST_COORDINATE = 5  # STAAR's smallest grids run to 4, for graphing a line
+LARGEST_LARGEST_COORDINATE = 60  # the generator lists each slope's y-intercepts, so stays quick
+LARGEST_LARGEST_DENOMINATOR = 20
+# The options both line sheets share
+LargestCoordinate = Annotated[
+    int,
+    Field(
+        ge=SMALLEST_LARGEST_COORDINATE,
+        le=LARGEST_LARGEST_COORDINATE,
+        title="Largest number in a point",
+        description="Every point shown, and where each line crosses the axes, uses numbers from "
+        "minus to plus this.",
+    ),
+]
+LargestDenominator = Annotated[
+    int,
+    Field(
+        ge=1,
+        le=LARGEST_LARGEST_DENOMINATOR,
+        title="Largest denominator",
+        description="Of the slopes and intercepts: 1 makes them all whole numbers.",
+    ),
+]
+WholeIntercepts = Annotated[bool, Field(title="Whole-number intercepts only")]
+LineNumberStyles = Annotated[
+    list[LineNumberStyleChoice],
+    Field(
+        min_length=1,
+        title="Numbers that aren't whole",
+        json_schema_extra={"labels": LINE_NUMBER_STYLE_LABELS},
+    ),
+]
+LineMultipleChoice = Annotated[
+    bool,
+    Field(
+        title="Multiple choice",
+        description=f"Lists {WRONG_ANSWER_COUNT + 1} choices under each line instead of an "
+        "answer line: the wrong ones are common mistakes, such as the reciprocal of the slope.",
+    ),
+]
 AnswerKey = Annotated[bool, Field(title="Add an answer key page")]
 NameDateLine = Annotated[bool, Field(title="Add Name/Date blanks")]
 SelfCheckTiles = Annotated[
@@ -271,17 +392,23 @@ def _two_steps_can_be_made(
 
 
 def _too_many_problems(
-    possible: int, repeats: str, limits: str, raises: Mapping[str, int | None]
+    possible: int,
+    repeats: str,
+    limits: str,
+    raises: Mapping[str, int | None],
+    unticks: Sequence[str] = (),
 ) -> ValueError:
     """
     Return the error for requesting more problems than the limits allow, with suggested fixes.
 
     ``possible`` is how many problems ``limits`` allow without ``repeats``. ``raises`` maps each
     limit, named as in the message, to the smallest value that would allow the requested
-    problems, or to ``None`` when raising that limit alone cannot. When no problem is possible,
-    lowering the number of problems can't help, so it isn't suggested.
+    problems, or to ``None`` when raising that limit alone cannot. ``unticks`` names, by their
+    labels, the ticked choices whose unticking together would allow them. When no problem is
+    possible, lowering the number of problems can't help, so it isn't suggested.
     """
     fixes = [f"lower problems to {possible}"] if possible else []
+    fixes += [f"untick {_listed(unticks)}"] if unticks else []
     fixes += [
         f"raise the {limit} to {value:,}" for limit, value in raises.items() if value is not None
     ]
@@ -293,6 +420,29 @@ def _too_many_problems(
         advice = ", or ".join(fixes)
         message += f" {advice[0].upper()}{advice[1:]}."
     return ValueError(message)
+
+
+def _listed(names: Sequence[str]) -> str:
+    """Return ``names`` as a list in a sentence: "A", "A and B", "A, B and C"."""
+    return " and ".join(filter(None, (", ".join(names[:-1]), names[-1])))
+
+
+def _boxes_to_untick[T](
+    ticked: Sequence[T],
+    askable: Callable[[Sequence[T]], bool],
+    count: Callable[[Sequence[T]], int],
+    problems: int,
+) -> list[T]:
+    """
+    Return the ``ticked`` choices that on their own allow fewer than ``problems``, when unticking
+    them all leaves choices that ``askable`` says can make a question and that ``count`` says
+    allow ``problems``. Otherwise return none, since unticking them wouldn't help.
+    """
+    holding_back = [choice for choice in ticked if askable([choice]) and count([choice]) < problems]
+    rest = [choice for choice in ticked if choice not in holding_back]
+    if holding_back and askable(rest) and count(rest) >= problems:
+        return holding_back
+    return []
 
 
 class Options(Schema):
@@ -953,6 +1103,263 @@ class InputOutputTableOptions(HeaderOptions):
         return self
 
 
+class SlopeAndInterceptsOptions(HeaderOptions):
+    """
+    Options for the slope and intercepts kind, built on the core. There is no seed: every sheet is
+    new.
+    """
+
+    title: Title = SLOPE_AND_INTERCEPTS_NAME
+    problems: Problems = 6
+    # Each problem takes the next pair of a form and a question from a shuffled deck of those
+    # that can be asked.
+    # Every form starts ticked, x = a and y = b too, which makes them about 1 question in 5.
+    given: list[LineFormChoice] = Field(
+        [
+            "slope_intercept",
+            "standard",
+            "point_slope",
+            "point_and_slope",
+            "two_points",
+            "vertical",
+            "horizontal",
+        ],
+        min_length=1,
+        title="Lines given as",
+        json_schema_extra={"labels": LINE_FORM_LABELS},
+    )
+    asked: list[LineFeatureChoice] = Field(
+        ["slope", "rate_of_change", "y_intercept", "x_intercept", "zero", "slope_and_y_intercept"],
+        min_length=1,
+        title="Questions ask for",
+        json_schema_extra={"labels": LINE_FEATURE_LABELS},
+    )
+    # How an x- or y-intercept is answered, each question's drawn from those ticked. The page
+    # shows these only while an intercept is ticked (see builder.html).
+    intercept_answers: list[InterceptAnswerChoice] = Field(
+        ["number", "point"],
+        min_length=1,
+        title="Intercepts as",
+        json_schema_extra={"labels": INTERCEPT_ANSWER_LABELS},
+    )
+    largest_coordinate: LargestCoordinate = DEFAULT_LARGEST_COORDINATE
+    largest_denominator: LargestDenominator = DEFAULT_LARGEST_DENOMINATOR
+    whole_intercepts: WholeIntercepts = False
+    number_styles: LineNumberStyles = Field(["fraction", "decimal"])
+    answer_key: AnswerKey = False
+    multiple_choice: LineMultipleChoice = False
+    # Tiles replace the answer lines with an answer bank page, every answer different.
+    self_check_tiles: SelfCheckTiles = False
+    tile_pattern: TilePattern = "simple"
+
+    @model_validator(mode="after")
+    def _tiles_are_available(self) -> Self:
+        # Not built for multiple choice: each choice's letter would need coding as a number. The
+        # page hides multiple choice while tiles are ticked, and greys out the tiles while it is.
+        # Runs first, so a request with both is told so before anything else.
+        if self.self_check_tiles and self.multiple_choice:
+            raise ValueError("self_check_tiles: not available with multiple choice")
+        return self
+
+    @model_validator(mode="after")
+    def _a_question_can_be_made(self) -> Self:
+        given, asked = _line_forms(self), _line_features(self)
+        if not any(can_ask(form, feature) for form in given for feature in asked):
+            raise ValueError(
+                "asked: none of these fits the lines given. A vertical line has only a slope and "
+                "an x-intercept, a horizontal line has no x-intercept or zero, and a point and "
+                "the slope give the slope away"
+            )
+        if self.self_check_tiles:
+            _at_most_one_question_per_tile(self.problems)
+        # Each form shows the lines its options allow, and no line repeats on a sheet; with
+        # tiles, no answer does.
+        repeats = "repeated answers" if self.self_check_tiles else "repeats"
+        _enough_lines(self, repeats, self._count_lines, self._unticks)
+        return self
+
+    def _count_lines(
+        self,
+        largest_coordinate: int,
+        largest_denominator: int,
+        forms: Sequence[LineForm] | None = None,
+    ) -> int:
+        """
+        Return how many problems these options allow without repeating a line, up to the number
+        asked, or allow with ``forms`` given instead of the ticked ones.
+        """
+        return count_possible_lines(
+            _line_forms(self) if forms is None else forms,
+            _line_features(self),
+            largest_coordinate=largest_coordinate,
+            largest_denominator=largest_denominator,
+            whole_intercepts=self.whole_intercepts,
+            number_styles=[NumberStyle(style) for style in self.number_styles],
+            distinct_answers=self.self_check_tiles,
+            limit=self.problems,
+        )
+
+    def _unticks(self) -> list[str]:
+        """
+        Return the labels of the ticked forms, such as x = a with few lines at a small largest
+        number, whose unticking would allow the problems, as ``_boxes_to_untick`` finds them.
+        """
+        features = _line_features(self)
+        forms = _boxes_to_untick(
+            _line_forms(self),
+            lambda given: any(can_ask(form, feature) for form in given for feature in features),
+            lambda given: self._count_lines(
+                self.largest_coordinate, self.largest_denominator, given
+            ),
+            self.problems,
+        )
+        return [LINE_FORM_NAMES[form] for form in forms]
+
+
+class WritingLinearEquationsOptions(HeaderOptions):
+    """
+    Options for the writing linear equations kind, built on the core. There is no seed: every
+    sheet is new.
+    """
+
+    title: Title = WRITING_LINEAR_EQUATIONS_NAME
+    problems: Problems = 6
+    # Each problem takes the next pair of a given and a form from a shuffled deck of those that
+    # can be asked.
+    given: list[EquationGivenChoice] = Field(
+        [
+            "slope_intercept",
+            "standard",
+            "point_slope",
+            "point_and_slope",
+            "two_points",
+            "parallel",
+            "perpendicular",
+        ],
+        min_length=1,
+        title="Lines given as",
+        json_schema_extra={"labels": EQUATION_GIVEN_LABELS},
+    )
+    # Every form starts ticked, x = a and y = b too, which makes them about 1 question in 3: each
+    # is asked of two points, a point and slope, and both relations.
+    asked: list[EquationFormChoice] = Field(
+        ["slope_intercept", "standard", "point_slope", "vertical", "horizontal"],
+        min_length=1,
+        title="Write equations in",
+        json_schema_extra={"labels": EQUATION_FORM_LABELS},
+    )
+    largest_coordinate: LargestCoordinate = DEFAULT_LARGEST_COORDINATE
+    largest_denominator: LargestDenominator = DEFAULT_LARGEST_DENOMINATOR
+    whole_intercepts: WholeIntercepts = False
+    number_styles: LineNumberStyles = Field(["fraction", "decimal"])
+    answer_key: AnswerKey = False
+    multiple_choice: LineMultipleChoice = False
+    # Tiles replace the answer lines with an answer bank page. No line repeats, so no answer
+    # does.
+    self_check_tiles: SelfCheckTiles = False
+    tile_pattern: TilePattern = "simple"
+
+    @model_validator(mode="after")
+    def _tiles_are_available(self) -> Self:
+        # Not built for multiple choice: each choice's letter would need coding as a number. The
+        # page hides multiple choice while tiles are ticked, and greys out the tiles while it is.
+        # Runs first, so a request with both is told so before anything else.
+        if self.self_check_tiles and self.multiple_choice:
+            raise ValueError("self_check_tiles: not available with multiple choice")
+        return self
+
+    @model_validator(mode="after")
+    def _a_question_can_be_made(self) -> Self:
+        givens, forms = _equation_givens(self), _equation_forms(self)
+        if not any(can_write(given, form) for given in givens for form in forms):
+            raise ValueError(
+                "asked: none of these can be written from the lines given. An equation isn't "
+                "rewritten in its own form, and point-slope form, x = a and y = b need a point "
+                "given"
+            )
+        if self.self_check_tiles:
+            _at_most_one_question_per_tile(self.problems)
+        _enough_lines(self, "repeats", self._count_lines, self._unticks)
+        return self
+
+    def _count_lines(
+        self,
+        largest_coordinate: int,
+        largest_denominator: int,
+        givens: Sequence[LineForm | Relation] | None = None,
+        forms: Sequence[LineForm] | None = None,
+    ) -> int:
+        """
+        Return how many problems these options allow without repeating a line, up to the number
+        asked, or allow with ``givens`` or ``forms`` instead of the ticked ones.
+        """
+        return count_possible_equations(
+            _equation_givens(self) if givens is None else givens,
+            _equation_forms(self) if forms is None else forms,
+            largest_coordinate=largest_coordinate,
+            largest_denominator=largest_denominator,
+            whole_intercepts=self.whole_intercepts,
+            number_styles=[NumberStyle(style) for style in self.number_styles],
+            limit=self.problems,
+        )
+
+    def _unticks(self) -> list[str]:
+        """
+        Return the labels of the ticked forms, such as x = a and y = b with few lines at a small
+        largest number, or failing those, of the ticked givens, whose unticking would allow the
+        problems, as ``_boxes_to_untick`` finds them.
+        """
+        givens, forms = _equation_givens(self), _equation_forms(self)
+        numbers = self.largest_coordinate, self.largest_denominator
+        written = _boxes_to_untick(
+            forms,
+            lambda asked: any(can_write(given, form) for given in givens for form in asked),
+            lambda asked: self._count_lines(*numbers, forms=asked),
+            self.problems,
+        )
+        if written:
+            return [LINE_FORM_NAMES[form] for form in written]
+        shown = _boxes_to_untick(
+            givens,
+            lambda given: any(can_write(each, form) for each in given for form in forms),
+            lambda given: self._count_lines(*numbers, givens=given),
+            self.problems,
+        )
+        return [EQUATION_GIVEN_NAMES[given] for given in shown]
+
+
+def _enough_lines(
+    options: SlopeAndInterceptsOptions | WritingLinearEquationsOptions,
+    repeats: str,
+    count: Callable[[int, int], int],
+    unticks: Callable[[], Sequence[str]],
+) -> None:
+    """
+    Raise ``_too_many_problems`` if the line sheet ``options`` ask for more problems than
+    ``count`` allows without ``repeats`` at their largest number in a point and largest
+    denominator. It suggests the boxes to untick that ``unticks`` names, and the smallest raise
+    of each number that would allow the problems.
+    """
+    possible = count(options.largest_coordinate, options.largest_denominator)
+    if options.problems <= possible:
+        return
+    raises = {
+        "largest number in a point": _smallest_raise(
+            lambda value: count(value, options.largest_denominator),
+            options.problems,
+            options.largest_coordinate,
+            LARGEST_LARGEST_COORDINATE,
+        ),
+        "largest denominator": _smallest_raise(
+            lambda value: count(options.largest_coordinate, value),
+            options.problems,
+            options.largest_denominator,
+            LARGEST_LARGEST_DENOMINATOR,
+        ),
+    }
+    raise _too_many_problems(possible, repeats, "choice of lines and numbers", raises, unticks())
+
+
 class BlockOptions(Options):
     title: Title = "Base-Ten Block Word Problems"
     label: Label = "Sheet A"
@@ -1129,7 +1536,9 @@ def _tile_slots(
     | PlaceValueOptions
     | WordProblemOptions
     | BaseTenBlocksOptions
-    | InputOutputTableOptions,
+    | InputOutputTableOptions
+    | SlopeAndInterceptsOptions
+    | WritingLinearEquationsOptions,
 ) -> Sequence[int]:
     """Return the slot of each question's answer, for the requested tile pattern."""
     make_slots = conventional_slot_of if options.tile_pattern == "simple" else random_slot_of
@@ -1262,6 +1671,66 @@ def _input_output_tables(options: InputOutputTableOptions, out: BinaryIO) -> Non
         answer_key=options.answer_key,
         slot_of=_tile_slots(options) if options.self_check_tiles else None,
     )
+
+
+def _slope_and_intercepts(options: SlopeAndInterceptsOptions, out: BinaryIO) -> None:
+    render_line_equations_worksheet(
+        questions=generate_line_questions(
+            options.problems,
+            _line_forms(options),
+            _line_features(options),
+            largest_coordinate=options.largest_coordinate,
+            largest_denominator=options.largest_denominator,
+            whole_intercepts=options.whole_intercepts,
+            number_styles=[NumberStyle(style) for style in options.number_styles],
+            as_point_choices=[answer == "point" for answer in options.intercept_answers],
+            wrong_answer_count=WRONG_ANSWER_COUNT if options.multiple_choice else 0,
+            distinct_answers=options.self_check_tiles,
+        ),
+        path=out,
+        header=options.header(),
+        answer_key=options.answer_key,
+        slot_of=_tile_slots(options) if options.self_check_tiles else None,
+    )
+
+
+def _line_forms(options: SlopeAndInterceptsOptions) -> list[LineForm]:
+    """Return the ticked forms, each once, in the order of ``LineForm``."""
+    return [form for form in LineForm if form.value in options.given]
+
+
+def _line_features(options: SlopeAndInterceptsOptions) -> list[LineFeature]:
+    """Return the ticked features, each once, in the order of ``LineFeature``."""
+    return [feature for feature in LineFeature if feature.value in options.asked]
+
+
+def _writing_linear_equations(options: WritingLinearEquationsOptions, out: BinaryIO) -> None:
+    render_line_equations_worksheet(
+        questions=generate_equation_questions(
+            options.problems,
+            _equation_givens(options),
+            _equation_forms(options),
+            largest_coordinate=options.largest_coordinate,
+            largest_denominator=options.largest_denominator,
+            whole_intercepts=options.whole_intercepts,
+            number_styles=[NumberStyle(style) for style in options.number_styles],
+            wrong_answer_count=WRONG_ANSWER_COUNT if options.multiple_choice else 0,
+        ),
+        path=out,
+        header=options.header(),
+        answer_key=options.answer_key,
+        slot_of=_tile_slots(options) if options.self_check_tiles else None,
+    )
+
+
+def _equation_givens(options: WritingLinearEquationsOptions) -> list[LineForm | Relation]:
+    """Return the ticked givens, each once, in the order of ``EQUATION_GIVENS``."""
+    return [given for given in EQUATION_GIVENS if given.value in options.given]
+
+
+def _equation_forms(options: WritingLinearEquationsOptions) -> list[LineForm]:
+    """Return the ticked forms, each once, in the order of ``EQUATION_FORMS``."""
+    return [form for form in EQUATION_FORMS if form.value in options.asked]
 
 
 def _block(options: BlockOptions, seed: int, out: BinaryIO) -> None:
@@ -1446,4 +1915,6 @@ CORE_KINDS: dict[str, CoreKind[Any]] = {
     "multiplication_models": CoreKind(MultiplicationModelsOptions, _multiplication_models),
     "data_graphs": CoreKind(DataGraphsOptions, _data_graphs),
     "input_output_tables": CoreKind(InputOutputTableOptions, _input_output_tables),
+    "slope_and_intercepts": CoreKind(SlopeAndInterceptsOptions, _slope_and_intercepts),
+    "writing_linear_equations": CoreKind(WritingLinearEquationsOptions, _writing_linear_equations),
 }
