@@ -3,6 +3,8 @@ Tests for the wrong answers to questions about a line: STAAR's mistakes first, m
 set of four with the answer, then the next mistake or nearby numbers where one repeats.
 """
 
+from collections.abc import Iterator
+from dataclasses import replace
 from fractions import Fraction
 
 import pytest
@@ -16,11 +18,25 @@ from core.line_equations.data import (
     LineQuestionData,
     NumberStyle,
     Relation,
+    Stated,
+    Statement,
 )
-from core.line_equations.wrong_answers import wrong_answers
+from core.line_equations.wrong_answers import mistake_sets, wrong_answers, wrong_lines
 
 SLOPE, RATE_OF_CHANGE, Y_INTERCEPT, X_INTERCEPT, ZERO, SLOPE_AND_Y_INTERCEPT = LineFeature
-SLOPE_INTERCEPT, STANDARD, POINT_SLOPE, POINT_AND_SLOPE, TWO_POINTS, VERTICAL, HORIZONTAL = LineForm
+(
+    SLOPE_INTERCEPT,
+    STANDARD,
+    POINT_SLOPE,
+    POINT_AND_SLOPE,
+    TWO_POINTS,
+    VERTICAL,
+    HORIZONTAL,
+    TABLE,
+    GRAPH,
+    SLOPE_AND_INTERCEPT,
+    INTERCEPTS,
+) = LineForm
 FRACTION, DECIMAL, MIXED_NUMBER = NumberStyle
 PARALLEL, PERPENDICULAR = Relation
 
@@ -231,12 +247,12 @@ PARALLEL, PERPENDICULAR = Relation
                 Equation(Line(7, -4, -28), SLOPE_INTERCEPT),
             ),
         ),
-        # as A.2 2017 Q36, y = 7 through (3, 7): the point's other number, x = and y = confused
+        # as A.2 2017 Q36, y = 7 through (3, 7): x = and y = confused, the point's other number
         (
             LineQuestionData(Line(0, 1, 7), POINT_AND_SLOPE, HORIZONTAL, ((3, 7),)),
             (
-                Equation(Line(0, 1, 3), HORIZONTAL),
                 Equation(Line(1, 0, 7), VERTICAL),
+                Equation(Line(0, 1, 3), HORIZONTAL),
                 Equation(Line(1, 0, 3), VERTICAL),
             ),
         ),
@@ -254,3 +270,185 @@ PARALLEL, PERPENDICULAR = Relation
 def test_wrong_answers(data: LineQuestionData, expected: tuple[LineAnswer, ...]) -> None:
     """Three different wrong answers, none the answer, in the order of the mistakes."""
     assert wrong_answers(data, 3) == expected
+
+
+# y = 3x + 1 in a table stepping by 2 from x = 1: slope 3, y-intercept 1, first row (1, 4)
+EVEN_TABLE = LineQuestionData(Line(3, -1, -1), TABLE, SLOPE, ((1, 4),), table_xs=(1, 3, 5, 7))
+
+
+@pytest.mark.parametrize(
+    ("data", "mistakes", "expected"),
+    [
+        # the commonest mistakes: the reciprocal, the sign, both
+        (EVEN_TABLE, 0, (Fraction(1, 3), Fraction(-3), Fraction(-1, 3))),
+        # the change in y per row, 6, as the slope, and the signs (8.5 2024 Q34 C)
+        (EVEN_TABLE, 1, (Fraction(-3), Fraction(6), Fraction(-6))),
+        # the first row's y, 4, as the y-intercept (8.5 2026 Q4 A)
+        (replace(EVEN_TABLE, asked=Y_INTERCEPT), 1, (Fraction(-1), Fraction(4), Fraction(-4))),
+        (
+            replace(EVEN_TABLE, asked=Y_INTERCEPT, as_point=True),
+            1,
+            ((Fraction(0), Fraction(-1)), (Fraction(0), Fraction(4)), (Fraction(0), Fraction(-4))),
+        ),
+        # an equation: each of the slope and the change per row with each of b and y₁ + m·x₁
+        (
+            replace(EVEN_TABLE, asked=SLOPE_INTERCEPT),
+            1,
+            (
+                Equation(Line(3, -1, -7), SLOPE_INTERCEPT),
+                Equation(Line(6, -1, -1), SLOPE_INTERCEPT),
+                Equation(Line(6, -1, -7), SLOPE_INTERCEPT),
+            ),
+        ),
+    ],
+)
+def test_second_set_of_mistakes(
+    data: LineQuestionData, mistakes: int, expected: tuple[LineAnswer, ...]
+) -> None:
+    """A table's second set takes a row's change as the slope, or its first y as b."""
+    assert wrong_answers(data, 3, mistakes) == expected
+
+
+@pytest.mark.parametrize(
+    ("data", "sets"),
+    [
+        (EVEN_TABLE, 2),
+        (replace(EVEN_TABLE, asked=SLOPE_INTERCEPT), 2),
+        (replace(EVEN_TABLE, asked=Y_INTERCEPT), 2),
+        # x unevenly spaced: a row's change isn't one number
+        (replace(EVEN_TABLE, table_xs=(1, 2, 5, 7)), 1),
+        # the first row at x = 0 shows the y-intercept
+        (replace(EVEN_TABLE, asked=Y_INTERCEPT, table_xs=(0, 2, 4)), 1),
+        (replace(EVEN_TABLE, asked=X_INTERCEPT), 1),
+        # a horizontal line in a table
+        (LineQuestionData(Line(0, 1, 3), TABLE, SLOPE, ((1, 3),), table_xs=(1, 3, 5)), 1),
+        (LineQuestionData(Line(3, -1, -1), TWO_POINTS, SLOPE, ((1, 4), (3, 10))), 1),
+        # graphs and tables to choose: STAAR's own wrong graphs, or the writing sheet's mistakes
+        (LineQuestionData(Line(2, -3, -12), SLOPE_AND_INTERCEPT, GRAPH, chosen=True), 2),
+        (LineQuestionData(Line(1, 0, -4), VERTICAL, GRAPH, chosen=True), 1),
+        (LineQuestionData(Line(0, 2, 5), HORIZONTAL, TABLE, chosen=True), 1),
+    ],
+)
+def test_mistake_sets(data: LineQuestionData, sets: int) -> None:
+    """Two balanced sets where STAAR has two ways to go wrong, one otherwise."""
+    assert mistake_sets(data) == sets
+
+
+@pytest.mark.parametrize(
+    ("data", "expected"),
+    [
+        # as A.2 2018 Q32, x = -4 through (-4, 9): each of x = -4 and y = -4, x = and y =
+        # confused, with each of undefined and 0
+        (
+            LineQuestionData(
+                Line(1, 0, -4), TWO_POINTS, VERTICAL, ((-4, 9), (-4, 5)), statement=Statement.SLOPE
+            ),
+            (
+                Stated(Equation(Line(1, 0, -4), VERTICAL), Fraction(0)),
+                Stated(Equation(Line(0, 1, -4), HORIZONTAL), None),
+                Stated(Equation(Line(0, 1, -4), HORIZONTAL), Fraction(0)),
+            ),
+        ),
+        # as A.2 2026 Q14, y = 7 through (3, 7): with parallel and perpendicular to the x-axis
+        (
+            LineQuestionData(
+                Line(0, 1, 7), POINT_AND_SLOPE, HORIZONTAL, ((3, 7),), statement=Statement.X_AXIS
+            ),
+            (
+                Stated(Equation(Line(0, 1, 7), HORIZONTAL), PERPENDICULAR),
+                Stated(Equation(Line(1, 0, 7), VERTICAL), PARALLEL),
+                Stated(Equation(Line(1, 0, 7), VERTICAL), PERPENDICULAR),
+            ),
+        ),
+    ],
+)
+def test_statement_wrong_answers(data: LineQuestionData, expected: tuple[LineAnswer, ...]) -> None:
+    """Each of two equations with each of two slopes or directions, balanced with the answer."""
+    assert wrong_answers(data, 3) == expected
+
+
+def first_wrong_lines(data: LineQuestionData, mistakes: int) -> tuple[Line, ...]:
+    """Return the first three lines ``wrong_lines`` yields that differ from the answer's."""
+    lines: list[Line] = []
+    candidates: Iterator[Line] = wrong_lines(data, mistakes)
+    while len(lines) < 3:
+        line = next(candidates)
+        if line != data.answer and line not in lines:
+            lines.append(line)
+    return tuple(lines)
+
+
+@pytest.mark.parametrize(
+    ("data", "mistakes", "expected"),
+    [
+        # as A.3 2021 Q41, crossing at -1 and 5: at 1 and -5, at 5 and -1, at -5 and 1
+        (
+            LineQuestionData(Line(5, -1, -5), INTERCEPTS, GRAPH, chosen=True),
+            0,
+            (Line(5, -1, 5), Line(1, -5, 5), Line(1, -5, -5)),
+        ),
+        # as A.3 2025 Q35, y = 2/3x + 4: slope -2/3 through (0, 4), slopes 2/3 and -2/3 through
+        # (4, 0)
+        (
+            LineQuestionData(Line(2, -3, -12), SLOPE_AND_INTERCEPT, GRAPH, chosen=True),
+            0,
+            (Line(2, 3, 12), Line(2, -3, 8), Line(2, 3, 8)),
+        ),
+        # as A.3 2022 Q32, y = -4(x + 3) - 2: slope 4 through (-3, -2), slopes -4 and 4 through
+        # (-3, 2)
+        (
+            LineQuestionData(Line(4, 1, -14), POINT_SLOPE, GRAPH, ((-3, -2),), chosen=True),
+            0,
+            (Line(4, -1, -10), Line(4, 1, -10), Line(4, -1, -14)),
+        ),
+        # as A.3 2019 Q7, 6x - 5y = 15, slope 6/5 and y-intercept -3: the signs of each
+        (
+            LineQuestionData(Line(6, -5, 15), STANDARD, GRAPH, chosen=True),
+            0,
+            (Line(6, 5, -15), Line(6, -5, -15), Line(6, 5, 15)),
+        ),
+        # x = -4: y = -4, x = 4, y = 4
+        (
+            LineQuestionData(Line(1, 0, -4), VERTICAL, GRAPH, chosen=True),
+            0,
+            (Line(0, 1, -4), Line(1, 0, 4), Line(0, 1, 4)),
+        ),
+        # y = 2.5: x = 2.5, y = -2.5, x = -2.5
+        (
+            LineQuestionData(Line(0, 2, 5), HORIZONTAL, TABLE, chosen=True),
+            0,
+            (Line(2, 0, 5), Line(0, 2, -5), Line(2, 0, -5)),
+        ),
+        # the writing sheet's mistakes, y = 2x - 3: slopes 2 and 1/2 with y-intercepts -3 and 3
+        (
+            LineQuestionData(Line(2, -1, 3), SLOPE_INTERCEPT, TABLE, chosen=True),
+            1,
+            (Line(2, -1, -3), Line(1, -2, 6), Line(1, -2, -6)),
+        ),
+    ],
+)
+def test_wrong_lines(data: LineQuestionData, mistakes: int, expected: tuple[Line, ...]) -> None:
+    """STAAR's wrong graphs use the answer's numbers, signs flipped or on the other axis."""
+    assert first_wrong_lines(data, mistakes) == expected
+
+
+@pytest.mark.parametrize(
+    ("data", "mistakes", "message"),
+    [
+        (
+            LineQuestionData(Line(2, -3, -12), SLOPE_AND_INTERCEPT, GRAPH, chosen=True),
+            0,
+            "A graph or table to choose takes its wrong lines from wrong_lines.",
+        ),
+        (
+            LineQuestionData(Line(3, 4, 8), STANDARD, SLOPE),
+            1,
+            "This question has no set of mistakes numbered 1.",
+        ),
+    ],
+)
+def test_wrong_answers_errors(data: LineQuestionData, mistakes: int, message: str) -> None:
+    """Graphs and tables are chosen through wrong_lines; a missing set is refused."""
+    with pytest.raises(ValueError) as error:
+        wrong_answers(data, 3, mistakes)
+    assert str(error.value) == message

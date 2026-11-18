@@ -59,6 +59,16 @@ def line_from(a: Fraction, b: Fraction, c: Fraction) -> Line:
     return Line(*(value // divisor for value in whole))
 
 
+def choice_row(line: Line, x: int) -> tuple[Fraction, Fraction]:
+    """
+    Return the row at ``x`` of a table of ``line`` to choose: (x, y) on the line, or for a
+    vertical line x = c, which a wrong table can be, (c, x), with x and y exchanged.
+    """
+    if line.b == 0:
+        return (Fraction(line.c, line.a), Fraction(x))
+    return (Fraction(x), Fraction(line.c - line.a * x, line.b))
+
+
 X_AXIS = Line(0, 1, 0)  # y = 0
 Y_AXIS = Line(1, 0, 0)  # x = 0
 
@@ -76,6 +86,22 @@ class LineForm(StrEnum):
     TWO_POINTS = "two_points"  # through (-4, 5) and (4, -1)
     VERTICAL = "vertical"  # x = -4
     HORIZONTAL = "horizontal"  # y = 2.5
+    TABLE = "table"  # x: -4, 1, 3, 8 and y: 5, 1.5, 0, -3.5
+    GRAPH = "graph"  # drawn on a coordinate grid through two marked points
+    SLOPE_AND_INTERCEPT = "slope_and_intercept"  # slope -2/3, y-intercept 2
+    INTERCEPTS = "intercepts"  # x-intercept 3, y-intercept 2
+
+
+@dataclass(frozen=True)
+class Grid:
+    """
+    A coordinate grid with one square per ``step`` units both ways: x from -``largest_x`` to
+    ``largest_x`` and y from -``largest_y`` to ``largest_y``, each a multiple of ``step``.
+    """
+
+    largest_x: int
+    largest_y: int
+    step: int
 
 
 class LineFeature(StrEnum):
@@ -104,6 +130,16 @@ class Relation(StrEnum):
     PERPENDICULAR = "perpendicular"
 
 
+class Statement(StrEnum):
+    """
+    What a statement answer says about a vertical or horizontal line besides its equation, as
+    STAAR's A.2(G) items ask it. Values are stable identifiers for the API and storage.
+    """
+
+    SLOPE = "slope"  # The equation of the line is x = -4, and the slope is undefined.
+    X_AXIS = "x_axis"  # The equation of the line is y = 3, and the line is parallel to the x-axis.
+
+
 class NumberStyle(StrEnum):
     """
     How a question writes its numbers that aren't whole. Values are stable identifiers for the
@@ -115,15 +151,23 @@ class NumberStyle(StrEnum):
     MIXED_NUMBER = "mixed_number"  # 2 1/2
 
 
-# What a line's equation is written from (TEKS 8.5(I), A.2(B), (E), (F) and (G)): an equation in
-# another form, a point and the slope, two points, or a parallel or perpendicular line and a
-# point; and the forms it's written in. x = a and y = b are written, never given.
+# What a line is shown as when a feature of it is asked: every form but the slope and y-intercept
+# and the intercepts, which graphing lines alone gives
+FEATURE_GIVENS = tuple(
+    form for form in LineForm if form not in (LineForm.SLOPE_AND_INTERCEPT, LineForm.INTERCEPTS)
+)
+# What a line's equation is written from (TEKS 8.5(I), A.2(B), (C), (E), (F) and (G)): an
+# equation in another form, a point and the slope, two points, a table, a graph, or a parallel or
+# perpendicular line and a point; and the forms it's written in. x = a and y = b are written,
+# never given.
 EQUATION_GIVENS: tuple[LineForm | Relation, ...] = (
     LineForm.SLOPE_INTERCEPT,
     LineForm.STANDARD,
     LineForm.POINT_SLOPE,
     LineForm.POINT_AND_SLOPE,
     LineForm.TWO_POINTS,
+    LineForm.TABLE,
+    LineForm.GRAPH,
     Relation.PARALLEL,
     Relation.PERPENDICULAR,
 )
@@ -134,6 +178,22 @@ EQUATION_FORMS = (
     LineForm.VERTICAL,
     LineForm.HORIZONTAL,
 )
+# What a line is graphed from (TEKS 8.5(I), A.3(C), A.2(G)): an equation, a point and slope, two
+# points, the slope and y-intercept, or the intercepts; and what a table to complete is made
+# from: an equation or a graph. A graph and a table are what is asked.
+GRAPHING_GIVENS = (
+    LineForm.SLOPE_INTERCEPT,
+    LineForm.STANDARD,
+    LineForm.POINT_SLOPE,
+    LineForm.SLOPE_AND_INTERCEPT,
+    LineForm.INTERCEPTS,
+    LineForm.POINT_AND_SLOPE,
+    LineForm.TWO_POINTS,
+    LineForm.VERTICAL,
+    LineForm.HORIZONTAL,
+    LineForm.GRAPH,
+)
+GRAPHING_ASKED = (LineForm.GRAPH, LineForm.TABLE)
 
 
 def feature_value(line: Line, feature: LineFeature) -> Fraction | None:
@@ -164,12 +224,33 @@ class LineQuestionData(QuestionData[Line]):
 
     The answer is the line itself, as in place value: every form shows the same line, and what
     is asked decides what the student writes. ``points`` holds the points the given form shows:
-    one for point-slope form and a point and slope, two for two points, none otherwise.
+    one for point-slope form and a point and slope, two for two points, the two marked points
+    for a graph, and for a table, one of its rows with whole numbers off the axes, which an
+    equation in point-slope form is written through; none otherwise.
+
+    A table's rows are at the x-values ``table_xs``, in order, each with the line's y-value
+    there. It is set out across the page, x above y, when ``table_across`` is ``True``, and
+    down it, x beside y, otherwise. A table to complete leaves out one cell of each row,
+    ``table_blanks`` holding each row's column left out: 0 for x, 1 for y. ``grid`` is the
+    coordinate grid a graph is drawn on, the blank grid a line is graphed on, or a blank grid
+    shown beside two points to work on, and ``None`` otherwise. A graph's marked
+    points have their coordinates printed beside them when ``labelled`` is ``True``. A line to
+    graph has ``key_points``, the two points its answer key marks.
 
     With a ``relation``, the question shows ``reference``, a line the answer is parallel or
     perpendicular to, written in the ``given`` form, and ``points`` holds the one point the
     answer passes through. The reference is the x- or y-axis, ``X_AXIS`` or ``Y_AXIS``, when the
     answer is horizontal or vertical. Without a relation, ``reference`` is ``None``.
+
+    A question that asks for a vertical or horizontal line's equation can ask, with a
+    ``statement``, for its slope or how it runs against the x-axis too, as a ``Stated`` answer.
+
+    A question that asks to graph a line or complete a table is ``chosen`` when the student
+    chooses the graph or table, from lettered choices or a self-check tiles bank, instead of
+    drawing or completing it. Then ``grid`` is the window every graph to choose from shares, or
+    on a tiles sheet the window of the line's own graph in the bank, and ``table_xs`` the
+    x-values of every table to choose from, or of the line's own table in the bank, with no
+    ``table_blanks``.
 
     ``as_point`` is ``True`` when an intercept is answered as an ordered pair, such as (0, 2),
     rather than a number. ``numbers`` is how the question writes its numbers that aren't whole.
@@ -194,6 +275,14 @@ class LineQuestionData(QuestionData[Line]):
     reference: Line | None = None
     relation: Relation | None = None
     solved_for_y: bool = False
+    table_xs: tuple[int, ...] = ()
+    table_across: bool = False
+    table_blanks: tuple[int, ...] = ()
+    grid: Grid | None = None
+    labelled: bool = False
+    key_points: tuple[Point, ...] = ()
+    statement: Statement | None = None
+    chosen: bool = False
 
 
 @dataclass(frozen=True)
@@ -208,21 +297,48 @@ class Equation:
     point: Point | None = None
 
 
+@dataclass(frozen=True)
+class Stated:
+    """
+    A statement answer about a vertical or horizontal line: ``equation``, and ``about``, its
+    slope, 0 or ``None`` for undefined, or how it runs against the x-axis,
+    ``Relation.PARALLEL`` or ``Relation.PERPENDICULAR``.
+    """
+
+    equation: Equation
+    about: Fraction | Relation | None
+
+
+def stated(equation: Equation, statement: Statement) -> Stated:
+    """
+    Return what ``equation``'s line, vertical or horizontal, has for ``statement``: its slope,
+    0 for a horizontal line and ``None`` (undefined) for a vertical one, or how it runs against
+    the x-axis, parallel for a horizontal line and perpendicular for a vertical one.
+    """
+    horizontal = equation.line.a == 0
+    if statement is Statement.SLOPE:
+        return Stated(equation, Fraction(0) if horizontal else None)
+    return Stated(equation, Relation.PARALLEL if horizontal else Relation.PERPENDICULAR)
+
+
 # What a student writes or chooses for a question about a line: a number, ``None`` for an
 # undefined slope, two numbers, which are an ordered pair for an intercept asked as a point or
-# the slope and y-intercept, or an equation
-type LineAnswer = Fraction | tuple[Fraction, Fraction] | Equation | None
+# the slope and y-intercept, an equation, which for a graph or table to choose stands for the
+# line's graph or table, or a statement about a vertical or horizontal line
+type LineAnswer = Fraction | tuple[Fraction, Fraction] | Equation | Stated | None
 
 
 def answer_of(data: LineQuestionData) -> LineAnswer:
     """
     Return the answer to ``data`` as the student gives it: the feature's number, the intercept's
-    ordered pair, such as (0, 2), the slope and y-intercept, or the line's equation in the form
-    asked, which in point-slope form goes through the first point shown.
+    ordered pair, such as (0, 2), the slope and y-intercept, the line's equation in the form
+    asked, which in point-slope form goes through the first point shown, with its statement if
+    the question asks one, or for a graph or table, the line as an equation in that form.
     """
     if isinstance(data.asked, LineForm):
         point = data.points[0] if data.asked is LineForm.POINT_SLOPE else None
-        return Equation(data.answer, data.asked, point)
+        equation = Equation(data.answer, data.asked, point)
+        return equation if data.statement is None else stated(equation, data.statement)
     return line_answer(data.answer, data.asked, data.as_point)
 
 

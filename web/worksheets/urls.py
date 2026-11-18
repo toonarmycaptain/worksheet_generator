@@ -58,6 +58,12 @@ urlpatterns = [
         {"kind": "writing_linear_equations"},
         name="writing_linear_equations",
     ),
+    path(
+        "algebra-and-functions/graphing-linear-equations/",
+        views.sheet,
+        {"kind": "graphing_linear_equations"},
+        name="graphing_linear_equations",
+    ),
     # where input-output tables were before they had a group of their own
     path("input-output-tables/", RedirectView.as_view(pattern_name="input_output_tables")),
     path("legacy/", views.legacy, name="legacy"),

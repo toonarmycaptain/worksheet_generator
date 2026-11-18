@@ -27,7 +27,14 @@ from typing import Any
 import pytest
 from django.test import Client
 
-from core.line_equations.data import Line, LineFeature, LineForm, LineQuestionData, NumberStyle
+from core.line_equations.data import (
+    Grid,
+    Line,
+    LineFeature,
+    LineForm,
+    LineQuestionData,
+    NumberStyle,
+)
 from tests.data import REAL_CASE_SLOTS
 from tests.helpers import (
     choice_returns,
@@ -40,7 +47,19 @@ from tests.helpers import (
 )
 
 SLOPE, RATE_OF_CHANGE, Y_INTERCEPT, X_INTERCEPT, ZERO, SLOPE_AND_Y_INTERCEPT = LineFeature
-SLOPE_INTERCEPT, STANDARD, POINT_SLOPE, POINT_AND_SLOPE, TWO_POINTS, VERTICAL, HORIZONTAL = LineForm
+(
+    SLOPE_INTERCEPT,
+    STANDARD,
+    POINT_SLOPE,
+    POINT_AND_SLOPE,
+    TWO_POINTS,
+    VERTICAL,
+    HORIZONTAL,
+    TABLE,
+    GRAPH,
+    SLOPE_AND_INTERCEPT,
+    INTERCEPTS,
+) = LineForm
 FRACTION, DECIMAL, MIXED_NUMBER = NumberStyle
 
 
@@ -66,13 +85,14 @@ FRACTION, DECIMAL, MIXED_NUMBER = NumberStyle
             "slope_and_intercepts-sheet-a.pdf",
         ),
         (
-            # every option for free response: two points on y = 1/2x + 3, the y-intercept as a
+            # every option for free response: two points on y = 1/2x + 3 with a blank grid
+            # beside them, to 12 and 2 gridlines past the highest point, 4, the y-intercept as a
             # point, in decimals
-            "/api/worksheets/slope_and_intercepts.pdf?given=two_points"
+            "/api/worksheets/slope_and_intercepts.pdf?given=two_points&blank_grids=true"
             "&asked=y_intercept&intercept_answers=point&number_styles=decimal"
             "&largest_coordinate=12&largest_denominator=4&whole_intercepts=true&problems=1"
             "&answer_key=true&name_line=true&title=Practice&label=Week+3&sheet=1ab2c3",
-            [DECIMAL, True, "sloped", False, Fraction(1, 2), Fraction(3)],
+            [DECIMAL, True, "sloped", False, Fraction(1, 2), Fraction(3), True],
             [[(2, 4), (-4, 1)]],
             200,
             None,
@@ -86,6 +106,7 @@ FRACTION, DECIMAL, MIXED_NUMBER = NumberStyle
                             ((2, 4), (-4, 1)),
                             True,
                             DECIMAL,
+                            grid=Grid(12, 6, 1),
                         ),
                         (),
                     )
@@ -97,6 +118,31 @@ FRACTION, DECIMAL, MIXED_NUMBER = NumberStyle
                 "name_line": True,
             },
             "slope_and_intercepts-week-3.pdf",
+        ),
+        (
+            # a table of y = -1/2x + 3: its row (2, 2), 4 rows unevenly spaced, down the page
+            "/api/worksheets/slope_and_intercepts.pdf?given=table&asked=slope&problems=1"
+            "&sheet=1ab2c3",
+            [FRACTION, "sloped", False, Fraction(-1, 2), Fraction(3), False, 4, False, False],
+            [[(2, 2)], [-4, 4, 8]],
+            200,
+            None,
+            {
+                "cases": [
+                    (
+                        LineQuestionData(
+                            Line(1, 2, 6), TABLE, SLOPE, ((2, 2),), table_xs=(-4, 2, 4, 8)
+                        ),
+                        (),
+                    )
+                ],
+                "slot_of": None,
+                "answer_key": False,
+                "title": "Slope and Intercepts",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "slope_and_intercepts-sheet-a.pdf",
         ),
         (
             # multiple choice: 3x + 4y = 8's slope, among STAAR's mistakes
@@ -198,7 +244,8 @@ FRACTION, DECIMAL, MIXED_NUMBER = NumberStyle
         (
             # tiles mixing kinds of answer: 21 y-intercepts from -10 to 10 make 11 questions
             "/api/worksheets/slope_and_intercepts.pdf?given=vertical&given=horizontal"
-            "&whole_intercepts=true&largest_denominator=1&self_check_tiles=true&problems=12",
+            "&whole_intercepts=true&largest_coordinate=10&largest_denominator=1"
+            "&self_check_tiles=true&problems=12",
             [],
             [],
             422,

@@ -14,13 +14,30 @@ from core.line_equations.data import (
     LineFeature,
     LineForm,
     LineQuestionData,
+    Relation,
+    Stated,
+    Statement,
     answer_of,
+    choice_row,
     feature_value,
     line_from,
+    stated,
 )
 
 SLOPE, RATE_OF_CHANGE, Y_INTERCEPT, X_INTERCEPT, ZERO, SLOPE_AND_Y_INTERCEPT = LineFeature
-SLOPE_INTERCEPT, STANDARD, POINT_SLOPE, POINT_AND_SLOPE, TWO_POINTS, VERTICAL, HORIZONTAL = LineForm
+(
+    SLOPE_INTERCEPT,
+    STANDARD,
+    POINT_SLOPE,
+    POINT_AND_SLOPE,
+    TWO_POINTS,
+    VERTICAL,
+    HORIZONTAL,
+    TABLE,
+    GRAPH,
+    SLOPE_AND_INTERCEPT,
+    INTERCEPTS,
+) = LineForm
 
 
 @pytest.mark.parametrize(
@@ -105,8 +122,72 @@ def test_line_from(a: Fraction, b: Fraction, c: Fraction, line: Line) -> None:
             LineQuestionData(Line(1, 0, 3), POINT_AND_SLOPE, VERTICAL, ((3, 7),)),
             Equation(Line(1, 0, 3), VERTICAL),
         ),
+        # a statement: the equation with its slope, or how it runs against the x-axis
+        (
+            LineQuestionData(
+                Line(1, 0, 3), TWO_POINTS, VERTICAL, ((3, 7), (3, 1)), statement=Statement.SLOPE
+            ),
+            Stated(Equation(Line(1, 0, 3), VERTICAL), None),
+        ),
+        (
+            LineQuestionData(
+                Line(0, 1, 7), POINT_AND_SLOPE, HORIZONTAL, ((3, 7),), statement=Statement.X_AXIS
+            ),
+            Stated(Equation(Line(0, 1, 7), HORIZONTAL), Relation.PARALLEL),
+        ),
+        # a graph to choose: the line, as an equation in that form
+        (
+            LineQuestionData(Line(2, -3, -12), SLOPE_AND_INTERCEPT, GRAPH, chosen=True),
+            Equation(Line(2, -3, -12), GRAPH),
+        ),
     ],
 )
 def test_answer_of(data: LineQuestionData, answer: LineAnswer) -> None:
     """The answer is the feature asked, or the line's equation in the form asked."""
     assert answer_of(data) == answer
+
+
+@pytest.mark.parametrize(
+    ("equation", "statement", "stated_answer"),
+    [
+        (
+            Equation(Line(1, 0, -4), VERTICAL),
+            Statement.SLOPE,
+            Stated(Equation(Line(1, 0, -4), VERTICAL), None),
+        ),
+        (
+            Equation(Line(0, 1, 3), HORIZONTAL),
+            Statement.SLOPE,
+            Stated(Equation(Line(0, 1, 3), HORIZONTAL), Fraction(0)),
+        ),
+        (
+            Equation(Line(1, 0, -4), VERTICAL),
+            Statement.X_AXIS,
+            Stated(Equation(Line(1, 0, -4), VERTICAL), Relation.PERPENDICULAR),
+        ),
+        (
+            Equation(Line(0, 1, 3), HORIZONTAL),
+            Statement.X_AXIS,
+            Stated(Equation(Line(0, 1, 3), HORIZONTAL), Relation.PARALLEL),
+        ),
+    ],
+)
+def test_stated(equation: Equation, statement: Statement, stated_answer: Stated) -> None:
+    """A vertical line's slope is undefined, a horizontal one's 0; parallel is horizontal."""
+    assert stated(equation, statement) == stated_answer
+
+
+@pytest.mark.parametrize(
+    ("line", "x", "row"),
+    [
+        # y = 2x - 3
+        (Line(2, -1, 3), 4, (Fraction(4), Fraction(5))),
+        # 2y = 5: y = 2.5 in every row
+        (Line(0, 2, 5), -3, (Fraction(-3), Fraction(5, 2))),
+        # x = 2.5: x and y exchanged, so 2.5 in every row of x, the x-value as y
+        (Line(2, 0, 5), -3, (Fraction(5, 2), Fraction(-3))),
+    ],
+)
+def test_choice_row(line: Line, x: int, row: tuple[Fraction, Fraction]) -> None:
+    """A table's row at x is the point on the line there, or for x = c, (c, x)."""
+    assert choice_row(line, x) == row

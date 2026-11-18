@@ -29,11 +29,14 @@ from django.test import Client
 
 from core.line_equations.data import (
     Equation,
+    Grid,
     Line,
     LineForm,
     LineQuestionData,
     NumberStyle,
     Relation,
+    Stated,
+    Statement,
 )
 from tests.data import REAL_CASE_SLOTS
 from tests.helpers import (
@@ -46,7 +49,19 @@ from tests.helpers import (
     sample_returns,
 )
 
-SLOPE_INTERCEPT, STANDARD, POINT_SLOPE, POINT_AND_SLOPE, TWO_POINTS, VERTICAL, HORIZONTAL = LineForm
+(
+    SLOPE_INTERCEPT,
+    STANDARD,
+    POINT_SLOPE,
+    POINT_AND_SLOPE,
+    TWO_POINTS,
+    VERTICAL,
+    HORIZONTAL,
+    TABLE,
+    GRAPH,
+    SLOPE_AND_INTERCEPT,
+    INTERCEPTS,
+) = LineForm
 PARALLEL, PERPENDICULAR = Relation
 FRACTION, DECIMAL, MIXED_NUMBER = NumberStyle
 
@@ -73,12 +88,13 @@ FRACTION, DECIMAL, MIXED_NUMBER = NumberStyle
             "writing_linear_equations-sheet-a.pdf",
         ),
         (
-            # every option for free response: two points on y = 1/2x + 3, in decimals
-            "/api/worksheets/writing_linear_equations.pdf?given=two_points"
+            # every option for free response: two points on y = 1/2x + 3 with a blank grid
+            # beside them, to 12 and 2 gridlines past the highest point, 4, in decimals
+            "/api/worksheets/writing_linear_equations.pdf?given=two_points&blank_grids=true"
             "&asked=slope_intercept&number_styles=decimal&largest_coordinate=12"
             "&largest_denominator=4&whole_intercepts=true&problems=1&answer_key=true"
             "&name_line=true&title=Practice&label=Week+3&sheet=1ab2c3",
-            [DECIMAL, False, Fraction(1, 2), Fraction(3)],
+            [DECIMAL, False, Fraction(1, 2), Fraction(3), True],
             [[(2, 4), (-4, 1)]],
             200,
             None,
@@ -91,6 +107,7 @@ FRACTION, DECIMAL, MIXED_NUMBER = NumberStyle
                             SLOPE_INTERCEPT,
                             ((2, 4), (-4, 1)),
                             numbers=DECIMAL,
+                            grid=Grid(12, 6, 1),
                         ),
                         (),
                     )
@@ -102,6 +119,37 @@ FRACTION, DECIMAL, MIXED_NUMBER = NumberStyle
                 "name_line": True,
             },
             "writing_linear_equations-week-3.pdf",
+        ),
+        (
+            # a graph to 20 counts by 2: y = 1/2x + 1 through (2, 2) and (10, 6), labelled, since
+            # it crosses the y-axis between gridlines
+            "/api/worksheets/writing_linear_equations.pdf?given=graph&asked=standard"
+            "&largest_coordinate=20&problems=1&sheet=1ab2c3",
+            [FRACTION, False, Fraction(1, 2), Fraction(1)],
+            [[(2, 2), (10, 6)]],
+            200,
+            None,
+            {
+                "cases": [
+                    (
+                        LineQuestionData(
+                            Line(1, -2, -2),
+                            GRAPH,
+                            STANDARD,
+                            ((2, 2), (10, 6)),
+                            grid=Grid(20, 10, 2),
+                            labelled=True,
+                        ),
+                        (),
+                    )
+                ],
+                "slot_of": None,
+                "answer_key": False,
+                "title": "Writing Linear Equations",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "writing_linear_equations-sheet-a.pdf",
         ),
         (
             # multiple choice, as A.2 2026 Q46: through (-3, -6), parallel to y = -8/9x + 4, in
@@ -148,10 +196,11 @@ FRACTION, DECIMAL, MIXED_NUMBER = NumberStyle
             "writing_linear_equations-sheet-a.pdf",
         ),
         (
-            # self-check tiles: x = 3, then x = -5, each through a point with an undefined slope
+            # self-check tiles: x = 3, then x = -5, each through a point with an undefined slope,
+            # neither asking a statement
             "/api/worksheets/writing_linear_equations.pdf?given=point_and_slope&asked=vertical"
             "&self_check_tiles=true&problems=2&sheet=1ab2c3",
-            [FRACTION, Fraction(3), FRACTION, Fraction(-5)],
+            [FRACTION, Fraction(3), False, FRACTION, Fraction(-5), False],
             [[(3, 7)], [(-5, 2)]],
             200,
             None,
@@ -161,6 +210,40 @@ FRACTION, DECIMAL, MIXED_NUMBER = NumberStyle
                     (LineQuestionData(Line(1, 0, -5), POINT_AND_SLOPE, VERTICAL, ((-5, 2),)), ()),
                 ],
                 "slot_of": REAL_CASE_SLOTS[:2],
+                "answer_key": False,
+                "title": "Writing Linear Equations",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "writing_linear_equations-sheet-a.pdf",
+        ),
+        (
+            # a statement, multiple choice: y = 7 through (3, 7) with a slope of 0, so the
+            # statement is its direction against the x-axis, not its slope
+            "/api/worksheets/writing_linear_equations.pdf?given=point_and_slope&asked=horizontal"
+            "&multiple_choice=true&problems=1&sheet=1ab2c3",
+            [FRACTION, Fraction(7), True, Statement.X_AXIS],
+            [[(3, 7)]],
+            200,
+            None,
+            {
+                "cases": [
+                    (
+                        LineQuestionData(
+                            Line(0, 1, 7),
+                            POINT_AND_SLOPE,
+                            HORIZONTAL,
+                            ((3, 7),),
+                            statement=Statement.X_AXIS,
+                        ),
+                        (
+                            Stated(Equation(Line(0, 1, 7), HORIZONTAL), Relation.PERPENDICULAR),
+                            Stated(Equation(Line(1, 0, 7), VERTICAL), Relation.PARALLEL),
+                            Stated(Equation(Line(1, 0, 7), VERTICAL), Relation.PERPENDICULAR),
+                        ),
+                    )
+                ],
+                "slot_of": None,
                 "answer_key": False,
                 "title": "Writing Linear Equations",
                 "label": "Sheet A",
@@ -250,10 +333,12 @@ FRACTION, DECIMAL, MIXED_NUMBER = NumberStyle
                         "type": "literal_error",
                         "loc": ["query", "options", "given", 0],
                         "msg": "Input should be 'slope_intercept', 'standard', 'point_slope', "
-                        "'point_and_slope', 'two_points', 'parallel' or 'perpendicular'",
+                        "'point_and_slope', 'two_points', 'table', 'graph', 'parallel' or "
+                        "'perpendicular'",
                         "ctx": {
                             "expected": "'slope_intercept', 'standard', 'point_slope', "
-                            "'point_and_slope', 'two_points', 'parallel' or 'perpendicular'"
+                            "'point_and_slope', 'two_points', 'table', 'graph', 'parallel' or "
+                            "'perpendicular'"
                         },
                     },
                 ],

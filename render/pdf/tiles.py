@@ -3,10 +3,13 @@ The self-check tiles case as drawn on a PDF worksheet: the answer bank, laid out
 slots, and the pattern the tiles make on the back of the closed case.
 
 Any worksheet can draw these, below its questions or on a page of their own. Which answer goes in
-which slot, and the pattern itself, come from ``core.self_check_tiles``.
+which slot, and the pattern itself, come from ``core.self_check_tiles``. Answers that are
+pictures, such as graphs, are too big for the slots' boxes, so they're drawn lettered, two to a
+row, as ``draw_picture_tiles_pages`` lays them out.
 """
 
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
+from dataclasses import dataclass
 from fractions import Fraction
 from string import ascii_uppercase
 
@@ -46,9 +49,14 @@ BOX_PADDING = 6  # inner padding around each answer
 BANK_SIZES = (TEXT_SIZE + 2, 14, 12, 10, 9)  # the largest size at which every answer fits is used
 PATTERN_DROP = 150  # from the bank's top edge to the pattern's, for boxes BOX_HEIGHT high
 PATTERN_TILE = 40
+PICTURES_PER_ROW = 2
+PICTURE_LETTER_DROP = 8  # from a picture's letter's baseline down to the picture's top
+PICTURE_ROW_GAP = 22  # from the bottom of a row of pictures down to the next row's letters
+PATTERN_HEIGHT = 2 * PATTERN_TILE + 24  # the pattern, with room above it
 CAPTION = "Close the case and flip it over. If every answer is right, the back looks like this."
 INSTRUCTION = "Put each numbered tile in the slot whose letter matches the answer to its question."
 BLOCKED_NOTE = " Shaded boxes are not used."
+MISSING_NOTE = " Letters that aren't shown are not used."
 
 # An answer in the bank: text, wrapped to fit its box, or pieces drawn on one line, each fraction
 # stacked (see ``draw_pieces``)
@@ -82,6 +90,52 @@ def draw_tiles_page(
     """
     pdf.showPage()
     draw_tiles(pdf, answers, slot_of, start_page(pdf, header) - BANK_HEADING_HEIGHT)
+
+
+@dataclass(frozen=True)
+class BankPicture:
+    """
+    An answer in the bank drawn as a picture, ``width`` by ``height``, by ``draw``, which takes
+    the canvas and the picture's top-left corner.
+    """
+
+    width: float
+    height: float
+    draw: Callable[[Canvas, float, float], None]
+
+
+def draw_picture_tiles_pages(
+    pdf: Canvas, header: Header, pictures: Sequence[BankPicture], slot_of: Sequence[int]
+) -> None:
+    """
+    Start a new page with ``header`` and draw the answer bank as pictures, each under its slot's
+    letter, ``PICTURES_PER_ROW`` to a row in slot order, starting new pages as needed, then the
+    pattern below them, or on a page of its own if it doesn't fit. ``slot_of[i]`` is the slot of
+    ``pictures[i]``, as in ``core.self_check_tiles``; an unused slot's letter isn't shown.
+    """
+    pdf.showPage()
+    top = start_page(pdf, header) - BANK_HEADING_HEIGHT
+    bank = answer_bank(pictures, slot_of)
+    _draw_bank_heading(pdf, top, MISSING_NOTE if None in bank else "")
+    shown = [(slot, picture) for slot, picture in enumerate(bank) if picture is not None]
+    baseline = top
+    column_width = CONTENT_WIDTH / PICTURES_PER_ROW
+    for start in range(0, len(shown), PICTURES_PER_ROW):
+        row = shown[start : start + PICTURES_PER_ROW]
+        height = PICTURE_LETTER_DROP + max(picture.height for _, picture in row)
+        if baseline - height < MARGIN:
+            pdf.showPage()
+            baseline = start_page(pdf, header)
+        for column, (slot, picture) in enumerate(row):
+            left = MARGIN + column * column_width
+            pdf.setFont(BOLD_FONT, 12)
+            pdf.drawString(left, baseline, ascii_uppercase[slot])
+            picture.draw(pdf, left, baseline - PICTURE_LETTER_DROP)
+        baseline -= height + PICTURE_ROW_GAP
+    if baseline - PATTERN_HEIGHT < MARGIN:
+        pdf.showPage()
+        baseline = start_page(pdf, header)
+    _draw_pattern(pdf, pattern(slot_of), baseline)
 
 
 def tile_solutions(questions: Sequence[TileQuestion], slot_of: Sequence[int]) -> list[str]:
@@ -164,12 +218,7 @@ def _draw_answer_bank(pdf: Canvas, bank: Sequence[BankAnswer | None], top: float
     A slot with no answer is drawn as a shaded, empty box. Returns the box height.
     """
     size, lines_of, height = _bank_lines([answer for answer in bank if answer is not None])
-    pdf.setFont(BOLD_FONT, TEXT_SIZE)
-    pdf.drawString(MARGIN, top + BANK_HEADING_HEIGHT, "Answer bank")
-    pdf.setFont(FONT, 11)
-    instruction = INSTRUCTION + (BLOCKED_NOTE if None in bank else "")
-    for number, line in enumerate(simpleSplit(instruction, FONT, 11, CONTENT_WIDTH)):
-        pdf.drawString(MARGIN, top + 40 - number * 13, line)
+    _draw_bank_heading(pdf, top, BLOCKED_NOTE if None in bank else "")
 
     for slot, answer in enumerate(bank):
         row, column = divmod(slot, SLOTS_PER_ROW)
@@ -199,6 +248,18 @@ def _draw_answer_bank(pdf: Canvas, bank: Sequence[BankAnswer | None], top: float
         slot_letter_y = y + height + 4 if row == 0 else y - 14
         pdf.drawCentredString(x + BOX_WIDTH / 2, slot_letter_y, ascii_uppercase[slot])
     return height
+
+
+def _draw_bank_heading(pdf: Canvas, top: float, note: str) -> None:
+    """
+    Draw the answer bank's heading and instruction, with ``note`` after it, above the bank's top
+    edge at ``top``.
+    """
+    pdf.setFont(BOLD_FONT, TEXT_SIZE)
+    pdf.drawString(MARGIN, top + BANK_HEADING_HEIGHT, "Answer bank")
+    pdf.setFont(FONT, 11)
+    for number, line in enumerate(simpleSplit(INSTRUCTION + note, FONT, 11, CONTENT_WIDTH)):
+        pdf.drawString(MARGIN, top + 40 - number * 13, line)
 
 
 def _draw_pattern(pdf: Canvas, grid: Sequence[Sequence[int | None]], top: float) -> None:
