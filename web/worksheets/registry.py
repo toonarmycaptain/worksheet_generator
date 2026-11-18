@@ -97,24 +97,30 @@ from core.input_output_tables.representation import (
 from core.line_equations.data import (
     EQUATION_FORMS,
     EQUATION_GIVENS,
+    GRAPHING_ASKED,
+    GRAPHING_GIVENS,
     LineFeature,
     LineForm,
     NumberStyle,
     Relation,
 )
 from core.line_equations.generator import (
-    DEFAULT_LARGEST_COORDINATE,
     DEFAULT_LARGEST_DENOMINATOR,
     can_ask,
+    can_graph,
     can_write,
     count_possible_equations,
+    count_possible_graphs,
     count_possible_lines,
     generate_equation_questions,
+    generate_graphing_questions,
     generate_line_questions,
 )
 from core.line_equations.representation import (
     EQUATION_GIVEN_NAMES,
     FEATURE_NAMES,
+    GRAPHING_ASKED_NAMES,
+    GRAPHING_LINEAR_EQUATIONS_NAME,
     NUMBER_STYLE_NAMES,
     SLOPE_AND_INTERCEPTS_NAME,
     WRITING_LINEAR_EQUATIONS_NAME,
@@ -245,6 +251,8 @@ LineFormChoice = Literal[
     "two_points",
     "vertical",
     "horizontal",
+    "table",
+    "graph",
 ]
 # Lines given as checkbox labels: each form's name, with what it looks like
 LINE_FORM_LABELS: dict[str, JsonValue] = {
@@ -274,6 +282,8 @@ EquationGivenChoice = Literal[
     "point_slope",
     "point_and_slope",
     "two_points",
+    "table",
+    "graph",
     "parallel",
     "perpendicular",
 ]
@@ -288,7 +298,29 @@ EquationFormChoice = Literal["slope_intercept", "standard", "point_slope", "vert
 EQUATION_FORM_LABELS: dict[str, JsonValue] = {
     form.value: LINE_FORM_NAMES[form] for form in EQUATION_FORMS
 }
+# a LineForm value a line is graphed or tabled from
+GraphingGivenChoice = Literal[
+    "slope_intercept",
+    "standard",
+    "point_slope",
+    "slope_and_intercept",
+    "intercepts",
+    "point_and_slope",
+    "two_points",
+    "vertical",
+    "horizontal",
+    "graph",
+]
+# Lines given as checkbox labels, on the graphing sheet: each form's name
+GRAPHING_GIVEN_LABELS: dict[str, JsonValue] = {
+    form.value: LINE_FORM_NAMES[form] for form in GRAPHING_GIVENS
+}
+GraphingAskedChoice = Literal["graph", "table"]  # a LineForm value graphing lines asks for
+GRAPHING_ASKED_LABELS: dict[str, JsonValue] = {
+    form.value: name for form, name in GRAPHING_ASKED_NAMES.items()
+}
 SMALLEST_LARGEST_COORDINATE = 5  # STAAR's smallest grids run to 4, for graphing a line
+SHEET_LARGEST_COORDINATE = 12  # the line sheets' default, so grids run from -12 to 12
 LARGEST_LARGEST_COORDINATE = 60  # the generator lists each slope's y-intercepts, so stays quick
 LARGEST_LARGEST_DENOMINATOR = 20
 # The options both line sheets share
@@ -312,6 +344,15 @@ LargestDenominator = Annotated[
     ),
 ]
 WholeIntercepts = Annotated[bool, Field(title="Whole-number intercepts only")]
+# The page shows this only while Two points is ticked (see builder.html).
+BlankGrids = Annotated[
+    bool,
+    Field(
+        title="Blank grid beside two points",
+        description="About half the questions given two points have an empty coordinate grid "
+        "beside them to work on.",
+    ),
+]
 LineNumberStyles = Annotated[
     list[LineNumberStyleChoice],
     Field(
@@ -326,6 +367,23 @@ LineMultipleChoice = Annotated[
         title="Multiple choice",
         description=f"Lists {WRONG_ANSWER_COUNT + 1} choices under each line instead of an "
         "answer line: the wrong ones are common mistakes, such as the reciprocal of the slope.",
+    ),
+]
+GraphingMultipleChoice = Annotated[
+    bool,
+    Field(
+        title="Multiple choice",
+        description=f"Shows {WRONG_ANSWER_COUNT + 1} graphs or tables to choose from instead of a "
+        "blank grid or table.",
+    ),
+]
+# The page shows this only while x = a or y = b is ticked (see builder.html).
+Statements = Annotated[
+    bool,
+    Field(
+        title="Also ask for the slope or direction",
+        description="About half the vertical and horizontal lines also ask for the slope, or "
+        "whether the line is parallel or perpendicular to the x-axis.",
     ),
 ]
 AnswerKey = Annotated[bool, Field(title="Add an answer key page")]
@@ -1113,7 +1171,7 @@ class SlopeAndInterceptsOptions(HeaderOptions):
     problems: Problems = 6
     # Each problem takes the next pair of a form and a question from a shuffled deck of those
     # that can be asked.
-    # Every form starts ticked, x = a and y = b too, which makes them about 1 question in 5.
+    # Every form starts ticked, x = a and y = b too, which makes them about 1 question in 7.
     given: list[LineFormChoice] = Field(
         [
             "slope_intercept",
@@ -1123,11 +1181,14 @@ class SlopeAndInterceptsOptions(HeaderOptions):
             "two_points",
             "vertical",
             "horizontal",
+            "table",
+            "graph",
         ],
         min_length=1,
         title="Lines given as",
         json_schema_extra={"labels": LINE_FORM_LABELS},
     )
+    blank_grids: BlankGrids = True
     asked: list[LineFeatureChoice] = Field(
         ["slope", "rate_of_change", "y_intercept", "x_intercept", "zero", "slope_and_y_intercept"],
         min_length=1,
@@ -1142,7 +1203,7 @@ class SlopeAndInterceptsOptions(HeaderOptions):
         title="Intercepts as",
         json_schema_extra={"labels": INTERCEPT_ANSWER_LABELS},
     )
-    largest_coordinate: LargestCoordinate = DEFAULT_LARGEST_COORDINATE
+    largest_coordinate: LargestCoordinate = SHEET_LARGEST_COORDINATE
     largest_denominator: LargestDenominator = DEFAULT_LARGEST_DENOMINATOR
     whole_intercepts: WholeIntercepts = False
     number_styles: LineNumberStyles = Field(["fraction", "decimal"])
@@ -1233,6 +1294,8 @@ class WritingLinearEquationsOptions(HeaderOptions):
             "point_slope",
             "point_and_slope",
             "two_points",
+            "table",
+            "graph",
             "parallel",
             "perpendicular",
         ],
@@ -1240,15 +1303,18 @@ class WritingLinearEquationsOptions(HeaderOptions):
         title="Lines given as",
         json_schema_extra={"labels": EQUATION_GIVEN_LABELS},
     )
-    # Every form starts ticked, x = a and y = b too, which makes them about 1 question in 3: each
-    # is asked of two points, a point and slope, and both relations.
+    blank_grids: BlankGrids = True
+    # Every form starts ticked, x = a and y = b too, which makes them about 1 question in 3: x = a
+    # is asked of two points, a point and slope, a graph and both relations, and y = b of those
+    # and a table.
     asked: list[EquationFormChoice] = Field(
         ["slope_intercept", "standard", "point_slope", "vertical", "horizontal"],
         min_length=1,
         title="Write equations in",
         json_schema_extra={"labels": EQUATION_FORM_LABELS},
     )
-    largest_coordinate: LargestCoordinate = DEFAULT_LARGEST_COORDINATE
+    statements: Statements = True
+    largest_coordinate: LargestCoordinate = SHEET_LARGEST_COORDINATE
     largest_denominator: LargestDenominator = DEFAULT_LARGEST_DENOMINATOR
     whole_intercepts: WholeIntercepts = False
     number_styles: LineNumberStyles = Field(["fraction", "decimal"])
@@ -1328,8 +1394,114 @@ class WritingLinearEquationsOptions(HeaderOptions):
         return [EQUATION_GIVEN_NAMES[given] for given in shown]
 
 
+class GraphingLinearEquationsOptions(HeaderOptions):
+    """
+    Options for the graphing linear equations kind, built on the core. There is no seed: every
+    sheet is new.
+    """
+
+    title: Title = GRAPHING_LINEAR_EQUATIONS_NAME
+    problems: Problems = 6
+    # Each problem takes the next pair of a given and what is asked from a shuffled deck of those
+    # that can be asked. Every given starts ticked; a graph is only tabled.
+    given: list[GraphingGivenChoice] = Field(
+        [
+            "slope_intercept",
+            "standard",
+            "point_slope",
+            "slope_and_intercept",
+            "intercepts",
+            "point_and_slope",
+            "two_points",
+            "vertical",
+            "horizontal",
+            "graph",
+        ],
+        min_length=1,
+        title="Lines given as",
+        json_schema_extra={"labels": GRAPHING_GIVEN_LABELS},
+    )
+    asked: list[GraphingAskedChoice] = Field(
+        ["graph", "table"],
+        min_length=1,
+        title="Questions ask to",
+        json_schema_extra={"labels": GRAPHING_ASKED_LABELS},
+    )
+    largest_coordinate: LargestCoordinate = SHEET_LARGEST_COORDINATE
+    largest_denominator: LargestDenominator = DEFAULT_LARGEST_DENOMINATOR
+    whole_intercepts: WholeIntercepts = False
+    number_styles: LineNumberStyles = Field(["fraction", "decimal"])
+    answer_key: AnswerKey = False
+    multiple_choice: GraphingMultipleChoice = False
+    # Tiles replace the blank grids and tables with an answer bank of the graphs and tables. No
+    # line repeats, so no answer does.
+    self_check_tiles: SelfCheckTiles = False
+    tile_pattern: TilePattern = "simple"
+
+    @model_validator(mode="after")
+    def _tiles_are_available(self) -> Self:
+        # Not built for multiple choice: each choice's letter would need coding as a number. The
+        # page hides multiple choice while tiles are ticked, and greys out the tiles while it is.
+        # Runs first, so a request with both is told so before anything else.
+        if self.self_check_tiles and self.multiple_choice:
+            raise ValueError("self_check_tiles: not available with multiple choice")
+        return self
+
+    @model_validator(mode="after")
+    def _a_question_can_be_made(self) -> Self:
+        givens, asked = _graphing_givens(self), _graphing_asked(self)
+        if not any(can_graph(given, form) for given in givens for form in asked):
+            raise ValueError(
+                "asked: none of these fits the lines given. A table is completed from an "
+                "equation or a graph, never from x = a, and a graph isn't graphed again"
+            )
+        if self.self_check_tiles:
+            _at_most_one_question_per_tile(self.problems)
+        _enough_lines(self, "repeats", self._count_lines, self._unticks)
+        return self
+
+    def _count_lines(
+        self,
+        largest_coordinate: int,
+        largest_denominator: int,
+        givens: Sequence[LineForm] | None = None,
+    ) -> int:
+        """
+        Return how many problems these options allow without repeating a line, up to the number
+        asked, or allow with ``givens`` instead of the ticked ones.
+        """
+        return count_possible_graphs(
+            _graphing_givens(self) if givens is None else givens,
+            _graphing_asked(self),
+            largest_coordinate=largest_coordinate,
+            largest_denominator=largest_denominator,
+            whole_intercepts=self.whole_intercepts,
+            number_styles=[NumberStyle(style) for style in self.number_styles],
+            limit=self.problems,
+        )
+
+    def _unticks(self) -> list[str]:
+        """
+        Return the labels of the ticked givens, such as x = a and y = b with few lines at a small
+        largest number, whose unticking would allow the problems, as ``_boxes_to_untick`` finds
+        them.
+        """
+        asked = _graphing_asked(self)
+        givens = _boxes_to_untick(
+            _graphing_givens(self),
+            lambda given: any(can_graph(each, form) for each in given for form in asked),
+            lambda given: self._count_lines(
+                self.largest_coordinate, self.largest_denominator, given
+            ),
+            self.problems,
+        )
+        return [LINE_FORM_NAMES[given] for given in givens]
+
+
 def _enough_lines(
-    options: SlopeAndInterceptsOptions | WritingLinearEquationsOptions,
+    options: SlopeAndInterceptsOptions
+    | WritingLinearEquationsOptions
+    | GraphingLinearEquationsOptions,
     repeats: str,
     count: Callable[[int, int], int],
     unticks: Callable[[], Sequence[str]],
@@ -1538,7 +1710,8 @@ def _tile_slots(
     | BaseTenBlocksOptions
     | InputOutputTableOptions
     | SlopeAndInterceptsOptions
-    | WritingLinearEquationsOptions,
+    | WritingLinearEquationsOptions
+    | GraphingLinearEquationsOptions,
 ) -> Sequence[int]:
     """Return the slot of each question's answer, for the requested tile pattern."""
     make_slots = conventional_slot_of if options.tile_pattern == "simple" else random_slot_of
@@ -1686,6 +1859,7 @@ def _slope_and_intercepts(options: SlopeAndInterceptsOptions, out: BinaryIO) -> 
             as_point_choices=[answer == "point" for answer in options.intercept_answers],
             wrong_answer_count=WRONG_ANSWER_COUNT if options.multiple_choice else 0,
             distinct_answers=options.self_check_tiles,
+            blank_grids=options.blank_grids,
         ),
         path=out,
         header=options.header(),
@@ -1715,12 +1889,44 @@ def _writing_linear_equations(options: WritingLinearEquationsOptions, out: Binar
             whole_intercepts=options.whole_intercepts,
             number_styles=[NumberStyle(style) for style in options.number_styles],
             wrong_answer_count=WRONG_ANSWER_COUNT if options.multiple_choice else 0,
+            blank_grids=options.blank_grids,
+            statements=options.statements,
         ),
         path=out,
         header=options.header(),
         answer_key=options.answer_key,
         slot_of=_tile_slots(options) if options.self_check_tiles else None,
     )
+
+
+def _graphing_linear_equations(options: GraphingLinearEquationsOptions, out: BinaryIO) -> None:
+    render_line_equations_worksheet(
+        questions=generate_graphing_questions(
+            options.problems,
+            _graphing_givens(options),
+            _graphing_asked(options),
+            largest_coordinate=options.largest_coordinate,
+            largest_denominator=options.largest_denominator,
+            whole_intercepts=options.whole_intercepts,
+            number_styles=[NumberStyle(style) for style in options.number_styles],
+            wrong_answer_count=WRONG_ANSWER_COUNT if options.multiple_choice else 0,
+            distinct_answers=options.self_check_tiles,
+        ),
+        path=out,
+        header=options.header(),
+        answer_key=options.answer_key,
+        slot_of=_tile_slots(options) if options.self_check_tiles else None,
+    )
+
+
+def _graphing_givens(options: GraphingLinearEquationsOptions) -> list[LineForm]:
+    """Return the ticked givens, each once, in the order of ``GRAPHING_GIVENS``."""
+    return [given for given in GRAPHING_GIVENS if given.value in options.given]
+
+
+def _graphing_asked(options: GraphingLinearEquationsOptions) -> list[LineForm]:
+    """Return the ticked asks, each once, in the order of ``GRAPHING_ASKED``."""
+    return [form for form in GRAPHING_ASKED if form.value in options.asked]
 
 
 def _equation_givens(options: WritingLinearEquationsOptions) -> list[LineForm | Relation]:
@@ -1917,4 +2123,7 @@ CORE_KINDS: dict[str, CoreKind[Any]] = {
     "input_output_tables": CoreKind(InputOutputTableOptions, _input_output_tables),
     "slope_and_intercepts": CoreKind(SlopeAndInterceptsOptions, _slope_and_intercepts),
     "writing_linear_equations": CoreKind(WritingLinearEquationsOptions, _writing_linear_equations),
+    "graphing_linear_equations": CoreKind(
+        GraphingLinearEquationsOptions, _graphing_linear_equations
+    ),
 }

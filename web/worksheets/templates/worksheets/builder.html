@@ -149,6 +149,44 @@
   </script>
   {% endif %}
 
+  {% if blank_grids %}
+  <script type="module">
+    // The line forms' Blank grid beside two points: only while Two points is ticked. Hidden,
+    // it's disabled so it isn't sent.
+    const given = [...document.querySelectorAll("input[name=given]")];
+    const blankGrids = document.querySelector("input[name=blank_grids]");
+    function showBlankGrids() {
+      const show = given.some((box) => box.checked && box.value === "two_points");
+      blankGrids.disabled = !show;
+      blankGrids.closest("label").style.display = show ? "" : "none";
+    }
+    for (const box of given) box.addEventListener("change", showBlankGrids);
+    // also when the browser restores the choices, going back to the page
+    window.addEventListener("pageshow", showBlankGrids);
+    showBlankGrids();
+  </script>
+  {% endif %}
+
+  {% if statements %}
+  <script type="module">
+    // The writing linear equations form's Also ask for the slope or direction: only while
+    // Vertical lines or Horizontal lines is ticked. Hidden, it's disabled so it isn't sent.
+    const asked = [...document.querySelectorAll("input[name=asked]")];
+    const statements = document.querySelector("input[name=statements]");
+    function showStatements() {
+      const show = asked.some(
+        (box) => box.checked && ["vertical", "horizontal"].includes(box.value),
+      );
+      statements.disabled = !show;
+      statements.closest("label").style.display = show ? "" : "none";
+    }
+    for (const box of asked) box.addEventListener("change", showStatements);
+    // also when the browser restores the choices, going back to the page
+    window.addEventListener("pageshow", showStatements);
+    showStatements();
+  </script>
+  {% endif %}
+
   {% if operation_titles %}
   {{ operation_titles|json_script:"operation-titles" }}
   <script type="module">

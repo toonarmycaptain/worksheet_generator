@@ -3,12 +3,14 @@ Tests for writing a line's numbers, points, equations and answers, both inline a
 which a ``Fraction`` is drawn stacked.
 """
 
+from dataclasses import replace
 from fractions import Fraction
 
 import pytest
 
 from core.line_equations.data import (
     X_AXIS,
+    Y_AXIS,
     Equation,
     Line,
     LineAnswer,
@@ -17,11 +19,15 @@ from core.line_equations.data import (
     LineQuestionData,
     NumberStyle,
     Relation,
+    Stated,
+    Statement,
 )
 from core.line_equations.representation import (
     Pieces,
     answer_pieces,
+    blank_labels,
     choice_pieces,
+    choice_table_cells,
     equation_pieces,
     format_number,
     given_pieces,
@@ -29,13 +35,26 @@ from core.line_equations.representation import (
     instruction,
     number_pieces,
     point_pieces,
+    table_cells,
     terminates,
     tile_answer_pieces,
 )
 from tests.data import MINUS
 
 SLOPE, RATE_OF_CHANGE, Y_INTERCEPT, X_INTERCEPT, ZERO, SLOPE_AND_Y_INTERCEPT = LineFeature
-SLOPE_INTERCEPT, STANDARD, POINT_SLOPE, POINT_AND_SLOPE, TWO_POINTS, VERTICAL, HORIZONTAL = LineForm
+(
+    SLOPE_INTERCEPT,
+    STANDARD,
+    POINT_SLOPE,
+    POINT_AND_SLOPE,
+    TWO_POINTS,
+    VERTICAL,
+    HORIZONTAL,
+    TABLE,
+    GRAPH,
+    SLOPE_AND_INTERCEPT,
+    INTERCEPTS,
+) = LineForm
 FRACTION, DECIMAL, MIXED_NUMBER = NumberStyle
 PARALLEL, PERPENDICULAR = Relation
 # through (2, -2), perpendicular to y = 2/5x + 2, as A.2 2018 Q39
@@ -338,6 +357,8 @@ def test_point_slope_solved_for_y(
             "A line given by point_and_slope isn't an equation.",
         ),
         (Line(3, 4, 8), TWO_POINTS, None, "A line given by two_points isn't an equation."),
+        (Line(3, 4, 8), TABLE, None, "A line given by table isn't an equation."),
+        (Line(3, 4, 8), GRAPH, None, "A line given by graph isn't an equation."),
         (
             Line(1, 0, -4),
             SLOPE_INTERCEPT,
@@ -469,6 +490,104 @@ def test_answer_pieces(data: LineQuestionData, pieces: Pieces) -> None:
             ),
             "Write the equation of the line through this point that is parallel to the x-axis:",
         ),
+        # a table names the line by its points, a graph is "this line", and point-slope form
+        # from either names the point it goes through
+        (
+            LineQuestionData(Line(1, 2, 6), TABLE, SLOPE, ((2, 2),), table_xs=(-4, 2, 4, 8)),
+            "Find the slope of the line through the points in this table:",
+        ),
+        (
+            LineQuestionData(Line(1, 2, 6), TABLE, ZERO, ((2, 2),), table_xs=(-4, 2, 4, 8)),
+            "Find the zero of the linear function in this table:",
+        ),
+        (
+            LineQuestionData(Line(1, 2, 6), GRAPH, Y_INTERCEPT, ((2, 2), (-4, 5)), as_point=True),
+            "Find the y-intercept of this line as an ordered pair:",
+        ),
+        (
+            LineQuestionData(Line(1, 2, 6), TABLE, POINT_SLOPE, ((4, 1),), table_xs=(-4, 2, 4, 8)),
+            "Write the equation of the line through the points in this table in point-slope "
+            "form, using the point (4, 1):",
+        ),
+        (
+            LineQuestionData(Line(1, 2, 6), GRAPH, POINT_SLOPE, ((-4, 5), (2, 2))),
+            f"Write the equation of this line in point-slope form, using the point ({MINUS}4, 5):",
+        ),
+        (
+            LineQuestionData(Line(1, 0, 3), GRAPH, VERTICAL, ((3, 2), (3, -4))),
+            "Write the equation of this line:",
+        ),
+        # graphing a line from each kind of given, and completing a table
+        (LineQuestionData(Line(2, -3, -3), SLOPE_INTERCEPT, GRAPH), "Graph this equation:"),
+        (LineQuestionData(Line(1, 0, 3), VERTICAL, GRAPH), "Graph this equation:"),
+        (
+            LineQuestionData(Line(3, 4, 8), TWO_POINTS, GRAPH, ((-4, 5), (4, -1))),
+            "Graph the line through these points:",
+        ),
+        (
+            LineQuestionData(Line(3, 4, 8), POINT_AND_SLOPE, GRAPH, ((-4, 5),)),
+            "Graph the line with this point and slope:",
+        ),
+        (
+            LineQuestionData(Line(2, -3, -3), SLOPE_AND_INTERCEPT, GRAPH),
+            "Graph the line with this slope and y-intercept:",
+        ),
+        (
+            LineQuestionData(Line(1, 2, 2), INTERCEPTS, GRAPH),
+            "Graph the line with these intercepts:",
+        ),
+        (
+            LineQuestionData(Line(1, 2, 6), STANDARD, TABLE, table_xs=(-4, 2, 4, 8)),
+            "Complete the table for this equation:",
+        ),
+        (
+            LineQuestionData(Line(1, 2, 6), GRAPH, TABLE, ((2, 2), (-4, 5)), table_xs=(-4, 4)),
+            "Complete the table for this line:",
+        ),
+        # a graph or table to choose, asked as STAAR asks it
+        (
+            LineQuestionData(Line(2, -3, -12), SLOPE_AND_INTERCEPT, GRAPH, chosen=True),
+            "Which graph represents the line with this slope and y-intercept?",
+        ),
+        (
+            LineQuestionData(Line(4, 1, -14), POINT_SLOPE, GRAPH, ((-3, -2),), chosen=True),
+            "Which graph represents this equation?",
+        ),
+        (
+            LineQuestionData(Line(1, 2, 6), STANDARD, TABLE, table_xs=(-4, 2), chosen=True),
+            "Which table represents this equation?",
+        ),
+        (
+            LineQuestionData(Line(1, 2, 6), GRAPH, TABLE, ((2, 2), (-4, 5)), chosen=True),
+            "Which table represents this line?",
+        ),
+        # a statement asked too
+        (
+            LineQuestionData(
+                Line(1, 0, -4), TWO_POINTS, VERTICAL, ((-4, 9), (-4, 5)), statement=Statement.SLOPE
+            ),
+            "Write the equation of the line through these points, and give its slope:",
+        ),
+        (
+            LineQuestionData(
+                Line(1, 0, 9), POINT_AND_SLOPE, VERTICAL, ((9, 10),), statement=Statement.X_AXIS
+            ),
+            "Write the equation of the line with this point and slope, and say whether it is "
+            "parallel or perpendicular to the x-axis:",
+        ),
+        (
+            LineQuestionData(
+                Line(1, 0, 5),
+                VERTICAL,
+                VERTICAL,
+                ((5, 4),),
+                reference=Y_AXIS,
+                relation=PARALLEL,
+                statement=Statement.SLOPE,
+            ),
+            "Write the equation of the line through this point that is parallel to the y-axis, "
+            "and give its slope:",
+        ),
     ],
 )
 def test_instruction(data: LineQuestionData, text: str) -> None:
@@ -539,14 +658,97 @@ def test_instruction(data: LineQuestionData, text: str) -> None:
             ),
             ("(3, 7)",),
         ),
+        # the slope and y-intercept, and the intercepts, in the question's number style
+        (
+            LineQuestionData(Line(2, -3, -3), SLOPE_AND_INTERCEPT, GRAPH),
+            ("slope ", Fraction(2, 3), ", y-intercept 1"),
+        ),
+        (
+            LineQuestionData(Line(1, -2, -2), SLOPE_AND_INTERCEPT, GRAPH, numbers=DECIMAL),
+            ("slope 0.5, y-intercept 1",),
+        ),
+        (
+            LineQuestionData(Line(2, -1, -5), INTERCEPTS, GRAPH, numbers=DECIMAL),
+            (f"x-intercept {MINUS}2.5, y-intercept 5",),
+        ),
+        (
+            LineQuestionData(Line(1, 2, 2), INTERCEPTS, GRAPH),
+            ("x-intercept 2, y-intercept 1",),
+        ),
+        # a table and a graph are drawn, not written
+        (LineQuestionData(Line(1, 2, 6), TABLE, SLOPE, ((2, 2),), table_xs=(-4, 2, 4, 8)), ()),
+        (LineQuestionData(Line(1, 2, 6), GRAPH, SLOPE, ((2, 2), (-4, 5))), ()),
     ],
 )
 def test_given_pieces(data: LineQuestionData, pieces: Pieces) -> None:
     """
-    Points and a point and slope are listed; any other form is the line's equation. With a
-    relation, it's the other line, or the point for an axis.
+    Points and a point and slope are listed; a table and a graph are drawn, so have none; any
+    other form is the line's equation. With a relation, it's the other line, or the point for an
+    axis.
     """
     assert given_pieces(data) == pieces
+
+
+@pytest.mark.parametrize(
+    ("data", "cells"),
+    [
+        # a half in the question's number style: stacked in a fraction question, a decimal in
+        # a decimal one
+        (
+            LineQuestionData(Line(3, -2, 1), TABLE, SLOPE, ((-3, -5),), table_xs=(-3, -1, 2, 5, 6)),
+            (
+                ("x", (f"{MINUS}3",), (f"{MINUS}1",), ("2",), ("5",), ("6",)),
+                (
+                    "y",
+                    (f"{MINUS}5",),
+                    (f"{MINUS}2",),
+                    (Fraction(5, 2),),
+                    ("7",),
+                    (Fraction(17, 2),),
+                ),
+            ),
+        ),
+        (
+            LineQuestionData(
+                Line(3, -2, 1),
+                TABLE,
+                SLOPE,
+                ((-3, -5),),
+                numbers=DECIMAL,
+                table_xs=(-3, -1, 2, 5, 6),
+                table_across=True,
+            ),
+            (
+                ("x", (f"{MINUS}3",), (f"{MINUS}1",), ("2",), ("5",), ("6",)),
+                ("y", (f"{MINUS}5",), (f"{MINUS}2",), ("2.5",), ("7",), ("8.5",)),
+            ),
+        ),
+        # a table to complete leaves out the cells its blanks say
+        (
+            LineQuestionData(
+                Line(1, 2, 6), STANDARD, TABLE, table_xs=(-4, 2, 4, 8), table_blanks=(1, 1, 0, 1)
+            ),
+            (("x", (f"{MINUS}4",), ("2",), None, ("8",)), ("y", None, None, ("1",), None)),
+        ),
+    ],
+)
+def test_table_cells(data: LineQuestionData, cells: tuple[tuple[object, ...], ...]) -> None:
+    """
+    Each row's x and the line's y there, headed x and y, as pieces in the question's number
+    style, with minus signs, and ``None`` in a cell a table to complete leaves out.
+    """
+    assert table_cells(data) == cells
+
+
+def test_filled_table_cells() -> None:
+    """The answer key fills every cell of a table to complete."""
+    data = LineQuestionData(
+        Line(1, 2, 6), STANDARD, TABLE, table_xs=(-4, 2, 4, 8), table_blanks=(1, 1, 0, 1)
+    )
+    assert table_cells(data, filled=True) == (
+        ("x", (f"{MINUS}4",), ("2",), ("4",), ("8",)),
+        ("y", ("5",), ("2",), ("1",), (f"{MINUS}1",)),
+    )
 
 
 @pytest.mark.parametrize(
@@ -602,6 +804,89 @@ def test_choice_pieces(data: LineQuestionData, choice: LineAnswer, pieces: Piece
     assert choice_pieces(data, choice) == pieces
 
 
+VERTICAL_STATEMENT = LineQuestionData(
+    Line(1, 0, -4), TWO_POINTS, VERTICAL, ((-4, 9), (-4, 5)), statement=Statement.SLOPE
+)
+
+
+@pytest.mark.parametrize(
+    ("data", "choice", "pieces"),
+    [
+        (
+            VERTICAL_STATEMENT,
+            Stated(Equation(Line(1, 0, -4), VERTICAL), None),
+            (f"The equation of the line is x = {MINUS}4, and the slope is undefined.",),
+        ),
+        (
+            VERTICAL_STATEMENT,
+            Stated(Equation(Line(0, 1, -4), HORIZONTAL), Fraction(0)),
+            (f"The equation of the line is y = {MINUS}4, and the slope is 0.",),
+        ),
+        (
+            replace(VERTICAL_STATEMENT, statement=Statement.X_AXIS),
+            Stated(Equation(Line(1, 0, -4), VERTICAL), Relation.PERPENDICULAR),
+            (
+                f"The equation of the line is x = {MINUS}4, and the line is perpendicular to "
+                "the x-axis.",
+            ),
+        ),
+    ],
+)
+def test_statement_choice_pieces(
+    data: LineQuestionData, choice: LineAnswer, pieces: Pieces
+) -> None:
+    """A statement choice is a sentence, as STAAR's A.2(G) options are."""
+    assert choice_pieces(data, choice) == pieces
+
+
+def test_choice_pieces_errors() -> None:
+    """A graph or table to choose is drawn, so has no pieces."""
+    data = LineQuestionData(Line(2, -3, -12), SLOPE_AND_INTERCEPT, GRAPH, chosen=True)
+    with pytest.raises(ValueError) as error:
+        choice_pieces(data, Equation(Line(2, 3, 12), GRAPH))
+    assert str(error.value) == "A graph to choose is drawn, not written."
+
+
+@pytest.mark.parametrize(
+    ("line", "cells"),
+    [
+        # y = 2x - 3
+        (
+            Line(2, -1, 3),
+            (("x", ("0",), ("1",), ("3",)), ("y", (f"{MINUS}3",), (f"{MINUS}1",), ("3",))),
+        ),
+        # x = 2.5: 2.5 in every row of x, with the x-values as its y-values
+        (Line(2, 0, 5), (("x", ("2.5",), ("2.5",), ("2.5",)), ("y", ("0",), ("1",), ("3",)))),
+    ],
+)
+def test_choice_table_cells(line: Line, cells: tuple[tuple[object, ...], ...]) -> None:
+    """Every table to choose has the question's x-values, in the question's number style."""
+    data = LineQuestionData(
+        Line(2, -1, 3), SLOPE_INTERCEPT, TABLE, numbers=DECIMAL, table_xs=(0, 1, 3), chosen=True
+    )
+    assert choice_table_cells(data, line) == cells
+
+
+@pytest.mark.parametrize(
+    ("data", "labels"),
+    [
+        (
+            LineQuestionData(Line(3, 4, 8), STANDARD, SLOPE_AND_Y_INTERCEPT),
+            ("Slope", "y-intercept"),
+        ),
+        (VERTICAL_STATEMENT, ("Equation", "Slope")),
+        (
+            replace(VERTICAL_STATEMENT, statement=Statement.X_AXIS),
+            ("Equation", "Parallel or perpendicular"),
+        ),
+        (replace(VERTICAL_STATEMENT, statement=None), None),
+    ],
+)
+def test_blank_labels(data: LineQuestionData, labels: tuple[str, str] | None) -> None:
+    """Two answers get two labelled blanks; one answer gets none."""
+    assert blank_labels(data) == labels
+
+
 @pytest.mark.parametrize(
     ("data", "answer", "tile"),
     [
@@ -626,6 +911,19 @@ def test_choice_pieces(data: LineQuestionData, choice: LineAnswer, pieces: Piece
             LineQuestionData(Line(3, -4, -5), SLOPE_INTERCEPT, STANDARD),
             (f"3x {MINUS} 4y = {MINUS}5",),
             (f"3x {MINUS} 4y = {MINUS}5",),
+        ),
+        # a statement: written short in the key and on a tile
+        (
+            VERTICAL_STATEMENT,
+            (f"x = {MINUS}4, slope undefined",),
+            (f"x = {MINUS}4, slope undefined",),
+        ),
+        (
+            LineQuestionData(
+                Line(0, 1, 7), POINT_AND_SLOPE, HORIZONTAL, ((3, 7),), statement=Statement.X_AXIS
+            ),
+            ("y = 7, parallel to the x-axis",),
+            ("y = 7, parallel to the x-axis",),
         ),
     ],
 )

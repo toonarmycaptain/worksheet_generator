@@ -4,11 +4,12 @@ a frequency table or an input-output table.
 """
 
 from collections.abc import Sequence
+from fractions import Fraction
 
 from reportlab.lib.colors import HexColor
 from reportlab.pdfgen.canvas import Canvas
 
-from render.pdf.page import BOLD_FONT, FONT, fit_font
+from render.pdf.page import BOLD_FONT, FONT, draw_pieces, fit_font, pieces_width
 
 OUTLINE_COLOUR = HexColor("#2d3748")  # near black
 HEADING_FILL = HexColor("#edf2f7")  # very light grey
@@ -23,7 +24,7 @@ def draw_table(
     top: float,
     column_widths: Sequence[float],
     row_heights: Sequence[float],
-    cells: Sequence[Sequence[str | None]],
+    cells: Sequence[Sequence[str | tuple[str | Fraction, ...] | None]],
     *,
     heading_row: bool = False,
     heading_column: bool = False,
@@ -36,7 +37,9 @@ def draw_table(
 
     ``cells[row][column]`` is the text of that cell, or ``None`` for a cell left empty to be
     filled in; a newline in the text starts a new line. Each line is centred across its cell,
-    the cell's lines together centred down it. The headings, in the first row with
+    the cell's lines together centred down it. A cell can instead hold pieces, text and
+    fractions drawn stacked by ``draw_pieces`` on one line, in ``FONT`` at its size; its row
+    needs room for the fraction's height. The headings, in the first row with
     ``heading_row`` and in the first column with ``heading_column``, are shaded in
     ``HEADING_FILL`` and drawn in ``BOLD_FONT`` at ``heading_size``; the other cells in ``FONT``
     at ``body_size``. A line too wide for its cell is drawn smaller, as ``fit_font`` does.
@@ -58,8 +61,13 @@ def draw_table(
                 continue
             heading = (heading_row and row == 0) or (heading_column and column == 0)
             font, size = (BOLD_FONT, heading_size) if heading else (FONT, body_size)
-            lines = text.split("\n")
             centre = lefts[column] + column_widths[column] / 2
+            if isinstance(text, tuple):
+                text_width = pieces_width(text, size)
+                middle = tops[row] - row_heights[row] / 2
+                draw_pieces(pdf, centre - text_width / 2, middle - TEXT_DROP, text, size)
+                continue
+            lines = text.split("\n")
             line_height = size + LINE_GAP
             baseline = tops[row] - row_heights[row] / 2 + (len(lines) - 1) * line_height / 2
             for line in lines:

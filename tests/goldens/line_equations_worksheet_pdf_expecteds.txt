@@ -1787,3 +1787,5555 @@ BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 148.1164 470 Tm (\(x + 4\)) Tj T* ET
 BT 1 0 0 1 188.1844 470 Tm (    \(L\)) Tj T* ET
 
+=== tables_and_graphs_answer_key ===
+title: Slope and Intercepts
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Slope and Intercepts) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Find the slope of the line through the points in this table:) Tj T* ET
+.929412 .94902 .968627 rg
+n 82 648 112 20 re f*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 655 Tm (x) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 162.664 655 Tm (y) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 103.37 635 Tm /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 162.664 635 Tm (5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 615 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 162.664 615 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 595 Tm (4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 162.664 595 Tm (1) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 575 Tm (8) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 159.37 575 Tm /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (1) Tj T* ET
+.176471 .215686 .282353 RG
+1 w
+n 82 568 112 100 re S
+n 138 668 m 138 568 l S
+n 82 648 m 194 648 l S
+n 82 628 m 194 628 l S
+n 82 608 m 194 608 l S
+n 82 588 m 194 588 l S
+n 329 568 m 558 568 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 538 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 538 Tm (Find the slope and y-intercept of the line through the points in this table:) Tj T* ET
+.929412 .94902 .968627 rg
+n 82 472 28 56 re f*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 92.664 511 Tm (x) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 123.37 511 Tm /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (3) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 163.37 511 Tm /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (1) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 206.664 511 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 246.664 511 Tm (5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 286.664 511 Tm (6) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 92.664 483 Tm (y) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 123.37 483 Tm /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 163.37 483 Tm /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT /F1 10.2 Tf 12.24 TL ET
+BT 1 0 0 1 207.1644 488.64 Tm (5) Tj T* ET
+BT 1 0 0 1 207.1644 477.216 Tm (2) Tj T* ET
+n 205.9644 486.6 m 214.0356 486.6 l S
+BT /F1 12 Tf 14.4 TL ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 246.664 483 Tm (7) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT /F1 10.2 Tf 12.24 TL ET
+BT 1 0 0 1 284.3288 488.64 Tm (17) Tj T* ET
+BT 1 0 0 1 287.1644 477.216 Tm (2) Tj T* ET
+n 283.1288 486.6 m 296.8712 486.6 l S
+BT /F1 12 Tf 14.4 TL ET
+.176471 .215686 .282353 RG
+1 w
+n 82 472 228 56 re S
+n 110 528 m 110 472 l S
+n 150 528 m 150 472 l S
+n 190 528 m 190 472 l S
+n 230 528 m 230 472 l S
+n 270 528 m 270 472 l S
+n 82 500 m 310 500 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 329 502 Tm (Slope: ______________) Tj T* ET
+BT 1 0 0 1 329 472 Tm (y-intercept: ______________) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 442 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 442 Tm (Find the zero of this function:) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 90 232.3 m 90 424 l S
+n 100.65 232.3 m 100.65 424 l S
+n 111.3 232.3 m 111.3 424 l S
+n 121.95 232.3 m 121.95 424 l S
+n 132.6 232.3 m 132.6 424 l S
+n 143.25 232.3 m 143.25 424 l S
+n 153.9 232.3 m 153.9 424 l S
+n 164.55 232.3 m 164.55 424 l S
+n 175.2 232.3 m 175.2 424 l S
+n 185.85 232.3 m 185.85 424 l S
+n 196.5 232.3 m 196.5 424 l S
+n 207.15 232.3 m 207.15 424 l S
+n 217.8 232.3 m 217.8 424 l S
+n 228.45 232.3 m 228.45 424 l S
+n 239.1 232.3 m 239.1 424 l S
+n 249.75 232.3 m 249.75 424 l S
+n 260.4 232.3 m 260.4 424 l S
+n 271.05 232.3 m 271.05 424 l S
+n 281.7 232.3 m 281.7 424 l S
+n 292.35 232.3 m 292.35 424 l S
+n 303 232.3 m 303 424 l S
+n 90 232.3 m 303 232.3 l S
+n 90 242.95 m 303 242.95 l S
+n 90 253.6 m 303 253.6 l S
+n 90 264.25 m 303 264.25 l S
+n 90 274.9 m 303 274.9 l S
+n 90 285.55 m 303 285.55 l S
+n 90 296.2 m 303 296.2 l S
+n 90 306.85 m 303 306.85 l S
+n 90 317.5 m 303 317.5 l S
+n 90 328.15 m 303 328.15 l S
+n 90 338.8 m 303 338.8 l S
+n 90 349.45 m 303 349.45 l S
+n 90 360.1 m 303 360.1 l S
+n 90 370.75 m 303 370.75 l S
+n 90 381.4 m 303 381.4 l S
+n 90 392.05 m 303 392.05 l S
+n 90 402.7 m 303 402.7 l S
+n 90 413.35 m 303 413.35 l S
+n 90 424 m 303 424 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 82 328.15 m 311 328.15 l S
+n 196.5 224.3 m 196.5 432 l S
+n 311 328.15 m 304 331.15 l 304 325.15 l h
+f*
+n 82 328.15 m 89 325.15 l 89 331.15 l h
+f*
+n 196.5 432 m 193.5 425 l 199.5 425 l h
+f*
+n 196.5 224.3 m 199.5 231.3 l 193.5 231.3 l h
+f*
+BT /F4 10 Tf 12 TL ET
+BT 1 0 0 1 306 332.15 Tm (x) Tj T* ET
+BT 1 0 0 1 200.5 422 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 106.4325 316.4 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 107.4325 319.15 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 127.7325 316.4 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 128.7325 319.15 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 149.0325 316.4 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 150.0325 319.15 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 170.3325 316.4 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 171.3325 319.15 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 214.854 316.4 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 215.854 319.15 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 236.154 316.4 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 237.154 319.15 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 257.454 316.4 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 258.454 319.15 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 278.754 316.4 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 279.754 319.15 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 184.765 237.8667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 240.6167 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 184.765 259.1667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 261.9167 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 184.765 280.4667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 283.2167 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 184.765 301.7667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 304.5167 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 344.3667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 347.1167 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 365.6667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 368.4167 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 188.608 386.9667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 389.7167 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 188.608 408.2667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 411.0167 Tm (8) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+0 0 0 RG
+1.5 w
+n 138.6857 424 m 275.6143 232.3 l S
+n 275.6143 232.3 m 273.9868 239.7398 l 269.1044 236.2524 l h
+f*
+n 138.6857 424 m 140.3132 416.5602 l 145.1956 420.0476 l h
+f*
+n
+156.5 402.7 m
+156.5 404.1359 155.3359 405.3 153.9 405.3 c
+152.4641 405.3 151.3 404.1359 151.3 402.7 c
+151.3 401.2641 152.4641 400.1 153.9 400.1 c
+155.3359 400.1 156.5 401.2641 156.5 402.7 c
+f*
+BT /F1 8 Tf 9.6 TL ET
+q
+1 1 1 rg
+n 156.2666 407.6752 25.064 10 re f*
+Q
+BT /F1 8 Tf 9.6 TL ET
+BT 1 0 0 1 157.2666 410.6752 Tm (\() Tj /F3 8 Tf 9.6 TL (-) Tj /F1 8 Tf 9.6 TL (4, 7\)) Tj T* ET
+n
+263 253.6 m
+263 255.0359 261.8359 256.2 260.4 256.2 c
+258.9641 256.2 257.8 255.0359 257.8 253.6 c
+257.8 252.1641 258.9641 251 260.4 251 c
+261.8359 251 263 252.1641 263 253.6 c
+f*
+BT /F1 8 Tf 9.6 TL ET
+q
+1 1 1 rg
+n 232.9694 237.2915 25.064 10 re f*
+Q
+BT /F1 8 Tf 9.6 TL ET
+BT 1 0 0 1 233.9694 240.2915 Tm (\(6, ) Tj /F3 8 Tf 9.6 TL (-) Tj /F1 8 Tf 9.6 TL (7\)) Tj T* ET
+n 329 224.3 m 558 224.3 l S
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Slope and Intercepts) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Find the slope of this line:) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 90 532.2 m 90 660 l S
+n 100.65 532.2 m 100.65 660 l S
+n 111.3 532.2 m 111.3 660 l S
+n 121.95 532.2 m 121.95 660 l S
+n 132.6 532.2 m 132.6 660 l S
+n 143.25 532.2 m 143.25 660 l S
+n 153.9 532.2 m 153.9 660 l S
+n 164.55 532.2 m 164.55 660 l S
+n 175.2 532.2 m 175.2 660 l S
+n 185.85 532.2 m 185.85 660 l S
+n 196.5 532.2 m 196.5 660 l S
+n 207.15 532.2 m 207.15 660 l S
+n 217.8 532.2 m 217.8 660 l S
+n 228.45 532.2 m 228.45 660 l S
+n 239.1 532.2 m 239.1 660 l S
+n 249.75 532.2 m 249.75 660 l S
+n 260.4 532.2 m 260.4 660 l S
+n 271.05 532.2 m 271.05 660 l S
+n 281.7 532.2 m 281.7 660 l S
+n 292.35 532.2 m 292.35 660 l S
+n 303 532.2 m 303 660 l S
+n 90 532.2 m 303 532.2 l S
+n 90 542.85 m 303 542.85 l S
+n 90 553.5 m 303 553.5 l S
+n 90 564.15 m 303 564.15 l S
+n 90 574.8 m 303 574.8 l S
+n 90 585.45 m 303 585.45 l S
+n 90 596.1 m 303 596.1 l S
+n 90 606.75 m 303 606.75 l S
+n 90 617.4 m 303 617.4 l S
+n 90 628.05 m 303 628.05 l S
+n 90 638.7 m 303 638.7 l S
+n 90 649.35 m 303 649.35 l S
+n 90 660 m 303 660 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 82 596.1 m 311 596.1 l S
+n 196.5 524.2 m 196.5 668 l S
+n 311 596.1 m 304 599.1 l 304 593.1 l h
+f*
+n 82 596.1 m 89 593.1 l 89 599.1 l h
+f*
+n 196.5 668 m 193.5 661 l 199.5 661 l h
+f*
+n 196.5 524.2 m 199.5 531.2 l 193.5 531.2 l h
+f*
+BT /F4 10 Tf 12 TL ET
+BT 1 0 0 1 306 600.1 Tm (x) Tj T* ET
+BT 1 0 0 1 200.5 658 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 106.4325 584.35 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 107.4325 587.1 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 127.7325 584.35 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 128.7325 587.1 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 149.0325 584.35 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 150.0325 587.1 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 170.3325 584.35 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 171.3325 587.1 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 214.854 584.35 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 215.854 587.1 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 236.154 584.35 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 237.154 587.1 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 257.454 584.35 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 258.454 587.1 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 278.754 584.35 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 279.754 587.1 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 184.765 548.4167 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 551.1667 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 184.765 569.7167 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 572.4667 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 612.3167 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 615.0667 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 633.6167 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 636.3667 Tm (4) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+0 0 0 RG
+1.5 w
+n 228.45 660 m 228.45 532.2 l S
+n 228.45 532.2 m 231.45 539.2 l 225.45 539.2 l h
+f*
+n 228.45 660 m 225.45 653 l 231.45 653 l h
+f*
+n
+231.05 617.4 m
+231.05 618.8359 229.8859 620 228.45 620 c
+227.0141 620 225.85 618.8359 225.85 617.4 c
+225.85 615.9641 227.0141 614.8 228.45 614.8 c
+229.8859 614.8 231.05 615.9641 231.05 617.4 c
+f*
+n
+231.05 553.5 m
+231.05 554.9359 229.8859 556.1 228.45 556.1 c
+227.0141 556.1 225.85 554.9359 225.85 553.5 c
+225.85 552.0641 227.0141 550.9 228.45 550.9 c
+229.8859 550.9 231.05 552.0641 231.05 553.5 c
+f*
+n 329 524.2 m 558 524.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 494.2 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 494.2 Tm (Find the y-intercept of the line through these points:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 474.2 Tm (\(2, 4\) and \() Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (4, 1\)) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 90 328.4 m 90 456.2 l S
+n 100.65 328.4 m 100.65 456.2 l S
+n 111.3 328.4 m 111.3 456.2 l S
+n 121.95 328.4 m 121.95 456.2 l S
+n 132.6 328.4 m 132.6 456.2 l S
+n 143.25 328.4 m 143.25 456.2 l S
+n 153.9 328.4 m 153.9 456.2 l S
+n 164.55 328.4 m 164.55 456.2 l S
+n 175.2 328.4 m 175.2 456.2 l S
+n 185.85 328.4 m 185.85 456.2 l S
+n 196.5 328.4 m 196.5 456.2 l S
+n 207.15 328.4 m 207.15 456.2 l S
+n 217.8 328.4 m 217.8 456.2 l S
+n 228.45 328.4 m 228.45 456.2 l S
+n 239.1 328.4 m 239.1 456.2 l S
+n 249.75 328.4 m 249.75 456.2 l S
+n 260.4 328.4 m 260.4 456.2 l S
+n 271.05 328.4 m 271.05 456.2 l S
+n 281.7 328.4 m 281.7 456.2 l S
+n 292.35 328.4 m 292.35 456.2 l S
+n 303 328.4 m 303 456.2 l S
+n 90 328.4 m 303 328.4 l S
+n 90 339.05 m 303 339.05 l S
+n 90 349.7 m 303 349.7 l S
+n 90 360.35 m 303 360.35 l S
+n 90 371 m 303 371 l S
+n 90 381.65 m 303 381.65 l S
+n 90 392.3 m 303 392.3 l S
+n 90 402.95 m 303 402.95 l S
+n 90 413.6 m 303 413.6 l S
+n 90 424.25 m 303 424.25 l S
+n 90 434.9 m 303 434.9 l S
+n 90 445.55 m 303 445.55 l S
+n 90 456.2 m 303 456.2 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 82 392.3 m 311 392.3 l S
+n 196.5 320.4 m 196.5 464.2 l S
+n 311 392.3 m 304 395.3 l 304 389.3 l h
+f*
+n 82 392.3 m 89 389.3 l 89 395.3 l h
+f*
+n 196.5 464.2 m 193.5 457.2 l 199.5 457.2 l h
+f*
+n 196.5 320.4 m 199.5 327.4 l 193.5 327.4 l h
+f*
+BT /F4 10 Tf 12 TL ET
+BT 1 0 0 1 306 396.3 Tm (x) Tj T* ET
+BT 1 0 0 1 200.5 454.2 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 106.4325 380.55 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 107.4325 383.3 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 127.7325 380.55 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 128.7325 383.3 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 149.0325 380.55 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 150.0325 383.3 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 170.3325 380.55 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 171.3325 383.3 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 214.854 380.55 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 215.854 383.3 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 236.154 380.55 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 237.154 383.3 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 257.454 380.55 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 258.454 383.3 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 278.754 380.55 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 279.754 383.3 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 184.765 344.6167 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 347.3667 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 184.765 365.9167 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 368.6667 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 408.5167 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 411.2667 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 429.8167 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 432.5667 Tm (4) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+n 329 320.4 m 558 320.4 l S
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Slope and Intercepts) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Find the slope of this line:) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 90 447 m 90 660 l S
+n 111.3 447 m 111.3 660 l S
+n 132.6 447 m 132.6 660 l S
+n 153.9 447 m 153.9 660 l S
+n 175.2 447 m 175.2 660 l S
+n 196.5 447 m 196.5 660 l S
+n 217.8 447 m 217.8 660 l S
+n 239.1 447 m 239.1 660 l S
+n 260.4 447 m 260.4 660 l S
+n 281.7 447 m 281.7 660 l S
+n 303 447 m 303 660 l S
+n 90 447 m 303 447 l S
+n 90 468.3 m 303 468.3 l S
+n 90 489.6 m 303 489.6 l S
+n 90 510.9 m 303 510.9 l S
+n 90 532.2 m 303 532.2 l S
+n 90 553.5 m 303 553.5 l S
+n 90 574.8 m 303 574.8 l S
+n 90 596.1 m 303 596.1 l S
+n 90 617.4 m 303 617.4 l S
+n 90 638.7 m 303 638.7 l S
+n 90 660 m 303 660 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 82 553.5 m 311 553.5 l S
+n 196.5 439 m 196.5 668 l S
+n 311 553.5 m 304 556.5 l 304 550.5 l h
+f*
+n 82 553.5 m 89 550.5 l 89 556.5 l h
+f*
+n 196.5 668 m 193.5 661 l 199.5 661 l h
+f*
+n 196.5 439 m 199.5 446 l 193.5 446 l h
+f*
+BT /F4 10 Tf 12 TL ET
+BT 1 0 0 1 306 557.5 Tm (x) Tj T* ET
+BT 1 0 0 1 200.5 658 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 104.4865 541.75 13.627 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 105.4865 544.5 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (20) Tj T* ET
+q
+1 1 1 rg
+n 125.7865 541.75 13.627 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 126.7865 544.5 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (15) Tj T* ET
+q
+1 1 1 rg
+n 147.0865 541.75 13.627 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 148.0865 544.5 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (10) Tj T* ET
+q
+1 1 1 rg
+n 170.3325 541.75 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 171.3325 544.5 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (5) Tj T* ET
+q
+1 1 1 rg
+n 214.854 541.75 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 215.854 544.5 Tm (5) Tj T* ET
+q
+1 1 1 rg
+n 234.208 541.75 9.784 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 235.208 544.5 Tm (10) Tj T* ET
+q
+1 1 1 rg
+n 255.508 541.75 9.784 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 256.508 544.5 Tm (15) Tj T* ET
+q
+1 1 1 rg
+n 276.808 541.75 9.784 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 277.808 544.5 Tm (20) Tj T* ET
+q
+1 1 1 rg
+n 180.873 463.2167 13.627 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 181.873 465.9667 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (20) Tj T* ET
+q
+1 1 1 rg
+n 180.873 484.5167 13.627 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 181.873 487.2667 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (15) Tj T* ET
+q
+1 1 1 rg
+n 180.873 505.8167 13.627 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 181.873 508.5667 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (10) Tj T* ET
+q
+1 1 1 rg
+n 184.765 527.1167 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 529.8667 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (5) Tj T* ET
+q
+1 1 1 rg
+n 188.608 569.7167 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 572.4667 Tm (5) Tj T* ET
+q
+1 1 1 rg
+n 184.716 591.0167 9.784 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.716 593.7667 Tm (10) Tj T* ET
+q
+1 1 1 rg
+n 184.716 612.3167 9.784 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.716 615.0667 Tm (15) Tj T* ET
+q
+1 1 1 rg
+n 184.716 633.6167 9.784 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.716 636.3667 Tm (20) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+0 0 0 RG
+1.5 w
+n 239.1 660 m 132.6 447 l S
+n 132.6 447 m 138.4138 451.9193 l 133.0472 454.6026 l h
+f*
+n 239.1 660 m 233.2862 655.0807 l 238.6528 652.3974 l h
+f*
+n
+220.4 617.4 m
+220.4 618.8359 219.2359 620 217.8 620 c
+216.3641 620 215.2 618.8359 215.2 617.4 c
+215.2 615.9641 216.3641 614.8 217.8 614.8 c
+219.2359 614.8 220.4 615.9641 220.4 617.4 c
+f*
+BT /F1 8 Tf 9.6 TL ET
+q
+1 1 1 rg
+n 221.9912 603.3577 25.12 10 re f*
+Q
+BT /F1 8 Tf 9.6 TL ET
+BT 1 0 0 1 222.9912 606.3577 Tm (\(5, 15\)) Tj T* ET
+n
+177.8 532.2 m
+177.8 533.6359 176.6359 534.8 175.2 534.8 c
+173.7641 534.8 172.6 533.6359 172.6 532.2 c
+172.6 530.7641 173.7641 529.6 175.2 529.6 c
+176.6359 529.6 177.8 530.7641 177.8 532.2 c
+f*
+BT /F1 8 Tf 9.6 TL ET
+q
+1 1 1 rg
+n 141.9864 535.7761 29.456 10 re f*
+Q
+BT /F1 8 Tf 9.6 TL ET
+BT 1 0 0 1 142.9864 538.7761 Tm (\() Tj /F3 8 Tf 9.6 TL (-) Tj /F1 8 Tf 9.6 TL (5, ) Tj /F3 8 Tf 9.6 TL (-) Tj /F1 8 Tf 9.6 TL (5\)) Tj T* ET
+n 329 439 m 558 439 l S
+--- stream 4
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Slope and Intercepts: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 702 Tm (1.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 702 Tm /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 92.486 708.58 Tm (1) Tj T* ET
+BT 1 0 0 1 92.486 695.252 Tm (2) Tj T* ET
+n 91.086 706.2 m 100.5024 706.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 670 Tm (2.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 670 Tm (slope ) Tj T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 122.152 676.58 Tm (3) Tj T* ET
+BT 1 0 0 1 122.152 663.252 Tm (2) Tj T* ET
+n 120.752 674.2 m 130.1684 674.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 131.5684 670 Tm (, y-intercept ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 219.0824 676.58 Tm (1) Tj T* ET
+BT 1 0 0 1 219.0824 663.252 Tm (2) Tj T* ET
+n 217.6824 674.2 m 227.0988 674.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 644 Tm (3.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 644 Tm (1) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 624 Tm (4.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 624 Tm (undefined) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 604 Tm (5.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 604 Tm (3) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 584 Tm (6.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 584 Tm (2) Tj T* ET
+
+=== equations_from_tables_and_graphs_answer_key ===
+title: Writing Linear Equations
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Writing Linear Equations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Write the equation of the line through the points in this table in point-slope) Tj T* ET
+BT 1 0 0 1 82 658 Tm (form, using the point \(4, 1\):) Tj T* ET
+.929412 .94902 .968627 rg
+n 82 628 112 20 re f*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 635 Tm (x) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 162.664 635 Tm (y) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 103.37 615 Tm /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 162.664 615 Tm (5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 595 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 162.664 595 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 575 Tm (4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 162.664 575 Tm (1) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 555 Tm (8) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 159.37 555 Tm /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (1) Tj T* ET
+.176471 .215686 .282353 RG
+1 w
+n 82 548 112 100 re S
+n 138 648 m 138 548 l S
+n 82 628 m 194 628 l S
+n 82 608 m 194 608 l S
+n 82 588 m 194 588 l S
+n 82 568 m 194 568 l S
+n 329 548 m 558 548 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 518 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 518 Tm (Write the equation of this line in standard form:) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 90 393.5 m 90 500 l S
+n 100.65 393.5 m 100.65 500 l S
+n 111.3 393.5 m 111.3 500 l S
+n 121.95 393.5 m 121.95 500 l S
+n 132.6 393.5 m 132.6 500 l S
+n 143.25 393.5 m 143.25 500 l S
+n 153.9 393.5 m 153.9 500 l S
+n 164.55 393.5 m 164.55 500 l S
+n 175.2 393.5 m 175.2 500 l S
+n 185.85 393.5 m 185.85 500 l S
+n 196.5 393.5 m 196.5 500 l S
+n 207.15 393.5 m 207.15 500 l S
+n 217.8 393.5 m 217.8 500 l S
+n 228.45 393.5 m 228.45 500 l S
+n 239.1 393.5 m 239.1 500 l S
+n 249.75 393.5 m 249.75 500 l S
+n 260.4 393.5 m 260.4 500 l S
+n 271.05 393.5 m 271.05 500 l S
+n 281.7 393.5 m 281.7 500 l S
+n 292.35 393.5 m 292.35 500 l S
+n 303 393.5 m 303 500 l S
+n 90 393.5 m 303 393.5 l S
+n 90 404.15 m 303 404.15 l S
+n 90 414.8 m 303 414.8 l S
+n 90 425.45 m 303 425.45 l S
+n 90 436.1 m 303 436.1 l S
+n 90 446.75 m 303 446.75 l S
+n 90 457.4 m 303 457.4 l S
+n 90 468.05 m 303 468.05 l S
+n 90 478.7 m 303 478.7 l S
+n 90 489.35 m 303 489.35 l S
+n 90 500 m 303 500 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 82 446.75 m 311 446.75 l S
+n 196.5 385.5 m 196.5 508 l S
+n 311 446.75 m 304 449.75 l 304 443.75 l h
+f*
+n 82 446.75 m 89 443.75 l 89 449.75 l h
+f*
+n 196.5 508 m 193.5 501 l 199.5 501 l h
+f*
+n 196.5 385.5 m 199.5 392.5 l 193.5 392.5 l h
+f*
+BT /F4 10 Tf 12 TL ET
+BT 1 0 0 1 306 450.75 Tm (x) Tj T* ET
+BT 1 0 0 1 200.5 498 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 106.4325 435 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 107.4325 437.75 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 127.7325 435 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 128.7325 437.75 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 149.0325 435 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 150.0325 437.75 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 170.3325 435 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 171.3325 437.75 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 214.854 435 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 215.854 437.75 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 236.154 435 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 237.154 437.75 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 257.454 435 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 258.454 437.75 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 278.754 435 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 279.754 437.75 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 184.765 399.0667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 401.8167 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 184.765 420.3667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 423.1167 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 462.9667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 465.7167 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 484.2667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 487.0167 Tm (4) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+0 0 0 RG
+1.5 w
+n 303 492.9 m 90 421.9 l S
+n 90 421.9 m 97.58947 421.2675 l 95.6921 426.9596 l h
+f*
+n 303 492.9 m 295.4105 493.5325 l 297.3079 487.8404 l h
+f*
+n
+231.05 468.05 m
+231.05 469.4859 229.8859 470.65 228.45 470.65 c
+227.0141 470.65 225.85 469.4859 225.85 468.05 c
+225.85 466.6141 227.0141 465.45 228.45 465.45 c
+229.8859 465.45 231.05 466.6141 231.05 468.05 c
+f*
+n
+135.2 436.1 m
+135.2 437.5359 134.0359 438.7 132.6 438.7 c
+131.1641 438.7 130 437.5359 130 436.1 c
+130 434.6641 131.1641 433.5 132.6 433.5 c
+134.0359 433.5 135.2 434.6641 135.2 436.1 c
+f*
+n 329 385.5 m 558 385.5 l S
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Writing Linear Equations: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 702 Tm (1.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 702 Tm (y ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 1 = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 138.7 708.58 Tm (1) Tj T* ET
+BT 1 0 0 1 138.7 695.252 Tm (2) Tj T* ET
+n 137.3 706.2 m 146.7164 706.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 148.1164 702 Tm (\(x ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 4\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 676 Tm (2.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 676 Tm (x ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 3y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (3) Tj T* ET
+
+=== picture_choices_answer_key ===
+title: Slope and Intercepts
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Slope and Intercepts) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Find the y-intercept of this line:) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 90 532.2 m 90 660 l S
+n 100.65 532.2 m 100.65 660 l S
+n 111.3 532.2 m 111.3 660 l S
+n 121.95 532.2 m 121.95 660 l S
+n 132.6 532.2 m 132.6 660 l S
+n 143.25 532.2 m 143.25 660 l S
+n 153.9 532.2 m 153.9 660 l S
+n 164.55 532.2 m 164.55 660 l S
+n 175.2 532.2 m 175.2 660 l S
+n 185.85 532.2 m 185.85 660 l S
+n 196.5 532.2 m 196.5 660 l S
+n 207.15 532.2 m 207.15 660 l S
+n 217.8 532.2 m 217.8 660 l S
+n 228.45 532.2 m 228.45 660 l S
+n 239.1 532.2 m 239.1 660 l S
+n 249.75 532.2 m 249.75 660 l S
+n 260.4 532.2 m 260.4 660 l S
+n 271.05 532.2 m 271.05 660 l S
+n 281.7 532.2 m 281.7 660 l S
+n 292.35 532.2 m 292.35 660 l S
+n 303 532.2 m 303 660 l S
+n 90 532.2 m 303 532.2 l S
+n 90 542.85 m 303 542.85 l S
+n 90 553.5 m 303 553.5 l S
+n 90 564.15 m 303 564.15 l S
+n 90 574.8 m 303 574.8 l S
+n 90 585.45 m 303 585.45 l S
+n 90 596.1 m 303 596.1 l S
+n 90 606.75 m 303 606.75 l S
+n 90 617.4 m 303 617.4 l S
+n 90 628.05 m 303 628.05 l S
+n 90 638.7 m 303 638.7 l S
+n 90 649.35 m 303 649.35 l S
+n 90 660 m 303 660 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 82 596.1 m 311 596.1 l S
+n 196.5 524.2 m 196.5 668 l S
+n 311 596.1 m 304 599.1 l 304 593.1 l h
+f*
+n 82 596.1 m 89 593.1 l 89 599.1 l h
+f*
+n 196.5 668 m 193.5 661 l 199.5 661 l h
+f*
+n 196.5 524.2 m 199.5 531.2 l 193.5 531.2 l h
+f*
+BT /F3 10 Tf 12 TL ET
+BT 1 0 0 1 306 600.1 Tm (x) Tj T* ET
+BT 1 0 0 1 200.5 658 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 106.4325 584.35 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 107.4325 587.1 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 127.7325 584.35 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 128.7325 587.1 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 149.0325 584.35 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 150.0325 587.1 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 170.3325 584.35 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 171.3325 587.1 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 214.854 584.35 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 215.854 587.1 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 236.154 584.35 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 237.154 587.1 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 257.454 584.35 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 258.454 587.1 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 278.754 584.35 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 279.754 587.1 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 184.765 548.4167 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 551.1667 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 184.765 569.7167 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 572.4667 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 612.3167 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 615.0667 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 633.6167 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 636.3667 Tm (4) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+0 0 0 RG
+1.5 w
+n 260.4 660 m 90 574.8 l S
+n 90 574.8 m 97.60263 575.2472 l 94.91935 580.6138 l h
+f*
+n 260.4 660 m 252.7974 659.5528 l 255.4807 654.1862 l h
+f*
+n
+220.4 638.7 m
+220.4 640.1359 219.2359 641.3 217.8 641.3 c
+216.3641 641.3 215.2 640.1359 215.2 638.7 c
+215.2 637.2641 216.3641 636.1 217.8 636.1 c
+219.2359 636.1 220.4 637.2641 220.4 638.7 c
+f*
+BT /F1 8 Tf 9.6 TL ET
+q
+1 1 1 rg
+n 213.8828 620.1957 20.672 10 re f*
+Q
+BT /F1 8 Tf 9.6 TL ET
+BT 1 0 0 1 214.8828 623.1957 Tm (\(2, 4\)) Tj T* ET
+n
+156.5 606.75 m
+156.5 608.1859 155.3359 609.35 153.9 609.35 c
+152.4641 609.35 151.3 608.1859 151.3 606.75 c
+151.3 605.3141 152.4641 604.15 153.9 604.15 c
+155.3359 604.15 156.5 605.3141 156.5 606.75 c
+f*
+BT /F1 8 Tf 9.6 TL ET
+q
+1 1 1 rg
+n 134.51 614.7994 25.064 10 re f*
+Q
+BT /F1 8 Tf 9.6 TL ET
+BT 1 0 0 1 135.51 617.7994 Tm (\() Tj /F4 8 Tf 9.6 TL (-) Tj /F1 8 Tf 9.6 TL (4, 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 329 654 Tm (A\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 351 654 Tm (6) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 329 634 Tm (B\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 351 634 Tm /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (3) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 329 614 Tm (C\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 351 614 Tm /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (6) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 329 594 Tm (D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 351 594 Tm (3) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 494.2 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 494.2 Tm (Find the slope and y-intercept of the line through the points in this table:) Tj T* ET
+.929412 .94902 .968627 rg
+n 82 464.2 112 20 re f*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 471.2 Tm (x) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 162.664 471.2 Tm (y) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 103.37 451.2 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 162.664 451.2 Tm (5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 431.2 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 162.664 431.2 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 411.2 Tm (4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 162.664 411.2 Tm (1) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 391.2 Tm (8) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 159.37 391.2 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (1) Tj T* ET
+.176471 .215686 .282353 RG
+1 w
+n 82 384.2 112 100 re S
+n 138 484.2 m 138 384.2 l S
+n 82 464.2 m 194 464.2 l S
+n 82 444.2 m 194 444.2 l S
+n 82 424.2 m 194 424.2 l S
+n 82 404.2 m 194 404.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 364.2 Tm (A\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 364.2 Tm (The slope is ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (2, and the y-intercept is ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (6.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 338.2 Tm (B\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 338.2 Tm (The slope is ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 193.852 344.78 Tm (1) Tj T* ET
+BT 1 0 0 1 193.852 331.452 Tm (2) Tj T* ET
+n 192.452 342.4 m 201.8684 342.4 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 203.2684 338.2 Tm (, and the y-intercept is ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (6.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 312.2 Tm (C\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 312.2 Tm (The slope is ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (2, and the y-intercept is 3.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 286.2 Tm (D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 286.2 Tm (The slope is ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 193.852 292.78 Tm (1) Tj T* ET
+BT 1 0 0 1 193.852 279.452 Tm (2) Tj T* ET
+n 192.452 290.4 m 201.8684 290.4 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 203.2684 286.2 Tm (, and the y-intercept is 3.) Tj T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Slope and Intercepts: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 708 Tm (D\) ) Tj T* ET
+BT 1 0 0 1 100.662 708 Tm (3) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 682 Tm (2.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 682 Tm (D\) ) Tj T* ET
+BT 1 0 0 1 100.662 682 Tm (The slope is ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 190.514 688.58 Tm (1) Tj T* ET
+BT 1 0 0 1 190.514 675.252 Tm (2) Tj T* ET
+n 189.114 686.2 m 198.5304 686.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 199.9304 682 Tm (, and the y-intercept is 3.) Tj T* ET
+
+=== picture_tiles_answer_key ===
+title: Slope and Intercepts
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Slope and Intercepts) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Find the slope of the line through the points in this table:) Tj T* ET
+.929412 .94902 .968627 rg
+n 82 648 112 20 re f*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 655 Tm (x) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 162.664 655 Tm (y) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 103.37 635 Tm /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 162.664 635 Tm (5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 615 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 162.664 615 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 595 Tm (4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 162.664 595 Tm (1) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 575 Tm (8) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 159.37 575 Tm /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (1) Tj T* ET
+.176471 .215686 .282353 RG
+1 w
+n 82 568 112 100 re S
+n 138 668 m 138 568 l S
+n 82 648 m 194 648 l S
+n 82 628 m 194 628 l S
+n 82 608 m 194 608 l S
+n 82 588 m 194 588 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 538 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 538 Tm (Find the zero of this function:) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 90 328.3 m 90 520 l S
+n 100.65 328.3 m 100.65 520 l S
+n 111.3 328.3 m 111.3 520 l S
+n 121.95 328.3 m 121.95 520 l S
+n 132.6 328.3 m 132.6 520 l S
+n 143.25 328.3 m 143.25 520 l S
+n 153.9 328.3 m 153.9 520 l S
+n 164.55 328.3 m 164.55 520 l S
+n 175.2 328.3 m 175.2 520 l S
+n 185.85 328.3 m 185.85 520 l S
+n 196.5 328.3 m 196.5 520 l S
+n 207.15 328.3 m 207.15 520 l S
+n 217.8 328.3 m 217.8 520 l S
+n 228.45 328.3 m 228.45 520 l S
+n 239.1 328.3 m 239.1 520 l S
+n 249.75 328.3 m 249.75 520 l S
+n 260.4 328.3 m 260.4 520 l S
+n 271.05 328.3 m 271.05 520 l S
+n 281.7 328.3 m 281.7 520 l S
+n 292.35 328.3 m 292.35 520 l S
+n 303 328.3 m 303 520 l S
+n 90 328.3 m 303 328.3 l S
+n 90 338.95 m 303 338.95 l S
+n 90 349.6 m 303 349.6 l S
+n 90 360.25 m 303 360.25 l S
+n 90 370.9 m 303 370.9 l S
+n 90 381.55 m 303 381.55 l S
+n 90 392.2 m 303 392.2 l S
+n 90 402.85 m 303 402.85 l S
+n 90 413.5 m 303 413.5 l S
+n 90 424.15 m 303 424.15 l S
+n 90 434.8 m 303 434.8 l S
+n 90 445.45 m 303 445.45 l S
+n 90 456.1 m 303 456.1 l S
+n 90 466.75 m 303 466.75 l S
+n 90 477.4 m 303 477.4 l S
+n 90 488.05 m 303 488.05 l S
+n 90 498.7 m 303 498.7 l S
+n 90 509.35 m 303 509.35 l S
+n 90 520 m 303 520 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 82 424.15 m 311 424.15 l S
+n 196.5 320.3 m 196.5 528 l S
+n 311 424.15 m 304 427.15 l 304 421.15 l h
+f*
+n 82 424.15 m 89 421.15 l 89 427.15 l h
+f*
+n 196.5 528 m 193.5 521 l 199.5 521 l h
+f*
+n 196.5 320.3 m 199.5 327.3 l 193.5 327.3 l h
+f*
+BT /F4 10 Tf 12 TL ET
+BT 1 0 0 1 306 428.15 Tm (x) Tj T* ET
+BT 1 0 0 1 200.5 518 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 106.4325 412.4 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 107.4325 415.15 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 127.7325 412.4 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 128.7325 415.15 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 149.0325 412.4 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 150.0325 415.15 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 170.3325 412.4 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 171.3325 415.15 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 214.854 412.4 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 215.854 415.15 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 236.154 412.4 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 237.154 415.15 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 257.454 412.4 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 258.454 415.15 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 278.754 412.4 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 279.754 415.15 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 184.765 333.8667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 336.6167 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 184.765 355.1667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 357.9167 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 184.765 376.4667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 379.2167 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 184.765 397.7667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 400.5167 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 440.3667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 443.1167 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 461.6667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 464.4167 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 188.608 482.9667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 485.7167 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 188.608 504.2667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 507.0167 Tm (8) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+0 0 0 RG
+1.5 w
+n 138.6857 520 m 275.6143 328.3 l S
+n 275.6143 328.3 m 273.9868 335.7398 l 269.1044 332.2524 l h
+f*
+n 138.6857 520 m 140.3132 512.5602 l 145.1956 516.0476 l h
+f*
+n
+156.5 498.7 m
+156.5 500.1359 155.3359 501.3 153.9 501.3 c
+152.4641 501.3 151.3 500.1359 151.3 498.7 c
+151.3 497.2641 152.4641 496.1 153.9 496.1 c
+155.3359 496.1 156.5 497.2641 156.5 498.7 c
+f*
+BT /F1 8 Tf 9.6 TL ET
+q
+1 1 1 rg
+n 156.2666 503.6752 25.064 10 re f*
+Q
+BT /F1 8 Tf 9.6 TL ET
+BT 1 0 0 1 157.2666 506.6752 Tm (\() Tj /F3 8 Tf 9.6 TL (-) Tj /F1 8 Tf 9.6 TL (4, 7\)) Tj T* ET
+n
+263 349.6 m
+263 351.0359 261.8359 352.2 260.4 352.2 c
+258.9641 352.2 257.8 351.0359 257.8 349.6 c
+257.8 348.1641 258.9641 347 260.4 347 c
+261.8359 347 263 348.1641 263 349.6 c
+f*
+BT /F1 8 Tf 9.6 TL ET
+q
+1 1 1 rg
+n 232.9694 333.2915 25.064 10 re f*
+Q
+BT /F1 8 Tf 9.6 TL ET
+BT 1 0 0 1 233.9694 336.2915 Tm (\(6, ) Tj /F3 8 Tf 9.6 TL (-) Tj /F1 8 Tf 9.6 TL (7\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 290.3 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 290.3 Tm (Find the y-intercept of the line through these points:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 270.3 Tm (\(2, 4\) and \() Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (4, 1\)) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 90 124.5 m 90 252.3 l S
+n 100.65 124.5 m 100.65 252.3 l S
+n 111.3 124.5 m 111.3 252.3 l S
+n 121.95 124.5 m 121.95 252.3 l S
+n 132.6 124.5 m 132.6 252.3 l S
+n 143.25 124.5 m 143.25 252.3 l S
+n 153.9 124.5 m 153.9 252.3 l S
+n 164.55 124.5 m 164.55 252.3 l S
+n 175.2 124.5 m 175.2 252.3 l S
+n 185.85 124.5 m 185.85 252.3 l S
+n 196.5 124.5 m 196.5 252.3 l S
+n 207.15 124.5 m 207.15 252.3 l S
+n 217.8 124.5 m 217.8 252.3 l S
+n 228.45 124.5 m 228.45 252.3 l S
+n 239.1 124.5 m 239.1 252.3 l S
+n 249.75 124.5 m 249.75 252.3 l S
+n 260.4 124.5 m 260.4 252.3 l S
+n 271.05 124.5 m 271.05 252.3 l S
+n 281.7 124.5 m 281.7 252.3 l S
+n 292.35 124.5 m 292.35 252.3 l S
+n 303 124.5 m 303 252.3 l S
+n 90 124.5 m 303 124.5 l S
+n 90 135.15 m 303 135.15 l S
+n 90 145.8 m 303 145.8 l S
+n 90 156.45 m 303 156.45 l S
+n 90 167.1 m 303 167.1 l S
+n 90 177.75 m 303 177.75 l S
+n 90 188.4 m 303 188.4 l S
+n 90 199.05 m 303 199.05 l S
+n 90 209.7 m 303 209.7 l S
+n 90 220.35 m 303 220.35 l S
+n 90 231 m 303 231 l S
+n 90 241.65 m 303 241.65 l S
+n 90 252.3 m 303 252.3 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 82 188.4 m 311 188.4 l S
+n 196.5 116.5 m 196.5 260.3 l S
+n 311 188.4 m 304 191.4 l 304 185.4 l h
+f*
+n 82 188.4 m 89 185.4 l 89 191.4 l h
+f*
+n 196.5 260.3 m 193.5 253.3 l 199.5 253.3 l h
+f*
+n 196.5 116.5 m 199.5 123.5 l 193.5 123.5 l h
+f*
+BT /F4 10 Tf 12 TL ET
+BT 1 0 0 1 306 192.4 Tm (x) Tj T* ET
+BT 1 0 0 1 200.5 250.3 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 106.4325 176.65 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 107.4325 179.4 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 127.7325 176.65 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 128.7325 179.4 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 149.0325 176.65 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 150.0325 179.4 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 170.3325 176.65 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 171.3325 179.4 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 214.854 176.65 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 215.854 179.4 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 236.154 176.65 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 237.154 179.4 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 257.454 176.65 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 258.454 179.4 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 278.754 176.65 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 279.754 179.4 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 184.765 140.7167 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 143.4667 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 184.765 162.0167 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 164.7667 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 204.6167 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 207.3667 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 225.9167 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 228.6667 Tm (4) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Slope and Intercepts) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (Answer bank) Tj T* ET
+BT /F1 11 Tf 13.2 TL ET
+BT 1 0 0 1 54 662 Tm (Put each numbered tile in the slot whose letter matches the answer to its question. Shaded boxes are) Tj T* ET
+BT 1 0 0 1 54 649 Tm (not used.) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 578 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 84.6272 595 Tm /F3 16 Tf 19.2 TL (-) Tj /F1 16 Tf 19.2 TL T* ET
+BT /F1 13.6 Tf 16.32 TL ET
+BT 1 0 0 1 96.6112 602.52 Tm (1) Tj T* ET
+BT 1 0 0 1 96.6112 587.288 Tm (2) Tj T* ET
+n 95.0112 599.8 m 105.7728 599.8 l S
+BT /F1 16 Tf 19.2 TL ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.668 626 Tm (A) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 578 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 175.552 595 Tm (1) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 626 Tm (B) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 578 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 259.552 595 Tm (3) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 259.668 626 Tm (C) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 578 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 343.668 626 Tm (D) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 578 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.998 626 Tm (E) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 578 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 626 Tm (F) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 534 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.332 520 Tm (G) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 534 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 520 Tm (H) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 534 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 262.332 520 Tm (I) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 534 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 344.664 520 Tm (J) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 534 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.668 520 Tm (K) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 534 84 44 re B*
+Q
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 520 Tm (L) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 318 432 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 432 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 358 432 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 432 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 398 432 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 432 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 438 432 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 432 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 478 432 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 432 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 518 432 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 318 392 40 40 re f*
+.941176 .745098 0 rg
+n 318 432 m 338 432 l 338 412 l 358 392 l 318 392 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 392 40 40 re S
+Q
+q
+1 1 1 rg
+n 358 392 40 40 re f*
+0 .235294 .784314 rg
+n 358 432 m 378 432 l 378 412 l 398 392 l 358 392 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 392 40 40 re S
+Q
+q
+1 1 1 rg
+n 398 392 40 40 re f*
+.85098 .14902 .172549 rg
+n 438 432 m 418 432 l 418 412 l 398 392 l 438 392 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 392 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 438 392 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 392 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 478 392 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 392 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 518 392 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 392 40 40 re S
+Q
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 458 Tm (Close the case and flip it over. If every) Tj T* ET
+BT 1 0 0 1 54 443 Tm (answer is right, the back looks like this.) Tj T* ET
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Slope and Intercepts: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 702 Tm (1.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 702 Tm /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 92.486 708.58 Tm (1) Tj T* ET
+BT 1 0 0 1 92.486 695.252 Tm (2) Tj T* ET
+n 91.086 706.2 m 100.5024 706.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 101.9024 702 Tm (    \(A\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 676 Tm (2.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 676 Tm (1) Tj T* ET
+BT 1 0 0 1 89.784 676 Tm (    \(B\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 656 Tm (3.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 656 Tm (3) Tj T* ET
+BT 1 0 0 1 89.784 656 Tm (    \(C\)) Tj T* ET
+
+=== graphing_answer_key ===
+title: Graphing Linear Equations
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Graphing Linear Equations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Graph this equation:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 652 Tm (y = ) Tj T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 107.76 658.58 Tm (2) Tj T* ET
+BT 1 0 0 1 107.76 645.252 Tm (3) Tj T* ET
+n 106.36 656.2 m 115.7764 656.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 117.1764 652 Tm (x + 1) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 90 521.5 m 90 628 l S
+n 100.65 521.5 m 100.65 628 l S
+n 111.3 521.5 m 111.3 628 l S
+n 121.95 521.5 m 121.95 628 l S
+n 132.6 521.5 m 132.6 628 l S
+n 143.25 521.5 m 143.25 628 l S
+n 153.9 521.5 m 153.9 628 l S
+n 164.55 521.5 m 164.55 628 l S
+n 175.2 521.5 m 175.2 628 l S
+n 185.85 521.5 m 185.85 628 l S
+n 196.5 521.5 m 196.5 628 l S
+n 207.15 521.5 m 207.15 628 l S
+n 217.8 521.5 m 217.8 628 l S
+n 228.45 521.5 m 228.45 628 l S
+n 239.1 521.5 m 239.1 628 l S
+n 249.75 521.5 m 249.75 628 l S
+n 260.4 521.5 m 260.4 628 l S
+n 271.05 521.5 m 271.05 628 l S
+n 281.7 521.5 m 281.7 628 l S
+n 292.35 521.5 m 292.35 628 l S
+n 303 521.5 m 303 628 l S
+n 90 521.5 m 303 521.5 l S
+n 90 532.15 m 303 532.15 l S
+n 90 542.8 m 303 542.8 l S
+n 90 553.45 m 303 553.45 l S
+n 90 564.1 m 303 564.1 l S
+n 90 574.75 m 303 574.75 l S
+n 90 585.4 m 303 585.4 l S
+n 90 596.05 m 303 596.05 l S
+n 90 606.7 m 303 606.7 l S
+n 90 617.35 m 303 617.35 l S
+n 90 628 m 303 628 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 82 574.75 m 311 574.75 l S
+n 196.5 513.5 m 196.5 636 l S
+n 311 574.75 m 304 577.75 l 304 571.75 l h
+f*
+n 82 574.75 m 89 571.75 l 89 577.75 l h
+f*
+n 196.5 636 m 193.5 629 l 199.5 629 l h
+f*
+n 196.5 513.5 m 199.5 520.5 l 193.5 520.5 l h
+f*
+BT /F3 10 Tf 12 TL ET
+BT 1 0 0 1 306 578.75 Tm (x) Tj T* ET
+BT 1 0 0 1 200.5 626 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 106.4325 563 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 107.4325 565.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 127.7325 563 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 128.7325 565.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 149.0325 563 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 150.0325 565.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 170.3325 563 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 171.3325 565.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 214.854 563 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 215.854 565.75 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 236.154 563 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 237.154 565.75 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 257.454 563 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 258.454 565.75 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 278.754 563 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 279.754 565.75 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 184.765 527.0667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 529.8167 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 184.765 548.3667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 551.1167 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 590.9667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 593.7167 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 612.2667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 615.0167 Tm (4) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 483.5 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 483.5 Tm (Graph the line with these intercepts:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 463.5 Tm (x-intercept 2, y-intercept 1) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 90 339 m 90 445.5 l S
+n 100.65 339 m 100.65 445.5 l S
+n 111.3 339 m 111.3 445.5 l S
+n 121.95 339 m 121.95 445.5 l S
+n 132.6 339 m 132.6 445.5 l S
+n 143.25 339 m 143.25 445.5 l S
+n 153.9 339 m 153.9 445.5 l S
+n 164.55 339 m 164.55 445.5 l S
+n 175.2 339 m 175.2 445.5 l S
+n 185.85 339 m 185.85 445.5 l S
+n 196.5 339 m 196.5 445.5 l S
+n 207.15 339 m 207.15 445.5 l S
+n 217.8 339 m 217.8 445.5 l S
+n 228.45 339 m 228.45 445.5 l S
+n 239.1 339 m 239.1 445.5 l S
+n 249.75 339 m 249.75 445.5 l S
+n 260.4 339 m 260.4 445.5 l S
+n 271.05 339 m 271.05 445.5 l S
+n 281.7 339 m 281.7 445.5 l S
+n 292.35 339 m 292.35 445.5 l S
+n 303 339 m 303 445.5 l S
+n 90 339 m 303 339 l S
+n 90 349.65 m 303 349.65 l S
+n 90 360.3 m 303 360.3 l S
+n 90 370.95 m 303 370.95 l S
+n 90 381.6 m 303 381.6 l S
+n 90 392.25 m 303 392.25 l S
+n 90 402.9 m 303 402.9 l S
+n 90 413.55 m 303 413.55 l S
+n 90 424.2 m 303 424.2 l S
+n 90 434.85 m 303 434.85 l S
+n 90 445.5 m 303 445.5 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 82 392.25 m 311 392.25 l S
+n 196.5 331 m 196.5 453.5 l S
+n 311 392.25 m 304 395.25 l 304 389.25 l h
+f*
+n 82 392.25 m 89 389.25 l 89 395.25 l h
+f*
+n 196.5 453.5 m 193.5 446.5 l 199.5 446.5 l h
+f*
+n 196.5 331 m 199.5 338 l 193.5 338 l h
+f*
+BT /F3 10 Tf 12 TL ET
+BT 1 0 0 1 306 396.25 Tm (x) Tj T* ET
+BT 1 0 0 1 200.5 443.5 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 106.4325 380.5 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 107.4325 383.25 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 127.7325 380.5 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 128.7325 383.25 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 149.0325 380.5 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 150.0325 383.25 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 170.3325 380.5 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 171.3325 383.25 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 214.854 380.5 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 215.854 383.25 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 236.154 380.5 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 237.154 383.25 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 257.454 380.5 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 258.454 383.25 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 278.754 380.5 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 279.754 383.25 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 184.765 344.5667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 347.3167 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 184.765 365.8667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 368.6167 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 408.4667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 411.2167 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 429.7667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 432.5167 Tm (4) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 301 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 301 Tm (Graph this equation:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 281 Tm (x = ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (2) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 90 156.5 m 90 263 l S
+n 100.65 156.5 m 100.65 263 l S
+n 111.3 156.5 m 111.3 263 l S
+n 121.95 156.5 m 121.95 263 l S
+n 132.6 156.5 m 132.6 263 l S
+n 143.25 156.5 m 143.25 263 l S
+n 153.9 156.5 m 153.9 263 l S
+n 164.55 156.5 m 164.55 263 l S
+n 175.2 156.5 m 175.2 263 l S
+n 185.85 156.5 m 185.85 263 l S
+n 196.5 156.5 m 196.5 263 l S
+n 207.15 156.5 m 207.15 263 l S
+n 217.8 156.5 m 217.8 263 l S
+n 228.45 156.5 m 228.45 263 l S
+n 239.1 156.5 m 239.1 263 l S
+n 249.75 156.5 m 249.75 263 l S
+n 260.4 156.5 m 260.4 263 l S
+n 271.05 156.5 m 271.05 263 l S
+n 281.7 156.5 m 281.7 263 l S
+n 292.35 156.5 m 292.35 263 l S
+n 303 156.5 m 303 263 l S
+n 90 156.5 m 303 156.5 l S
+n 90 167.15 m 303 167.15 l S
+n 90 177.8 m 303 177.8 l S
+n 90 188.45 m 303 188.45 l S
+n 90 199.1 m 303 199.1 l S
+n 90 209.75 m 303 209.75 l S
+n 90 220.4 m 303 220.4 l S
+n 90 231.05 m 303 231.05 l S
+n 90 241.7 m 303 241.7 l S
+n 90 252.35 m 303 252.35 l S
+n 90 263 m 303 263 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 82 209.75 m 311 209.75 l S
+n 196.5 148.5 m 196.5 271 l S
+n 311 209.75 m 304 212.75 l 304 206.75 l h
+f*
+n 82 209.75 m 89 206.75 l 89 212.75 l h
+f*
+n 196.5 271 m 193.5 264 l 199.5 264 l h
+f*
+n 196.5 148.5 m 199.5 155.5 l 193.5 155.5 l h
+f*
+BT /F3 10 Tf 12 TL ET
+BT 1 0 0 1 306 213.75 Tm (x) Tj T* ET
+BT 1 0 0 1 200.5 261 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 106.4325 198 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 107.4325 200.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 127.7325 198 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 128.7325 200.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 149.0325 198 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 150.0325 200.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 170.3325 198 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 171.3325 200.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 214.854 198 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 215.854 200.75 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 236.154 198 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 237.154 200.75 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 257.454 198 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 258.454 200.75 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 278.754 198 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 279.754 200.75 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 184.765 162.0667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 164.8167 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 184.765 183.3667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 186.1167 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 225.9667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 228.7167 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 247.2667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 250.0167 Tm (4) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Graphing Linear Equations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Graph the line through these points:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 658 Tm (\() Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (4, 5\) and \(4, ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (1\)) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 90 490.9 m 90 640 l S
+n 100.65 490.9 m 100.65 640 l S
+n 111.3 490.9 m 111.3 640 l S
+n 121.95 490.9 m 121.95 640 l S
+n 132.6 490.9 m 132.6 640 l S
+n 143.25 490.9 m 143.25 640 l S
+n 153.9 490.9 m 153.9 640 l S
+n 164.55 490.9 m 164.55 640 l S
+n 175.2 490.9 m 175.2 640 l S
+n 185.85 490.9 m 185.85 640 l S
+n 196.5 490.9 m 196.5 640 l S
+n 207.15 490.9 m 207.15 640 l S
+n 217.8 490.9 m 217.8 640 l S
+n 228.45 490.9 m 228.45 640 l S
+n 239.1 490.9 m 239.1 640 l S
+n 249.75 490.9 m 249.75 640 l S
+n 260.4 490.9 m 260.4 640 l S
+n 271.05 490.9 m 271.05 640 l S
+n 281.7 490.9 m 281.7 640 l S
+n 292.35 490.9 m 292.35 640 l S
+n 303 490.9 m 303 640 l S
+n 90 490.9 m 303 490.9 l S
+n 90 501.55 m 303 501.55 l S
+n 90 512.2 m 303 512.2 l S
+n 90 522.85 m 303 522.85 l S
+n 90 533.5 m 303 533.5 l S
+n 90 544.15 m 303 544.15 l S
+n 90 554.8 m 303 554.8 l S
+n 90 565.45 m 303 565.45 l S
+n 90 576.1 m 303 576.1 l S
+n 90 586.75 m 303 586.75 l S
+n 90 597.4 m 303 597.4 l S
+n 90 608.05 m 303 608.05 l S
+n 90 618.7 m 303 618.7 l S
+n 90 629.35 m 303 629.35 l S
+n 90 640 m 303 640 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 82 565.45 m 311 565.45 l S
+n 196.5 482.9 m 196.5 648 l S
+n 311 565.45 m 304 568.45 l 304 562.45 l h
+f*
+n 82 565.45 m 89 562.45 l 89 568.45 l h
+f*
+n 196.5 648 m 193.5 641 l 199.5 641 l h
+f*
+n 196.5 482.9 m 199.5 489.9 l 193.5 489.9 l h
+f*
+BT /F3 10 Tf 12 TL ET
+BT 1 0 0 1 306 569.45 Tm (x) Tj T* ET
+BT 1 0 0 1 200.5 638 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 106.4325 553.7 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 107.4325 556.45 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 127.7325 553.7 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 128.7325 556.45 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 149.0325 553.7 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 150.0325 556.45 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 170.3325 553.7 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 171.3325 556.45 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 214.854 553.7 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 215.854 556.45 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 236.154 553.7 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 237.154 556.45 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 257.454 553.7 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 258.454 556.45 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 278.754 553.7 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 279.754 556.45 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 184.765 496.4667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 499.2167 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 184.765 517.7667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 520.5167 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 184.765 539.0667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 541.8167 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 581.6667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 584.4167 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 602.9667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 605.7167 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 188.608 624.2667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 627.0167 Tm (6) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 452.9 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 452.9 Tm (Complete the table for this equation:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 432.9 Tm (x + 2y = 6) Tj T* ET
+.929412 .94902 .968627 rg
+n 82 402.9 112 20 re f*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 409.9 Tm (x) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 162.664 409.9 Tm (y) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 103.37 389.9 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 369.9 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 162.664 349.9 Tm (1) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 329.9 Tm (8) Tj T* ET
+.176471 .215686 .282353 RG
+1 w
+n 82 322.9 112 100 re S
+n 138 422.9 m 138 322.9 l S
+n 82 402.9 m 194 402.9 l S
+n 82 382.9 m 194 382.9 l S
+n 82 362.9 m 194 362.9 l S
+n 82 342.9 m 194 342.9 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 292.9 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 292.9 Tm (Complete the table for this line:) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 90 147.1 m 90 274.9 l S
+n 100.65 147.1 m 100.65 274.9 l S
+n 111.3 147.1 m 111.3 274.9 l S
+n 121.95 147.1 m 121.95 274.9 l S
+n 132.6 147.1 m 132.6 274.9 l S
+n 143.25 147.1 m 143.25 274.9 l S
+n 153.9 147.1 m 153.9 274.9 l S
+n 164.55 147.1 m 164.55 274.9 l S
+n 175.2 147.1 m 175.2 274.9 l S
+n 185.85 147.1 m 185.85 274.9 l S
+n 196.5 147.1 m 196.5 274.9 l S
+n 207.15 147.1 m 207.15 274.9 l S
+n 217.8 147.1 m 217.8 274.9 l S
+n 228.45 147.1 m 228.45 274.9 l S
+n 239.1 147.1 m 239.1 274.9 l S
+n 249.75 147.1 m 249.75 274.9 l S
+n 260.4 147.1 m 260.4 274.9 l S
+n 271.05 147.1 m 271.05 274.9 l S
+n 281.7 147.1 m 281.7 274.9 l S
+n 292.35 147.1 m 292.35 274.9 l S
+n 303 147.1 m 303 274.9 l S
+n 90 147.1 m 303 147.1 l S
+n 90 157.75 m 303 157.75 l S
+n 90 168.4 m 303 168.4 l S
+n 90 179.05 m 303 179.05 l S
+n 90 189.7 m 303 189.7 l S
+n 90 200.35 m 303 200.35 l S
+n 90 211 m 303 211 l S
+n 90 221.65 m 303 221.65 l S
+n 90 232.3 m 303 232.3 l S
+n 90 242.95 m 303 242.95 l S
+n 90 253.6 m 303 253.6 l S
+n 90 264.25 m 303 264.25 l S
+n 90 274.9 m 303 274.9 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 82 211 m 311 211 l S
+n 196.5 139.1 m 196.5 282.9 l S
+n 311 211 m 304 214 l 304 208 l h
+f*
+n 82 211 m 89 208 l 89 214 l h
+f*
+n 196.5 282.9 m 193.5 275.9 l 199.5 275.9 l h
+f*
+n 196.5 139.1 m 199.5 146.1 l 193.5 146.1 l h
+f*
+BT /F3 10 Tf 12 TL ET
+BT 1 0 0 1 306 215 Tm (x) Tj T* ET
+BT 1 0 0 1 200.5 272.9 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 106.4325 199.25 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 107.4325 202 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 127.7325 199.25 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 128.7325 202 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 149.0325 199.25 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 150.0325 202 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 170.3325 199.25 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 171.3325 202 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 214.854 199.25 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 215.854 202 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 236.154 199.25 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 237.154 202 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 257.454 199.25 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 258.454 202 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 278.754 199.25 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 279.754 202 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 184.765 163.3167 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 166.0667 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 184.765 184.6167 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 187.3667 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 227.2167 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 229.9667 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 248.5167 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 251.2667 Tm (4) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+0 0 0 RG
+1.5 w
+n 260.4 274.9 m 90 189.7 l S
+n 90 189.7 m 97.60263 190.1472 l 94.91935 195.5138 l h
+f*
+n 260.4 274.9 m 252.7974 274.4528 l 255.4807 269.0862 l h
+f*
+n
+220.4 253.6 m
+220.4 255.0359 219.2359 256.2 217.8 256.2 c
+216.3641 256.2 215.2 255.0359 215.2 253.6 c
+215.2 252.1641 216.3641 251 217.8 251 c
+219.2359 251 220.4 252.1641 220.4 253.6 c
+f*
+BT /F1 8 Tf 9.6 TL ET
+q
+1 1 1 rg
+n 213.8828 235.0957 20.672 10 re f*
+Q
+BT /F1 8 Tf 9.6 TL ET
+BT 1 0 0 1 214.8828 238.0957 Tm (\(2, 4\)) Tj T* ET
+n
+156.5 221.65 m
+156.5 223.0859 155.3359 224.25 153.9 224.25 c
+152.4641 224.25 151.3 223.0859 151.3 221.65 c
+151.3 220.2141 152.4641 219.05 153.9 219.05 c
+155.3359 219.05 156.5 220.2141 156.5 221.65 c
+f*
+BT /F1 8 Tf 9.6 TL ET
+q
+1 1 1 rg
+n 134.51 229.6994 25.064 10 re f*
+Q
+BT /F1 8 Tf 9.6 TL ET
+BT 1 0 0 1 135.51 232.6994 Tm (\() Tj /F4 8 Tf 9.6 TL (-) Tj /F1 8 Tf 9.6 TL (4, 1\)) Tj T* ET
+.929412 .94902 .968627 rg
+n 329 242.9 28 40 re f*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 339.664 269.9 Tm (x) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 370.37 269.9 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 453.664 269.9 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 493.664 269.9 Tm (6) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 339.664 249.9 Tm (y) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 413.664 249.9 Tm (2) Tj T* ET
+.176471 .215686 .282353 RG
+1 w
+n 329 242.9 188 40 re S
+n 357 282.9 m 357 242.9 l S
+n 397 282.9 m 397 242.9 l S
+n 437 282.9 m 437 242.9 l S
+n 477 282.9 m 477 242.9 l S
+n 329 262.9 m 517 262.9 l S
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Graphing Linear Equations: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 90 635.45 m 90 710 l S
+n 97.455 635.45 m 97.455 710 l S
+n 104.91 635.45 m 104.91 710 l S
+n 112.365 635.45 m 112.365 710 l S
+n 119.82 635.45 m 119.82 710 l S
+n 127.275 635.45 m 127.275 710 l S
+n 134.73 635.45 m 134.73 710 l S
+n 142.185 635.45 m 142.185 710 l S
+n 149.64 635.45 m 149.64 710 l S
+n 157.095 635.45 m 157.095 710 l S
+n 164.55 635.45 m 164.55 710 l S
+n 172.005 635.45 m 172.005 710 l S
+n 179.46 635.45 m 179.46 710 l S
+n 186.915 635.45 m 186.915 710 l S
+n 194.37 635.45 m 194.37 710 l S
+n 201.825 635.45 m 201.825 710 l S
+n 209.28 635.45 m 209.28 710 l S
+n 216.735 635.45 m 216.735 710 l S
+n 224.19 635.45 m 224.19 710 l S
+n 231.645 635.45 m 231.645 710 l S
+n 239.1 635.45 m 239.1 710 l S
+n 90 635.45 m 239.1 635.45 l S
+n 90 642.905 m 239.1 642.905 l S
+n 90 650.36 m 239.1 650.36 l S
+n 90 657.815 m 239.1 657.815 l S
+n 90 665.27 m 239.1 665.27 l S
+n 90 672.725 m 239.1 672.725 l S
+n 90 680.18 m 239.1 680.18 l S
+n 90 687.635 m 239.1 687.635 l S
+n 90 695.09 m 239.1 695.09 l S
+n 90 702.545 m 239.1 702.545 l S
+n 90 710 m 239.1 710 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 82 672.725 m 247.1 672.725 l S
+n 164.55 627.45 m 164.55 718 l S
+n 247.1 672.725 m 240.1 675.725 l 240.1 669.725 l h
+f*
+n 82 672.725 m 89 669.725 l 89 675.725 l h
+f*
+n 164.55 718 m 161.55 711 l 167.55 711 l h
+f*
+n 164.55 627.45 m 167.55 634.45 l 161.55 634.45 l h
+f*
+BT /F3 10 Tf 12 TL ET
+BT 1 0 0 1 242.1 676.725 Tm (x) Tj T* ET
+BT 1 0 0 1 168.55 708 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 100.0425 660.975 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 101.0425 663.725 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 114.9525 660.975 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 115.9525 663.725 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 129.8625 660.975 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 130.8625 663.725 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 144.7725 660.975 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 145.7725 663.725 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 176.514 660.975 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 177.514 663.725 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 191.424 660.975 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 192.424 663.725 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 206.334 660.975 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 207.334 663.725 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 221.244 660.975 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 222.244 663.725 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 152.815 637.8217 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 153.815 640.5717 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 152.815 652.7317 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 153.815 655.4817 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 156.658 682.5517 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 157.658 685.3017 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 156.658 697.4617 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 157.658 700.2117 Tm (4) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+0 0 0 RG
+1.5 w
+n 209.28 710 m 97.455 635.45 l S
+n 97.455 635.45 m 104.9435 636.8368 l 101.6153 641.8291 l h
+f*
+n 209.28 710 m 201.7915 708.6132 l 205.1197 703.6209 l h
+f*
+n
+167.15 680.18 m
+167.15 681.6159 165.9859 682.78 164.55 682.78 c
+163.1141 682.78 161.95 681.6159 161.95 680.18 c
+161.95 678.7441 163.1141 677.58 164.55 677.58 c
+165.9859 677.58 167.15 678.7441 167.15 680.18 c
+f*
+BT /F1 8 Tf 9.6 TL ET
+q
+1 1 1 rg
+n 162.5938 661.9436 20.672 10 re f*
+Q
+BT /F1 8 Tf 9.6 TL ET
+BT 1 0 0 1 163.5938 664.9436 Tm (\(0, 1\)) Tj T* ET
+n
+144.785 665.27 m
+144.785 666.7059 143.6209 667.87 142.185 667.87 c
+140.7491 667.87 139.585 666.7059 139.585 665.27 c
+139.585 663.8341 140.7491 662.67 142.185 662.67 c
+143.6209 662.67 144.785 663.8341 144.785 665.27 c
+f*
+BT /F1 8 Tf 9.6 TL ET
+q
+1 1 1 rg
+n 117.7258 674.2001 29.456 10 re f*
+Q
+BT /F1 8 Tf 9.6 TL ET
+BT 1 0 0 1 118.7258 677.2001 Tm (\() Tj /F4 8 Tf 9.6 TL (-) Tj /F1 8 Tf 9.6 TL (3, ) Tj /F4 8 Tf 9.6 TL (-) Tj /F1 8 Tf 9.6 TL (1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 603.45 Tm (2.) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 90 530.9 m 90 605.45 l S
+n 97.455 530.9 m 97.455 605.45 l S
+n 104.91 530.9 m 104.91 605.45 l S
+n 112.365 530.9 m 112.365 605.45 l S
+n 119.82 530.9 m 119.82 605.45 l S
+n 127.275 530.9 m 127.275 605.45 l S
+n 134.73 530.9 m 134.73 605.45 l S
+n 142.185 530.9 m 142.185 605.45 l S
+n 149.64 530.9 m 149.64 605.45 l S
+n 157.095 530.9 m 157.095 605.45 l S
+n 164.55 530.9 m 164.55 605.45 l S
+n 172.005 530.9 m 172.005 605.45 l S
+n 179.46 530.9 m 179.46 605.45 l S
+n 186.915 530.9 m 186.915 605.45 l S
+n 194.37 530.9 m 194.37 605.45 l S
+n 201.825 530.9 m 201.825 605.45 l S
+n 209.28 530.9 m 209.28 605.45 l S
+n 216.735 530.9 m 216.735 605.45 l S
+n 224.19 530.9 m 224.19 605.45 l S
+n 231.645 530.9 m 231.645 605.45 l S
+n 239.1 530.9 m 239.1 605.45 l S
+n 90 530.9 m 239.1 530.9 l S
+n 90 538.355 m 239.1 538.355 l S
+n 90 545.81 m 239.1 545.81 l S
+n 90 553.265 m 239.1 553.265 l S
+n 90 560.72 m 239.1 560.72 l S
+n 90 568.175 m 239.1 568.175 l S
+n 90 575.63 m 239.1 575.63 l S
+n 90 583.085 m 239.1 583.085 l S
+n 90 590.54 m 239.1 590.54 l S
+n 90 597.995 m 239.1 597.995 l S
+n 90 605.45 m 239.1 605.45 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 82 568.175 m 247.1 568.175 l S
+n 164.55 522.9 m 164.55 613.45 l S
+n 247.1 568.175 m 240.1 571.175 l 240.1 565.175 l h
+f*
+n 82 568.175 m 89 565.175 l 89 571.175 l h
+f*
+n 164.55 613.45 m 161.55 606.45 l 167.55 606.45 l h
+f*
+n 164.55 522.9 m 167.55 529.9 l 161.55 529.9 l h
+f*
+BT /F3 10 Tf 12 TL ET
+BT 1 0 0 1 242.1 572.175 Tm (x) Tj T* ET
+BT 1 0 0 1 168.55 603.45 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 100.0425 556.425 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 101.0425 559.175 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 114.9525 556.425 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 115.9525 559.175 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 129.8625 556.425 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 130.8625 559.175 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 144.7725 556.425 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 145.7725 559.175 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 176.514 556.425 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 177.514 559.175 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 191.424 556.425 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 192.424 559.175 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 206.334 556.425 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 207.334 559.175 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 221.244 556.425 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 222.244 559.175 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 152.815 533.2717 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 153.815 536.0217 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 152.815 548.1817 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 153.815 550.9317 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 156.658 578.0017 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 157.658 580.7517 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 156.658 592.9117 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 157.658 595.6617 Tm (4) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+0 0 0 RG
+1.5 w
+n 104.91 605.45 m 239.1 538.355 l S
+n 239.1 538.355 m 234.1807 544.1688 l 231.4974 538.8022 l h
+f*
+n 104.91 605.45 m 109.8293 599.6362 l 112.5126 605.0028 l h
+f*
+n
+167.15 575.63 m
+167.15 577.0659 165.9859 578.23 164.55 578.23 c
+163.1141 578.23 161.95 577.0659 161.95 575.63 c
+161.95 574.1941 163.1141 573.03 164.55 573.03 c
+165.9859 573.03 167.15 574.1941 167.15 575.63 c
+f*
+BT /F1 8 Tf 9.6 TL ET
+q
+1 1 1 rg
+n 160.6328 582.801 20.672 10 re f*
+Q
+BT /F1 8 Tf 9.6 TL ET
+BT 1 0 0 1 161.6328 585.801 Tm (\(0, 1\)) Tj T* ET
+n
+182.06 568.175 m
+182.06 569.6109 180.8959 570.775 179.46 570.775 c
+178.0241 570.775 176.86 569.6109 176.86 568.175 c
+176.86 566.7391 178.0241 565.575 179.46 565.575 c
+180.8959 565.575 182.06 566.7391 182.06 568.175 c
+f*
+BT /F1 8 Tf 9.6 TL ET
+q
+1 1 1 rg
+n 162.7052 549.6707 20.672 10 re f*
+Q
+BT /F1 8 Tf 9.6 TL ET
+BT 1 0 0 1 163.7052 552.6707 Tm (\(2, 0\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 498.9 Tm (3.) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 90 426.35 m 90 500.9 l S
+n 97.455 426.35 m 97.455 500.9 l S
+n 104.91 426.35 m 104.91 500.9 l S
+n 112.365 426.35 m 112.365 500.9 l S
+n 119.82 426.35 m 119.82 500.9 l S
+n 127.275 426.35 m 127.275 500.9 l S
+n 134.73 426.35 m 134.73 500.9 l S
+n 142.185 426.35 m 142.185 500.9 l S
+n 149.64 426.35 m 149.64 500.9 l S
+n 157.095 426.35 m 157.095 500.9 l S
+n 164.55 426.35 m 164.55 500.9 l S
+n 172.005 426.35 m 172.005 500.9 l S
+n 179.46 426.35 m 179.46 500.9 l S
+n 186.915 426.35 m 186.915 500.9 l S
+n 194.37 426.35 m 194.37 500.9 l S
+n 201.825 426.35 m 201.825 500.9 l S
+n 209.28 426.35 m 209.28 500.9 l S
+n 216.735 426.35 m 216.735 500.9 l S
+n 224.19 426.35 m 224.19 500.9 l S
+n 231.645 426.35 m 231.645 500.9 l S
+n 239.1 426.35 m 239.1 500.9 l S
+n 90 426.35 m 239.1 426.35 l S
+n 90 433.805 m 239.1 433.805 l S
+n 90 441.26 m 239.1 441.26 l S
+n 90 448.715 m 239.1 448.715 l S
+n 90 456.17 m 239.1 456.17 l S
+n 90 463.625 m 239.1 463.625 l S
+n 90 471.08 m 239.1 471.08 l S
+n 90 478.535 m 239.1 478.535 l S
+n 90 485.99 m 239.1 485.99 l S
+n 90 493.445 m 239.1 493.445 l S
+n 90 500.9 m 239.1 500.9 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 82 463.625 m 247.1 463.625 l S
+n 164.55 418.35 m 164.55 508.9 l S
+n 247.1 463.625 m 240.1 466.625 l 240.1 460.625 l h
+f*
+n 82 463.625 m 89 460.625 l 89 466.625 l h
+f*
+n 164.55 508.9 m 161.55 501.9 l 167.55 501.9 l h
+f*
+n 164.55 418.35 m 167.55 425.35 l 161.55 425.35 l h
+f*
+BT /F3 10 Tf 12 TL ET
+BT 1 0 0 1 242.1 467.625 Tm (x) Tj T* ET
+BT 1 0 0 1 168.55 498.9 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 100.0425 451.875 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 101.0425 454.625 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 114.9525 451.875 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 115.9525 454.625 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 129.8625 451.875 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 130.8625 454.625 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 144.7725 451.875 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 145.7725 454.625 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 176.514 451.875 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 177.514 454.625 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 191.424 451.875 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 192.424 454.625 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 206.334 451.875 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 207.334 454.625 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 221.244 451.875 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 222.244 454.625 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 152.815 428.7217 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 153.815 431.4717 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 152.815 443.6317 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 153.815 446.3817 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 156.658 473.4517 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 157.658 476.2017 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 156.658 488.3617 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 157.658 491.1117 Tm (4) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+0 0 0 RG
+1.5 w
+n 149.64 500.9 m 149.64 426.35 l S
+n 149.64 426.35 m 152.64 433.35 l 146.64 433.35 l h
+f*
+n 149.64 500.9 m 146.64 493.9 l 152.64 493.9 l h
+f*
+n
+152.24 463.625 m
+152.24 465.0609 151.0759 466.225 149.64 466.225 c
+148.2041 466.225 147.04 465.0609 147.04 463.625 c
+147.04 462.1891 148.2041 461.025 149.64 461.025 c
+151.0759 461.025 152.24 462.1891 152.24 463.625 c
+f*
+BT /F1 8 Tf 9.6 TL ET
+q
+1 1 1 rg
+n 155.24 457.9583 25.064 10 re f*
+Q
+BT /F1 8 Tf 9.6 TL ET
+BT 1 0 0 1 156.24 460.9583 Tm (\() Tj /F4 8 Tf 9.6 TL (-) Tj /F1 8 Tf 9.6 TL (2, 0\)) Tj T* ET
+n
+152.24 456.17 m
+152.24 457.6059 151.0759 458.77 149.64 458.77 c
+148.2041 458.77 147.04 457.6059 147.04 456.17 c
+147.04 454.7341 148.2041 453.57 149.64 453.57 c
+151.0759 453.57 152.24 454.7341 152.24 456.17 c
+f*
+BT /F1 8 Tf 9.6 TL ET
+q
+1 1 1 rg
+n 114.584 450.5033 29.456 10 re f*
+Q
+BT /F1 8 Tf 9.6 TL ET
+BT 1 0 0 1 115.584 453.5033 Tm (\() Tj /F4 8 Tf 9.6 TL (-) Tj /F1 8 Tf 9.6 TL (2, ) Tj /F4 8 Tf 9.6 TL (-) Tj /F1 8 Tf 9.6 TL (1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 394.35 Tm (4.) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 90 291.98 m 90 396.35 l S
+n 97.455 291.98 m 97.455 396.35 l S
+n 104.91 291.98 m 104.91 396.35 l S
+n 112.365 291.98 m 112.365 396.35 l S
+n 119.82 291.98 m 119.82 396.35 l S
+n 127.275 291.98 m 127.275 396.35 l S
+n 134.73 291.98 m 134.73 396.35 l S
+n 142.185 291.98 m 142.185 396.35 l S
+n 149.64 291.98 m 149.64 396.35 l S
+n 157.095 291.98 m 157.095 396.35 l S
+n 164.55 291.98 m 164.55 396.35 l S
+n 172.005 291.98 m 172.005 396.35 l S
+n 179.46 291.98 m 179.46 396.35 l S
+n 186.915 291.98 m 186.915 396.35 l S
+n 194.37 291.98 m 194.37 396.35 l S
+n 201.825 291.98 m 201.825 396.35 l S
+n 209.28 291.98 m 209.28 396.35 l S
+n 216.735 291.98 m 216.735 396.35 l S
+n 224.19 291.98 m 224.19 396.35 l S
+n 231.645 291.98 m 231.645 396.35 l S
+n 239.1 291.98 m 239.1 396.35 l S
+n 90 291.98 m 239.1 291.98 l S
+n 90 299.435 m 239.1 299.435 l S
+n 90 306.89 m 239.1 306.89 l S
+n 90 314.345 m 239.1 314.345 l S
+n 90 321.8 m 239.1 321.8 l S
+n 90 329.255 m 239.1 329.255 l S
+n 90 336.71 m 239.1 336.71 l S
+n 90 344.165 m 239.1 344.165 l S
+n 90 351.62 m 239.1 351.62 l S
+n 90 359.075 m 239.1 359.075 l S
+n 90 366.53 m 239.1 366.53 l S
+n 90 373.985 m 239.1 373.985 l S
+n 90 381.44 m 239.1 381.44 l S
+n 90 388.895 m 239.1 388.895 l S
+n 90 396.35 m 239.1 396.35 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 82 344.165 m 247.1 344.165 l S
+n 164.55 283.98 m 164.55 404.35 l S
+n 247.1 344.165 m 240.1 347.165 l 240.1 341.165 l h
+f*
+n 82 344.165 m 89 341.165 l 89 347.165 l h
+f*
+n 164.55 404.35 m 161.55 397.35 l 167.55 397.35 l h
+f*
+n 164.55 283.98 m 167.55 290.98 l 161.55 290.98 l h
+f*
+BT /F3 10 Tf 12 TL ET
+BT 1 0 0 1 242.1 348.165 Tm (x) Tj T* ET
+BT 1 0 0 1 168.55 394.35 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 100.0425 332.415 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 101.0425 335.165 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 114.9525 332.415 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 115.9525 335.165 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 129.8625 332.415 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 130.8625 335.165 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 144.7725 332.415 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 145.7725 335.165 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 176.514 332.415 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 177.514 335.165 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 191.424 332.415 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 192.424 335.165 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 206.334 332.415 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 207.334 335.165 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 221.244 332.415 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 222.244 335.165 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 152.815 294.3517 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 153.815 297.1017 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 152.815 309.2617 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 153.815 312.0117 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 152.815 324.1717 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 153.815 326.9217 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 156.658 353.9917 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 157.658 356.7417 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 156.658 368.9017 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 157.658 371.6517 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 156.658 383.8117 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 157.658 386.5617 Tm (6) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+0 0 0 RG
+1.5 w
+n 114.85 396.35 m 239.1 303.1625 l S
+n 239.1 303.1625 m 235.3 309.7625 l 231.7 304.9625 l h
+f*
+n 114.85 396.35 m 118.65 389.75 l 122.25 394.55 l h
+f*
+n
+137.33 381.44 m
+137.33 382.8759 136.1659 384.04 134.73 384.04 c
+133.2941 384.04 132.13 382.8759 132.13 381.44 c
+132.13 380.0041 133.2941 378.84 134.73 378.84 c
+136.1659 378.84 137.33 380.0041 137.33 381.44 c
+f*
+BT /F1 8 Tf 9.6 TL ET
+q
+1 1 1 rg
+n 132.2295 386.6833 25.064 10 re f*
+Q
+BT /F1 8 Tf 9.6 TL ET
+BT 1 0 0 1 133.2295 389.6833 Tm (\() Tj /F4 8 Tf 9.6 TL (-) Tj /F1 8 Tf 9.6 TL (4, 5\)) Tj T* ET
+n
+196.97 336.71 m
+196.97 338.1459 195.8059 339.31 194.37 339.31 c
+192.9341 339.31 191.77 338.1459 191.77 336.71 c
+191.77 335.2741 192.9341 334.11 194.37 334.11 c
+195.8059 334.11 196.97 335.2741 196.97 336.71 c
+f*
+BT /F1 8 Tf 9.6 TL ET
+q
+1 1 1 rg
+n 171.8065 317.668 25.064 10 re f*
+Q
+BT /F1 8 Tf 9.6 TL ET
+BT 1 0 0 1 172.8065 320.668 Tm (\(4, ) Tj /F4 8 Tf 9.6 TL (-) Tj /F1 8 Tf 9.6 TL (1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 259.98 Tm (5.) Tj T* ET
+.929412 .94902 .968627 rg
+n 82 249.98 112 20 re f*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 256.98 Tm (x) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 162.664 256.98 Tm (y) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 103.37 236.98 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 162.664 236.98 Tm (5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 216.98 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 162.664 216.98 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 196.98 Tm (4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 162.664 196.98 Tm (1) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 106.664 176.98 Tm (8) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 159.37 176.98 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (1) Tj T* ET
+.176471 .215686 .282353 RG
+1 w
+n 82 169.98 112 100 re S
+n 138 269.98 m 138 169.98 l S
+n 82 249.98 m 194 249.98 l S
+n 82 229.98 m 194 229.98 l S
+n 82 209.98 m 194 209.98 l S
+n 82 189.98 m 194 189.98 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 145.98 Tm (6.) Tj T* ET
+.929412 .94902 .968627 rg
+n 82 115.98 28 40 re f*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 92.664 142.98 Tm (x) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 123.37 142.98 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 163.37 142.98 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 206.664 142.98 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 246.664 142.98 Tm (6) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 92.664 122.98 Tm (y) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 126.664 122.98 Tm (1) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 166.664 122.98 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 206.664 122.98 Tm (4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 246.664 122.98 Tm (6) Tj T* ET
+.176471 .215686 .282353 RG
+1 w
+n 82 115.98 188 40 re S
+n 110 155.98 m 110 115.98 l S
+n 150 155.98 m 150 115.98 l S
+n 190 155.98 m 190 115.98 l S
+n 230 155.98 m 230 115.98 l S
+n 82 135.98 m 270 135.98 l S
+
+=== graph_and_table_choices_answer_key ===
+title: Graphing Linear Equations
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Graphing Linear Equations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Which graph represents the line with this slope and y-intercept?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 652 Tm (slope ) Tj T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 122.152 658.58 Tm (2) Tj T* ET
+BT 1 0 0 1 122.152 645.252 Tm (3) Tj T* ET
+n 120.752 656.2 m 130.1684 656.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 131.5684 652 Tm (, y-intercept 4) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 626 Tm (A\)) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 90 503.5 m 90 610 l S
+n 98.875 503.5 m 98.875 610 l S
+n 107.75 503.5 m 107.75 610 l S
+n 116.625 503.5 m 116.625 610 l S
+n 125.5 503.5 m 125.5 610 l S
+n 134.375 503.5 m 134.375 610 l S
+n 143.25 503.5 m 143.25 610 l S
+n 152.125 503.5 m 152.125 610 l S
+n 161 503.5 m 161 610 l S
+n 169.875 503.5 m 169.875 610 l S
+n 178.75 503.5 m 178.75 610 l S
+n 187.625 503.5 m 187.625 610 l S
+n 196.5 503.5 m 196.5 610 l S
+n 205.375 503.5 m 205.375 610 l S
+n 214.25 503.5 m 214.25 610 l S
+n 223.125 503.5 m 223.125 610 l S
+n 232 503.5 m 232 610 l S
+n 240.875 503.5 m 240.875 610 l S
+n 249.75 503.5 m 249.75 610 l S
+n 258.625 503.5 m 258.625 610 l S
+n 267.5 503.5 m 267.5 610 l S
+n 276.375 503.5 m 276.375 610 l S
+n 285.25 503.5 m 285.25 610 l S
+n 294.125 503.5 m 294.125 610 l S
+n 303 503.5 m 303 610 l S
+n 90 503.5 m 303 503.5 l S
+n 90 512.375 m 303 512.375 l S
+n 90 521.25 m 303 521.25 l S
+n 90 530.125 m 303 530.125 l S
+n 90 539 m 303 539 l S
+n 90 547.875 m 303 547.875 l S
+n 90 556.75 m 303 556.75 l S
+n 90 565.625 m 303 565.625 l S
+n 90 574.5 m 303 574.5 l S
+n 90 583.375 m 303 583.375 l S
+n 90 592.25 m 303 592.25 l S
+n 90 601.125 m 303 601.125 l S
+n 90 610 m 303 610 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 82 556.75 m 311 556.75 l S
+n 196.5 495.5 m 196.5 618 l S
+n 311 556.75 m 304 559.75 l 304 553.75 l h
+f*
+n 82 556.75 m 89 553.75 l 89 559.75 l h
+f*
+n 196.5 618 m 193.5 611 l 199.5 611 l h
+f*
+n 196.5 495.5 m 199.5 502.5 l 193.5 502.5 l h
+f*
+BT /F3 10 Tf 12 TL ET
+BT 1 0 0 1 306 560.75 Tm (x) Tj T* ET
+BT 1 0 0 1 200.5 608 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 100.9365 545 13.627 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 101.9365 547.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (10) Tj T* ET
+q
+1 1 1 rg
+n 120.6325 545 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 121.6325 547.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 138.3825 545 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 139.3825 547.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 156.1325 545 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 157.1325 547.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 173.8825 545 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 174.8825 547.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 211.304 545 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 212.304 547.75 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 229.054 545 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 230.054 547.75 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 246.804 545 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 247.804 547.75 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 264.554 545 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 265.554 547.75 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 280.358 545 9.784 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 281.358 547.75 Tm (10) Tj T* ET
+q
+1 1 1 rg
+n 184.765 516.1667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 518.9167 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 184.765 533.9167 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 536.6667 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 569.4167 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 572.1667 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 587.1667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 589.9167 Tm (4) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+0 0 0 RG
+1.5 w
+n 152.125 610 m 303 509.4167 l S
+n 303 509.4167 m 298.8397 515.7957 l 295.5115 510.8034 l h
+f*
+n 152.125 610 m 156.2853 603.6209 l 159.6135 608.6132 l h
+f*
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 329 626 Tm (B\)) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 337 503.5 m 337 610 l S
+n 345.875 503.5 m 345.875 610 l S
+n 354.75 503.5 m 354.75 610 l S
+n 363.625 503.5 m 363.625 610 l S
+n 372.5 503.5 m 372.5 610 l S
+n 381.375 503.5 m 381.375 610 l S
+n 390.25 503.5 m 390.25 610 l S
+n 399.125 503.5 m 399.125 610 l S
+n 408 503.5 m 408 610 l S
+n 416.875 503.5 m 416.875 610 l S
+n 425.75 503.5 m 425.75 610 l S
+n 434.625 503.5 m 434.625 610 l S
+n 443.5 503.5 m 443.5 610 l S
+n 452.375 503.5 m 452.375 610 l S
+n 461.25 503.5 m 461.25 610 l S
+n 470.125 503.5 m 470.125 610 l S
+n 479 503.5 m 479 610 l S
+n 487.875 503.5 m 487.875 610 l S
+n 496.75 503.5 m 496.75 610 l S
+n 505.625 503.5 m 505.625 610 l S
+n 514.5 503.5 m 514.5 610 l S
+n 523.375 503.5 m 523.375 610 l S
+n 532.25 503.5 m 532.25 610 l S
+n 541.125 503.5 m 541.125 610 l S
+n 550 503.5 m 550 610 l S
+n 337 503.5 m 550 503.5 l S
+n 337 512.375 m 550 512.375 l S
+n 337 521.25 m 550 521.25 l S
+n 337 530.125 m 550 530.125 l S
+n 337 539 m 550 539 l S
+n 337 547.875 m 550 547.875 l S
+n 337 556.75 m 550 556.75 l S
+n 337 565.625 m 550 565.625 l S
+n 337 574.5 m 550 574.5 l S
+n 337 583.375 m 550 583.375 l S
+n 337 592.25 m 550 592.25 l S
+n 337 601.125 m 550 601.125 l S
+n 337 610 m 550 610 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 329 556.75 m 558 556.75 l S
+n 443.5 495.5 m 443.5 618 l S
+n 558 556.75 m 551 559.75 l 551 553.75 l h
+f*
+n 329 556.75 m 336 553.75 l 336 559.75 l h
+f*
+n 443.5 618 m 440.5 611 l 446.5 611 l h
+f*
+n 443.5 495.5 m 446.5 502.5 l 440.5 502.5 l h
+f*
+BT /F3 10 Tf 12 TL ET
+BT 1 0 0 1 553 560.75 Tm (x) Tj T* ET
+BT 1 0 0 1 447.5 608 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 347.9365 545 13.627 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 348.9365 547.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (10) Tj T* ET
+q
+1 1 1 rg
+n 367.6325 545 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 368.6325 547.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 385.3825 545 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 386.3825 547.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 403.1325 545 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 404.1325 547.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 420.8825 545 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 421.8825 547.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 458.304 545 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 459.304 547.75 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 476.054 545 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 477.054 547.75 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 493.804 545 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 494.804 547.75 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 511.554 545 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 512.554 547.75 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 527.358 545 9.784 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 528.358 547.75 Tm (10) Tj T* ET
+q
+1 1 1 rg
+n 431.765 516.1667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 432.765 518.9167 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 431.765 533.9167 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 432.765 536.6667 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 435.608 569.4167 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 436.608 572.1667 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 435.608 587.1667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 436.608 589.9167 Tm (4) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+0 0 0 RG
+1.5 w
+n 550 604.0833 m 399.125 503.5 l S
+n 399.125 503.5 m 406.6135 504.8868 l 403.2853 509.8791 l h
+f*
+n 550 604.0833 m 542.5115 602.6966 l 545.8397 597.7043 l h
+f*
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 473.5 Tm (C\)) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 90 351 m 90 457.5 l S
+n 98.875 351 m 98.875 457.5 l S
+n 107.75 351 m 107.75 457.5 l S
+n 116.625 351 m 116.625 457.5 l S
+n 125.5 351 m 125.5 457.5 l S
+n 134.375 351 m 134.375 457.5 l S
+n 143.25 351 m 143.25 457.5 l S
+n 152.125 351 m 152.125 457.5 l S
+n 161 351 m 161 457.5 l S
+n 169.875 351 m 169.875 457.5 l S
+n 178.75 351 m 178.75 457.5 l S
+n 187.625 351 m 187.625 457.5 l S
+n 196.5 351 m 196.5 457.5 l S
+n 205.375 351 m 205.375 457.5 l S
+n 214.25 351 m 214.25 457.5 l S
+n 223.125 351 m 223.125 457.5 l S
+n 232 351 m 232 457.5 l S
+n 240.875 351 m 240.875 457.5 l S
+n 249.75 351 m 249.75 457.5 l S
+n 258.625 351 m 258.625 457.5 l S
+n 267.5 351 m 267.5 457.5 l S
+n 276.375 351 m 276.375 457.5 l S
+n 285.25 351 m 285.25 457.5 l S
+n 294.125 351 m 294.125 457.5 l S
+n 303 351 m 303 457.5 l S
+n 90 351 m 303 351 l S
+n 90 359.875 m 303 359.875 l S
+n 90 368.75 m 303 368.75 l S
+n 90 377.625 m 303 377.625 l S
+n 90 386.5 m 303 386.5 l S
+n 90 395.375 m 303 395.375 l S
+n 90 404.25 m 303 404.25 l S
+n 90 413.125 m 303 413.125 l S
+n 90 422 m 303 422 l S
+n 90 430.875 m 303 430.875 l S
+n 90 439.75 m 303 439.75 l S
+n 90 448.625 m 303 448.625 l S
+n 90 457.5 m 303 457.5 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 82 404.25 m 311 404.25 l S
+n 196.5 343 m 196.5 465.5 l S
+n 311 404.25 m 304 407.25 l 304 401.25 l h
+f*
+n 82 404.25 m 89 401.25 l 89 407.25 l h
+f*
+n 196.5 465.5 m 193.5 458.5 l 199.5 458.5 l h
+f*
+n 196.5 343 m 199.5 350 l 193.5 350 l h
+f*
+BT /F3 10 Tf 12 TL ET
+BT 1 0 0 1 306 408.25 Tm (x) Tj T* ET
+BT 1 0 0 1 200.5 455.5 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 100.9365 392.5 13.627 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 101.9365 395.25 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (10) Tj T* ET
+q
+1 1 1 rg
+n 120.6325 392.5 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 121.6325 395.25 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 138.3825 392.5 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 139.3825 395.25 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 156.1325 392.5 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 157.1325 395.25 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 173.8825 392.5 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 174.8825 395.25 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 211.304 392.5 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 212.304 395.25 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 229.054 392.5 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 230.054 395.25 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 246.804 392.5 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 247.804 395.25 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 264.554 392.5 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 265.554 395.25 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 280.358 392.5 9.784 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 281.358 395.25 Tm (10) Tj T* ET
+q
+1 1 1 rg
+n 184.765 363.6667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 366.4167 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 184.765 381.4167 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 384.1667 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 416.9167 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 419.6667 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 434.6667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 437.4167 Tm (4) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+0 0 0 RG
+1.5 w
+n 169.875 457.5 m 303 368.75 l S
+n 303 368.75 m 298.8397 375.1291 l 295.5115 370.1368 l h
+f*
+n 169.875 457.5 m 174.0353 451.1209 l 177.3635 456.1132 l h
+f*
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 329 473.5 Tm (D\)) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 337 351 m 337 457.5 l S
+n 345.875 351 m 345.875 457.5 l S
+n 354.75 351 m 354.75 457.5 l S
+n 363.625 351 m 363.625 457.5 l S
+n 372.5 351 m 372.5 457.5 l S
+n 381.375 351 m 381.375 457.5 l S
+n 390.25 351 m 390.25 457.5 l S
+n 399.125 351 m 399.125 457.5 l S
+n 408 351 m 408 457.5 l S
+n 416.875 351 m 416.875 457.5 l S
+n 425.75 351 m 425.75 457.5 l S
+n 434.625 351 m 434.625 457.5 l S
+n 443.5 351 m 443.5 457.5 l S
+n 452.375 351 m 452.375 457.5 l S
+n 461.25 351 m 461.25 457.5 l S
+n 470.125 351 m 470.125 457.5 l S
+n 479 351 m 479 457.5 l S
+n 487.875 351 m 487.875 457.5 l S
+n 496.75 351 m 496.75 457.5 l S
+n 505.625 351 m 505.625 457.5 l S
+n 514.5 351 m 514.5 457.5 l S
+n 523.375 351 m 523.375 457.5 l S
+n 532.25 351 m 532.25 457.5 l S
+n 541.125 351 m 541.125 457.5 l S
+n 550 351 m 550 457.5 l S
+n 337 351 m 550 351 l S
+n 337 359.875 m 550 359.875 l S
+n 337 368.75 m 550 368.75 l S
+n 337 377.625 m 550 377.625 l S
+n 337 386.5 m 550 386.5 l S
+n 337 395.375 m 550 395.375 l S
+n 337 404.25 m 550 404.25 l S
+n 337 413.125 m 550 413.125 l S
+n 337 422 m 550 422 l S
+n 337 430.875 m 550 430.875 l S
+n 337 439.75 m 550 439.75 l S
+n 337 448.625 m 550 448.625 l S
+n 337 457.5 m 550 457.5 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 329 404.25 m 558 404.25 l S
+n 443.5 343 m 443.5 465.5 l S
+n 558 404.25 m 551 407.25 l 551 401.25 l h
+f*
+n 329 404.25 m 336 401.25 l 336 407.25 l h
+f*
+n 443.5 465.5 m 440.5 458.5 l 446.5 458.5 l h
+f*
+n 443.5 343 m 446.5 350 l 440.5 350 l h
+f*
+BT /F3 10 Tf 12 TL ET
+BT 1 0 0 1 553 408.25 Tm (x) Tj T* ET
+BT 1 0 0 1 447.5 455.5 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 347.9365 392.5 13.627 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 348.9365 395.25 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (10) Tj T* ET
+q
+1 1 1 rg
+n 367.6325 392.5 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 368.6325 395.25 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 385.3825 392.5 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 386.3825 395.25 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 403.1325 392.5 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 404.1325 395.25 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 420.8825 392.5 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 421.8825 395.25 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 458.304 392.5 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 459.304 395.25 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 476.054 392.5 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 477.054 395.25 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 493.804 392.5 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 494.804 395.25 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 511.554 392.5 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 512.554 395.25 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 527.358 392.5 9.784 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 528.358 395.25 Tm (10) Tj T* ET
+q
+1 1 1 rg
+n 431.765 363.6667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 432.765 366.4167 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 431.765 381.4167 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 432.765 384.1667 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 435.608 416.9167 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 436.608 419.6667 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 435.608 434.6667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 436.608 437.4167 Tm (4) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+0 0 0 RG
+1.5 w
+n 470.125 457.5 m 337 368.75 l S
+n 337 368.75 m 344.4885 370.1368 l 341.1603 375.1291 l h
+f*
+n 470.125 457.5 m 462.6365 456.1132 l 465.9647 451.1209 l h
+f*
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 313 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 313 Tm (Which table represents this equation?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 293 Tm (y = 2x ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 3) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 273 Tm (A\)) Tj T* ET
+.929412 .94902 .968627 rg
+n 104 263 89 20 re f*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 122.914 270 Tm (x) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 167.414 270 Tm (y) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 122.914 250 Tm (0) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 167.414 250 Tm (3) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 122.914 230 Tm (1) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 167.414 230 Tm (1) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 122.914 210 Tm (3) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 164.12 210 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (3) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 122.914 190 Tm (5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 164.12 190 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (7) Tj T* ET
+.176471 .215686 .282353 RG
+1 w
+n 104 183 89 100 re S
+n 148.5 283 m 148.5 183 l S
+n 104 263 m 193 263 l S
+n 104 243 m 193 243 l S
+n 104 223 m 193 223 l S
+n 104 203 m 193 203 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 201 273 Tm (B\)) Tj T* ET
+.929412 .94902 .968627 rg
+n 223 263 89 20 re f*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 241.914 270 Tm (x) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 286.414 270 Tm (y) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 241.914 250 Tm (0) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 286.414 250 Tm (3) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 241.914 230 Tm (1) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 286.414 230 Tm (5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 241.914 210 Tm (3) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 286.414 210 Tm (9) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 241.914 190 Tm (5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 283.078 190 Tm (13) Tj T* ET
+.176471 .215686 .282353 RG
+1 w
+n 223 183 89 100 re S
+n 267.5 283 m 267.5 183 l S
+n 223 263 m 312 263 l S
+n 223 243 m 312 243 l S
+n 223 223 m 312 223 l S
+n 223 203 m 312 203 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 320 273 Tm (C\)) Tj T* ET
+.929412 .94902 .968627 rg
+n 342 263 89 20 re f*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 360.914 270 Tm (x) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 405.414 270 Tm (y) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 360.914 250 Tm (0) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 402.12 250 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (3) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 360.914 230 Tm (1) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 402.12 230 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 360.914 210 Tm (3) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 402.12 210 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (9) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 360.914 190 Tm (5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 398.784 190 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (13) Tj T* ET
+.176471 .215686 .282353 RG
+1 w
+n 342 183 89 100 re S
+n 386.5 283 m 386.5 183 l S
+n 342 263 m 431 263 l S
+n 342 243 m 431 243 l S
+n 342 223 m 431 223 l S
+n 342 203 m 431 203 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 439 273 Tm (D\)) Tj T* ET
+.929412 .94902 .968627 rg
+n 461 263 89 20 re f*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 479.914 270 Tm (x) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 524.414 270 Tm (y) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 479.914 250 Tm (0) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 521.12 250 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (3) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 479.914 230 Tm (1) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 521.12 230 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (1) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 479.914 210 Tm (3) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 524.414 210 Tm (3) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 479.914 190 Tm (5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 524.414 190 Tm (7) Tj T* ET
+.176471 .215686 .282353 RG
+1 w
+n 461 183 89 100 re S
+n 505.5 283 m 505.5 183 l S
+n 461 263 m 550 263 l S
+n 461 243 m 550 243 l S
+n 461 223 m 550 223 l S
+n 461 203 m 550 203 l S
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Graphing Linear Equations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Which table represents this line?) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 90 553.5 m 90 660 l S
+n 98.875 553.5 m 98.875 660 l S
+n 107.75 553.5 m 107.75 660 l S
+n 116.625 553.5 m 116.625 660 l S
+n 125.5 553.5 m 125.5 660 l S
+n 134.375 553.5 m 134.375 660 l S
+n 143.25 553.5 m 143.25 660 l S
+n 152.125 553.5 m 152.125 660 l S
+n 161 553.5 m 161 660 l S
+n 169.875 553.5 m 169.875 660 l S
+n 178.75 553.5 m 178.75 660 l S
+n 187.625 553.5 m 187.625 660 l S
+n 196.5 553.5 m 196.5 660 l S
+n 205.375 553.5 m 205.375 660 l S
+n 214.25 553.5 m 214.25 660 l S
+n 223.125 553.5 m 223.125 660 l S
+n 232 553.5 m 232 660 l S
+n 240.875 553.5 m 240.875 660 l S
+n 249.75 553.5 m 249.75 660 l S
+n 258.625 553.5 m 258.625 660 l S
+n 267.5 553.5 m 267.5 660 l S
+n 276.375 553.5 m 276.375 660 l S
+n 285.25 553.5 m 285.25 660 l S
+n 294.125 553.5 m 294.125 660 l S
+n 303 553.5 m 303 660 l S
+n 90 553.5 m 303 553.5 l S
+n 90 562.375 m 303 562.375 l S
+n 90 571.25 m 303 571.25 l S
+n 90 580.125 m 303 580.125 l S
+n 90 589 m 303 589 l S
+n 90 597.875 m 303 597.875 l S
+n 90 606.75 m 303 606.75 l S
+n 90 615.625 m 303 615.625 l S
+n 90 624.5 m 303 624.5 l S
+n 90 633.375 m 303 633.375 l S
+n 90 642.25 m 303 642.25 l S
+n 90 651.125 m 303 651.125 l S
+n 90 660 m 303 660 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 82 606.75 m 311 606.75 l S
+n 196.5 545.5 m 196.5 668 l S
+n 311 606.75 m 304 609.75 l 304 603.75 l h
+f*
+n 82 606.75 m 89 603.75 l 89 609.75 l h
+f*
+n 196.5 668 m 193.5 661 l 199.5 661 l h
+f*
+n 196.5 545.5 m 199.5 552.5 l 193.5 552.5 l h
+f*
+BT /F3 10 Tf 12 TL ET
+BT 1 0 0 1 306 610.75 Tm (x) Tj T* ET
+BT 1 0 0 1 200.5 658 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 100.9365 595 13.627 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 101.9365 597.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (10) Tj T* ET
+q
+1 1 1 rg
+n 120.6325 595 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 121.6325 597.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 138.3825 595 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 139.3825 597.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 156.1325 595 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 157.1325 597.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 173.8825 595 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 174.8825 597.75 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 211.304 595 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 212.304 597.75 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 229.054 595 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 230.054 597.75 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 246.804 595 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 247.804 597.75 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 264.554 595 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 265.554 597.75 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 280.358 595 9.784 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 281.358 597.75 Tm (10) Tj T* ET
+q
+1 1 1 rg
+n 184.765 566.1667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 568.9167 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 184.765 583.9167 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 586.6667 Tm /F4 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 619.4167 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 622.1667 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 637.1667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 639.9167 Tm (4) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+0 0 0 RG
+1.5 w
+n 249.75 660 m 90 580.125 l S
+n 90 580.125 m 97.60263 580.5722 l 94.91935 585.9388 l h
+f*
+n 249.75 660 m 242.1474 659.5528 l 244.8307 654.1862 l h
+f*
+n
+216.85 642.25 m
+216.85 643.6859 215.6859 644.85 214.25 644.85 c
+212.8141 644.85 211.65 643.6859 211.65 642.25 c
+211.65 640.8141 212.8141 639.65 214.25 639.65 c
+215.6859 639.65 216.85 640.8141 216.85 642.25 c
+f*
+BT /F1 8 Tf 9.6 TL ET
+q
+1 1 1 rg
+n 210.3328 623.7457 20.672 10 re f*
+Q
+BT /F1 8 Tf 9.6 TL ET
+BT 1 0 0 1 211.3328 626.7457 Tm (\(2, 4\)) Tj T* ET
+n
+163.6 615.625 m
+163.6 617.0609 162.4359 618.225 161 618.225 c
+159.5641 618.225 158.4 617.0609 158.4 615.625 c
+158.4 614.1891 159.5641 613.025 161 613.025 c
+162.4359 613.025 163.6 614.1891 163.6 615.625 c
+f*
+BT /F1 8 Tf 9.6 TL ET
+q
+1 1 1 rg
+n 141.61 623.6744 25.064 10 re f*
+Q
+BT /F1 8 Tf 9.6 TL ET
+BT 1 0 0 1 142.61 626.6744 Tm (\() Tj /F4 8 Tf 9.6 TL (-) Tj /F1 8 Tf 9.6 TL (4, 1\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 515.5 Tm (A\)) Tj T* ET
+.929412 .94902 .968627 rg
+n 104 485.5 28 40 re f*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 114.664 512.5 Tm (x) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 145.37 512.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 188.664 512.5 Tm (0) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 228.664 512.5 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 268.664 512.5 Tm (4) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 114.664 492.5 Tm (y) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 145.37 492.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (1) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 185.37 492.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (3) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 225.37 492.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 265.37 492.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (5) Tj T* ET
+.176471 .215686 .282353 RG
+1 w
+n 104 485.5 188 40 re S
+n 132 525.5 m 132 485.5 l S
+n 172 525.5 m 172 485.5 l S
+n 212 525.5 m 212 485.5 l S
+n 252 525.5 m 252 485.5 l S
+n 104 505.5 m 292 505.5 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 465.5 Tm (B\)) Tj T* ET
+.929412 .94902 .968627 rg
+n 104 435.5 28 40 re f*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 114.664 462.5 Tm (x) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 145.37 462.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 188.664 462.5 Tm (0) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 228.664 462.5 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 268.664 462.5 Tm (4) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 114.664 442.5 Tm (y) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 145.37 442.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 185.37 442.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (3) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 225.37 442.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 265.37 442.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (1) Tj T* ET
+.176471 .215686 .282353 RG
+1 w
+n 104 435.5 188 40 re S
+n 132 475.5 m 132 435.5 l S
+n 172 475.5 m 172 435.5 l S
+n 212 475.5 m 212 435.5 l S
+n 252 475.5 m 252 435.5 l S
+n 104 455.5 m 292 455.5 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 415.5 Tm (C\)) Tj T* ET
+.929412 .94902 .968627 rg
+n 104 385.5 28 40 re f*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 114.664 412.5 Tm (x) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 145.37 412.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 188.664 412.5 Tm (0) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 228.664 412.5 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 268.664 412.5 Tm (4) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 114.664 392.5 Tm (y) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 148.664 392.5 Tm (5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 188.664 392.5 Tm (3) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 228.664 392.5 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 268.664 392.5 Tm (1) Tj T* ET
+.176471 .215686 .282353 RG
+1 w
+n 104 385.5 188 40 re S
+n 132 425.5 m 132 385.5 l S
+n 172 425.5 m 172 385.5 l S
+n 212 425.5 m 212 385.5 l S
+n 252 425.5 m 252 385.5 l S
+n 104 405.5 m 292 405.5 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 365.5 Tm (D\)) Tj T* ET
+.929412 .94902 .968627 rg
+n 104 335.5 28 40 re f*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 114.664 362.5 Tm (x) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 145.37 362.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 188.664 362.5 Tm (0) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 228.664 362.5 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 268.664 362.5 Tm (4) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 114.664 342.5 Tm (y) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 148.664 342.5 Tm (1) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 188.664 342.5 Tm (3) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 228.664 342.5 Tm (4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 268.664 342.5 Tm (5) Tj T* ET
+.176471 .215686 .282353 RG
+1 w
+n 104 335.5 188 40 re S
+n 132 375.5 m 132 335.5 l S
+n 172 375.5 m 172 335.5 l S
+n 212 375.5 m 212 335.5 l S
+n 252 375.5 m 252 335.5 l S
+n 104 355.5 m 292 355.5 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 295.5 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 295.5 Tm (Which table represents this equation?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 275.5 Tm (y = 2.5) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 255.5 Tm (A\)) Tj T* ET
+.929412 .94902 .968627 rg
+n 104 245.5 89 20 re f*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 122.914 252.5 Tm (x) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 167.414 252.5 Tm (y) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 114.616 232.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (2.5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 164.12 232.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (3) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 114.616 212.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (2.5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 167.414 212.5 Tm (1) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 114.616 192.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (2.5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 167.414 192.5 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 114.616 172.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (2.5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 167.414 172.5 Tm (4) Tj T* ET
+.176471 .215686 .282353 RG
+1 w
+n 104 165.5 89 100 re S
+n 148.5 265.5 m 148.5 165.5 l S
+n 104 245.5 m 193 245.5 l S
+n 104 225.5 m 193 225.5 l S
+n 104 205.5 m 193 205.5 l S
+n 104 185.5 m 193 185.5 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 201 255.5 Tm (B\)) Tj T* ET
+.929412 .94902 .968627 rg
+n 223 245.5 89 20 re f*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 241.914 252.5 Tm (x) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 286.414 252.5 Tm (y) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 238.62 232.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (3) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 278.116 232.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (2.5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 241.914 212.5 Tm (1) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 278.116 212.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (2.5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 241.914 192.5 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 278.116 192.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (2.5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 241.914 172.5 Tm (4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 278.116 172.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (2.5) Tj T* ET
+.176471 .215686 .282353 RG
+1 w
+n 223 165.5 89 100 re S
+n 267.5 265.5 m 267.5 165.5 l S
+n 223 245.5 m 312 245.5 l S
+n 223 225.5 m 312 225.5 l S
+n 223 205.5 m 312 205.5 l S
+n 223 185.5 m 312 185.5 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 320 255.5 Tm (C\)) Tj T* ET
+.929412 .94902 .968627 rg
+n 342 245.5 89 20 re f*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 360.914 252.5 Tm (x) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 405.414 252.5 Tm (y) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 355.91 232.5 Tm (2.5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 402.12 232.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (3) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 355.91 212.5 Tm (2.5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 405.414 212.5 Tm (1) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 355.91 192.5 Tm (2.5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 405.414 192.5 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 355.91 172.5 Tm (2.5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 405.414 172.5 Tm (4) Tj T* ET
+.176471 .215686 .282353 RG
+1 w
+n 342 165.5 89 100 re S
+n 386.5 265.5 m 386.5 165.5 l S
+n 342 245.5 m 431 245.5 l S
+n 342 225.5 m 431 225.5 l S
+n 342 205.5 m 431 205.5 l S
+n 342 185.5 m 431 185.5 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 439 255.5 Tm (D\)) Tj T* ET
+.929412 .94902 .968627 rg
+n 461 245.5 89 20 re f*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 479.914 252.5 Tm (x) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 524.414 252.5 Tm (y) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 476.62 232.5 Tm /F4 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (3) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 519.41 232.5 Tm (2.5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 479.914 212.5 Tm (1) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 519.41 212.5 Tm (2.5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 479.914 192.5 Tm (2) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 519.41 192.5 Tm (2.5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 479.914 172.5 Tm (4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 519.41 172.5 Tm (2.5) Tj T* ET
+.176471 .215686 .282353 RG
+1 w
+n 461 165.5 89 100 re S
+n 505.5 265.5 m 505.5 165.5 l S
+n 461 245.5 m 550 245.5 l S
+n 461 225.5 m 550 225.5 l S
+n 461 205.5 m 550 205.5 l S
+n 461 185.5 m 550 185.5 l S
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Graphing Linear Equations: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 708 Tm (D) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 688 Tm (D) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 668 Tm (3.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 668 Tm (D) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 648 Tm (4.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 648 Tm (D) Tj T* ET
+
+=== statements_answer_key ===
+title: Writing Linear Equations
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Writing Linear Equations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Write the equation of the line through these points, and give its slope:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 658 Tm (\() Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (4, 9\) and \() Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (4, 5\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 614 Tm (Equation: ______________) Tj T* ET
+BT 1 0 0 1 320 614 Tm (Slope: ______________) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 586 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 586 Tm (Write the equation of this line, and say whether it is parallel or perpendicular) Tj T* ET
+BT 1 0 0 1 82 566 Tm (to the x-axis:) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 90 388.25 m 90 548 l S
+n 98.875 388.25 m 98.875 548 l S
+n 107.75 388.25 m 107.75 548 l S
+n 116.625 388.25 m 116.625 548 l S
+n 125.5 388.25 m 125.5 548 l S
+n 134.375 388.25 m 134.375 548 l S
+n 143.25 388.25 m 143.25 548 l S
+n 152.125 388.25 m 152.125 548 l S
+n 161 388.25 m 161 548 l S
+n 169.875 388.25 m 169.875 548 l S
+n 178.75 388.25 m 178.75 548 l S
+n 187.625 388.25 m 187.625 548 l S
+n 196.5 388.25 m 196.5 548 l S
+n 205.375 388.25 m 205.375 548 l S
+n 214.25 388.25 m 214.25 548 l S
+n 223.125 388.25 m 223.125 548 l S
+n 232 388.25 m 232 548 l S
+n 240.875 388.25 m 240.875 548 l S
+n 249.75 388.25 m 249.75 548 l S
+n 258.625 388.25 m 258.625 548 l S
+n 267.5 388.25 m 267.5 548 l S
+n 276.375 388.25 m 276.375 548 l S
+n 285.25 388.25 m 285.25 548 l S
+n 294.125 388.25 m 294.125 548 l S
+n 303 388.25 m 303 548 l S
+n 90 388.25 m 303 388.25 l S
+n 90 397.125 m 303 397.125 l S
+n 90 406 m 303 406 l S
+n 90 414.875 m 303 414.875 l S
+n 90 423.75 m 303 423.75 l S
+n 90 432.625 m 303 432.625 l S
+n 90 441.5 m 303 441.5 l S
+n 90 450.375 m 303 450.375 l S
+n 90 459.25 m 303 459.25 l S
+n 90 468.125 m 303 468.125 l S
+n 90 477 m 303 477 l S
+n 90 485.875 m 303 485.875 l S
+n 90 494.75 m 303 494.75 l S
+n 90 503.625 m 303 503.625 l S
+n 90 512.5 m 303 512.5 l S
+n 90 521.375 m 303 521.375 l S
+n 90 530.25 m 303 530.25 l S
+n 90 539.125 m 303 539.125 l S
+n 90 548 m 303 548 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 82 468.125 m 311 468.125 l S
+n 196.5 380.25 m 196.5 556 l S
+n 311 468.125 m 304 471.125 l 304 465.125 l h
+f*
+n 82 468.125 m 89 465.125 l 89 471.125 l h
+f*
+n 196.5 556 m 193.5 549 l 199.5 549 l h
+f*
+n 196.5 380.25 m 199.5 387.25 l 193.5 387.25 l h
+f*
+BT /F4 10 Tf 12 TL ET
+BT 1 0 0 1 306 472.125 Tm (x) Tj T* ET
+BT 1 0 0 1 200.5 546 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 100.9365 456.375 13.627 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 101.9365 459.125 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (10) Tj T* ET
+q
+1 1 1 rg
+n 120.6325 456.375 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 121.6325 459.125 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 138.3825 456.375 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 139.3825 459.125 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 156.1325 456.375 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 157.1325 459.125 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 173.8825 456.375 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 174.8825 459.125 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 211.304 456.375 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 212.304 459.125 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 229.054 456.375 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 230.054 459.125 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 246.804 456.375 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 247.804 459.125 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 264.554 456.375 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 265.554 459.125 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 280.358 456.375 9.784 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 281.358 459.125 Tm (10) Tj T* ET
+q
+1 1 1 rg
+n 184.765 392.0417 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 394.7917 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 184.765 409.7917 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 412.5417 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 184.765 427.5417 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 430.2917 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 184.765 445.2917 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 185.765 448.0417 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 480.7917 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 483.5417 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 188.608 498.5417 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 501.2917 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 188.608 516.2917 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 519.0417 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 188.608 534.0417 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 189.608 536.7917 Tm (8) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+0 0 0 RG
+1.5 w
+n 90 530.25 m 303 530.25 l S
+n 303 530.25 m 296 533.25 l 296 527.25 l h
+f*
+n 90 530.25 m 97 527.25 l 97 533.25 l h
+f*
+n
+172.475 530.25 m
+172.475 531.6859 171.3109 532.85 169.875 532.85 c
+168.4391 532.85 167.275 531.6859 167.275 530.25 c
+167.275 528.8141 168.4391 527.65 169.875 527.65 c
+171.3109 527.65 172.475 528.8141 172.475 530.25 c
+f*
+BT /F1 8 Tf 9.6 TL ET
+q
+1 1 1 rg
+n 157.343 535.1833 25.064 10 re f*
+Q
+BT /F1 8 Tf 9.6 TL ET
+BT 1 0 0 1 158.343 538.1833 Tm (\() Tj /F3 8 Tf 9.6 TL (-) Tj /F1 8 Tf 9.6 TL (3, 7\)) Tj T* ET
+n
+243.475 530.25 m
+243.475 531.6859 242.3109 532.85 240.875 532.85 c
+239.4391 532.85 238.275 531.6859 238.275 530.25 c
+238.275 528.8141 239.4391 527.65 240.875 527.65 c
+242.3109 527.65 243.475 528.8141 243.475 530.25 c
+f*
+BT /F1 8 Tf 9.6 TL ET
+q
+1 1 1 rg
+n 230.539 513.9833 20.672 10 re f*
+Q
+BT /F1 8 Tf 9.6 TL ET
+BT 1 0 0 1 231.539 516.9833 Tm (\(5, 7\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 329 410.25 Tm (Equation: ______________) Tj T* ET
+BT 1 0 0 1 329 380.25 Tm (Parallel or perpendicular: _______) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 350.25 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 350.25 Tm (Write the equation of the line through these points, and give its slope:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 330.25 Tm (\(10, ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (7\) and \(1, ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (7\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 310.25 Tm (A\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 310.25 Tm (The equation of the line is x = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (7, and the slope is undefined.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 290.25 Tm (B\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 290.25 Tm (The equation of the line is x = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (7, and the slope is 0.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 270.25 Tm (C\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 270.25 Tm (The equation of the line is y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (7, and the slope is undefined.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 250.25 Tm (D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 250.25 Tm (The equation of the line is y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (7, and the slope is 0.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 212.25 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 212.25 Tm (Write the equation of the line with this point and slope, and say whether it is) Tj T* ET
+BT 1 0 0 1 82 192.25 Tm (parallel or perpendicular to the x-axis:) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 172.25 Tm (point \(9, 10\), slope undefined) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 152.25 Tm (A\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 152.25 Tm (The equation of the line is y = 9, and the line is parallel to the x-axis.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 132.25 Tm (B\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 132.25 Tm (The equation of the line is y = 9, and the line is perpendicular to the x-axis.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 112.25 Tm (C\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 112.25 Tm (The equation of the line is x = 9, and the line is parallel to the x-axis.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 92.25 Tm (D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 104 92.25 Tm (The equation of the line is x = 9, and the line is perpendicular to the x-axis.) Tj T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Writing Linear Equations: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 708 Tm (x = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (4, slope undefined) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 688 Tm (y = 7, parallel to the x-axis) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 668 Tm (3.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 668 Tm (D\) ) Tj T* ET
+BT 1 0 0 1 100.662 668 Tm (y = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (7, slope 0) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 648 Tm (4.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 648 Tm (D\) ) Tj T* ET
+BT 1 0 0 1 100.662 648 Tm (x = 9, perpendicular to the x-axis) Tj T* ET
+
+=== graphing_tiles_answer_key ===
+title: Graphing Linear Equations
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Graphing Linear Equations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Which graph represents the line with this slope and y-intercept?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 652 Tm (slope ) Tj T* ET
+BT /F1 11.9 Tf 14.28 TL ET
+BT 1 0 0 1 122.152 658.58 Tm (2) Tj T* ET
+BT 1 0 0 1 122.152 645.252 Tm (3) Tj T* ET
+n 120.752 656.2 m 130.1684 656.2 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 131.5684 652 Tm (, y-intercept 4) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 612 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 612 Tm (Which table represents this equation?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 592 Tm (y = 2x ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 3) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 558 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 558 Tm (Which graph represents this equation?) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 538 Tm (x = ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL (9) Tj T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Graphing Linear Equations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (Answer bank) Tj T* ET
+BT /F1 11 Tf 13.2 TL ET
+BT 1 0 0 1 54 662 Tm (Put each numbered tile in the slot whose letter matches the answer to its question. Letters that aren't) Tj T* ET
+BT 1 0 0 1 54 649 Tm (shown are not used.) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 622 Tm (A) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 62 499.5 m 62 606 l S
+n 70.875 499.5 m 70.875 606 l S
+n 79.75 499.5 m 79.75 606 l S
+n 88.625 499.5 m 88.625 606 l S
+n 97.5 499.5 m 97.5 606 l S
+n 106.375 499.5 m 106.375 606 l S
+n 115.25 499.5 m 115.25 606 l S
+n 124.125 499.5 m 124.125 606 l S
+n 133 499.5 m 133 606 l S
+n 141.875 499.5 m 141.875 606 l S
+n 150.75 499.5 m 150.75 606 l S
+n 159.625 499.5 m 159.625 606 l S
+n 168.5 499.5 m 168.5 606 l S
+n 177.375 499.5 m 177.375 606 l S
+n 186.25 499.5 m 186.25 606 l S
+n 195.125 499.5 m 195.125 606 l S
+n 204 499.5 m 204 606 l S
+n 212.875 499.5 m 212.875 606 l S
+n 221.75 499.5 m 221.75 606 l S
+n 230.625 499.5 m 230.625 606 l S
+n 239.5 499.5 m 239.5 606 l S
+n 248.375 499.5 m 248.375 606 l S
+n 257.25 499.5 m 257.25 606 l S
+n 266.125 499.5 m 266.125 606 l S
+n 275 499.5 m 275 606 l S
+n 62 499.5 m 275 499.5 l S
+n 62 508.375 m 275 508.375 l S
+n 62 517.25 m 275 517.25 l S
+n 62 526.125 m 275 526.125 l S
+n 62 535 m 275 535 l S
+n 62 543.875 m 275 543.875 l S
+n 62 552.75 m 275 552.75 l S
+n 62 561.625 m 275 561.625 l S
+n 62 570.5 m 275 570.5 l S
+n 62 579.375 m 275 579.375 l S
+n 62 588.25 m 275 588.25 l S
+n 62 597.125 m 275 597.125 l S
+n 62 606 m 275 606 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 54 552.75 m 283 552.75 l S
+n 168.5 491.5 m 168.5 614 l S
+n 283 552.75 m 276 555.75 l 276 549.75 l h
+f*
+n 54 552.75 m 61 549.75 l 61 555.75 l h
+f*
+n 168.5 614 m 165.5 607 l 171.5 607 l h
+f*
+n 168.5 491.5 m 171.5 498.5 l 165.5 498.5 l h
+f*
+BT /F4 10 Tf 12 TL ET
+BT 1 0 0 1 278 556.75 Tm (x) Tj T* ET
+BT 1 0 0 1 172.5 604 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 72.9365 541 13.627 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 73.9365 543.75 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (10) Tj T* ET
+q
+1 1 1 rg
+n 92.6325 541 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 93.6325 543.75 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 110.3825 541 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 111.3825 543.75 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 128.1325 541 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 129.1325 543.75 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 145.8825 541 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 146.8825 543.75 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 183.304 541 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 184.304 543.75 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 201.054 541 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 202.054 543.75 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 218.804 541 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 219.804 543.75 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 236.554 541 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 237.554 543.75 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 252.358 541 9.784 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 253.358 543.75 Tm (10) Tj T* ET
+q
+1 1 1 rg
+n 156.765 512.1667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 157.765 514.9167 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 156.765 529.9167 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 157.765 532.6667 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 160.608 565.4167 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 161.608 568.1667 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 160.608 583.1667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 161.608 585.9167 Tm (4) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+0 0 0 RG
+1.5 w
+n 195.125 606 m 62 517.25 l S
+n 62 517.25 m 69.48845 518.6368 l 66.16025 523.6291 l h
+f*
+n 195.125 606 m 187.6365 604.6132 l 190.9647 599.6209 l h
+f*
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 306 622 Tm (B) Tj T* ET
+.929412 .94902 .968627 rg
+n 306 594 112 20 re f*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 330.664 601 Tm (x) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 386.664 601 Tm (y) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 330.664 581 Tm (0) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 383.37 581 Tm /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (3) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 330.664 561 Tm (1) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 383.37 561 Tm /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL (1) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 330.664 541 Tm (3) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 386.664 541 Tm (3) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 330.664 521 Tm (5) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 386.664 521 Tm (7) Tj T* ET
+.176471 .215686 .282353 RG
+1 w
+n 306 514 112 100 re S
+n 362 614 m 362 514 l S
+n 306 594 m 418 594 l S
+n 306 574 m 418 574 l S
+n 306 554 m 418 554 l S
+n 306 534 m 418 534 l S
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 469.5 Tm (C) Tj T* ET
+.796078 .835294 .878431 RG
+.5 w
+n 62 347 m 62 453.5 l S
+n 70.875 347 m 70.875 453.5 l S
+n 79.75 347 m 79.75 453.5 l S
+n 88.625 347 m 88.625 453.5 l S
+n 97.5 347 m 97.5 453.5 l S
+n 106.375 347 m 106.375 453.5 l S
+n 115.25 347 m 115.25 453.5 l S
+n 124.125 347 m 124.125 453.5 l S
+n 133 347 m 133 453.5 l S
+n 141.875 347 m 141.875 453.5 l S
+n 150.75 347 m 150.75 453.5 l S
+n 159.625 347 m 159.625 453.5 l S
+n 168.5 347 m 168.5 453.5 l S
+n 177.375 347 m 177.375 453.5 l S
+n 186.25 347 m 186.25 453.5 l S
+n 195.125 347 m 195.125 453.5 l S
+n 204 347 m 204 453.5 l S
+n 212.875 347 m 212.875 453.5 l S
+n 221.75 347 m 221.75 453.5 l S
+n 230.625 347 m 230.625 453.5 l S
+n 239.5 347 m 239.5 453.5 l S
+n 248.375 347 m 248.375 453.5 l S
+n 257.25 347 m 257.25 453.5 l S
+n 266.125 347 m 266.125 453.5 l S
+n 275 347 m 275 453.5 l S
+n 62 347 m 275 347 l S
+n 62 355.875 m 275 355.875 l S
+n 62 364.75 m 275 364.75 l S
+n 62 373.625 m 275 373.625 l S
+n 62 382.5 m 275 382.5 l S
+n 62 391.375 m 275 391.375 l S
+n 62 400.25 m 275 400.25 l S
+n 62 409.125 m 275 409.125 l S
+n 62 418 m 275 418 l S
+n 62 426.875 m 275 426.875 l S
+n 62 435.75 m 275 435.75 l S
+n 62 444.625 m 275 444.625 l S
+n 62 453.5 m 275 453.5 l S
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1 w
+n 54 400.25 m 283 400.25 l S
+n 168.5 339 m 168.5 461.5 l S
+n 283 400.25 m 276 403.25 l 276 397.25 l h
+f*
+n 54 400.25 m 61 397.25 l 61 403.25 l h
+f*
+n 168.5 461.5 m 165.5 454.5 l 171.5 454.5 l h
+f*
+n 168.5 339 m 171.5 346 l 165.5 346 l h
+f*
+BT /F4 10 Tf 12 TL ET
+BT 1 0 0 1 278 404.25 Tm (x) Tj T* ET
+BT 1 0 0 1 172.5 451.5 Tm (y) Tj T* ET
+BT /F1 7 Tf 8.4 TL ET
+q
+1 1 1 rg
+n 72.9365 388.5 13.627 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 73.9365 391.25 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (10) Tj T* ET
+q
+1 1 1 rg
+n 92.6325 388.5 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 93.6325 391.25 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (8) Tj T* ET
+q
+1 1 1 rg
+n 110.3825 388.5 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 111.3825 391.25 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (6) Tj T* ET
+q
+1 1 1 rg
+n 128.1325 388.5 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 129.1325 391.25 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 145.8825 388.5 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 146.8825 391.25 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 183.304 388.5 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 184.304 391.25 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 201.054 388.5 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 202.054 391.25 Tm (4) Tj T* ET
+q
+1 1 1 rg
+n 218.804 388.5 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 219.804 391.25 Tm (6) Tj T* ET
+q
+1 1 1 rg
+n 236.554 388.5 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 237.554 391.25 Tm (8) Tj T* ET
+q
+1 1 1 rg
+n 252.358 388.5 9.784 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 253.358 391.25 Tm (10) Tj T* ET
+q
+1 1 1 rg
+n 156.765 359.6667 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 157.765 362.4167 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (4) Tj T* ET
+q
+1 1 1 rg
+n 156.765 377.4167 9.735 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 157.765 380.1667 Tm /F3 7 Tf 8.4 TL (-) Tj /F1 7 Tf 8.4 TL (2) Tj T* ET
+q
+1 1 1 rg
+n 160.608 412.9167 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 161.608 415.6667 Tm (2) Tj T* ET
+q
+1 1 1 rg
+n 160.608 430.6667 5.892 9 re f*
+Q
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 161.608 433.4167 Tm (4) Tj T* ET
+0 0 0 RG
+0 0 0 rg
+0 0 0 RG
+1.5 w
+n 88.625 453.5 m 88.625 347 l S
+n 88.625 347 m 91.625 354 l 85.625 354 l h
+f*
+n 88.625 453.5 m 85.625 446.5 l 91.625 446.5 l h
+f*
+q
+.85098 .85098 .85098 rg
+n 318 277 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 277 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 358 277 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 277 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 398 277 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 277 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 438 277 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 277 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 478 277 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 277 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 518 277 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 277 40 40 re S
+Q
+q
+1 1 1 rg
+n 318 237 40 40 re f*
+.941176 .745098 0 rg
+n 318 277 m 338 277 l 338 257 l 358 237 l 318 237 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 237 40 40 re S
+Q
+q
+1 1 1 rg
+n 358 237 40 40 re f*
+0 .235294 .784314 rg
+n 358 277 m 378 277 l 378 257 l 398 237 l 358 237 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 237 40 40 re S
+Q
+q
+1 1 1 rg
+n 398 237 40 40 re f*
+.85098 .14902 .172549 rg
+n 438 277 m 418 277 l 418 257 l 398 237 l 438 237 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 237 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 438 237 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 237 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 478 237 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 237 40 40 re S
+Q
+q
+.85098 .85098 .85098 rg
+n 518 237 40 40 re f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 237 40 40 re S
+Q
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 303 Tm (Close the case and flip it over. If every) Tj T* ET
+BT 1 0 0 1 54 288 Tm (answer is right, the back looks like this.) Tj T* ET
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Graphing Linear Equations: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 708 Tm (\(A\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 688 Tm (\(B\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 668 Tm (3.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 668 Tm (\(C\)) Tj T* ET
+
