@@ -139,19 +139,25 @@ main > .card { max-width: 48rem; }
 }
 /* Fields flow in a grid within their section. Checkbox groups take a whole row; text boxes,
    radio groups, checkboxes with a hint and fields with others under them take two columns once
-   the section has room for two, 2 × 13rem and the gap (a dropdown's hint wraps in its column,
-   so pairs such as From and To stay side by side). */
+   the section has room for two, 2 × 13rem and the gap (a dropdown's hint, and any boxes under
+   it, stay in its column, so pairs such as From and To stay side by side). */
 .fields { container-type: inline-size; display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: 1.1rem 1.75rem; align-items: start; }
 .fields > [role=group] { grid-column: 1 / -1; }
 @container (min-width: 27.75rem) {
-  .fields > :is(label:has(> input[type=text]), [role=radiogroup], label:has(> input[type=checkbox]):has(> .hint), .nest) { grid-column: span 2; }
+  .fields > :is(label:has(> input[type=text]), [role=radiogroup], label:has(> input[type=checkbox]):has(> .hint), .nest:not(:has(> label > select))) { grid-column: span 2; }
   /* the legacy page's Name/Date, beside its Title box, lines up with it as in a sheet's header */
   .fields > label:has(> input[name=name_line]) { align-self: end; margin-bottom: calc(0.45rem + 1px); }
 }
+/* the place-value form: two columns however narrow, so From sits beside To and Smallest number
+   beside Largest, with Problems on a row of its own above them */
+.fields:has(select[name=given]) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.fields:has(select[name=given]) > label:has(> input[name=problems]) { grid-column: 1 / -1; }
 /* the answers stack in their order, from how students answer down */
 .answers { display: flex; flex-direction: column; }
 /* the fields under another are indented to line up with its text, like its hint */
 .nest > * + * { margin: 0.75rem 0 0 1.45rem; }
+/* boxes under a dropdown, such as From's question forms, stack in its column, lined up with it */
+.nest:has(> label > select) > [role=group] { display: grid; justify-items: start; gap: 0.4rem; margin-left: 0; }
 /* a field's hint: under the field, lined up with a checkbox's text */
 .hint { display: block; flex-basis: 100%; margin-top: 0.3rem; color: var(--muted); font-size: 0.85rem; font-weight: normal; line-height: 1.35; }
 label:has(> input[type=checkbox]) > .hint { padding-left: 1.45rem; }

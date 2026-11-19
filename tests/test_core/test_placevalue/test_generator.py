@@ -1,10 +1,10 @@
 """
 Tests for the place-value question generator.
 
-Numbers are drawn from the requested range, a mixed form never equals the other form, and a
-multiple-choice question's wrong answers come from the same range. ``random`` is scripted in
-most tests, so each case lists the question that must be produced; the no-repeats test uses
-real random draws.
+Numbers are drawn from the requested range, each question's forms come from those offered and
+never match, and a multiple-choice question's wrong answers come from the same range.
+``random`` is scripted in most tests, so each case lists the question that must be produced;
+the no-repeats test uses real random draws.
 """
 
 import random
@@ -18,6 +18,7 @@ from core.placevalue.generator import (
     generate_place_value_question,
     generate_place_value_questions,
 )
+from core.placevalue.representation import WRITTEN_FORMS
 from core.question import FreeResponse, MultipleChoice
 from tests.data import EXPANDED, EXPANDED_NOTATION, STANDARD, UNIT, WORD
 from tests.helpers import randint_returns, randint_returns_low, reverse_shuffle, sample_first
@@ -26,57 +27,89 @@ from tests.helpers import randint_returns, randint_returns_low, reverse_shuffle,
 @pytest.mark.parametrize(
     ("given", "asked", "expected", "chosen_from"),
     [
-        # both forms fixed: nothing is picked
-        (STANDARD, EXPANDED, PlaceValueQuestionData(35043, STANDARD, EXPANDED), []),
-        (WORD, STANDARD, PlaceValueQuestionData(35043, WORD, STANDARD), []),
+        # one form each: each is picked from itself
+        (
+            [STANDARD],
+            [EXPANDED],
+            PlaceValueQuestionData(35043, STANDARD, EXPANDED),
+            [[STANDARD], [EXPANDED]],
+        ),
+        ([WORD], [STANDARD], PlaceValueQuestionData(35043, WORD, STANDARD), [[WORD], [STANDARD]]),
         # one mixed: picked from the forms other than the fixed one
         (
-            STANDARD,
-            None,
+            [STANDARD],
+            WRITTEN_FORMS,
             PlaceValueQuestionData(35043, STANDARD, EXPANDED),
-            [[EXPANDED, UNIT, EXPANDED_NOTATION, WORD]],
+            [[STANDARD], [EXPANDED, UNIT, EXPANDED_NOTATION, WORD]],
         ),
         (
-            WORD,
-            None,
+            [WORD],
+            WRITTEN_FORMS,
             PlaceValueQuestionData(35043, WORD, STANDARD),
-            [[STANDARD, EXPANDED, UNIT, EXPANDED_NOTATION]],
+            [[WORD], [STANDARD, EXPANDED, UNIT, EXPANDED_NOTATION]],
         ),
         (
-            None,
-            STANDARD,
+            WRITTEN_FORMS,
+            [STANDARD],
             PlaceValueQuestionData(35043, EXPANDED, STANDARD),
-            [[EXPANDED, UNIT, EXPANDED_NOTATION, WORD]],
+            [[EXPANDED, UNIT, EXPANDED_NOTATION, WORD], [STANDARD]],
         ),
         (
-            None,
-            UNIT,
+            WRITTEN_FORMS,
+            [UNIT],
             PlaceValueQuestionData(35043, STANDARD, UNIT),
-            [[STANDARD, EXPANDED, EXPANDED_NOTATION, WORD]],
+            [[STANDARD, EXPANDED, EXPANDED_NOTATION, WORD], [UNIT]],
         ),
         # both mixed: the shown form from all five, then the asked form from the other four
         (
-            None,
-            None,
+            WRITTEN_FORMS,
+            WRITTEN_FORMS,
             PlaceValueQuestionData(35043, STANDARD, EXPANDED),
             [
                 [STANDARD, EXPANDED, UNIT, EXPANDED_NOTATION, WORD],
                 [EXPANDED, UNIT, EXPANDED_NOTATION, WORD],
             ],
         ),
+        # some of the forms: the shown form from those that leave another to ask for, in the
+        # order given
+        (
+            [EXPANDED, STANDARD],
+            [EXPANDED],
+            PlaceValueQuestionData(35043, STANDARD, EXPANDED),
+            [[STANDARD], [EXPANDED]],
+        ),
+        (
+            [STANDARD, EXPANDED],
+            [EXPANDED, UNIT],
+            PlaceValueQuestionData(35043, STANDARD, EXPANDED),
+            [[STANDARD, EXPANDED], [EXPANDED, UNIT]],
+        ),
+        (
+            [EXPANDED, UNIT],
+            [EXPANDED, UNIT],
+            PlaceValueQuestionData(35043, EXPANDED, UNIT),
+            [[EXPANDED, UNIT], [UNIT]],
+        ),
+        (
+            [UNIT, WORD, EXPANDED],
+            [STANDARD, UNIT],
+            PlaceValueQuestionData(35043, UNIT, STANDARD),
+            [[UNIT, WORD, EXPANDED], [STANDARD]],
+        ),
     ],
 )
 def test_a_mixed_form_is_picked_from_the_forms_other_than_the_other_one(
-    given: PlaceValueForm | None,
-    asked: PlaceValueForm | None,
+    given: Sequence[PlaceValueForm],
+    asked: Sequence[PlaceValueForm],
     expected: PlaceValueQuestionData,
     chosen_from: list[list[PlaceValueForm]],
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """
-    A mixed form is chosen only from the forms other than the fixed one.
+    The shown form is chosen from the given forms that leave a different one to ask for, then
+    the asked form from the asked forms other than the shown one.
 
-    ``random.choice`` takes the first form offered, so only excluding the other form from the
+    ``random.choice`` takes the first form offered, so only leaving the shown form out of the
     offer keeps a question from asking for the form it shows.
     """
     offered: list[list[PlaceValueForm]] = []
@@ -151,7 +184,7 @@ def test_wrong_answers_come_from_the_range(
     reverse_shuffle(monkeypatch)
 
     question = generate_place_value_question(
-        STANDARD, EXPANDED, low=low, high=high, wrong_answer_count=wrong_answer_count
+        [STANDARD], [EXPANDED], low=low, high=high, wrong_answer_count=wrong_answer_count
     )
 
     assert (question.data, question.response) == expected
@@ -169,37 +202,42 @@ def test_the_number_is_drawn_from_low_to_high(
     limits: dict[str, int], expected: list[tuple[int, int]], monkeypatch: pytest.MonkeyPatch
 ) -> None:
     bounds = randint_returns_low(monkeypatch)
-    generate_place_value_question(STANDARD, EXPANDED, **limits)
+    generate_place_value_question([STANDARD], [EXPANDED], **limits)
     assert bounds == expected
 
 
 @pytest.mark.parametrize(
     ("given", "asked", "low", "high", "message"),
     [
+        # no form to show or to ask for
+        ([], [EXPANDED], 1000, 99_999, "A question needs a form to show and a form to ask for."),
+        ([STANDARD], [], 1000, 99_999, "A question needs a form to show and a form to ask for."),
         # a fixed form asked for in the form it is shown
-        (STANDARD, STANDARD, 1000, 99_999, "A question cannot ask for the form it shows."),
-        (EXPANDED, EXPANDED, 1000, 99_999, "A question cannot ask for the form it shows."),
-        (UNIT, UNIT, 1000, 99_999, "A question cannot ask for the form it shows."),
+        ([STANDARD], [STANDARD], 1000, 99_999, "A question cannot ask for the form it shows."),
+        ([EXPANDED], [EXPANDED], 1000, 99_999, "A question cannot ask for the form it shows."),
+        ([UNIT], [UNIT], 1000, 99_999, "A question cannot ask for the form it shows."),
         (
-            EXPANDED_NOTATION,
-            EXPANDED_NOTATION,
+            [EXPANDED_NOTATION],
+            [EXPANDED_NOTATION],
             1000,
             99_999,
             "A question cannot ask for the form it shows.",
         ),
-        (WORD, WORD, 1000, 99_999, "A question cannot ask for the form it shows."),
+        ([WORD], [WORD], 1000, 99_999, "A question cannot ask for the form it shows."),
+        # one form however many times it is listed
+        ([UNIT, UNIT], [UNIT], 1000, 99_999, "A question cannot ask for the form it shows."),
         # 0 has no place-value forms
         (
-            STANDARD,
-            EXPANDED,
+            [STANDARD],
+            [EXPANDED],
             0,
             100,
             "The numbers must be from 1 to 999,999, with low no more than high, not 0 to 100.",
         ),
         # past the hundred thousands
         (
-            STANDARD,
-            EXPANDED,
+            [STANDARD],
+            [EXPANDED],
             1,
             1_000_000,
             "The numbers must be from 1 to 999,999, with low no more than high, "
@@ -207,8 +245,8 @@ def test_the_number_is_drawn_from_low_to_high(
         ),
         # low above high
         (
-            STANDARD,
-            EXPANDED,
+            [STANDARD],
+            [EXPANDED],
             500,
             10,
             "The numbers must be from 1 to 999,999, with low no more than high, not 500 to 10.",
@@ -216,10 +254,15 @@ def test_the_number_is_drawn_from_low_to_high(
     ],
 )
 def test_place_value_question_errors(
-    given: PlaceValueForm, asked: PlaceValueForm, low: int, high: int, message: str
+    given: Sequence[PlaceValueForm],
+    asked: Sequence[PlaceValueForm],
+    low: int,
+    high: int,
+    message: str,
 ) -> None:
     """
-    Asking for the form shown, or a range the forms cannot write, raises ``ValueError``.
+    No form to show or ask for, only the form shown to ask for, or a range the forms cannot
+    write raises ``ValueError``.
 
     The forms represent 1 to 999,999, and the check is made before any draw.
     """
@@ -231,24 +274,43 @@ def test_place_value_question_errors(
 @pytest.mark.parametrize(
     ("count", "given", "asked", "low", "high", "message"),
     [
-        # a fixed form asked for in the form it is shown
-        (1, STANDARD, STANDARD, 1000, 99_999, "A question cannot ask for the form it shows."),
-        (1, EXPANDED, EXPANDED, 1000, 99_999, "A question cannot ask for the form it shows."),
-        (1, UNIT, UNIT, 1000, 99_999, "A question cannot ask for the form it shows."),
+        # no form to show or to ask for
         (
             1,
-            EXPANDED_NOTATION,
-            EXPANDED_NOTATION,
+            [],
+            [EXPANDED],
+            1000,
+            99_999,
+            "A question needs a form to show and a form to ask for.",
+        ),
+        (
+            1,
+            [STANDARD],
+            [],
+            1000,
+            99_999,
+            "A question needs a form to show and a form to ask for.",
+        ),
+        # a fixed form asked for in the form it is shown
+        (1, [STANDARD], [STANDARD], 1000, 99_999, "A question cannot ask for the form it shows."),
+        (1, [EXPANDED], [EXPANDED], 1000, 99_999, "A question cannot ask for the form it shows."),
+        (1, [UNIT], [UNIT], 1000, 99_999, "A question cannot ask for the form it shows."),
+        (
+            1,
+            [EXPANDED_NOTATION],
+            [EXPANDED_NOTATION],
             1000,
             99_999,
             "A question cannot ask for the form it shows.",
         ),
-        (1, WORD, WORD, 1000, 99_999, "A question cannot ask for the form it shows."),
+        (1, [WORD], [WORD], 1000, 99_999, "A question cannot ask for the form it shows."),
+        # one form however many times it is listed
+        (1, [UNIT, UNIT], [UNIT], 1000, 99_999, "A question cannot ask for the form it shows."),
         # 0 has no place-value forms
         (
             1,
-            STANDARD,
-            EXPANDED,
+            [STANDARD],
+            [EXPANDED],
             0,
             100,
             "The numbers must be from 1 to 999,999, with low no more than high, not 0 to 100.",
@@ -256,8 +318,8 @@ def test_place_value_question_errors(
         # past the hundred thousands
         (
             1,
-            STANDARD,
-            EXPANDED,
+            [STANDARD],
+            [EXPANDED],
             1,
             1_000_000,
             "The numbers must be from 1 to 999,999, with low no more than high, "
@@ -266,8 +328,8 @@ def test_place_value_question_errors(
         # low above high
         (
             1,
-            STANDARD,
-            EXPANDED,
+            [STANDARD],
+            [EXPANDED],
             500,
             10,
             "The numbers must be from 1 to 999,999, with low no more than high, not 500 to 10.",
@@ -275,8 +337,8 @@ def test_place_value_question_errors(
         # more questions than numbers in the range
         (
             6,
-            STANDARD,
-            EXPANDED,
+            [STANDARD],
+            [EXPANDED],
             1,
             5,
             "Cannot make 6 questions with different numbers: only 5 possible.",
@@ -284,7 +346,12 @@ def test_place_value_question_errors(
     ],
 )
 def test_place_value_sheet_errors(
-    count: int, given: PlaceValueForm, asked: PlaceValueForm, low: int, high: int, message: str
+    count: int,
+    given: Sequence[PlaceValueForm],
+    asked: Sequence[PlaceValueForm],
+    low: int,
+    high: int,
+    message: str,
 ) -> None:
     """
     A sheet raises ``ValueError`` as a question does, and when its range has too few numbers.
@@ -312,7 +379,7 @@ def test_a_sheet_s_numbers_are_drawn_together_so_none_repeats(
 
     monkeypatch.setattr(random, "sample", sample)
 
-    questions = generate_place_value_questions(3, STANDARD, EXPANDED)
+    questions = generate_place_value_questions(3, [STANDARD], [EXPANDED])
 
     assert [question.data for question in questions] == [
         PlaceValueQuestionData(35043, STANDARD, EXPANDED),
@@ -324,7 +391,7 @@ def test_a_sheet_s_numbers_are_drawn_together_so_none_repeats(
 
 def test_random_questions_have_different_numbers_and_forms() -> None:
     """Five questions from 1 to 5 use every number once, and none asks for the form it shows."""
-    questions = generate_place_value_questions(5, None, None, low=1, high=5)
+    questions = generate_place_value_questions(5, WRITTEN_FORMS, WRITTEN_FORMS, low=1, high=5)
 
     assert sorted(question.data.answer for question in questions) == [1, 2, 3, 4, 5]
     assert all(question.data.given != question.data.asked for question in questions)
