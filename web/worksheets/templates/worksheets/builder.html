@@ -82,25 +82,54 @@
 
   {% if distinct_forms %}
   <script type="module">
-    // From and To can't be the same form (mixed aside: it picks a different form for each
-    // question). Both can still be set to anything, so swapping them takes two picks, but
-    // while they are the same the button is greyed out, with a note saying why.
+    // The place-value form's From and To. Mixed picks one of the forms ticked for it, and those
+    // boxes show only while their dropdown is on mixed. Hidden, they're disabled so they aren't
+    // sent. Both dropdowns can still be set to anything, so swapping them takes two picks, but
+    // while they leave one form for both, as standard to standard does, the button is greyed
+    // out, with a note saying why.
     const given = document.querySelector("select[name=given]");
-    const asked = given.form.elements.asked;
-    const button = given.form.querySelector("button");
+    const form = given.form;
+    const asked = form.elements.asked;
+    const button = form.querySelector("button");
     const note = document.createElement("span");
+    note.dataset.buttonNote = "";
     note.textContent = " From and To must be different forms.";
     button.after(note);
-    function blockSameForms() {
-      const same = given.value === asked.value && given.value !== "mixed";
-      button.disabled = same;
-      note.hidden = !same;
+    const mix = (select) => [...form.querySelectorAll(`input[name=${select.name}_mix]`)];
+    // the forms a dropdown leaves: the one chosen, or for mixed the ticked ones
+    function forms(select) {
+      if (select.value !== "mixed") return [select.value];
+      return mix(select).filter((box) => box.checked).map((box) => box.value);
     }
-    given.addEventListener("change", blockSameForms);
-    asked.addEventListener("change", blockSameForms);
+    function showMixes() {
+      for (const select of [given, asked]) {
+        const mixed = select.value === "mixed";
+        const boxes = mix(select);
+        for (const box of boxes) box.disabled = !mixed;
+        boxes[0].closest("[role=group]").style.display = mixed ? "" : "none";
+        // setting disabled doesn't fire change, which the checkboxes script listens for
+        boxes[0].dispatchEvent(new Event("change"));
+      }
+    }
+    function blockSameForms() {
+      const from = forms(given);
+      const to = forms(asked);
+      note.hidden = !(from.length === 1 && to.length === 1 && from[0] === to[0]);
+      // the checkboxes script's notes grey it out too
+      button.disabled = [...form.querySelectorAll("[data-button-note]")].some(
+        (each) => !each.hidden,
+      );
+    }
+    function update() {
+      showMixes();
+      blockSameForms();
+    }
+    given.addEventListener("change", update);
+    asked.addEventListener("change", update);
+    for (const box of [...mix(given), ...mix(asked)]) box.addEventListener("change", blockSameForms);
     // also when the browser restores the choices, going back to the page
-    window.addEventListener("pageshow", blockSameForms);
-    blockSameForms();
+    window.addEventListener("pageshow", update);
+    update();
   </script>
   {% endif %}
 
@@ -417,7 +446,8 @@
     // All box, which ticks or clears them all, and is ticked while they all are. A box that is
     // greyed out isn't sent, so it doesn't count, and All leaves it alone; a group whose boxes
     // are all greyed out, being hidden, asks for none. A form with several groups keeps its
-    // button greyed out while any of them asks.
+    // button greyed out while any of them asks, or while another script's note says why, such
+    // as place value's From and To.
     for (const group of document.querySelectorAll("[data-checkboxes]")) {
       const boxes = [...group.querySelectorAll("input[name]")];
       const usable = () => boxes.filter((box) => !box.disabled);
@@ -425,13 +455,13 @@
       const form = group.closest("form");
       const button = form.querySelector("button");
       const note = document.createElement("span");
-      note.dataset.checkboxesNote = "";
+      note.dataset.buttonNote = "";
       note.textContent = ` Tick at least one of the ${group.dataset.checkboxes.toLowerCase()}.`;
       button.after(note);
       const update = () => {
         const count = usable().filter((box) => box.checked).length;
         note.hidden = count > 0 || usable().length === 0;
-        button.disabled = [...form.querySelectorAll("[data-checkboxes-note]")].some(
+        button.disabled = [...form.querySelectorAll("[data-button-note]")].some(
           (each) => !each.hidden,
         );
         if (all) all.checked = usable().length > 0 && count === usable().length;

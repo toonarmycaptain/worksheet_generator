@@ -26,11 +26,11 @@ from typing import Any, get_args
 
 import pytest
 from django.test import Client
-from worksheets.registry import FormChoice
+from worksheets.registry import FormChoice, WrittenFormChoice
 
 from core.placevalue.data import PlaceValueQuestionData
 from core.placevalue.representation import WRITTEN_FORMS, place_value_tile_question
-from tests.data import EXPANDED, EXPANDED_NOTATION, REAL_CASE_SLOTS, STANDARD, WORD
+from tests.data import EXPANDED, EXPANDED_NOTATION, REAL_CASE_SLOTS, STANDARD, UNIT, WORD
 from tests.helpers import (
     choose_last,
     conventional_slot_of_returns,
@@ -144,6 +144,71 @@ def sample_returns_then_last(monkeypatch: pytest.MonkeyPatch, drawn: list[int]) 
             "place_value-sheet-a.pdf",
         ),
         (
+            # mixed from two ticked forms: the last in form order, not the order sent
+            "/api/worksheets/place_value.pdf?given=mixed&given_mix=unit&given_mix=standard"
+            "&asked=expanded_notation&problems=1&sheet=1ab2c3",
+            [35043],
+            200,
+            None,
+            {
+                "cases": [(PlaceValueQuestionData(35043, UNIT, EXPANDED_NOTATION), ())],
+                "title": "Place Value",
+                "label": "Sheet A",
+                "name_line": False,
+                "answer_key": False,
+            },
+            "place_value-sheet-a.pdf",
+        ),
+        (
+            # mixed from standard and word to word: always standard
+            "/api/worksheets/place_value.pdf?given=mixed&given_mix=standard&given_mix=word"
+            "&asked=word&problems=1&sheet=1ab2c3",
+            [35043],
+            200,
+            None,
+            {
+                "cases": [(PlaceValueQuestionData(35043, STANDARD, WORD), ())],
+                "title": "Place Value",
+                "label": "Sheet A",
+                "name_line": False,
+                "answer_key": False,
+            },
+            "place_value-sheet-a.pdf",
+        ),
+        (
+            # both mixed from ticked forms: the last of standard and expanded, then the last of
+            # expanded and unit other than it
+            "/api/worksheets/place_value.pdf?given=mixed&given_mix=standard&given_mix=expanded"
+            "&asked=mixed&asked_mix=expanded&asked_mix=unit&problems=1&sheet=1ab2c3",
+            [35043],
+            200,
+            None,
+            {
+                "cases": [(PlaceValueQuestionData(35043, EXPANDED, UNIT), ())],
+                "title": "Place Value",
+                "label": "Sheet A",
+                "name_line": False,
+                "answer_key": False,
+            },
+            "place_value-sheet-a.pdf",
+        ),
+        (
+            # a dropdown on a form ignores its ticked forms
+            "/api/worksheets/place_value.pdf?given=word&given_mix=standard&asked=standard"
+            "&problems=1&sheet=1ab2c3",
+            [35043],
+            200,
+            None,
+            {
+                "cases": [(PlaceValueQuestionData(35043, WORD, STANDARD), ())],
+                "title": "Place Value",
+                "label": "Sheet A",
+                "name_line": False,
+                "answer_key": False,
+            },
+            "place_value-sheet-a.pdf",
+        ),
+        (
             # multiple choice: three wrong answers from the top of the range
             "/api/worksheets/place_value.pdf?multiple_choice=true&problems=1&answer_key=true"
             "&sheet=1ab2c3",
@@ -184,6 +249,45 @@ def sample_returns_then_last(monkeypatch: pytest.MonkeyPatch, drawn: list[int]) 
             [],
             422,
             refused("asked: must be a different form from given"),
+            None,
+            None,
+        ),
+        (
+            # mixed with only unit ticked is unit
+            "/api/worksheets/place_value.pdf?given=mixed&given_mix=unit&asked=unit",
+            [],
+            422,
+            refused("asked: must be a different form from given"),
+            None,
+            None,
+        ),
+        (
+            "/api/worksheets/place_value.pdf?given=mixed&given_mix=unit&asked=mixed&asked_mix=unit",
+            [],
+            422,
+            refused("asked: must be a different form from given"),
+            None,
+            None,
+        ),
+        (
+            # base-ten blocks are drawn, not written
+            "/api/worksheets/place_value.pdf?given=mixed&given_mix=blocks",
+            [],
+            422,
+            {
+                "detail": [
+                    {
+                        "type": "literal_error",
+                        "loc": ["query", "options", "given_mix", 0],
+                        "msg": "Input should be 'standard', 'expanded', 'unit', "
+                        "'expanded_notation' or 'word'",
+                        "ctx": {
+                            "expected": "'standard', 'expanded', 'unit', 'expanded_notation' "
+                            "or 'word'"
+                        },
+                    },
+                ],
+            },
             None,
             None,
         ),
@@ -441,10 +545,12 @@ def test_the_numbers_come_from_the_range_asked_for(
 
 def test_the_form_choices_are_every_written_form_and_mixed() -> None:
     """
-    ``FormChoice`` lists every written ``PlaceValueForm`` in order, followed by mixed. Base-ten
-    blocks are drawn, on base-ten blocks sheets, so the page doesn't offer them.
+    ``WrittenFormChoice`` lists every written ``PlaceValueForm`` in order, and ``FormChoice``
+    adds mixed. Base-ten blocks are drawn, on base-ten blocks sheets, so the page doesn't offer
+    them.
 
     It is written out by hand, so a written form added to ``PlaceValueForm`` must be added to it
     too.
     """
-    assert get_args(FormChoice) == (*(form.value for form in WRITTEN_FORMS), "mixed")
+    assert get_args(WrittenFormChoice) == tuple(form.value for form in WRITTEN_FORMS)
+    assert get_args(FormChoice) == (*get_args(WrittenFormChoice), "mixed")

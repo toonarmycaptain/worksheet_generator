@@ -16,7 +16,7 @@ import random
 from collections.abc import Callable, Collection, Mapping, Sequence
 from dataclasses import dataclass
 from io import BytesIO
-from typing import Annotated, Any, BinaryIO, Literal, Self
+from typing import Annotated, Any, BinaryIO, Literal, Self, get_args
 
 from ninja import Field, Schema
 from pydantic import JsonValue, model_validator
@@ -137,6 +137,7 @@ from core.placevalue.generator import (
 from core.placevalue.representation import (
     FORM_NAMES,
     LARGEST_NUMBER,
+    WRITTEN_FORMS,
     place_value_tile_question,
 )
 from core.self_check_tiles import SLOTS, TileQuestion, conventional_slot_of, random_slot_of
@@ -181,8 +182,10 @@ Label = Annotated[str, Field(max_length=40)]
 Problems = Annotated[int, Field(ge=1, le=MAX_PROBLEMS)]
 ListStyle = Literal["mix", "grid", "commas"]
 OperationChoice = Literal["add", "subtract", "multiply", "divide"]  # an Operation value
-# A PlaceValueForm value, or mixed, where the form is chosen per question.
-FormChoice = Literal["standard", "expanded", "unit", "expanded_notation", "word", "mixed"]
+# A written PlaceValueForm value: one of the forms mixed can pick
+WrittenFormChoice = Literal["standard", "expanded", "unit", "expanded_notation", "word"]
+# A written form, or mixed, where each question's form is one of those ticked for it
+FormChoice = Literal[WrittenFormChoice, "mixed"]
 # Operations checkbox labels: each operation's sheet title
 OPERATION_LABELS: dict[str, JsonValue] = {
     operation.value: name for operation, name in OPERATION_NAMES.items()
@@ -646,11 +649,25 @@ class PlaceValueOptions(HeaderOptions):
     given: FormChoice = Field(
         "standard",
         title="From",
-        description="Mixed picks a form for each question, never the same one twice in a question.",
         json_schema_extra={"labels": FORM_CHOICE_LABELS},
     )
     asked: FormChoice = Field(
         "expanded", title="To", json_schema_extra={"labels": FORM_CHOICE_LABELS}
+    )
+    # The forms mixed picks from, every one ticked to start with. Each list is used only while
+    # its dropdown is on mixed, and the page shows it under the dropdown only then (see
+    # builder.html).
+    given_mix: list[WrittenFormChoice] = Field(
+        list(get_args(WrittenFormChoice)),
+        min_length=1,
+        title="Question forms",
+        json_schema_extra={"labels": FORM_CHOICE_LABELS, "under": "given"},
+    )
+    asked_mix: list[WrittenFormChoice] = Field(
+        list(get_args(WrittenFormChoice)),
+        min_length=1,
+        title="Answer forms",
+        json_schema_extra={"labels": FORM_CHOICE_LABELS, "under": "asked"},
     )
     min_number: int = Field(
         DEFAULT_SMALLEST_NUMBER, ge=1, le=LARGEST_NUMBER, title="Smallest number"
@@ -678,7 +695,10 @@ class PlaceValueOptions(HeaderOptions):
 
     @model_validator(mode="after")
     def _a_question_can_be_made(self) -> Self:
-        if self.given == self.asked != "mixed":
+        given = _place_value_forms(self.given, self.given_mix)
+        asked = _place_value_forms(self.asked, self.asked_mix)
+        # one form for both: standard to standard, or mixed with only standard ticked to standard
+        if len({*given, *asked}) == 1:
             raise ValueError("asked: must be a different form from given")
         if self.min_number > self.max_number:
             raise ValueError("min_number: must not be more than the largest number")
@@ -1664,8 +1684,8 @@ def _missing_number(options: BasicOperationOptions, operation: Operation, out: B
 def _place_value(options: PlaceValueOptions, out: BinaryIO) -> None:
     questions = generate_place_value_questions(
         options.problems,
-        _form(options.given),
-        _form(options.asked),
+        _place_value_forms(options.given, options.given_mix),
+        _place_value_forms(options.asked, options.asked_mix),
         low=options.min_number,
         high=options.max_number,
         wrong_answer_count=WRONG_ANSWER_COUNT if options.multiple_choice else 0,
@@ -1683,9 +1703,14 @@ def _place_value(options: PlaceValueOptions, out: BinaryIO) -> None:
         )
 
 
-def _form(choice: FormChoice) -> PlaceValueForm | None:
-    """Return the chosen form, or ``None`` for mixed, which the core resolves per question."""
-    return None if choice == "mixed" else PlaceValueForm(choice)
+def _place_value_forms(choice: FormChoice, mix: list[WrittenFormChoice]) -> list[PlaceValueForm]:
+    """
+    Return the forms a question may take: the chosen one, or for mixed the ticked ones, each
+    once, in the order of ``PlaceValueForm``.
+    """
+    if choice == "mixed":
+        return [form for form in WRITTEN_FORMS if form.value in mix]
+    return [PlaceValueForm(choice)]
 
 
 def _render_tiles(
