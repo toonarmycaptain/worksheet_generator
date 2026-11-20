@@ -8,7 +8,7 @@ dependencies = [
     "django-stubs-ext>=6.1.2",
     "jinja2==3.1.6",
     "numpy==2.5.3",
-    "reportlab>=5.0.1",
+    "reportlab>=5.1.0",
     "weasyprint==70.0",
 ]
 
