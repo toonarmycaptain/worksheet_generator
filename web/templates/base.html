@@ -46,7 +46,7 @@
   </div>
   {% block footer %}<footer class="site-footer">
     <div class="bar">
-      <p class="links">{% block feedback_link %}<a href="{% url 'feedback' %}?from={{ request.get_full_path|urlencode }}">Send feedback</a> · {% endblock %}<a href="https://toonarmycaptain.com">toonarmycaptain.com</a> · © {% now "Y" %} toonarmycaptain</p>
+      <p class="links">{% block feedback_link %}<a href="{% url 'feedback' %}?from={{ request.get_full_path|urlencode }}">Send feedback</a>{% endblock %} ·    © {% now "Y" %} <a href="https://toonarmycaptain.com">toonarmycaptain.com</a> </p>
       <p class="bmc">{% block coffee_text %}If this has been helpful to you or saved you some time, you might...{% endblock %}
         <a href="https://buymeacoffee.com/toonarmycaptain" target="_blank" rel="noopener"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee"></a></p>
     </div>

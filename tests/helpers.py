@@ -7,7 +7,7 @@ Helpers shared by the tests, so no test module imports from another.
 - ``pdf_text``: a PDF's drawing commands as readable text, so a test can compare and diff
   what the pages draw
 - ``GOLDENS``, ``read_sections`` and ``write_section``: the golden files of expected text, a
-  section per case
+  section per case, with YEAR for the year in the copyright notice
 - ``refused``: Ninja's JSON error for an option the endpoint does not allow
 """
 
@@ -16,6 +16,7 @@ import random
 import re
 import zlib
 from collections.abc import Callable, Sequence
+from datetime import date
 from io import BytesIO
 from pathlib import Path
 from typing import Any
@@ -260,20 +261,31 @@ def pdf_text(pdf: bytes) -> str:
 SECTION = re.compile(r"^=== (.+) ===$", re.MULTILINE)
 
 
+# The golden text files have YEAR for the year in the copyright notice, so they hold every year.
+GOLDEN_NOTICE = "YEAR toonarmycaptain.com"
+
+
 def read_sections(path: Path) -> dict[str, str]:
-    """The expected text of each case, by case name. Empty if the file does not exist yet."""
+    """
+    The expected text of each case, by case name, with the current year for YEAR in the
+    copyright notice. Empty if the file does not exist yet.
+    """
     if not path.exists():
         return {}
-    text = path.read_text()
+    text = path.read_text().replace(GOLDEN_NOTICE, f"{date.today().year} toonarmycaptain.com")
     names = SECTION.findall(text)
     bodies = SECTION.split(text)[2::2]  # split() alternates: before, name, body, name, body...
     return {name: body.strip("\n") for name, body in zip(names, bodies, strict=True)}
 
 
 def write_section(path: Path, name: str, text: str) -> None:
-    """Write ``text`` as the section ``name`` of a golden file, keeping the other sections."""
+    """
+    Write ``text`` as the section ``name`` of a golden file, keeping the other sections, with
+    YEAR for the current year in the copyright notice.
+    """
     sections = read_sections(path) | {name: text}
-    path.write_text("".join(f"=== {case} ===\n{body}\n\n" for case, body in sections.items()))
+    golden = "".join(f"=== {case} ===\n{body}\n\n" for case, body in sections.items())
+    path.write_text(golden.replace(f"{date.today().year} toonarmycaptain.com", GOLDEN_NOTICE))
 
 
 def render_basic_operations(

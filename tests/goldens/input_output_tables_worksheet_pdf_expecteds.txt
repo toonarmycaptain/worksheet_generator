@@ -12,6 +12,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use each rule to fill in the missing numbers in its table.) Tj T* ET
@@ -139,6 +140,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use each rule to fill in the missing numbers in its table.) Tj T* ET
@@ -259,6 +261,7 @@ BT 1 0 0 1 54 738 Tm (Input-Output Tables: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -287,6 +290,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use each rule to fill in the missing numbers in its table.) Tj T* ET
@@ -573,6 +577,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
@@ -652,6 +657,7 @@ BT 1 0 0 1 54 738 Tm (Input-Output Tables: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -708,6 +714,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
@@ -1049,6 +1056,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
@@ -1230,6 +1238,7 @@ BT 1 0 0 1 54 738 Tm (Input-Output Tables: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -1255,6 +1264,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
@@ -1382,6 +1392,7 @@ BT 1 0 0 1 54 738 Tm (Input-Output Tables: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -1405,6 +1416,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
@@ -1534,6 +1546,7 @@ BT 1 0 0 1 54 738 Tm (Input-Output Tables: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -1556,6 +1569,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
@@ -1798,6 +1812,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
@@ -1867,6 +1882,7 @@ BT 1 0 0 1 54 738 Tm (Input-Output Tables: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -1892,6 +1908,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use each rule to find the missing number in its table.) Tj T* ET
@@ -2027,6 +2044,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (Answer bank) Tj T* ET
@@ -2215,6 +2233,7 @@ BT 1 0 0 1 54 738 Tm (Input-Output Tables: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -2243,6 +2262,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Day 2) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use each rule to fill in the missing numbers in its table.) Tj T* ET

@@ -12,6 +12,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Read the data. Complete the second graph or table, then solve the problems.) Tj T* ET
@@ -450,6 +451,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
@@ -747,6 +749,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Read the data. Complete the second graph or table, then solve the problems.) Tj T* ET
@@ -894,6 +897,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Read the data. Complete the second graph or table, then solve the problems.) Tj T* ET
@@ -1332,6 +1336,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
@@ -1622,6 +1627,7 @@ BT 1 0 0 1 54 738 Tm (Data and Graphs \227 Read, Complete, Solve: Answer Key) Tj
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -1658,6 +1664,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Read the data. Complete the second graph or table, then solve the problems.) Tj T* ET
@@ -1861,6 +1868,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Week 3) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Read the data. Complete the second graph or table, then solve the problems.) Tj T* ET
@@ -2044,6 +2052,7 @@ BT 1 0 0 1 54 738 Tm (Graphs Practice: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Week 3) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
