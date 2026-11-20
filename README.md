@@ -1,5 +1,22 @@
 # worksheet_generator
+Tool/website for generating worksheets.
 
+WIP. Intend to add more generators, interactive editing, live quizzing (ie question, answer submit, feedback) using the same question generators, relating to curriculum references. 
+
+Originally scoped to a somewhat generalised form of TEKS. Requests and suggestions welcome. 
+
+
+
+Currently deployed at [edu.toonarmycaptain.com](https://edu.toonarmycaptain.com)
+
+
+
+
+
+
+
+```111
+Original:
 **Worksheet generator** application (name to be refined later) is designed to take input in various forms, and generate worksheets/assignments, tests.
 
 Goal is to accept text, Excel, Blackboard files as input, as well as via a GUI (including producing graphs).
@@ -10,3 +27,4 @@ Goal is to be able to random-generate multiple versions of tests/worksheets/solu
 
 
 Contributions, advice welcomed. 
+```
