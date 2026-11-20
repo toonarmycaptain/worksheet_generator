@@ -12,6 +12,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use the strip diagram \(bar model\): two parts make a whole. The ? shows what to find.) Tj T* ET
@@ -91,6 +92,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use the strip diagram \(bar model\): two parts make a whole. The ? shows what to find.) Tj T* ET
@@ -161,6 +163,7 @@ BT 1 0 0 1 54 738 Tm (Word Problems \227 Strip Diagrams: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -183,6 +186,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use the strip diagram \(bar model\): two parts make a whole. The ? shows what to find.) Tj T* ET
@@ -262,6 +266,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use the strip diagram \(bar model\): two parts make a whole. The ? shows what to find.) Tj T* ET
@@ -400,6 +405,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (5.) Tj T* ET
@@ -447,6 +453,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use the strip diagram \(bar model\): two parts make a whole. The ? shows what to find.) Tj T* ET
@@ -516,6 +523,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (Answer bank) Tj T* ET
@@ -699,6 +707,7 @@ BT 1 0 0 1 54 738 Tm (Word Problems \227 Strip Diagrams: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -721,6 +730,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Day 2) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use the strip diagram \(bar model\): two parts make a whole. The ? shows what to find.) Tj T* ET
@@ -800,6 +810,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use the strip diagram \(bar model\): equal groups make a whole. The ? shows what to find.) Tj T* ET
@@ -882,6 +893,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use the strip diagram \(bar model\): equal groups make a whole. The ? shows what to find.) Tj T* ET
@@ -967,6 +979,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use the strip diagram \(bar model\): parts or equal groups make a whole. The ? shows what to) Tj T* ET
@@ -1104,6 +1117,7 @@ BT 1 0 0 1 54 738 Tm (Word Problems \227 Strip Diagrams: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -1132,6 +1146,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Read each problem. Show your work in the box.) Tj T* ET
@@ -1258,6 +1273,7 @@ BT 1 0 0 1 54 738 Tm (Word Problems: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -1286,6 +1302,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Read each problem. Show your work in the box.) Tj T* ET
@@ -1416,6 +1433,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (5.) Tj T* ET
@@ -1461,6 +1479,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Read each problem. Show your work in the box.) Tj T* ET
@@ -1526,6 +1545,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (Answer bank) Tj T* ET
@@ -1709,6 +1729,7 @@ BT 1 0 0 1 54 738 Tm (Word Problems: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -1731,6 +1752,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use the number line. Start at the first number and jump by hundreds, tens, and ones.) Tj T* ET
@@ -1882,6 +1904,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use the number line. Start at the first number and jump by hundreds, tens, and ones.) Tj T* ET
@@ -2091,6 +2114,7 @@ BT 1 0 0 1 54 738 Tm (Word Problems \227 Number Lines: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -2116,6 +2140,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use the number line. Start at the first number and jump by hundreds, tens, and ones.) Tj T* ET
@@ -2398,6 +2423,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (5.) Tj T* ET
@@ -2481,6 +2507,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use the number line. Start at the first number and jump by hundreds, tens, and ones.) Tj T* ET
@@ -2628,6 +2655,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (Answer bank) Tj T* ET
@@ -2811,6 +2839,7 @@ BT 1 0 0 1 54 738 Tm (Word Problems \227 Number Lines: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -2833,6 +2862,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use the base-ten blocks to help you solve each problem.) Tj T* ET
@@ -3195,6 +3225,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use the base-ten blocks to help you solve each problem.) Tj T* ET
@@ -3545,6 +3576,7 @@ BT 1 0 0 1 54 738 Tm (Word Problems \227 Base-Ten Blocks: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -3567,6 +3599,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use the base-ten blocks to help you solve each problem.) Tj T* ET
@@ -3929,6 +3962,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use the base-ten blocks to help you solve each problem.) Tj T* ET
@@ -4329,6 +4363,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use the base-ten blocks to help you solve each problem.) Tj T* ET
@@ -4594,6 +4629,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (3.) Tj T* ET
@@ -4877,6 +4913,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (5.) Tj T* ET
@@ -5057,6 +5094,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use the base-ten blocks to help you solve each problem.) Tj T* ET
@@ -5409,6 +5447,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (Answer bank) Tj T* ET
@@ -5592,6 +5631,7 @@ BT 1 0 0 1 54 738 Tm (Word Problems \227 Base-Ten Blocks: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -5614,6 +5654,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Read each problem and solve it.) Tj T* ET
@@ -5664,6 +5705,7 @@ BT 1 0 0 1 54 738 Tm (Word Problems: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -5692,6 +5734,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Read each problem and solve it.) Tj T* ET
@@ -5760,6 +5803,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Read each problem and solve it.) Tj T* ET
@@ -5787,6 +5831,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (Answer bank) Tj T* ET
@@ -5977,6 +6022,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Choose the equation that matches each problem. The ) Tj T* ET
@@ -6069,6 +6115,7 @@ BT 1 0 0 1 54 738 Tm (Word Problems \227 Equation multiple choice: Answer Key) T
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -6097,6 +6144,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Choose the equation that matches each problem. The ) Tj T* ET
@@ -6233,6 +6281,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (7.) Tj T* ET
@@ -6269,6 +6318,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use the strip diagram \(bar model\): parts or equal groups make a whole. The ? shows what to) Tj T* ET
@@ -6449,6 +6499,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (5.) Tj T* ET
@@ -6514,6 +6565,7 @@ BT 1 0 0 1 54 738 Tm (Word Problems \227 Strip Diagrams: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -6545,6 +6597,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Use the strip diagram \(bar model\): parts or equal groups make a whole. The ? shows what to) Tj T* ET
@@ -6652,6 +6705,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Read each problem. Show your work in the box.) Tj T* ET
@@ -6796,6 +6850,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (Answer bank) Tj T* ET
@@ -6994,6 +7049,7 @@ BT 1 0 0 1 54 738 Tm (Word Problems: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -7025,6 +7081,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Write an equation for each problem, with a ) Tj T* ET
@@ -7089,6 +7146,7 @@ BT 1 0 0 1 54 738 Tm (Word Problems \227 Equations: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -7117,6 +7175,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Write an equation for each problem, with a ) Tj T* ET
@@ -7198,6 +7257,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (6.) Tj T* ET
@@ -7240,6 +7300,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Write an equation for each problem, with a ) Tj T* ET
@@ -7295,6 +7356,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (Answer bank) Tj T* ET
@@ -7488,6 +7550,7 @@ BT 1 0 0 1 54 738 Tm (Word Problems \227 Equations: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -7516,6 +7579,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Each number line starts at 0 and shows both numbers as jumps. Circle the correct one.) Tj T* ET
@@ -7804,6 +7868,7 @@ BT 1 0 0 1 54 738 Tm (Word Problems \227 Number Line multiple choice: Answer Key
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -7826,6 +7891,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Each number line starts at 0 and shows both numbers as jumps. Circle the correct one.) Tj T* ET
@@ -8260,6 +8326,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 54 678 Tm (Each number line starts at 0 and shows both numbers as jumps. Circle the correct one.) Tj T* ET
@@ -8691,6 +8758,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (4.) Tj T* ET
@@ -9120,6 +9188,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (7.) Tj T* ET

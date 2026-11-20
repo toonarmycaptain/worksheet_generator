@@ -10,6 +10,7 @@ multiple-choice options.
 import re
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, replace
+from datetime import date
 from fractions import Fraction
 from string import ascii_uppercase
 from typing import Any, BinaryIO
@@ -202,12 +203,17 @@ def new_pdf(path: str | BinaryIO, title: str) -> Canvas:
 class Header:
     """
     What ``start_page`` draws on each page: ``title`` at the top, the Name/Date line below it
-    when ``name_line`` is set, and ``label`` in the footer.
+    when ``name_line`` is set, and ``label`` in the footer, opposite ``copyright_notice()``.
     """
 
     title: str
     label: str
     name_line: bool
+
+
+def copyright_notice() -> str:
+    """Dated the year sheet is generated."""
+    return f"© {date.today().year} toonarmycaptain.com"
 
 
 def start_page(pdf: Canvas, header: Header) -> float:
@@ -227,6 +233,7 @@ def start_page(pdf: Canvas, header: Header) -> float:
     pdf.setFont(FONT, 9)
     pdf.setFillColor(gray)
     pdf.drawString(MARGIN, MARGIN / 2, header.label)
+    pdf.drawRightString(PAGE_WIDTH - MARGIN, MARGIN / 2, copyright_notice())
     pdf.setFillColor("black")
     return y
 

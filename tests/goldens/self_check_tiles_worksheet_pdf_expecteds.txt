@@ -12,6 +12,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
@@ -287,6 +288,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
@@ -562,6 +564,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
@@ -830,6 +833,7 @@ BT 1 0 0 1 54 738 Tm (Basic Operations: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -882,6 +886,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Day 2) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
@@ -1157,6 +1162,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
@@ -1369,6 +1375,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
@@ -1574,6 +1581,7 @@ BT 1 0 0 1 54 738 Tm (Basic Operations: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -1602,6 +1610,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
@@ -1881,6 +1890,7 @@ BT 1 0 0 1 54 738 Tm (Place Value: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -1934,6 +1944,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
@@ -2152,6 +2163,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
@@ -2441,6 +2453,7 @@ BT 1 0 0 1 54 738 Tm (Place Value: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
@@ -2494,6 +2507,7 @@ BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
@@ -2707,6 +2721,7 @@ BT 1 0 0 1 54 738 Tm (Division: Answer Key) Tj T* ET
 BT /F1 9 Tf 10.8 TL ET
 .501961 .501961 .501961 rg
 BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
