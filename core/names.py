@@ -38,4 +38,12 @@ NAMES = (
     "Mia",
     "Tariq",
     "Lily",
+    "Jaylen",
+    "Seth",
+    "Elly",
+    "Ulysses",
+    "Maggie",
+    "Palmer",
+    "Brenda",
+    "Carla",
 )

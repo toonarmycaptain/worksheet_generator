@@ -64,6 +64,13 @@ urlpatterns = [
         {"kind": "graphing_linear_equations"},
         name="graphing_linear_equations",
     ),
+    path("factors-and-primes/", RedirectView.as_view(pattern_name="prime_composite")),
+    path(
+        "factors-and-primes/prime-and-composite-numbers/",
+        views.sheet,
+        {"kind": "prime_composite"},
+        name="prime_composite",
+    ),
     # where input-output tables were before they had a group of their own
     path("input-output-tables/", RedirectView.as_view(pattern_name="input_output_tables")),
     path("legacy/", views.legacy, name="legacy"),

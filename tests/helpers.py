@@ -54,6 +54,7 @@ from core.input_output_tables.data import (
 )
 from core.line_equations.data import LineAnswer, LineQuestionData, answer_of
 from core.placevalue.data import PlaceValueQuestionData
+from core.prime_composite.data import PrimeCompositeQuestion
 from core.question import FreeResponse, Question, QuestionData, multiple_choice
 from core.self_check_tiles import TileQuestion
 from render.pdf.base_ten_blocks_worksheet import render_base_ten_blocks_worksheet
@@ -68,6 +69,7 @@ from render.pdf.line_equations_worksheet import render_line_equations_worksheet
 from render.pdf.multiplication_models_worksheet import render_multiplication_models_worksheet
 from render.pdf.page import Header
 from render.pdf.place_value_worksheet import render_place_value_worksheet
+from render.pdf.prime_composite_worksheet import render_prime_composite_worksheet
 from render.pdf.self_check_tiles_worksheet import render_self_check_tiles_worksheet
 from render.pdf.strip_choice_worksheet import render_strip_choice_worksheet
 from render.pdf.word_problems_worksheet import render_word_problems_worksheet
@@ -576,6 +578,26 @@ def render_line_questions(
             )
             for data, wrong in cases
         ],
+        path=out,
+        header=Header(title=title, label=label, name_line=name_line),
+        answer_key=answer_key,
+        slot_of=slot_of,
+    )
+    return out.getvalue()
+
+
+def render_prime_composite(
+    questions: Sequence[PrimeCompositeQuestion],
+    slot_of: tuple[int, ...] | None,
+    answer_key: bool,
+    title: str,
+    label: str,
+    name_line: bool = True,
+) -> bytes:
+    """Render the prime and composite sheet, its questions given with their responses."""
+    out = BytesIO()
+    render_prime_composite_worksheet(
+        questions=questions,
         path=out,
         header=Header(title=title, label=label, name_line=name_line),
         answer_key=answer_key,

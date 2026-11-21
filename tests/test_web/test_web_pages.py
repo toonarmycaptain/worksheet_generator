@@ -315,6 +315,30 @@ def test_pages(client: Client) -> None:
                 b"tile_pattern",
             ],
         ),
+        (
+            "/worksheets/factors-and-primes/prime-and-composite-numbers/",
+            [b"/api/worksheets/prime_composite.pdf"],
+            [
+                b"title",
+                b"label",
+                b"name_line",
+                b"problems",
+                b"question_types",  # a checkbox for each type
+                b"question_types",
+                b"question_types",
+                b"question_types",
+                b"question_types",
+                b"question_types",
+                b"question_types",
+                b"question_types",
+                b"largest_number",
+                b"multiple_choice",
+                b"answer_key",
+                b"self_check_tiles",
+                b"tile_pattern",  # a radio button for each pattern
+                b"tile_pattern",
+            ],
+        ),
     ],
 )
 def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], client: Client) -> None:
@@ -346,6 +370,7 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
         "/worksheets/algebra-and-functions/slope-and-intercepts/",
         "/worksheets/algebra-and-functions/writing-linear-equations/",
         "/worksheets/algebra-and-functions/graphing-linear-equations/",
+        "/worksheets/factors-and-primes/prime-and-composite-numbers/",
         # the footer
         f"/feedback/?from={url}",
         "https://toonarmycaptain.com",
@@ -394,6 +419,11 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
         ),
         (
             "/worksheets/algebra-and-functions/graphing-linear-equations/",
+            "tile_pattern",
+            [(b"simple", b" checked", b"simple"), (b"complex", b"", b"complex")],
+        ),
+        (
+            "/worksheets/factors-and-primes/prime-and-composite-numbers/",
             "tile_pattern",
             [(b"simple", b" checked", b"simple"), (b"complex", b"", b"complex")],
         ),
@@ -747,6 +777,23 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
             ],
             True,
         ),
+        # every type by default, with an All box
+        (
+            "/worksheets/factors-and-primes/prime-and-composite-numbers/",
+            b"/api/worksheets/prime_composite.pdf",
+            "question_types",
+            [
+                (b"factor_pairs", b" checked", b"Factor pairs with only composite numbers"),
+                (b"count", b" checked", b"Count the primes or composites in a list"),
+                (b"choose_two", b" checked", b"Choose the two primes or composites"),
+                (b"between", b" checked", b"Primes between two numbers"),
+                (b"whose_number", b" checked", b"Whose number is prime or composite"),
+                (b"who_is_correct", b" checked", b"Who is correct?"),
+                (b"each_number", b" checked", b"Prime, composite or neither for each number"),
+                (b"list_factors", b" checked", b"List the factors, then decide"),
+            ],
+            True,
+        ),
         # every type of question by default, with an All box for the three
         (
             "/worksheets/basic-operations/base-ten-blocks/",
@@ -833,6 +880,7 @@ def test_a_checkbox_group_sends_each_ticked_choice_s_id_and_shows_its_name(
         ("/worksheets/algebra-and-functions/slope-and-intercepts/", False),
         ("/worksheets/algebra-and-functions/writing-linear-equations/", False),
         ("/worksheets/algebra-and-functions/graphing-linear-equations/", False),
+        ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
         ("/worksheets/legacy/", False),
     ],
 )
@@ -862,6 +910,7 @@ def test_the_place_value_page_keeps_from_and_to_different(
         ("/worksheets/algebra-and-functions/slope-and-intercepts/", False),
         ("/worksheets/algebra-and-functions/writing-linear-equations/", False),
         ("/worksheets/algebra-and-functions/graphing-linear-equations/", False),
+        ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
         ("/worksheets/legacy/", False),
     ],
 )
@@ -893,6 +942,7 @@ def test_the_input_output_tables_page_swaps_fields_for_multiple_choice(
         ("/worksheets/algebra-and-functions/slope-and-intercepts/", True),
         ("/worksheets/algebra-and-functions/writing-linear-equations/", False),
         ("/worksheets/algebra-and-functions/graphing-linear-equations/", False),
+        ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
         ("/worksheets/legacy/", False),
     ],
 )
@@ -923,6 +973,7 @@ def test_the_slope_and_intercepts_page_shows_intercepts_as_only_for_an_intercept
         ("/worksheets/algebra-and-functions/slope-and-intercepts/", True),
         ("/worksheets/algebra-and-functions/writing-linear-equations/", True),
         ("/worksheets/algebra-and-functions/graphing-linear-equations/", False),
+        ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
         ("/worksheets/legacy/", False),
     ],
 )
@@ -953,6 +1004,7 @@ def test_the_line_pages_show_blank_grids_only_with_two_points(
         ("/worksheets/algebra-and-functions/slope-and-intercepts/", False),
         ("/worksheets/algebra-and-functions/writing-linear-equations/", True),
         ("/worksheets/algebra-and-functions/graphing-linear-equations/", False),
+        ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
         ("/worksheets/legacy/", False),
     ],
 )
@@ -971,6 +1023,47 @@ def test_the_writing_page_shows_statements_only_with_vertical_or_horizontal_line
 
 
 @pytest.mark.parametrize(
+    ("url", "expected"),
+    [
+        ("/worksheets/basic-operations/arithmetic/", None),
+        ("/worksheets/basic-operations/word-problems/", None),
+        ("/worksheets/basic-operations/strip-choice/", None),
+        ("/worksheets/basic-operations/base-ten-blocks/", None),
+        ("/worksheets/basic-operations/multiplication-models/", None),
+        ("/worksheets/place-value/", None),
+        ("/worksheets/data-and-graphs/", None),
+        ("/worksheets/algebra-and-functions/input-output-tables/", None),
+        ("/worksheets/algebra-and-functions/slope-and-intercepts/", None),
+        ("/worksheets/algebra-and-functions/writing-linear-equations/", None),
+        ("/worksheets/algebra-and-functions/graphing-linear-equations/", None),
+        (
+            # the types with a counting form, whose answer the question doesn't print
+            "/worksheets/factors-and-primes/prime-and-composite-numbers/",
+            b'<script id="tile-types" type="application/json">'
+            b'["factor_pairs", "count", "between", "each_number"]</script>',
+        ),
+        ("/worksheets/legacy/", None),
+    ],
+)
+def test_the_prime_composite_page_greys_out_types_tiles_cant_ask(
+    client: Client, url: str, expected: bytes | None
+) -> None:
+    """
+    Only the prime and composite page includes the script that greys out, while self-check tiles
+    are ticked, the question types whose answer is printed in the question, with the data of
+    those it keeps.
+
+    Whether the script works is checked manually in a browser.
+    """
+    content = client.get(url).content
+    found = re.search(rb'<script id="tile-types".*?</script>', content)
+    assert (found.group() if found else None, b"function greyOutTypes()" in content) == (
+        expected,
+        expected is not None,
+    )
+
+
+@pytest.mark.parametrize(
     ("url", "tiles_script", "titles_script", "representation_script"),
     [
         ("/worksheets/basic-operations/arithmetic/", True, True, False),
@@ -984,6 +1077,7 @@ def test_the_writing_page_shows_statements_only_with_vertical_or_horizontal_line
         ("/worksheets/algebra-and-functions/slope-and-intercepts/", True, False, False),
         ("/worksheets/algebra-and-functions/writing-linear-equations/", True, False, False),
         ("/worksheets/algebra-and-functions/graphing-linear-equations/", True, False, False),
+        ("/worksheets/factors-and-primes/prime-and-composite-numbers/", True, False, False),
         ("/worksheets/legacy/", False, False, False),
     ],
 )
@@ -991,8 +1085,9 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
     client: Client, url: str, tiles_script: bool, titles_script: bool, representation_script: bool
 ) -> None:
     """
-    The arithmetic, word problems, base-ten blocks, place-value, input-output tables, and the
-    three line pages include the script that sets problems to 12 for tiles.
+    The arithmetic, word problems, base-ten blocks, place-value, input-output tables, the three
+    line pages and the prime and composite page include the script that sets problems to 12 for
+    tiles.
 
     The other pages have no self-check tiles box, and so no script. Whether the script works is
     checked manually in a browser. Only the arithmetic page has the operation names that its other
@@ -1064,6 +1159,12 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
             None,
         ),
         ("/worksheets/algebra-and-functions/graphing-linear-equations/", "choice-titles", None),
+        (
+            "/worksheets/factors-and-primes/prime-and-composite-numbers/",
+            "representation-operations",
+            None,
+        ),
+        ("/worksheets/factors-and-primes/prime-and-composite-numbers/", "choice-titles", None),
     ],
 )
 def test_the_representation_script_s_data(
@@ -1124,6 +1225,10 @@ def test_the_representation_script_s_data(
         (
             "/worksheets/algebra-and-functions/graphing-linear-equations/",
             [(b"/api/worksheets/graphing_linear_equations.pdf", b" data-check-first")],
+        ),
+        (
+            "/worksheets/factors-and-primes/prime-and-composite-numbers/",
+            [(b"/api/worksheets/prime_composite.pdf", b" data-check-first")],
         ),
         (
             "/worksheets/legacy/",
@@ -1288,6 +1393,19 @@ def test_only_core_forms_check_their_options_before_opening_a_tab(
                 (b"self_check_tiles", b"Self-check tile answers"),
             ],
         ),
+        (
+            "/worksheets/factors-and-primes/prime-and-composite-numbers/",
+            [
+                (b"title", b"Title"),
+                (b"label", b"Label"),
+                (b"name_line", b"Add Name/Date blanks"),
+                (b"problems", b"Problems"),
+                (b"largest_number", b"Largest number"),
+                (b"multiple_choice", b"Multiple choice"),
+                (b"answer_key", b"Add an answer key page"),
+                (b"self_check_tiles", b"Self-check tile answers"),
+            ],
+        ),
     ],
 )
 def test_each_field_carries_its_label_for_the_check_first_messages(
@@ -1340,6 +1458,7 @@ def test_legacy_page(client: Client) -> None:
         "/worksheets/algebra-and-functions/slope-and-intercepts/",
         "/worksheets/algebra-and-functions/writing-linear-equations/",
         "/worksheets/algebra-and-functions/graphing-linear-equations/",
+        "/worksheets/factors-and-primes/prime-and-composite-numbers/",
         # the footer
         "/feedback/?from=/worksheets/legacy/",
         "https://toonarmycaptain.com",
@@ -1355,6 +1474,11 @@ def test_legacy_page(client: Client) -> None:
         (
             "/worksheets/algebra-and-functions/",
             "/worksheets/algebra-and-functions/input-output-tables/",
+        ),
+        # a group of one sheet, which others will join
+        (
+            "/worksheets/factors-and-primes/",
+            "/worksheets/factors-and-primes/prime-and-composite-numbers/",
         ),
         # where input-output tables were before their group had a second sheet
         (

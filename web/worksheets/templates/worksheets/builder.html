@@ -156,6 +156,29 @@
   </script>
   {% endif %}
 
+  {% if tile_types %}
+  {{ tile_types|json_script:"tile-types" }}
+  <script type="module">
+    // The prime and composite form: self-check tiles ask only the question types whose answer
+    // the question doesn't print, so the bank can't give it away. Ticking them greys out the
+    // other types, so they aren't sent; their ticks come back when tiles are unticked.
+    const tileTypes = JSON.parse(document.getElementById("tile-types").textContent);
+    const tiles = document.querySelector("input[name=self_check_tiles]");
+    const types = [...tiles.form.querySelectorAll("input[name=question_types]")];
+    function greyOutTypes() {
+      for (const box of types) {
+        box.disabled = tiles.checked && !tileTypes.includes(box.value);
+        // the checkboxes script counts only the boxes that aren't greyed out
+        box.dispatchEvent(new Event("change"));
+      }
+    }
+    tiles.addEventListener("change", greyOutTypes);
+    // also when the browser restores the choices, going back to the page
+    window.addEventListener("pageshow", greyOutTypes);
+    greyOutTypes();
+  </script>
+  {% endif %}
+
   {% if intercept_answers %}
   <script type="module">
     // The slope and intercepts form's Intercepts as: only while the y- or x-intercept is ticked.

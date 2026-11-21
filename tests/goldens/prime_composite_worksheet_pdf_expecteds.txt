@@ -1,0 +1,1001 @@
+=== written ===
+title: Prime and Composite Numbers
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Prime and Composite Numbers) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 78 678 Tm (Write a factor pair of 184 that contains only composite numbers.) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+n 78 644 m 558 644 l S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 618 Tm (2.) Tj T* ET
+BT 1 0 0 1 78 618 Tm (Seth wrote four factor pairs for 132: 6 \327 22, 11 \327 12, 3 \327 44, 2 \327 66. Which of Seth's factor) Tj T* ET
+BT 1 0 0 1 78 603 Tm (pairs contains only composite numbers?) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+n 78 569 m 558 569 l S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 543 Tm (3.) Tj T* ET
+BT 1 0 0 1 78 543 Tm (A list of numbers is shown: 51, 52, 53, 54, 55. How many numbers in the list are) Tj T* ET
+BT 1 0 0 1 78 528 Tm (composite numbers?) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+n 78 494 m 558 494 l S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 468 Tm (4.) Tj T* ET
+BT 1 0 0 1 78 468 Tm (Circle the two composite numbers.) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 122.108 444 Tm (3) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 218.108 444 Tm (4) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 310.216 444 Tm (19) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 406.216 444 Tm (21) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 502.216 444 Tm (31) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 414 Tm (5.) Tj T* ET
+BT 1 0 0 1 78 414 Tm (Jaylen was told to list all the prime numbers between 30 and 50: 31, 37, 41, 47. Which) Tj T* ET
+BT 1 0 0 1 78 399 Tm (prime number is missing from Jaylen's list?) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+n 78 365 m 558 365 l S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 339 Tm (6.) Tj T* ET
+BT 1 0 0 1 78 339 Tm (Four students each wrote down a number between 30 and 40. Elly wrote 35, Ulysses) Tj T* ET
+BT 1 0 0 1 78 324 Tm (wrote 39, Maggie wrote 37 and Palmer wrote 33. Which student wrote down a prime) Tj T* ET
+BT 1 0 0 1 78 309 Tm (number?) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+n 78 275 m 558 275 l S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 249 Tm (7.) Tj T* ET
+BT 1 0 0 1 78 249 Tm (Cy said that 37 is prime because it is odd. Dot said that 51 is composite because 3 \327 17 =) Tj T* ET
+BT 1 0 0 1 78 234 Tm (51. Whose reasoning is correct? Explain how you know.) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+n 78 200 m 558 200 l S
+n 78 174 m 558 174 l S
+n 78 148 m 558 148 l S
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Prime and Composite Numbers) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (8.) Tj T* ET
+BT 1 0 0 1 78 678 Tm (Write P under each prime number, C under each composite number and N under each) Tj T* ET
+BT 1 0 0 1 78 663 Tm (number that is neither.) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 114.108 639 Tm (1) Tj T* ET
+n 105 603 26 26 re S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 194.108 639 Tm (9) Tj T* ET
+n 185 603 26 26 re S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 270.216 639 Tm (17) Tj T* ET
+n 265 603 26 26 re S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 350.216 639 Tm (21) Tj T* ET
+n 345 603 26 26 re S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 434.108 639 Tm (2) Tj T* ET
+n 425 603 26 26 re S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 510.216 639 Tm (57) Tj T* ET
+n 505 603 26 26 re S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 577 Tm (9.) Tj T* ET
+BT 1 0 0 1 78 577 Tm (List all the factors of 51. Is 51 prime or composite?) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 545 Tm (Factors:) Tj T* ET
+n 127.344 543 m 558 543 l S
+BT 1 0 0 1 78 519 Tm (Prime or composite:) Tj T* ET
+n 190.692 517 m 558 517 l S
+
+=== written_answer_key ===
+title: Prime and Composite Numbers
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Prime and Composite Numbers) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 78 678 Tm (Write a factor pair of 184 that contains only composite numbers.) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+n 78 644 m 558 644 l S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 618 Tm (2.) Tj T* ET
+BT 1 0 0 1 78 618 Tm (Seth wrote four factor pairs for 132: 6 \327 22, 11 \327 12, 3 \327 44, 2 \327 66. Which of Seth's factor) Tj T* ET
+BT 1 0 0 1 78 603 Tm (pairs contains only composite numbers?) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+n 78 569 m 558 569 l S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 543 Tm (3.) Tj T* ET
+BT 1 0 0 1 78 543 Tm (A list of numbers is shown: 51, 52, 53, 54, 55. How many numbers in the list are) Tj T* ET
+BT 1 0 0 1 78 528 Tm (composite numbers?) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+n 78 494 m 558 494 l S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 468 Tm (4.) Tj T* ET
+BT 1 0 0 1 78 468 Tm (Circle the two composite numbers.) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 122.108 444 Tm (3) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 218.108 444 Tm (4) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 310.216 444 Tm (19) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 406.216 444 Tm (21) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 502.216 444 Tm (31) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 414 Tm (5.) Tj T* ET
+BT 1 0 0 1 78 414 Tm (Jaylen was told to list all the prime numbers between 30 and 50: 31, 37, 41, 47. Which) Tj T* ET
+BT 1 0 0 1 78 399 Tm (prime number is missing from Jaylen's list?) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+n 78 365 m 558 365 l S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 339 Tm (6.) Tj T* ET
+BT 1 0 0 1 78 339 Tm (Four students each wrote down a number between 30 and 40. Elly wrote 35, Ulysses) Tj T* ET
+BT 1 0 0 1 78 324 Tm (wrote 39, Maggie wrote 37 and Palmer wrote 33. Which student wrote down a prime) Tj T* ET
+BT 1 0 0 1 78 309 Tm (number?) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+n 78 275 m 558 275 l S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 249 Tm (7.) Tj T* ET
+BT 1 0 0 1 78 249 Tm (Cy said that 37 is prime because it is odd. Dot said that 51 is composite because 3 \327 17 =) Tj T* ET
+BT 1 0 0 1 78 234 Tm (51. Whose reasoning is correct? Explain how you know.) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+n 78 200 m 558 200 l S
+n 78 174 m 558 174 l S
+n 78 148 m 558 148 l S
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Prime and Composite Numbers) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (8.) Tj T* ET
+BT 1 0 0 1 78 678 Tm (Write P under each prime number, C under each composite number and N under each) Tj T* ET
+BT 1 0 0 1 78 663 Tm (number that is neither.) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 114.108 639 Tm (1) Tj T* ET
+n 105 603 26 26 re S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 194.108 639 Tm (9) Tj T* ET
+n 185 603 26 26 re S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 270.216 639 Tm (17) Tj T* ET
+n 265 603 26 26 re S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 350.216 639 Tm (21) Tj T* ET
+n 345 603 26 26 re S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 434.108 639 Tm (2) Tj T* ET
+n 425 603 26 26 re S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 510.216 639 Tm (57) Tj T* ET
+n 505 603 26 26 re S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 577 Tm (9.) Tj T* ET
+BT 1 0 0 1 78 577 Tm (List all the factors of 51. Is 51 prime or composite?) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 545 Tm (Factors:) Tj T* ET
+n 127.344 543 m 558 543 l S
+BT 1 0 0 1 78 519 Tm (Prime or composite:) Tj T* ET
+n 190.692 517 m 558 517 l S
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Prime and Composite Numbers: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (46 and 4) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (6 \327 22) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 668 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 668 Tm (4: 51, 52, 54 and 55) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 648 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 648 Tm (4 and 21) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 628 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 628 Tm (43) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 608 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 608 Tm (Maggie. 35 = 5 \327 7; 39 = 3 \327 13; 37 is prime; 33 = 3 \327 11.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 588 Tm (7.) Tj T* ET
+BT 1 0 0 1 82 588 Tm (Dot's reasoning is correct. 37 is prime: its only factors are 1 and 37. 51 is) Tj T* ET
+BT 1 0 0 1 82 568 Tm (composite: 3 \327 17 = 51. Being odd doesn't make a number prime: 9 is odd) Tj T* ET
+BT 1 0 0 1 82 548 Tm (and composite.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 528 Tm (8.) Tj T* ET
+BT 1 0 0 1 82 528 Tm (1: N, 9: C, 17: P, 21: C, 2: P, 57: C) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 508 Tm (9.) Tj T* ET
+BT 1 0 0 1 82 508 Tm (1, 3, 17, 51; composite) Tj T* ET
+
+=== choices_answer_key ===
+title: Prime and Composite Numbers
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Prime and Composite Numbers) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 78 678 Tm (Which factor pair of 184 contains only composite numbers?) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 656 Tm (A\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 656 Tm (184 and 1) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 198 656 Tm (B\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 222 656 Tm (46 and 4) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 318 656 Tm (C\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 342 656 Tm (92 and 2) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 438 656 Tm (D\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 462 656 Tm (23 and 8) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 627 Tm (2.) Tj T* ET
+BT 1 0 0 1 78 627 Tm (Seth wrote four factor pairs for 132: 6 \327 22, 11 \327 12, 3 \327 44, 2 \327 66. Which of Seth's factor) Tj T* ET
+BT 1 0 0 1 78 612 Tm (pairs contains only composite numbers?) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 590 Tm (A\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 590 Tm (6 \327 22) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 198 590 Tm (B\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 222 590 Tm (11 \327 12) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 318 590 Tm (C\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 342 590 Tm (3 \327 44) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 438 590 Tm (D\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 462 590 Tm (2 \327 66) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 561 Tm (3.) Tj T* ET
+BT 1 0 0 1 78 561 Tm (A list of numbers is shown: 51, 52, 53, 54, 55. How many numbers in the list are) Tj T* ET
+BT 1 0 0 1 78 546 Tm (composite numbers?) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 524 Tm (A\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 524 Tm (4) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 198 524 Tm (B\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 222 524 Tm (1) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 318 524 Tm (C\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 342 524 Tm (2) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 438 524 Tm (D\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 462 524 Tm (3) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 495 Tm (4.) Tj T* ET
+BT 1 0 0 1 78 495 Tm (Which of these are composite numbers? Select TWO correct answers.) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 473 Tm (A\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 473 Tm (3) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 174 473 Tm (B\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 198 473 Tm (4) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 270 473 Tm (C\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 294 473 Tm (19) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 366 473 Tm (D\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 390 473 Tm (21) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 462 473 Tm (E\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 486 473 Tm (31) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 444 Tm (5.) Tj T* ET
+BT 1 0 0 1 78 444 Tm (Jaylen was told to list all the prime numbers between 30 and 50: 31, 37, 41, 47. Which) Tj T* ET
+BT 1 0 0 1 78 429 Tm (prime number is missing from Jaylen's list?) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 407 Tm (A\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 407 Tm (49) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 198 407 Tm (B\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 222 407 Tm (39) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 318 407 Tm (C\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 342 407 Tm (43) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 438 407 Tm (D\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 462 407 Tm (33) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 378 Tm (6.) Tj T* ET
+BT 1 0 0 1 78 378 Tm (Four students each wrote down a number between 30 and 40. Elly wrote 35, Ulysses) Tj T* ET
+BT 1 0 0 1 78 363 Tm (wrote 39, Maggie wrote 37 and Palmer wrote 33. Which student wrote down a prime) Tj T* ET
+BT 1 0 0 1 78 348 Tm (number?) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 326 Tm (A\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 326 Tm (Elly) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 198 326 Tm (B\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 222 326 Tm (Ulysses) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 318 326 Tm (C\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 342 326 Tm (Maggie) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 438 326 Tm (D\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 462 326 Tm (Palmer) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 297 Tm (7.) Tj T* ET
+BT 1 0 0 1 78 297 Tm (Brenda said that 2 is prime because it has only two factors. Carla said that 2 is composite) Tj T* ET
+BT 1 0 0 1 78 282 Tm (because all even numbers are composite. Who is correct?) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 260 Tm (A\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 260 Tm (Brenda is correct.) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 239 Tm (B\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 239 Tm (Carla is correct.) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 218 Tm (C\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 218 Tm (Both of them are correct.) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 197 Tm (D\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 197 Tm (Neither of them is correct.) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 168 Tm (8.) Tj T* ET
+BT 1 0 0 1 78 168 Tm (Cy said that 37 is prime because it is odd. Dot said that 51 is composite because 3 \327 17 =) Tj T* ET
+BT 1 0 0 1 78 153 Tm (51. Whose reasoning is correct?) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 131 Tm (A\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 131 Tm (Cy's reasoning is correct.) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 110 Tm (B\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 110 Tm (Dot's reasoning is correct.) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 89 Tm (C\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 89 Tm (Both students' reasoning is correct.) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 68 Tm (D\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 68 Tm (Neither student's reasoning is correct.) Tj T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Prime and Composite Numbers) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (9.) Tj T* ET
+BT 1 0 0 1 78 678 Tm (Circle prime, composite or neither under each number.) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 114.108 654 Tm (1) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 105.5 634 Tm (prime) Tj T* ET
+BT 1 0 0 1 95.215 621 Tm (composite) Tj T* ET
+BT 1 0 0 1 102.715 608 Tm (neither) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 194.108 654 Tm (9) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 185.5 634 Tm (prime) Tj T* ET
+BT 1 0 0 1 175.215 621 Tm (composite) Tj T* ET
+BT 1 0 0 1 182.715 608 Tm (neither) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 270.216 654 Tm (17) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 265.5 634 Tm (prime) Tj T* ET
+BT 1 0 0 1 255.215 621 Tm (composite) Tj T* ET
+BT 1 0 0 1 262.715 608 Tm (neither) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 350.216 654 Tm (21) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 345.5 634 Tm (prime) Tj T* ET
+BT 1 0 0 1 335.215 621 Tm (composite) Tj T* ET
+BT 1 0 0 1 342.715 608 Tm (neither) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 434.108 654 Tm (2) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 425.5 634 Tm (prime) Tj T* ET
+BT 1 0 0 1 415.215 621 Tm (composite) Tj T* ET
+BT 1 0 0 1 422.715 608 Tm (neither) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 510.216 654 Tm (57) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 505.5 634 Tm (prime) Tj T* ET
+BT 1 0 0 1 495.215 621 Tm (composite) Tj T* ET
+BT 1 0 0 1 502.715 608 Tm (neither) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 579 Tm (10.) Tj T* ET
+BT 1 0 0 1 78 579 Tm (Which shows all the factors of 60, and whether 60 is prime or composite?) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 557 Tm (A\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 557 Tm (1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60; prime) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 536 Tm (B\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 536 Tm (1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30; composite) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 515 Tm (C\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 515 Tm (1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60; composite) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 494 Tm (D\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 494 Tm (1, 2, 3, 4, 5, 6, 7, 10, 12, 15, 20, 30, 60; composite) Tj T* ET
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Prime and Composite Numbers: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (B\) 46 and 4) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (A\) 6 \327 22) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 668 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 668 Tm (A\) 4: 51, 52, 54 and 55) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 648 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 648 Tm (B, D\) 4 and 21) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 628 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 628 Tm (C\) 43) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 608 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 608 Tm (C\) Maggie. 35 = 5 \327 7; 39 = 3 \327 13; 37 is prime; 33 = 3 \327 11.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 588 Tm (7.) Tj T* ET
+BT 1 0 0 1 82 588 Tm (A\) Brenda is correct. 2 is prime: its only factors are 1 and 2.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 568 Tm (8.) Tj T* ET
+BT 1 0 0 1 82 568 Tm (B\) Dot's reasoning is correct. 37 is prime: its only factors are 1 and 37. 51 is) Tj T* ET
+BT 1 0 0 1 82 548 Tm (composite: 3 \327 17 = 51. Being odd doesn't make a number prime: 9 is odd) Tj T* ET
+BT 1 0 0 1 82 528 Tm (and composite.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 508 Tm (9.) Tj T* ET
+BT 1 0 0 1 82 508 Tm (1: N, 9: C, 17: P, 21: C, 2: P, 57: C) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 488 Tm (10.) Tj T* ET
+BT 1 0 0 1 82 488 Tm (C\) 1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60; composite) Tj T* ET
+
+=== tiles_answer_key ===
+title: Prime and Composite Numbers
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Prime and Composite Numbers) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 78 678 Tm (Write P under each prime number, C under each composite number and N under each) Tj T* ET
+BT 1 0 0 1 78 663 Tm (number that is neither.) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 110.216 639 Tm (21) Tj T* ET
+n 105 603 26 26 re S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 190.216 639 Tm (31) Tj T* ET
+n 185 603 26 26 re S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 270.216 639 Tm (87) Tj T* ET
+n 265 603 26 26 re S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 350.216 639 Tm (29) Tj T* ET
+n 345 603 26 26 re S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 430.216 639 Tm (73) Tj T* ET
+n 425 603 26 26 re S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 510.216 639 Tm (41) Tj T* ET
+n 505 603 26 26 re S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 577 Tm (2.) Tj T* ET
+BT 1 0 0 1 78 577 Tm (A list of numbers is shown: 92, 93, 94, 95, 96. How many numbers in the list are prime) Tj T* ET
+BT 1 0 0 1 78 562 Tm (numbers?) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 526 Tm (3.) Tj T* ET
+BT 1 0 0 1 78 526 Tm (Write P under each prime number, C under each composite number and N under each) Tj T* ET
+BT 1 0 0 1 78 511 Tm (number that is neither.) Tj T* ET
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 110.216 487 Tm (23) Tj T* ET
+n 105 451 26 26 re S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 190.216 487 Tm (49) Tj T* ET
+n 185 451 26 26 re S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 270.216 487 Tm (61) Tj T* ET
+n 265 451 26 26 re S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 350.216 487 Tm (31) Tj T* ET
+n 345 451 26 26 re S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 430.216 487 Tm (33) Tj T* ET
+n 425 451 26 26 re S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 510.216 487 Tm (63) Tj T* ET
+n 505 451 26 26 re S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 425 Tm (4.) Tj T* ET
+BT 1 0 0 1 78 425 Tm (How many prime numbers are there between 20 and 70?) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 389 Tm (5.) Tj T* ET
+BT 1 0 0 1 78 389 Tm (A list of numbers is shown: 70, 71, 72, 73, 74. How many numbers in the list are prime) Tj T* ET
+BT 1 0 0 1 78 374 Tm (numbers?) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 338 Tm (6.) Tj T* ET
+BT 1 0 0 1 78 338 Tm (How many factor pairs of 168 contain only composite numbers?) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 302 Tm (7.) Tj T* ET
+BT 1 0 0 1 78 302 Tm (How many prime numbers are there between 20 and 60?) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 266 Tm (8.) Tj T* ET
+BT 1 0 0 1 78 266 Tm (How many factor pairs of 180 contain only composite numbers?) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 230 Tm (9.) Tj T* ET
+BT 1 0 0 1 78 230 Tm (A list of numbers is shown: 81, 82, 83, 84, 85, 86, 87. How many numbers in the list are) Tj T* ET
+BT 1 0 0 1 78 215 Tm (composite numbers?) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 179 Tm (10.) Tj T* ET
+BT 1 0 0 1 78 179 Tm (How many factor pairs of 16 contain only composite numbers?) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 143 Tm (11.) Tj T* ET
+BT 1 0 0 1 78 143 Tm (How many prime numbers are there between 40 and 50?) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 107 Tm (12.) Tj T* ET
+BT 1 0 0 1 78 107 Tm (A list of numbers is shown: 4, 5, 6, 7, 8, 9, 10, 11, 12. How many numbers in the list are) Tj T* ET
+BT 1 0 0 1 78 92 Tm (composite numbers?) Tj T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Prime and Composite Numbers) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (Answer bank) Tj T* ET
+BT /F1 11 Tf 13.2 TL ET
+BT 1 0 0 1 54 662 Tm (Put each numbered tile in the slot whose letter matches the answer to its question.) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 578 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 91.552 595 Tm (9) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.668 626 Tm (A) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 578 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 175.552 595 Tm (1) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 626 Tm (B) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 578 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 259.552 595 Tm (7) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 259.668 626 Tm (C) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 578 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 343.552 595 Tm (5) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 343.668 626 Tm (D) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 578 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 427.552 595 Tm (2) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.998 626 Tm (E) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 578 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 511.552 595 Tm (3) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 626 Tm (F) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 534 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 87.104 551 Tm (11) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.332 520 Tm (G) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 534 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 147.104 551 Tm (CPCPPP) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 520 Tm (H) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 534 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 259.552 551 Tm (4) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 262.332 520 Tm (I) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 534 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 343.552 551 Tm (0) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 344.664 520 Tm (J) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 534 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 398.664 551 Tm (PCPPCC) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.668 520 Tm (K) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 534 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 511.552 551 Tm (6) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 520 Tm (L) Tj T* ET
+q
+1 1 1 rg
+n 318 432 40 40 re f*
+.941176 .745098 0 rg
+n 358 472 m 338 472 l 338 452 l 318 432 l 358 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 358 432 40 40 re f*
+.941176 .745098 0 rg
+n 358 472 m 378 472 l 378 452 l 398 432 l 358 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 398 432 40 40 re f*
+0 .235294 .784314 rg
+n 438 472 m 418 472 l 418 452 l 398 432 l 438 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 438 432 40 40 re f*
+0 .235294 .784314 rg
+n 438 472 m 458 472 l 458 452 l 478 432 l 438 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 478 432 40 40 re f*
+.85098 .14902 .172549 rg
+n 518 472 m 498 472 l 498 452 l 478 432 l 518 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 518 432 40 40 re f*
+.85098 .14902 .172549 rg
+n 518 472 m 538 472 l 538 452 l 558 432 l 518 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 318 392 40 40 re f*
+.941176 .745098 0 rg
+n 358 392 m 338 392 l 338 412 l 318 432 l 358 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 392 40 40 re S
+Q
+q
+1 1 1 rg
+n 358 392 40 40 re f*
+.941176 .745098 0 rg
+n 358 392 m 378 392 l 378 412 l 398 432 l 358 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 392 40 40 re S
+Q
+q
+1 1 1 rg
+n 398 392 40 40 re f*
+0 .235294 .784314 rg
+n 438 392 m 418 392 l 418 412 l 398 432 l 438 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 392 40 40 re S
+Q
+q
+1 1 1 rg
+n 438 392 40 40 re f*
+0 .235294 .784314 rg
+n 438 392 m 458 392 l 458 412 l 478 432 l 438 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 392 40 40 re S
+Q
+q
+1 1 1 rg
+n 478 392 40 40 re f*
+.85098 .14902 .172549 rg
+n 518 392 m 498 392 l 498 412 l 478 432 l 518 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 392 40 40 re S
+Q
+q
+1 1 1 rg
+n 518 392 40 40 re f*
+.85098 .14902 .172549 rg
+n 518 392 m 538 392 l 538 412 l 558 432 l 518 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 392 40 40 re S
+Q
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 458 Tm (Close the case and flip it over. If every) Tj T* ET
+BT 1 0 0 1 54 443 Tm (answer is right, the back looks like this.) Tj T* ET
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Prime and Composite Numbers: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (21: C, 31: P, 87: C, 29: P, 73: P, 41: P    \(H\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (0    \(J\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 668 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 668 Tm (23: P, 49: C, 61: P, 31: P, 33: C, 63: C    \(K\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 648 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 648 Tm (11: 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67    \(G\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 628 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 628 Tm (2: 71 and 73    \(E\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 608 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 608 Tm (4: 4 \327 42, 6 \327 28, 8 \327 21 and 12 \327 14    \(I\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 588 Tm (7.) Tj T* ET
+BT 1 0 0 1 82 588 Tm (9: 23, 29, 31, 37, 41, 43, 47, 53, 59    \(A\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 568 Tm (8.) Tj T* ET
+BT 1 0 0 1 82 568 Tm (5: 4 \327 45, 6 \327 30, 9 \327 20, 10 \327 18 and 12 \327 15    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 548 Tm (9.) Tj T* ET
+BT 1 0 0 1 82 548 Tm (6: 81, 82, 84, 85, 86 and 87    \(L\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 528 Tm (10.) Tj T* ET
+BT 1 0 0 1 82 528 Tm (1: 4 \327 4    \(B\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 508 Tm (11.) Tj T* ET
+BT 1 0 0 1 82 508 Tm (3: 41, 43, 47    \(F\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 488 Tm (12.) Tj T* ET
+BT 1 0 0 1 82 488 Tm (7: 4, 6, 8, 9, 10 and 12    \(C\)) Tj T* ET
+
+=== other_title_and_label ===
+title: Primes
+media boxes: 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Primes) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Day 2) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 78 678 Tm (Write a factor pair of 184 that contains only composite numbers.) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+n 78 644 m 558 644 l S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 618 Tm (2.) Tj T* ET
+BT 1 0 0 1 78 618 Tm (Seth wrote four factor pairs for 132: 6 \327 22, 11 \327 12, 3 \327 44, 2 \327 66. Which of Seth's factor) Tj T* ET
+BT 1 0 0 1 78 603 Tm (pairs contains only composite numbers?) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+n 78 569 m 558 569 l S
+

@@ -29,6 +29,8 @@ from core.line_equations.representation import (
     SLOPE_AND_INTERCEPTS_NAME,
     WRITING_LINEAR_EQUATIONS_NAME,
 )
+from core.prime_composite.data import TILE_TYPES
+from core.prime_composite.representation import PRIME_COMPOSITE_NAME
 from core.self_check_tiles import SLOTS
 
 from .registry import CORE_KINDS, LEGACY_KINDS, CoreKind, Kind
@@ -75,6 +77,11 @@ BUILDERS: list[dict[str, Any]] = [
             "graphing_linear_equations",
         ],
     },
+    {
+        "title": "Factors and Primes",
+        "description": "Tell prime numbers from composite numbers by their factors.",
+        "sheets": ["prime_composite"],
+    },
 ]
 
 HEADINGS = {
@@ -86,6 +93,7 @@ HEADINGS = {
     "multiplication_models": MULTIPLICATION_MODELS_NAME,
     "data_graphs": "Read, Complete, Solve",
     "input_output_tables": INPUT_OUTPUT_TABLES_NAME,
+    "prime_composite": PRIME_COMPOSITE_NAME,
     "slope_and_intercepts": SLOPE_AND_INTERCEPTS_NAME,
     "writing_linear_equations": WRITING_LINEAR_EQUATIONS_NAME,
     "graphing_linear_equations": GRAPHING_LINEAR_EQUATIONS_NAME,
@@ -223,6 +231,8 @@ SCRIPT_DATA: dict[str, dict[str, Any]] = {
     },
     "place_value": {"distinct_forms": True},
     "input_output_tables": {"choice_fields": True},
+    # the question types a self-check tiles sheet can ask
+    "prime_composite": {"tile_types": [question_type.value for question_type in TILE_TYPES]},
     "slope_and_intercepts": {"intercept_answers": True, "blank_grids": True},
     "writing_linear_equations": {"blank_grids": True, "statements": True},
 }

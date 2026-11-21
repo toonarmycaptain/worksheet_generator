@@ -140,6 +140,15 @@ from core.placevalue.representation import (
     WRITTEN_FORMS,
     place_value_tile_question,
 )
+from core.prime_composite.data import TILE_TYPES, QuestionType
+from core.prime_composite.generator import (
+    LARGEST_NUMBER as PRIME_COMPOSITE_LARGEST_NUMBER,
+)
+from core.prime_composite.generator import (
+    count_possible_answers as count_possible_prime_composite_answers,
+)
+from core.prime_composite.generator import generate_prime_composite_questions
+from core.prime_composite.representation import PRIME_COMPOSITE_NAME, QUESTION_TYPE_NAMES
 from core.self_check_tiles import SLOTS, TileQuestion, conventional_slot_of, random_slot_of
 from core.wrong_answers import WRONG_ANSWER_COUNT
 from render.pdf.base_ten_blocks_worksheet import render_base_ten_blocks_worksheet
@@ -154,6 +163,7 @@ from render.pdf.line_equations_worksheet import render_line_equations_worksheet
 from render.pdf.multiplication_models_worksheet import render_multiplication_models_worksheet
 from render.pdf.page import Header
 from render.pdf.place_value_worksheet import render_place_value_worksheet
+from render.pdf.prime_composite_worksheet import render_prime_composite_worksheet
 from render.pdf.self_check_tiles_worksheet import render_self_check_tiles_worksheet
 from render.pdf.strip_choice_worksheet import render_strip_choice_worksheet
 from render.pdf.word_problems_worksheet import render_word_problems_worksheet
@@ -245,6 +255,23 @@ ChoiceTypeChoice = Literal["table", "sentence", "statement"]  # a ChoiceType val
 CHOICE_TYPE_LABELS: dict[str, JsonValue] = {
     choice_type.value: name for choice_type, name in CHOICE_TYPE_NAMES.items()
 }
+# a prime and composite QuestionType value
+PrimeCompositeTypeChoice = Literal[
+    "factor_pairs",
+    "count",
+    "choose_two",
+    "between",
+    "whose_number",
+    "who_is_correct",
+    "each_number",
+    "list_factors",
+]
+# The prime and composite question types checkbox labels: each type's name
+PRIME_COMPOSITE_TYPE_LABELS: dict[str, JsonValue] = {
+    question_type.value: name for question_type, name in QUESTION_TYPE_NAMES.items()
+}
+SMALLEST_PRIME_COMPOSITE_LARGEST = 20  # keeps a range of primes with odd composites to choose
+LARGEST_PRIME_COMPOSITE_LARGEST = 1_000
 # a LineForm value
 LineFormChoice = Literal[
     "slope_intercept",
@@ -1181,6 +1208,85 @@ class InputOutputTableOptions(HeaderOptions):
         return self
 
 
+class PrimeCompositeOptions(HeaderOptions):
+    """
+    Options for the prime and composite kind, built on the core. There is no seed: every sheet is
+    new.
+    """
+
+    title: Title = PRIME_COMPOSITE_NAME
+    problems: Problems = 10
+    # The problems are shared evenly among the ticked types. With tiles, the page greys out the
+    # types that have no counting form.
+    question_types: list[PrimeCompositeTypeChoice] = Field(
+        [question_type.value for question_type in QuestionType],
+        min_length=1,
+        title="Question types",
+        json_schema_extra={"labels": PRIME_COMPOSITE_TYPE_LABELS},
+    )
+    largest_number: int = Field(
+        PRIME_COMPOSITE_LARGEST_NUMBER,
+        ge=SMALLEST_PRIME_COMPOSITE_LARGEST,
+        le=LARGEST_PRIME_COMPOSITE_LARGEST,
+        title="Largest number",
+        description="No number to judge prime or composite is larger. A number whose factor "
+        "pairs are asked for can be up to twice it.",
+    )
+    multiple_choice: bool = Field(
+        False,
+        title="Multiple choice",
+        description="Lettered choices instead of answer lines. The wrong ones are common "
+        "mistakes, such as 1 or 2 in a factor pair, or an odd composite for a prime.",
+    )
+    answer_key: AnswerKey = False
+    # Tiles ask counting forms of the questions, and add an answer bank page.
+    self_check_tiles: SelfCheckTiles = False
+    tile_pattern: TilePattern = "simple"
+
+    @model_validator(mode="after")
+    def _tiles_are_available(self) -> Self:
+        # Not built for multiple choice: each choice's letter would need coding as a number. The
+        # page hides multiple choice while tiles are ticked, and greys out the tiles while it is.
+        # Runs first, so a request with both is told so before anything else.
+        if self.self_check_tiles and self.multiple_choice:
+            raise ValueError("self_check_tiles: not available with multiple choice")
+        return self
+
+    @model_validator(mode="after")
+    def _enough_different_answers(self) -> Self:
+        # With tiles, a question's answer mustn't be printed in it, or the bank gives it away,
+        # and no two answers are the same, which a small largest number can run short of.
+        if self.self_check_tiles:
+            types = _prime_composite_types(self.question_types)
+            without = [QUESTION_TYPE_NAMES[each] for each in types if each not in TILE_TYPES]
+            if without:
+                raise ValueError(
+                    f"question_types: {_listed(without)} can't be asked with self-check tiles"
+                )
+            _at_most_one_question_per_tile(self.problems)
+            possible = count_possible_prime_composite_answers(types, self.largest_number)
+            if self.problems > possible:
+                raise _too_many_problems(
+                    possible,
+                    "repeated answers",
+                    "choice of question types and largest number",
+                    {
+                        "largest number": _smallest_raise(
+                            lambda largest: count_possible_prime_composite_answers(types, largest),
+                            self.problems,
+                            self.largest_number,
+                            LARGEST_PRIME_COMPOSITE_LARGEST,
+                        )
+                    },
+                )
+        return self
+
+
+def _prime_composite_types(ticked: Sequence[str]) -> list[QuestionType]:
+    """Return the ticked question types, each once, in the order of ``QuestionType``."""
+    return [question_type for question_type in QuestionType if question_type.value in ticked]
+
+
 class SlopeAndInterceptsOptions(HeaderOptions):
     """
     Options for the slope and intercepts kind, built on the core. There is no seed: every sheet is
@@ -1734,6 +1840,7 @@ def _tile_slots(
     | WordProblemOptions
     | BaseTenBlocksOptions
     | InputOutputTableOptions
+    | PrimeCompositeOptions
     | SlopeAndInterceptsOptions
     | WritingLinearEquationsOptions
     | GraphingLinearEquationsOptions,
@@ -1862,6 +1969,22 @@ def _input_output_tables(options: InputOutputTableOptions, out: BinaryIO) -> Non
                 for choice_type in ChoiceType
                 if options.multiple_choice and choice_type.value in options.question_types
             ],
+            distinct_answers=options.self_check_tiles,
+        ),
+        path=out,
+        header=options.header(),
+        answer_key=options.answer_key,
+        slot_of=_tile_slots(options) if options.self_check_tiles else None,
+    )
+
+
+def _prime_composite(options: PrimeCompositeOptions, out: BinaryIO) -> None:
+    render_prime_composite_worksheet(
+        questions=generate_prime_composite_questions(
+            options.problems,
+            _prime_composite_types(options.question_types),
+            largest_number=options.largest_number,
+            multiple_choice=options.multiple_choice,
             distinct_answers=options.self_check_tiles,
         ),
         path=out,
@@ -2146,6 +2269,7 @@ CORE_KINDS: dict[str, CoreKind[Any]] = {
     "multiplication_models": CoreKind(MultiplicationModelsOptions, _multiplication_models),
     "data_graphs": CoreKind(DataGraphsOptions, _data_graphs),
     "input_output_tables": CoreKind(InputOutputTableOptions, _input_output_tables),
+    "prime_composite": CoreKind(PrimeCompositeOptions, _prime_composite),
     "slope_and_intercepts": CoreKind(SlopeAndInterceptsOptions, _slope_and_intercepts),
     "writing_linear_equations": CoreKind(WritingLinearEquationsOptions, _writing_linear_equations),
     "graphing_linear_equations": CoreKind(
