@@ -35,7 +35,6 @@ from core.line_equations.data import (
     LineForm,
     LineQuestion,
     LineQuestionData,
-    NumberStyle,
     Point,
     Relation,
     Statement,
@@ -44,9 +43,9 @@ from core.line_equations.data import (
     line_answer,
     line_from,
 )
-from core.line_equations.representation import terminates
 from core.line_equations.wrong_answers import mistake_sets, wrong_answers, wrong_lines
 from core.question import FreeResponse, Question, multiple_choice
+from core.written_numbers import NumberStyle, terminates
 
 DEFAULT_LARGEST_COORDINATE = 10  # STAAR's grids mostly run to ±9 or ±10
 DEFAULT_LARGEST_DENOMINATOR = 5

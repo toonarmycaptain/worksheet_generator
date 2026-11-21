@@ -34,19 +34,18 @@ from core.line_equations.data import (
     Stated,
 )
 from core.line_equations.representation import (
-    Pieces,
     answer_pieces,
     blank_labels,
     choice_pieces,
     choice_table_cells,
     given_pieces,
-    inline,
     instruction,
     point_pieces,
     table_cells,
     tile_answer_pieces,
 )
 from core.question import MultipleChoice
+from core.written_numbers import Pieces, inline
 from render.pdf.coordinate_plane import (
     AXIS_OVERHANG,
     draw_coordinate_plane,

@@ -10,6 +10,7 @@ from math import gcd, lcm
 from typing import assert_never
 
 from core.question import FreeResponse, MultipleChoice, Question, QuestionData
+from core.written_numbers import NumberStyle
 
 # A point with integer coordinates, as (x, y)
 type Point = tuple[int, int]
@@ -138,17 +139,6 @@ class Statement(StrEnum):
 
     SLOPE = "slope"  # The equation of the line is x = -4, and the slope is undefined.
     X_AXIS = "x_axis"  # The equation of the line is y = 3, and the line is parallel to the x-axis.
-
-
-class NumberStyle(StrEnum):
-    """
-    How a question writes its numbers that aren't whole. Values are stable identifiers for the
-    API and storage.
-    """
-
-    FRACTION = "fraction"  # 5/2
-    DECIMAL = "decimal"  # 2.5, for a number whose decimal terminates
-    MIXED_NUMBER = "mixed_number"  # 2 1/2
 
 
 # What a line is shown as when a feature of it is asked: every form but the slope and y-intercept

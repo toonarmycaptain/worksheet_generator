@@ -27,7 +27,8 @@ from typing import Any
 import pytest
 from django.test import Client
 
-from core.line_equations.data import Equation, Grid, Line, LineForm, LineQuestionData, NumberStyle
+from core.line_equations.data import Equation, Grid, Line, LineForm, LineQuestionData
+from core.written_numbers import NumberStyle
 from tests.data import REAL_CASE_SLOTS
 from tests.helpers import (
     choice_returns,

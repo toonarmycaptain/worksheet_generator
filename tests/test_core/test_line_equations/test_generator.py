@@ -69,8 +69,8 @@ from core.line_equations.generator import (
     generate_graphing_questions,
     generate_line_questions,
 )
-from core.line_equations.representation import terminates
 from core.question import FreeResponse, MultipleChoice
+from core.written_numbers import terminates
 from tests.helpers import choice_returns, reverse_shuffle, sample_returns
 
 SLOPE, RATE_OF_CHANGE, Y_INTERCEPT, X_INTERCEPT, ZERO, SLOPE_AND_Y_INTERCEPT = LineFeature

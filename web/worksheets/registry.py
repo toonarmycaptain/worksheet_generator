@@ -101,7 +101,6 @@ from core.line_equations.data import (
     GRAPHING_GIVENS,
     LineFeature,
     LineForm,
-    NumberStyle,
     Relation,
 )
 from core.line_equations.generator import (
@@ -150,6 +149,7 @@ from core.prime_composite.generator import (
 from core.prime_composite.generator import generate_prime_composite_questions
 from core.prime_composite.representation import PRIME_COMPOSITE_NAME, QUESTION_TYPE_NAMES
 from core.self_check_tiles import SLOTS, TileQuestion, conventional_slot_of, random_slot_of
+from core.written_numbers import NumberStyle
 from core.wrong_answers import WRONG_ANSWER_COUNT
 from render.pdf.base_ten_blocks_worksheet import render_base_ten_blocks_worksheet
 from render.pdf.basic_operations_worksheet import (

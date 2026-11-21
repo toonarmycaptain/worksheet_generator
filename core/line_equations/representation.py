@@ -8,8 +8,6 @@ with the minus sign rather than a hyphen, and a coefficient of 1 is left out: y 
 y = 1x + -2.
 """
 
-from collections.abc import Iterable
-from decimal import Decimal
 from fractions import Fraction
 from typing import assert_never
 
@@ -22,15 +20,23 @@ from core.line_equations.data import (
     LineFeature,
     LineForm,
     LineQuestionData,
-    NumberStyle,
     Relation,
     Stated,
     Statement,
     answer_of,
     choice_row,
 )
+from core.written_numbers import (
+    MINUS,
+    NumberStyle,
+    Piece,
+    Pieces,
+    format_number,
+    inline,
+    merge_pieces,
+    number_pieces,
+)
 
-MINUS = "\N{MINUS SIGN}"
 UNDEFINED = "undefined"  # a vertical line's slope
 _ONE = "\N{SUBSCRIPT ONE}"
 
@@ -108,66 +114,11 @@ _FORM_WORDS = {
     LineForm.POINT_SLOPE: "point-slope form",
 }
 
-# A piece of written maths: text, or a positive fraction that isn't whole, drawn stacked
-type Piece = str | Fraction
-type Pieces = tuple[Piece, ...]
-
-
-def inline(pieces: Iterable[Piece]) -> str:
-    """Return ``pieces`` as one line of text, each fraction written as 3/4."""
-    return "".join(
-        piece if isinstance(piece, str) else f"{piece.numerator}/{piece.denominator}"
-        for piece in pieces
-    )
-
-
-def number_pieces(value: Fraction | int, style: NumberStyle) -> Pieces:
-    """
-    Return ``value`` written in ``style``, with commas between groups of three digits.
-
-    A whole number is written the same in every style: -12. A number that isn't whole is a
-    fraction, proper or improper (-5/2), a decimal (-2.5) or a mixed number (-2 1/2).
-
-    Raises ``ValueError`` for a decimal that doesn't terminate, such as 1/3's.
-    """
-    value = Fraction(value)
-    sign = MINUS if value < 0 else ""
-    size = abs(value)
-    if size.denominator == 1:
-        return (f"{sign}{size.numerator:,}",)
-    match style:
-        case NumberStyle.FRACTION:
-            return _merge((sign, size))
-        case NumberStyle.DECIMAL:
-            if not terminates(size):
-                raise ValueError(f"{value} has no decimal that terminates.")
-            return (f"{sign}{Decimal(size.numerator) / Decimal(size.denominator):,}",)
-        case NumberStyle.MIXED_NUMBER:
-            whole, part = divmod(size, 1)
-            return _merge((f"{sign}{whole:,} " if whole else sign, part))
-        case _:
-            assert_never(style)
-
-
-def format_number(value: Fraction | int, style: NumberStyle) -> str:
-    """Return ``value`` written inline in ``style``, as ``number_pieces`` writes it."""
-    return inline(number_pieces(value, style))
-
-
-def terminates(value: Fraction) -> bool:
-    """Return whether ``value``'s decimal terminates: whether its denominator has no factor but
-    2 and 5."""
-    denominator = value.denominator
-    for factor in (2, 5):
-        while denominator % factor == 0:
-            denominator //= factor
-    return denominator == 1
-
 
 def point_pieces(point: tuple[Fraction | int, Fraction | int], style: NumberStyle) -> Pieces:
     """Return ``point`` as an ordered pair, such as (5/2, 0), its numbers written in ``style``."""
     x, y = point
-    return _merge(("(", *number_pieces(x, style), ", ", *number_pieces(y, style), ")"))
+    return merge_pieces(("(", *number_pieces(x, style), ", ", *number_pieces(y, style), ")"))
 
 
 def equation_pieces(
@@ -211,8 +162,8 @@ def equation_pieces(
         case LineForm.SLOPE_INTERCEPT:
             slope, intercept = _slope_and_intercept(line, form)
             if slope == 0:
-                return _merge((f"{lhs} = ", *number_pieces(intercept, numbers)))
-            return _merge(
+                return merge_pieces((f"{lhs} = ", *number_pieces(intercept, numbers)))
+            return merge_pieces(
                 (f"{lhs} = ", *_coefficient(slope, numbers), "x", *_added(intercept, numbers))
             )
         case LineForm.STANDARD:
@@ -225,21 +176,21 @@ def equation_pieces(
             if solved_for_y:
                 inner: Pieces = ("(x", *_added(-x, numbers), ")") if x else ("x",)
                 right_side = (*_coefficient(slope, numbers), *inner, *_added(y, numbers))
-                return _merge((f"{lhs} = ", *right_side))
+                return merge_pieces((f"{lhs} = ", *right_side))
             left = (lhs, *_added(-y, numbers))
             if x == 0 or slope == 1:
                 right: Pieces = ("x", *_added(-x, numbers))
             else:
                 right = ("(x", *_added(-x, numbers), ")")
-            return _merge((*left, " = ", *_coefficient(slope, numbers), *right))
+            return merge_pieces((*left, " = ", *_coefficient(slope, numbers), *right))
         case LineForm.VERTICAL:
             if line.b != 0:
                 raise ValueError(f"{line} isn't a vertical line.")
-            return _merge(("x = ", *number_pieces(Fraction(line.c, line.a), numbers)))
+            return merge_pieces(("x = ", *number_pieces(Fraction(line.c, line.a), numbers)))
         case LineForm.HORIZONTAL:
             if line.a != 0:
                 raise ValueError(f"{line} isn't a horizontal line.")
-            return _merge((f"{lhs} = ", *number_pieces(Fraction(line.c, line.b), numbers)))
+            return merge_pieces((f"{lhs} = ", *number_pieces(Fraction(line.c, line.b), numbers)))
         case _:
             assert_never(form)
 
@@ -379,13 +330,13 @@ def given_pieces(data: LineQuestionData) -> Pieces:
     match data.given:
         case LineForm.TWO_POINTS:
             first, second = data.points
-            return _merge(
+            return merge_pieces(
                 (*point_pieces(first, data.numbers), " and ", *point_pieces(second, data.numbers))
             )
         case LineForm.POINT_AND_SLOPE:
             slope = data.answer.slope
             (point,) = data.points
-            return _merge(
+            return merge_pieces(
                 (
                     "point ",
                     *point_pieces(point, data.numbers),
@@ -395,7 +346,7 @@ def given_pieces(data: LineQuestionData) -> Pieces:
             )
         case LineForm.SLOPE_AND_INTERCEPT:
             slope, intercept = _slope_and_intercept(data.answer, data.given)
-            return _merge(
+            return merge_pieces(
                 (
                     "slope ",
                     *number_pieces(slope, data.numbers),
@@ -407,7 +358,7 @@ def given_pieces(data: LineQuestionData) -> Pieces:
             x_intercept, y_intercept = data.answer.x_intercept, data.answer.y_intercept
             if x_intercept is None or y_intercept is None:
                 raise ValueError(f"{data.answer} doesn't cross both axes.")
-            return _merge(
+            return merge_pieces(
                 (
                     "x-intercept ",
                     *number_pieces(x_intercept, data.numbers),
@@ -498,7 +449,7 @@ def answer_pieces(data: LineQuestionData) -> Pieces:
         return _stated(answer, data.numbers, short=True)
     if data.asked is LineFeature.SLOPE_AND_Y_INTERCEPT and isinstance(answer, tuple):
         slope, intercept = answer
-        return _merge(
+        return merge_pieces(
             (
                 "slope ",
                 *number_pieces(slope, data.numbers),
@@ -532,7 +483,7 @@ def choice_pieces(data: LineQuestionData, choice: LineAnswer) -> Pieces:
     if data.asked is not LineFeature.SLOPE_AND_Y_INTERCEPT:
         return point_pieces(choice, data.numbers)
     slope, intercept = choice
-    return _merge(
+    return merge_pieces(
         (
             "The slope is ",
             *number_pieces(slope, data.numbers),
@@ -551,7 +502,7 @@ def tile_answer_pieces(data: LineQuestionData) -> Pieces:
     answer = answer_of(data)
     if data.asked is LineFeature.SLOPE_AND_Y_INTERCEPT and isinstance(answer, tuple):
         slope, intercept = answer
-        return _merge(
+        return merge_pieces(
             (
                 "m = ",
                 *number_pieces(slope, data.numbers),
@@ -577,8 +528,8 @@ def _stated(stated: Stated, numbers: NumberStyle, short: bool) -> Pieces:
         fact = f"slope {UNDEFINED if about is None else format_number(about, numbers)}"
         long = f", and the {fact.replace(' ', ' is ', 1)}."
     if short:
-        return _merge((*equation, f", {fact}"))
-    return _merge(("The equation of the line is ", *equation, long))
+        return merge_pieces((*equation, f", {fact}"))
+    return merge_pieces(("The equation of the line is ", *equation, long))
 
 
 def _slope_and_intercept(line: Line, form: LineForm) -> tuple[Fraction, Fraction]:
@@ -616,16 +567,4 @@ def _standard(line: Line) -> Pieces:
             pieces.append(MINUS)
         size = abs(coefficient)
         pieces.append(variable if size == 1 else f"{size:,}{variable}")
-    return _merge((*pieces, " = ", *number_pieces(line.c, NumberStyle.FRACTION)))
-
-
-def _merge(pieces: Iterable[Piece]) -> Pieces:
-    """Join neighbouring strings among ``pieces`` and drop empty ones."""
-    merged: list[Piece] = []
-    for piece in pieces:
-        last = merged[-1] if merged else None
-        if isinstance(piece, str) and isinstance(last, str):
-            merged[-1] = last + piece
-        elif piece != "":
-            merged.append(piece)
-    return tuple(merged)
+    return merge_pieces((*pieces, " = ", *number_pieces(line.c, NumberStyle.FRACTION)))

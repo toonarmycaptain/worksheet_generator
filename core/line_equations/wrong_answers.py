@@ -22,14 +22,13 @@ from core.line_equations.data import (
     LineFeature,
     LineForm,
     LineQuestionData,
-    NumberStyle,
     Point,
     Relation,
     Stated,
     answer_of,
     line_from,
 )
-from core.line_equations.representation import terminates
+from core.written_numbers import NumberStyle, terminates
 
 
 def mistake_sets(data: LineQuestionData) -> int:

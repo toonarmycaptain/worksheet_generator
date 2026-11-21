@@ -33,8 +33,8 @@ from core.line_equations.data import (
     LineFeature,
     LineForm,
     LineQuestionData,
-    NumberStyle,
 )
+from core.written_numbers import NumberStyle
 from tests.data import REAL_CASE_SLOTS
 from tests.helpers import (
     choice_returns,

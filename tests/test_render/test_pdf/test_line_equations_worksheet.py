@@ -28,11 +28,11 @@ from core.line_equations.data import (
     LineFeature,
     LineForm,
     LineQuestionData,
-    NumberStyle,
     Relation,
     Stated,
     Statement,
 )
+from core.written_numbers import NumberStyle
 from tests.helpers import GOLDENS, pdf_text, read_sections, render_line_questions, reverse_shuffle
 
 SLOPE, RATE_OF_CHANGE, Y_INTERCEPT, X_INTERCEPT, ZERO, SLOPE_AND_Y_INTERCEPT = LineFeature

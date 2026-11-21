@@ -16,12 +16,12 @@ from core.line_equations.data import (
     LineFeature,
     LineForm,
     LineQuestionData,
-    NumberStyle,
     Relation,
     Stated,
     Statement,
 )
 from core.line_equations.wrong_answers import mistake_sets, wrong_answers, wrong_lines
+from core.written_numbers import NumberStyle
 
 SLOPE, RATE_OF_CHANGE, Y_INTERCEPT, X_INTERCEPT, ZERO, SLOPE_AND_Y_INTERCEPT = LineFeature
 (
