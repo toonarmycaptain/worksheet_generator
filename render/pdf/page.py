@@ -148,20 +148,23 @@ def _square_side(size: float, blank_side: float | None) -> float:
     return blank_side or size * 1.4
 
 
-def wrap(text: str, size: float, width: float) -> list[str]:
+def wrap(text: str, size: float, width: float, sums: bool = True) -> list[str]:
     """
     Split ``text`` into lines no wider than ``width``, as far as its words allow.
 
-    A sum, such as expanded form or expanded notation, breaks after a "+", so each line ends
-    with its "+" and every term stays whole. A term too long for a line, such as a number in
-    word form before an "=", breaks between words, as does text that is not a sum. A bracketed
-    term, such as (3 x 10,000), counts as one word. Lines are measured as drawn, including any
-    trailing "+", and spacing within a line is preserved.
+    With ``sums``, a sum, such as expanded form or expanded notation, breaks after a "+", so
+    each line ends with its "+" and every term stays whole; without, a "+" is a word like any
+    other, for text such as "2 + 8 should be simplified first". A term too long for a line,
+    such as a number in word form before an "=", breaks between words, as does text that is not
+    a sum. A bracketed term, such as (3 x 10,000), counts as one word. Lines are measured as
+    drawn, including any trailing "+", and spacing within a line is preserved.
     """
 
     def fits(line: str) -> bool:
         return text_width(line, size) <= width
 
+    if not sums:
+        return _wrap_words(text, fits)
     *before_plus, last = text.split(" + ")
     lines: list[str] = []
     for term in [*(term + " +" for term in before_plus), last]:
@@ -284,9 +287,12 @@ def draw_instruction(pdf: Canvas, text: str, y: float) -> float:
     return y - INSTRUCTION_GAP
 
 
-def draw_answer_key(pdf: Canvas, header: Header, solutions: Iterable[str]) -> None:
+def draw_answer_key(
+    pdf: Canvas, header: Header, solutions: Iterable[str], sums: bool = True
+) -> None:
     """
-    Draw the answer key, starting on a new page, with each solution numbered and wrapped.
+    Draw the answer key, starting on a new page, with each solution numbered and wrapped, as
+    ``wrap`` does with ``sums``.
 
     A newline in a solution starts a new line. A solution that would run past the bottom margin
     starts on the next page.
@@ -295,7 +301,9 @@ def draw_answer_key(pdf: Canvas, header: Header, solutions: Iterable[str]) -> No
     pdf.showPage()
     y = start_page(pdf, key_header)
     for number, solution in enumerate(solutions, start=1):
-        lines = [line for row in solution.split("\n") for line in wrap(row, TEXT_SIZE, TEXT_WIDTH)]
+        lines = [
+            line for row in solution.split("\n") for line in wrap(row, TEXT_SIZE, TEXT_WIDTH, sums)
+        ]
         if y - (len(lines) - 1) * LINE_HEIGHT < MARGIN + LINE_HEIGHT:
             pdf.showPage()
             y = start_page(pdf, key_header)

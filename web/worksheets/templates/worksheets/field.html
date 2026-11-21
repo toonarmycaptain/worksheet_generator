@@ -31,7 +31,7 @@
   {% include "worksheets/hint.html" %}
 </label>
 {% else %}
-<label>{{ field.label }}
+<label{% if field.mouseover %} title="{{ field.mouseover }}"{% endif %}>{{ field.label }}
   <input type="{{ field.input }}" name="{{ field.name }}" data-label="{{ field.label }}" value="{{ field.value }}"{% for attr, limit in field.attrs.items %} {{ attr }}="{{ limit }}"{% endfor %}>
   {% include "worksheets/hint.html" %}
 </label>

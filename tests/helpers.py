@@ -53,6 +53,7 @@ from core.input_output_tables.data import (
     InputOutputRuleQuestionData,
 )
 from core.line_equations.data import LineAnswer, LineQuestionData, answer_of
+from core.order_of_operations.data import OrderOfOperationsQuestion
 from core.placevalue.data import PlaceValueQuestionData
 from core.prime_composite.data import PrimeCompositeQuestion
 from core.question import FreeResponse, Question, QuestionData, multiple_choice
@@ -67,6 +68,7 @@ from render.pdf.data_graphs_worksheet import render_data_graphs_worksheet
 from render.pdf.input_output_tables_worksheet import render_input_output_tables_worksheet
 from render.pdf.line_equations_worksheet import render_line_equations_worksheet
 from render.pdf.multiplication_models_worksheet import render_multiplication_models_worksheet
+from render.pdf.order_of_operations_worksheet import render_order_of_operations_worksheet
 from render.pdf.page import Header
 from render.pdf.place_value_worksheet import render_place_value_worksheet
 from render.pdf.prime_composite_worksheet import render_prime_composite_worksheet
@@ -597,6 +599,26 @@ def render_prime_composite(
     """Render the prime and composite sheet, its questions given with their responses."""
     out = BytesIO()
     render_prime_composite_worksheet(
+        questions=questions,
+        path=out,
+        header=Header(title=title, label=label, name_line=name_line),
+        answer_key=answer_key,
+        slot_of=slot_of,
+    )
+    return out.getvalue()
+
+
+def render_order_of_operations(
+    questions: Sequence[OrderOfOperationsQuestion],
+    slot_of: tuple[int, ...] | None,
+    answer_key: bool,
+    title: str,
+    label: str,
+    name_line: bool = True,
+) -> bytes:
+    """Render the order of operations sheet, its questions given with their responses."""
+    out = BytesIO()
+    render_order_of_operations_worksheet(
         questions=questions,
         path=out,
         header=Header(title=title, label=label, name_line=name_line),

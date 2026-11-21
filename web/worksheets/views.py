@@ -29,6 +29,8 @@ from core.line_equations.representation import (
     SLOPE_AND_INTERCEPTS_NAME,
     WRITING_LINEAR_EQUATIONS_NAME,
 )
+from core.order_of_operations.data import TILE_TYPES as ORDER_OF_OPERATIONS_TILE_TYPES
+from core.order_of_operations.representation import ORDER_OF_OPERATIONS_NAME
 from core.prime_composite.data import TILE_TYPES
 from core.prime_composite.representation import PRIME_COMPOSITE_NAME
 from core.self_check_tiles import SLOTS
@@ -75,6 +77,7 @@ BUILDERS: list[dict[str, Any]] = [
             "slope_and_intercepts",
             "writing_linear_equations",
             "graphing_linear_equations",
+            "order_of_operations",
         ],
     },
     {
@@ -94,6 +97,7 @@ HEADINGS = {
     "data_graphs": "Read, Complete, Solve",
     "input_output_tables": INPUT_OUTPUT_TABLES_NAME,
     "prime_composite": PRIME_COMPOSITE_NAME,
+    "order_of_operations": ORDER_OF_OPERATIONS_NAME,
     "slope_and_intercepts": SLOPE_AND_INTERCEPTS_NAME,
     "writing_linear_equations": WRITING_LINEAR_EQUATIONS_NAME,
     "graphing_linear_equations": GRAPHING_LINEAR_EQUATIONS_NAME,
@@ -121,7 +125,9 @@ def _field(name: str, schema: dict[str, Any]) -> dict[str, Any]:
         "name": name,
         "label": schema["title"],
         "value": schema["default"],
-        "hint": schema.get("description", ""),
+        "hint": "" if schema.get("mouseover") else schema.get("description", ""),
+        # a description the label makes plain enough is shown only on mouseover
+        "mouseover": schema.get("description", "") if schema.get("mouseover") else "",
         # the field it shows under, such as the tiles box for their pattern (see _forms)
         "under": schema.get("under"),
     }
@@ -233,6 +239,9 @@ SCRIPT_DATA: dict[str, dict[str, Any]] = {
     "input_output_tables": {"choice_fields": True},
     # the question types a self-check tiles sheet can ask
     "prime_composite": {"tile_types": [question_type.value for question_type in TILE_TYPES]},
+    "order_of_operations": {
+        "tile_types": [question_type.value for question_type in ORDER_OF_OPERATIONS_TILE_TYPES]
+    },
     "slope_and_intercepts": {"intercept_answers": True, "blank_grids": True},
     "writing_linear_equations": {"blank_grids": True, "statements": True},
 }

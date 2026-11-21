@@ -5,6 +5,8 @@ import re
 import pytest
 from django.test import Client
 
+from tests.data import MINUS, TIMES
+
 
 def get_links(content: bytes) -> list[str]:
     return re.findall(r'<a href="([^"]+)"', content.decode())
@@ -316,6 +318,39 @@ def test_pages(client: Client) -> None:
             ],
         ),
         (
+            "/worksheets/algebra-and-functions/order-of-operations/",
+            [b"/api/worksheets/order_of_operations.pdf"],
+            [
+                b"title",
+                b"label",
+                b"name_line",
+                b"problems",
+                b"question_types",  # a checkbox for each type
+                b"question_types",
+                b"question_types",
+                b"question_types",
+                b"question_types",
+                b"question_types",
+                b"grouping",  # a checkbox for each level
+                b"grouping",
+                b"grouping",
+                b"group_symbols",  # a radio button for each way of writing them
+                b"group_symbols",
+                b"group_symbols",
+                b"implied",
+                b"numbers",  # a checkbox for each kind
+                b"numbers",
+                b"numbers",
+                b"largest_number",
+                b"largest_multiplier",
+                b"multiple_choice",
+                b"answer_key",
+                b"self_check_tiles",
+                b"tile_pattern",  # a radio button for each pattern
+                b"tile_pattern",
+            ],
+        ),
+        (
             "/worksheets/factors-and-primes/prime-and-composite-numbers/",
             [b"/api/worksheets/prime_composite.pdf"],
             [
@@ -370,6 +405,7 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
         "/worksheets/algebra-and-functions/slope-and-intercepts/",
         "/worksheets/algebra-and-functions/writing-linear-equations/",
         "/worksheets/algebra-and-functions/graphing-linear-equations/",
+        "/worksheets/algebra-and-functions/order-of-operations/",
         "/worksheets/factors-and-primes/prime-and-composite-numbers/",
         # the footer
         f"/feedback/?from={url}",
@@ -421,6 +457,21 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
             "/worksheets/algebra-and-functions/graphing-linear-equations/",
             "tile_pattern",
             [(b"simple", b" checked", b"simple"), (b"complex", b"", b"complex")],
+        ),
+        (
+            "/worksheets/algebra-and-functions/order-of-operations/",
+            "tile_pattern",
+            [(b"simple", b" checked", b"simple"), (b"complex", b"", b"complex")],
+        ),
+        # the order of operations form's Groups inside groups: brackets by default, as STAAR
+        (
+            "/worksheets/algebra-and-functions/order-of-operations/",
+            "group_symbols",
+            [
+                (b"brackets", b" checked", f"Brackets: [(9 {MINUS} 5) {TIMES} (3 + 7)]".encode()),
+                (b"parentheses", b"", f"Parentheses: ((9 {MINUS} 5) {TIMES} (3 + 7))".encode()),
+                (b"mixed", b"", b"Mixed"),
+            ],
         ),
         (
             "/worksheets/factors-and-primes/prime-and-composite-numbers/",
@@ -779,6 +830,45 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
         ),
         # every type by default, with an All box
         (
+            "/worksheets/algebra-and-functions/order-of-operations/",
+            b"/api/worksheets/order_of_operations.pdf",
+            "question_types",
+            [
+                (b"value", b" checked", b"Find the value"),
+                (b"next_step", b" checked", b"Choose the next step"),
+                (b"has_value", b" checked", b"Which has the value?"),
+                (b"first_operation", b" checked", b"Which operation first?"),
+                (b"parentheses", b" checked", b"What the parentheses show"),
+                (b"find_error", b" checked", b"Find the error"),
+            ],
+            True,
+        ),
+        # one and two levels by default, as STAAR's are, with an All box for the three
+        (
+            "/worksheets/algebra-and-functions/order-of-operations/",
+            b"/api/worksheets/order_of_operations.pdf",
+            "grouping",
+            [
+                (b"none", b"", f"No grouping: 20 {MINUS} 3 {TIMES} 4 + 6".encode()),
+                (b"one", b" checked", f"One level: 8 {TIMES} (3.8 + 13.2) {MINUS} 6".encode()),
+                (b"two", b" checked", f"Two levels: [45 {MINUS} (6 + 3)] {TIMES} 27".encode()),
+            ],
+            True,
+        ),
+        # every kind by default
+        (
+            "/worksheets/algebra-and-functions/order-of-operations/",
+            b"/api/worksheets/order_of_operations.pdf",
+            "numbers",
+            [
+                (b"whole", b" checked", b"Whole numbers"),
+                (b"decimal", b" checked", b"Decimals"),
+                (b"fraction", b" checked", b"Fractions"),
+            ],
+            True,
+        ),
+        # every type by default, with an All box
+        (
             "/worksheets/factors-and-primes/prime-and-composite-numbers/",
             b"/api/worksheets/prime_composite.pdf",
             "question_types",
@@ -880,6 +970,7 @@ def test_a_checkbox_group_sends_each_ticked_choice_s_id_and_shows_its_name(
         ("/worksheets/algebra-and-functions/slope-and-intercepts/", False),
         ("/worksheets/algebra-and-functions/writing-linear-equations/", False),
         ("/worksheets/algebra-and-functions/graphing-linear-equations/", False),
+        ("/worksheets/algebra-and-functions/order-of-operations/", False),
         ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
         ("/worksheets/legacy/", False),
     ],
@@ -910,6 +1001,7 @@ def test_the_place_value_page_keeps_from_and_to_different(
         ("/worksheets/algebra-and-functions/slope-and-intercepts/", False),
         ("/worksheets/algebra-and-functions/writing-linear-equations/", False),
         ("/worksheets/algebra-and-functions/graphing-linear-equations/", False),
+        ("/worksheets/algebra-and-functions/order-of-operations/", False),
         ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
         ("/worksheets/legacy/", False),
     ],
@@ -942,6 +1034,7 @@ def test_the_input_output_tables_page_swaps_fields_for_multiple_choice(
         ("/worksheets/algebra-and-functions/slope-and-intercepts/", True),
         ("/worksheets/algebra-and-functions/writing-linear-equations/", False),
         ("/worksheets/algebra-and-functions/graphing-linear-equations/", False),
+        ("/worksheets/algebra-and-functions/order-of-operations/", False),
         ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
         ("/worksheets/legacy/", False),
     ],
@@ -973,6 +1066,7 @@ def test_the_slope_and_intercepts_page_shows_intercepts_as_only_for_an_intercept
         ("/worksheets/algebra-and-functions/slope-and-intercepts/", True),
         ("/worksheets/algebra-and-functions/writing-linear-equations/", True),
         ("/worksheets/algebra-and-functions/graphing-linear-equations/", False),
+        ("/worksheets/algebra-and-functions/order-of-operations/", False),
         ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
         ("/worksheets/legacy/", False),
     ],
@@ -1004,6 +1098,7 @@ def test_the_line_pages_show_blank_grids_only_with_two_points(
         ("/worksheets/algebra-and-functions/slope-and-intercepts/", False),
         ("/worksheets/algebra-and-functions/writing-linear-equations/", True),
         ("/worksheets/algebra-and-functions/graphing-linear-equations/", False),
+        ("/worksheets/algebra-and-functions/order-of-operations/", False),
         ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
         ("/worksheets/legacy/", False),
     ],
@@ -1037,6 +1132,12 @@ def test_the_writing_page_shows_statements_only_with_vertical_or_horizontal_line
         ("/worksheets/algebra-and-functions/writing-linear-equations/", None),
         ("/worksheets/algebra-and-functions/graphing-linear-equations/", None),
         (
+            # the types with a form whose answer is a number the question doesn't print
+            "/worksheets/algebra-and-functions/order-of-operations/",
+            b'<script id="tile-types" type="application/json">'
+            b'["value", "next_step", "has_value", "first_operation"]</script>',
+        ),
+        (
             # the types with a counting form, whose answer the question doesn't print
             "/worksheets/factors-and-primes/prime-and-composite-numbers/",
             b'<script id="tile-types" type="application/json">'
@@ -1045,13 +1146,13 @@ def test_the_writing_page_shows_statements_only_with_vertical_or_horizontal_line
         ("/worksheets/legacy/", None),
     ],
 )
-def test_the_prime_composite_page_greys_out_types_tiles_cant_ask(
+def test_the_tile_types_script_greys_out_types_tiles_cant_ask(
     client: Client, url: str, expected: bytes | None
 ) -> None:
     """
-    Only the prime and composite page includes the script that greys out, while self-check tiles
-    are ticked, the question types whose answer is printed in the question, with the data of
-    those it keeps.
+    Only the prime and composite and order of operations pages include the script that greys
+    out, while self-check tiles are ticked, the question types with no form whose answer the
+    question doesn't print, with the data of those it keeps.
 
     Whether the script works is checked manually in a browser.
     """
@@ -1077,6 +1178,7 @@ def test_the_prime_composite_page_greys_out_types_tiles_cant_ask(
         ("/worksheets/algebra-and-functions/slope-and-intercepts/", True, False, False),
         ("/worksheets/algebra-and-functions/writing-linear-equations/", True, False, False),
         ("/worksheets/algebra-and-functions/graphing-linear-equations/", True, False, False),
+        ("/worksheets/algebra-and-functions/order-of-operations/", True, False, False),
         ("/worksheets/factors-and-primes/prime-and-composite-numbers/", True, False, False),
         ("/worksheets/legacy/", False, False, False),
     ],
@@ -1086,8 +1188,8 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
 ) -> None:
     """
     The arithmetic, word problems, base-ten blocks, place-value, input-output tables, the three
-    line pages and the prime and composite page include the script that sets problems to 12 for
-    tiles.
+    line pages, the order of operations page and the prime and composite page include the
+    script that sets problems to 12 for tiles.
 
     The other pages have no self-check tiles box, and so no script. Whether the script works is
     checked manually in a browser. Only the arithmetic page has the operation names that its other
@@ -1160,6 +1262,12 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
         ),
         ("/worksheets/algebra-and-functions/graphing-linear-equations/", "choice-titles", None),
         (
+            "/worksheets/algebra-and-functions/order-of-operations/",
+            "representation-operations",
+            None,
+        ),
+        ("/worksheets/algebra-and-functions/order-of-operations/", "choice-titles", None),
+        (
             "/worksheets/factors-and-primes/prime-and-composite-numbers/",
             "representation-operations",
             None,
@@ -1225,6 +1333,10 @@ def test_the_representation_script_s_data(
         (
             "/worksheets/algebra-and-functions/graphing-linear-equations/",
             [(b"/api/worksheets/graphing_linear_equations.pdf", b" data-check-first")],
+        ),
+        (
+            "/worksheets/algebra-and-functions/order-of-operations/",
+            [(b"/api/worksheets/order_of_operations.pdf", b" data-check-first")],
         ),
         (
             "/worksheets/factors-and-primes/prime-and-composite-numbers/",
@@ -1394,6 +1506,21 @@ def test_only_core_forms_check_their_options_before_opening_a_tab(
             ],
         ),
         (
+            "/worksheets/algebra-and-functions/order-of-operations/",
+            [
+                (b"title", b"Title"),
+                (b"label", b"Label"),
+                (b"name_line", b"Add Name/Date blanks"),
+                (b"problems", b"Problems"),
+                (b"implied", b"Multiplication without a sign: 3(25 + 19)"),
+                (b"largest_number", b"Largest number in an expression"),
+                (b"largest_multiplier", b"Largest multiplier or divisor"),
+                (b"multiple_choice", b"Multiple choice"),
+                (b"answer_key", b"Add an answer key page"),
+                (b"self_check_tiles", b"Self-check tile answers"),
+            ],
+        ),
+        (
             "/worksheets/factors-and-primes/prime-and-composite-numbers/",
             [
                 (b"title", b"Title"),
@@ -1419,6 +1546,59 @@ def test_each_field_carries_its_label_for_the_check_first_messages(
     """
     content = client.get(url).content
     assert re.findall(rb'name="(\w+)" data-label="([^"]+)"', content) == expected
+
+
+@pytest.mark.parametrize(
+    ("url", "name", "expected"),
+    [
+        # a label plain enough: its description is a mouseover, not a hint under the field
+        (
+            "/worksheets/algebra-and-functions/order-of-operations/",
+            "largest_number",
+            (
+                f"Answers and later steps can be larger: 25(5) {TIMES} 12 = 1,500.".encode(),
+                b"Largest number in an expression",
+                None,
+            ),
+        ),
+        (
+            "/worksheets/algebra-and-functions/order-of-operations/",
+            "largest_multiplier",
+            (
+                b"The smaller number in each multiplication, and every divisor, is at most this.",
+                b"Largest multiplier or divisor",
+                None,
+            ),
+        ),
+        # a field whose description is a hint has no mouseover
+        (
+            "/worksheets/factors-and-primes/prime-and-composite-numbers/",
+            "largest_number",
+            (
+                None,
+                b"Largest number",
+                b"No number to judge prime or composite is larger. A number whose factor pairs "
+                b"are asked for can be up to twice it.",
+            ),
+        ),
+    ],
+)
+def test_a_description_is_a_mouseover_or_a_hint(
+    client: Client, url: str, name: str, expected: tuple[bytes | None, bytes, bytes | None]
+) -> None:
+    """
+    A number field's label carries its description as a mouseover (its title) when the options
+    class marks it so, and otherwise shows it as a hint under the field.
+    """
+    content = client.get(url).content
+    found = re.search(
+        rb'<label(?: title="([^"]*)")?>([^<]+?)\s*<input type="number" name="'
+        + name.encode()
+        + rb'"[^>]*>\s*(?:<small class="hint">([^<]*)</small>)?',
+        content,
+    )
+    assert found is not None
+    assert found.groups() == expected
 
 
 def test_legacy_page(client: Client) -> None:
@@ -1458,6 +1638,7 @@ def test_legacy_page(client: Client) -> None:
         "/worksheets/algebra-and-functions/slope-and-intercepts/",
         "/worksheets/algebra-and-functions/writing-linear-equations/",
         "/worksheets/algebra-and-functions/graphing-linear-equations/",
+        "/worksheets/algebra-and-functions/order-of-operations/",
         "/worksheets/factors-and-primes/prime-and-composite-numbers/",
         # the footer
         "/feedback/?from=/worksheets/legacy/",

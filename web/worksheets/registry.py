@@ -21,6 +21,7 @@ from typing import Annotated, Any, BinaryIO, Literal, Self, get_args
 from ninja import Field, Schema
 from pydantic import JsonValue, model_validator
 
+from core.arithmetic_expressions.random_expressions import NumberKind
 from core.base_ten_blocks import (
     BLOCKS_QUESTION_NAMES,
     DEFAULT_SMALLEST_BLOCKS_NUMBER,
@@ -127,6 +128,22 @@ from core.line_equations.representation import (
 from core.line_equations.representation import (
     FORM_NAMES as LINE_FORM_NAMES,
 )
+from core.order_of_operations.data import TILE_TYPES as ORDER_OF_OPERATIONS_TILE_TYPES
+from core.order_of_operations.data import GroupSymbols, SheetSettings
+from core.order_of_operations.data import QuestionType as OrderOfOperationsType
+from core.order_of_operations.generator import (
+    generate_order_of_operations_questions,
+    tile_answers_limit,
+)
+from core.order_of_operations.representation import (
+    GROUP_SYMBOLS_NAMES,
+    LEVEL_NAMES,
+    NUMBER_KIND_NAMES,
+    ORDER_OF_OPERATIONS_NAME,
+)
+from core.order_of_operations.representation import (
+    QUESTION_TYPE_NAMES as ORDER_OF_OPERATIONS_TYPE_NAMES,
+)
 from core.placevalue.data import PlaceValueForm
 from core.placevalue.generator import (
     DEFAULT_LARGEST_NUMBER,
@@ -161,6 +178,7 @@ from render.pdf.data_graphs_worksheet import render_data_graphs_worksheet
 from render.pdf.input_output_tables_worksheet import render_input_output_tables_worksheet
 from render.pdf.line_equations_worksheet import render_line_equations_worksheet
 from render.pdf.multiplication_models_worksheet import render_multiplication_models_worksheet
+from render.pdf.order_of_operations_worksheet import render_order_of_operations_worksheet
 from render.pdf.page import Header
 from render.pdf.place_value_worksheet import render_place_value_worksheet
 from render.pdf.prime_composite_worksheet import render_prime_composite_worksheet
@@ -272,6 +290,30 @@ PRIME_COMPOSITE_TYPE_LABELS: dict[str, JsonValue] = {
 }
 SMALLEST_PRIME_COMPOSITE_LARGEST = 20  # keeps a range of primes with odd composites to choose
 LARGEST_PRIME_COMPOSITE_LARGEST = 1_000
+# an order of operations QuestionType value
+OrderOfOperationsTypeChoice = Literal[
+    "value", "next_step", "has_value", "first_operation", "parentheses", "find_error"
+]
+# The order of operations question types checkbox labels: each type's name
+ORDER_OF_OPERATIONS_TYPE_LABELS: dict[str, JsonValue] = {
+    question_type.value: name for question_type, name in ORDER_OF_OPERATIONS_TYPE_NAMES.items()
+}
+GroupingChoice = Literal["none", "one", "two"]  # how deeply an expression's groups nest
+GROUPING_LEVELS = {"none": 0, "one": 1, "two": 2}
+# Grouping checkbox labels: each level's name, with what it looks like
+GROUPING_LABELS: dict[str, JsonValue] = {
+    choice: LEVEL_NAMES[level] for choice, level in GROUPING_LEVELS.items()
+}
+GroupSymbolsChoice = Literal["brackets", "parentheses", "mixed"]  # a GroupSymbols value
+# Groups inside groups radio button labels: each way of writing them, as it looks
+GROUP_SYMBOLS_LABELS: dict[str, JsonValue] = {
+    symbols.value: name for symbols, name in GROUP_SYMBOLS_NAMES.items()
+}
+NumberKindChoice = Literal["whole", "decimal", "fraction"]  # a NumberKind value
+# Numbers checkbox labels: each kind's name
+NUMBER_KIND_LABELS: dict[str, JsonValue] = {
+    kind.value: name for kind, name in NUMBER_KIND_NAMES.items()
+}
 # a LineForm value
 LineFormChoice = Literal[
     "slope_intercept",
@@ -1287,6 +1329,121 @@ def _prime_composite_types(ticked: Sequence[str]) -> list[QuestionType]:
     return [question_type for question_type in QuestionType if question_type.value in ticked]
 
 
+class OrderOfOperationsOptions(HeaderOptions):
+    """
+    Options for the order of operations kind, built on the core. There is no seed: every sheet
+    is new.
+    """
+
+    title: Title = ORDER_OF_OPERATIONS_NAME
+    problems: Problems = 10
+    # The problems are shared evenly among the ticked types. With tiles, the page greys out the
+    # types that have no tiles form.
+    question_types: list[OrderOfOperationsTypeChoice] = Field(
+        [question_type.value for question_type in OrderOfOperationsType],
+        min_length=1,
+        title="Question types",
+        json_schema_extra={"labels": ORDER_OF_OPERATIONS_TYPE_LABELS},
+    )
+    # Each problem's drawn from those ticked. The parentheses and which-has-the-value questions
+    # need a group, so with only No grouping ticked they have one level.
+    grouping: list[GroupingChoice] = Field(
+        ["one", "two"],
+        min_length=1,
+        title="Grouping",
+        json_schema_extra={"labels": GROUPING_LABELS},
+    )
+    group_symbols: GroupSymbolsChoice = Field(
+        "brackets",
+        title="Groups inside groups",
+        json_schema_extra={"input": "radio", "labels": GROUP_SYMBOLS_LABELS},
+    )
+    implied: bool = Field(True, title="Multiplication without a sign: 3(25 + 19)")
+    # Fractions are in about 1 problem in 10, decimals in about 1 in 3 of the rest, when whole
+    # numbers are ticked too.
+    numbers: list[NumberKindChoice] = Field(
+        [kind.value for kind in NumberKind],
+        min_length=1,
+        title="Numbers",
+        json_schema_extra={"labels": NUMBER_KIND_LABELS},
+    )
+    # The label says enough, so the page shows the description only on mouseover.
+    largest_number: int = Field(
+        50,
+        ge=10,
+        le=1_000,
+        title="Largest number in an expression",
+        description="Answers and later steps can be larger: 25(5) \N{MULTIPLICATION SIGN} 12 = "
+        "1,500.",
+        json_schema_extra={"mouseover": True},
+    )
+    largest_multiplier: int = Field(
+        12,
+        ge=2,
+        le=99,
+        title="Largest multiplier or divisor",
+        description="The smaller number in each multiplication, and every divisor, is at most "
+        "this.",
+        json_schema_extra={"mouseover": True},
+    )
+    multiple_choice: bool = Field(
+        False,
+        title="Multiple choice",
+        description="Lettered choices instead of answer lines. The wrong ones are common "
+        "mistakes, such as working left to right or ignoring the parentheses.",
+    )
+    answer_key: AnswerKey = False
+    # Tiles ask forms of the questions whose answer is a number, and add an answer bank page.
+    self_check_tiles: SelfCheckTiles = False
+    tile_pattern: TilePattern = "simple"
+
+    @model_validator(mode="after")
+    def _tiles_are_available(self) -> Self:
+        # Not built for multiple choice: each choice's letter would need coding as a number. The
+        # page hides multiple choice while tiles are ticked, and greys out the tiles while it is.
+        # Runs first, so a request with both is told so before anything else.
+        if self.self_check_tiles and self.multiple_choice:
+            raise ValueError("self_check_tiles: not available with multiple choice")
+        return self
+
+    @model_validator(mode="after")
+    def _enough_different_answers(self) -> Self:
+        # With tiles, an answer must be a number the question doesn't print, and no two answers
+        # are the same: "How many have the value?" alone has only 0 to 4.
+        if self.self_check_tiles:
+            types = _order_of_operations_types(self.question_types)
+            without = [
+                ORDER_OF_OPERATIONS_TYPE_NAMES[each]
+                for each in types
+                if each not in ORDER_OF_OPERATIONS_TILE_TYPES
+            ]
+            if without:
+                raise ValueError(
+                    f"question_types: {_listed(without)} can't be asked with self-check tiles"
+                )
+            _at_most_one_question_per_tile(self.problems)
+            limit = tile_answers_limit(types)
+            if limit is not None and self.problems > limit:
+                raise _too_many_problems(limit, "repeated answers", "choice of question types", {})
+        return self
+
+    def settings(self) -> SheetSettings:
+        """The sheet settings these options describe, as the generator takes them."""
+        return SheetSettings(
+            levels=tuple(GROUPING_LEVELS[choice] for choice in self.grouping),
+            numbers=tuple(kind for kind in NumberKind if kind.value in self.numbers),
+            symbols=GroupSymbols(self.group_symbols),
+            implied=self.implied,
+            largest_number=self.largest_number,
+            largest_multiplier=self.largest_multiplier,
+        )
+
+
+def _order_of_operations_types(ticked: Sequence[str]) -> list[OrderOfOperationsType]:
+    """Return the ticked question types, each once, in the order of ``QuestionType``."""
+    return [each for each in OrderOfOperationsType if each.value in ticked]
+
+
 class SlopeAndInterceptsOptions(HeaderOptions):
     """
     Options for the slope and intercepts kind, built on the core. There is no seed: every sheet is
@@ -1841,6 +1998,7 @@ def _tile_slots(
     | BaseTenBlocksOptions
     | InputOutputTableOptions
     | PrimeCompositeOptions
+    | OrderOfOperationsOptions
     | SlopeAndInterceptsOptions
     | WritingLinearEquationsOptions
     | GraphingLinearEquationsOptions,
@@ -1984,6 +2142,22 @@ def _prime_composite(options: PrimeCompositeOptions, out: BinaryIO) -> None:
             options.problems,
             _prime_composite_types(options.question_types),
             largest_number=options.largest_number,
+            multiple_choice=options.multiple_choice,
+            distinct_answers=options.self_check_tiles,
+        ),
+        path=out,
+        header=options.header(),
+        answer_key=options.answer_key,
+        slot_of=_tile_slots(options) if options.self_check_tiles else None,
+    )
+
+
+def _order_of_operations(options: OrderOfOperationsOptions, out: BinaryIO) -> None:
+    render_order_of_operations_worksheet(
+        questions=generate_order_of_operations_questions(
+            options.problems,
+            _order_of_operations_types(options.question_types),
+            options.settings(),
             multiple_choice=options.multiple_choice,
             distinct_answers=options.self_check_tiles,
         ),
@@ -2270,6 +2444,7 @@ CORE_KINDS: dict[str, CoreKind[Any]] = {
     "data_graphs": CoreKind(DataGraphsOptions, _data_graphs),
     "input_output_tables": CoreKind(InputOutputTableOptions, _input_output_tables),
     "prime_composite": CoreKind(PrimeCompositeOptions, _prime_composite),
+    "order_of_operations": CoreKind(OrderOfOperationsOptions, _order_of_operations),
     "slope_and_intercepts": CoreKind(SlopeAndInterceptsOptions, _slope_and_intercepts),
     "writing_linear_equations": CoreKind(WritingLinearEquationsOptions, _writing_linear_equations),
     "graphing_linear_equations": CoreKind(

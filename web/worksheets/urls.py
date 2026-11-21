@@ -64,6 +64,12 @@ urlpatterns = [
         {"kind": "graphing_linear_equations"},
         name="graphing_linear_equations",
     ),
+    path(
+        "algebra-and-functions/order-of-operations/",
+        views.sheet,
+        {"kind": "order_of_operations"},
+        name="order_of_operations",
+    ),
     path("factors-and-primes/", RedirectView.as_view(pattern_name="prime_composite")),
     path(
         "factors-and-primes/prime-and-composite-numbers/",

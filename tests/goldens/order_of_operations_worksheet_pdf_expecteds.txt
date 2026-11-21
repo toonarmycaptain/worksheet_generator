@@ -1,0 +1,1031 @@
+=== written ===
+title: Order of Operations
+media boxes: 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Order of Operations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 78 678 Tm (What is the value of this expression?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 653 Tm ([45 ) Tj /F3 13 Tf 15.6 TL (-) Tj /F1 13 Tf 15.6 TL ( \(6 + 3\)] \327 27) Tj T* ET
+n 78 624 m 558 624 l S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 596 Tm (2.) Tj T* ET
+BT 1 0 0 1 78 596 Tm (What is the value of this expression?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT /F1 11.05 Tf 13.26 TL ET
+BT 1 0 0 1 96.6 571.11 Tm (1) Tj T* ET
+BT 1 0 0 1 96.6 558.734 Tm (4) Tj T* ET
+n 95.3 568.9 m 104.0438 568.9 l S
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 105.3438 565 Tm ( + \(2 \327 5\)) Tj T* ET
+n 78 530 m 558 530 l S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 502 Tm (3.) Tj T* ET
+BT 1 0 0 1 78 502 Tm (Write the expression after the next step.) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 477 Tm (6[2 + \(1.7 \327 2.3\)] + 39) Tj T* ET
+n 78 448 m 558 448 l S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 420 Tm (4.) Tj T* ET
+BT 1 0 0 1 78 420 Tm (Circle the two expressions that are equivalent to the expression shown.) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 395 Tm (28 + 7 \327 \(12 ) Tj /F3 13 Tf 15.6 TL (-) Tj /F1 13 Tf 15.6 TL ( 4\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 380 Tm (35 \327 8) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 359 Tm (28 + 7 \327 8) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 338 Tm (35 \327 12 ) Tj /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL ( 4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 317 Tm (28 + 56) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 296 Tm (28 + 84 ) Tj /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL ( 4) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 265 Tm (5.) Tj T* ET
+BT 1 0 0 1 78 265 Tm (Circle the expression that does NOT have a value of 24.) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 245 Tm (\(36 ) Tj /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL ( 3\) \327 4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 222 245 Tm (2 \327 \(8 + 4\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 342 245 Tm (96 \367 \(12 ) Tj /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL ( 8\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 462 245 Tm (\(40 + 8\) \367 2) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 214 Tm (6.) Tj T* ET
+BT 1 0 0 1 78 214 Tm (Which operation should be performed first when simplifying this expression? Explain why.) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 189 Tm (40 \367 \(5 + 3\) \327 8 + 1) Tj T* ET
+n 78 160 m 558 160 l S
+n 78 134 m 558 134 l S
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Order of Operations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (7.) Tj T* ET
+BT 1 0 0 1 78 678 Tm (What do the parentheses tell you to do in this expression?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 653 Tm (10 \367 5 + 4\(72 ) Tj /F3 13 Tf 15.6 TL (-) Tj /F1 13 Tf 15.6 TL ( 6\)) Tj T* ET
+n 78 624 m 558 624 l S
+n 78 598 m 558 598 l S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 570 Tm (8.) Tj T* ET
+BT 1 0 0 1 78 570 Tm (An expression is incorrectly simplified as shown. In which step does the error first appear?) Tj T* ET
+BT 1 0 0 1 78 555 Tm (Explain the error.) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 530 Tm (Given: 60 \367 6[\(1 \327 2\) + \(4 \327 2\)]) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 510 Tm (Step 1: 60 \367 6[2 + 8]) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 490 Tm (Step 2: 60 \367 12 + 8) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 470 Tm (Step 3: 5 + 8) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 450 Tm (Step 4: 13) Tj T* ET
+n 78 421 m 558 421 l S
+n 78 395 m 558 395 l S
+
+=== written_answer_key ===
+title: Order of Operations
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Order of Operations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 78 678 Tm (What is the value of this expression?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 653 Tm ([45 ) Tj /F3 13 Tf 15.6 TL (-) Tj /F1 13 Tf 15.6 TL ( \(6 + 3\)] \327 27) Tj T* ET
+n 78 624 m 558 624 l S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 596 Tm (2.) Tj T* ET
+BT 1 0 0 1 78 596 Tm (What is the value of this expression?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT /F1 11.05 Tf 13.26 TL ET
+BT 1 0 0 1 96.6 571.11 Tm (1) Tj T* ET
+BT 1 0 0 1 96.6 558.734 Tm (4) Tj T* ET
+n 95.3 568.9 m 104.0438 568.9 l S
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 105.3438 565 Tm ( + \(2 \327 5\)) Tj T* ET
+n 78 530 m 558 530 l S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 502 Tm (3.) Tj T* ET
+BT 1 0 0 1 78 502 Tm (Write the expression after the next step.) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 477 Tm (6[2 + \(1.7 \327 2.3\)] + 39) Tj T* ET
+n 78 448 m 558 448 l S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 420 Tm (4.) Tj T* ET
+BT 1 0 0 1 78 420 Tm (Circle the two expressions that are equivalent to the expression shown.) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 395 Tm (28 + 7 \327 \(12 ) Tj /F3 13 Tf 15.6 TL (-) Tj /F1 13 Tf 15.6 TL ( 4\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 380 Tm (35 \327 8) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 359 Tm (28 + 7 \327 8) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 338 Tm (35 \327 12 ) Tj /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL ( 4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 317 Tm (28 + 56) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 296 Tm (28 + 84 ) Tj /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL ( 4) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 265 Tm (5.) Tj T* ET
+BT 1 0 0 1 78 265 Tm (Circle the expression that does NOT have a value of 24.) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 245 Tm (\(36 ) Tj /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL ( 3\) \327 4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 222 245 Tm (2 \327 \(8 + 4\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 342 245 Tm (96 \367 \(12 ) Tj /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL ( 8\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 462 245 Tm (\(40 + 8\) \367 2) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 214 Tm (6.) Tj T* ET
+BT 1 0 0 1 78 214 Tm (Which operation should be performed first when simplifying this expression? Explain why.) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 189 Tm (40 \367 \(5 + 3\) \327 8 + 1) Tj T* ET
+n 78 160 m 558 160 l S
+n 78 134 m 558 134 l S
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Order of Operations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (7.) Tj T* ET
+BT 1 0 0 1 78 678 Tm (What do the parentheses tell you to do in this expression?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 653 Tm (10 \367 5 + 4\(72 ) Tj /F3 13 Tf 15.6 TL (-) Tj /F1 13 Tf 15.6 TL ( 6\)) Tj T* ET
+n 78 624 m 558 624 l S
+n 78 598 m 558 598 l S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 570 Tm (8.) Tj T* ET
+BT 1 0 0 1 78 570 Tm (An expression is incorrectly simplified as shown. In which step does the error first appear?) Tj T* ET
+BT 1 0 0 1 78 555 Tm (Explain the error.) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 530 Tm (Given: 60 \367 6[\(1 \327 2\) + \(4 \327 2\)]) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 510 Tm (Step 1: 60 \367 6[2 + 8]) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 490 Tm (Step 2: 60 \367 12 + 8) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 470 Tm (Step 3: 5 + 8) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 450 Tm (Step 4: 13) Tj T* ET
+n 78 421 m 558 421 l S
+n 78 395 m 558 395 l S
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Order of Operations: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (972: [45 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( \(6 + 3\)] \327 27 = [45 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 9] \327 27 = 36 \327 27 = 972) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (10 1/4: 1/4 + \(2 \327 5\) = 1/4 + 10 = 10 1/4) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 668 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 668 Tm (6[2 + 3.91] + 39) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 648 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 648 Tm (28 + 7 \327 8 and 28 + 56) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 628 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 628 Tm (\(36 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 3\) \327 4. \(36 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 3\) \327 4 = 132; 2 \327 \(8 + 4\) = 24; 96 \367 \(12 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 8\) = 24; \(40 + 8\)) Tj T* ET
+BT 1 0 0 1 82 608 Tm (\367 2 = 24) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 588 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 588 Tm (5 + 3, because the operation in the parentheses should be performed first) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 568 Tm (7.) Tj T* ET
+BT 1 0 0 1 82 568 Tm (Subtract 6 from 72 before multiplying by 4) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 548 Tm (8.) Tj T* ET
+BT 1 0 0 1 82 548 Tm (Step 2, because 2 + 8 should be simplified first. Step 2 should be 60 \367 6\(10\).) Tj T* ET
+
+=== choices_answer_key ===
+title: Order of Operations
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Order of Operations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 78 678 Tm (What is the value of this expression?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 653 Tm ([45 ) Tj /F3 13 Tf 15.6 TL (-) Tj /F1 13 Tf 15.6 TL ( \(6 + 3\)] \327 27) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 638 Tm (A\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 638 Tm (1,134) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 198 638 Tm (B\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 222 638 Tm (972) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 318 638 Tm (C\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 342 638 Tm (198) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 438 638 Tm (D\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 462 638 Tm (1,206) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 607 Tm (2.) Tj T* ET
+BT 1 0 0 1 78 607 Tm (What is the value of this expression?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT /F1 11.05 Tf 13.26 TL ET
+BT 1 0 0 1 96.6 582.11 Tm (1) Tj T* ET
+BT 1 0 0 1 96.6 569.734 Tm (4) Tj T* ET
+n 95.3 579.9 m 104.0438 579.9 l S
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 105.3438 576 Tm ( + \(2 \327 5\)) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 549 Tm (A\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 549 Tm (10 ) Tj T* ET
+BT /F1 10.2 Tf 12.24 TL ET
+BT 1 0 0 1 121.08 554.64 Tm (1) Tj T* ET
+BT 1 0 0 1 121.08 543.216 Tm (4) Tj T* ET
+n 119.88 552.6 m 127.9512 552.6 l S
+BT /F1 12 Tf 14.4 TL ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 198 549 Tm (B\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 222 549 Tm (11 ) Tj T* ET
+BT /F1 10.2 Tf 12.24 TL ET
+BT 1 0 0 1 241.08 554.64 Tm (1) Tj T* ET
+BT 1 0 0 1 241.08 543.216 Tm (4) Tj T* ET
+n 239.88 552.6 m 247.9512 552.6 l S
+BT /F1 12 Tf 14.4 TL ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 318 549 Tm (C\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT /F1 10.2 Tf 12.24 TL ET
+BT 1 0 0 1 344.4 554.64 Tm (11) Tj T* ET
+BT 1 0 0 1 347.2356 543.216 Tm (4) Tj T* ET
+n 343.2 552.6 m 356.9424 552.6 l S
+BT /F1 12 Tf 14.4 TL ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 438 549 Tm (D\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 462 549 Tm (3 ) Tj T* ET
+BT /F1 10.2 Tf 12.24 TL ET
+BT 1 0 0 1 474.408 554.64 Tm (3) Tj T* ET
+BT 1 0 0 1 474.408 543.216 Tm (4) Tj T* ET
+n 473.208 552.6 m 481.2792 552.6 l S
+BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 512 Tm (3.) Tj T* ET
+BT 1 0 0 1 78 512 Tm (Which expression is equivalent to the expression shown?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 487 Tm (6[2 + \(1.7 \327 2.3\)] + 39) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 472 Tm (A\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 472 Tm (6[2 + 3.91] + 39) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 451 Tm (B\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 451 Tm (12 + \(1.7 \327 2.3\) + 39) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 430 Tm (C\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 430 Tm (6[2 + 1.7] \327 41.3) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 409 Tm (D\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 409 Tm (6[3.7 \327 2.3] + 39) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 378 Tm (4.) Tj T* ET
+BT 1 0 0 1 78 378 Tm (Which expressions are equivalent to the expression shown? Select TWO correct answers.) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 353 Tm (28 + 7 \327 \(12 ) Tj /F3 13 Tf 15.6 TL (-) Tj /F1 13 Tf 15.6 TL ( 4\)) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 338 Tm (A\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 338 Tm (35 \327 8) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 317 Tm (B\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 317 Tm (28 + 7 \327 8) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 296 Tm (C\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 296 Tm (35 \327 12 ) Tj /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL ( 4) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 275 Tm (D\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 275 Tm (28 + 56) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 254 Tm (E\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 254 Tm (28 + 84 ) Tj /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL ( 4) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 223 Tm (5.) Tj T* ET
+BT 1 0 0 1 78 223 Tm (Which expression does NOT have a value of 24?) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 203 Tm (A\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 203 Tm (\(36 ) Tj /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL ( 3\) \327 4) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 198 203 Tm (B\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 222 203 Tm (2 \327 \(8 + 4\)) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 318 203 Tm (C\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 342 203 Tm (96 \367 \(12 ) Tj /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL ( 8\)) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 438 203 Tm (D\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 462 203 Tm (\(40 + 8\) \367 2) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 172 Tm (6.) Tj T* ET
+BT 1 0 0 1 78 172 Tm (Which operation should be performed first when simplifying this expression?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 147 Tm (40 \367 \(5 + 3\) \327 8 + 1) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 132 Tm (A\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 132 Tm (40 \367 5, because it is the first operation when reading left to right) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 111 Tm (B\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 111 Tm (5 + 3, because the operation in the parentheses should be performed first) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 90 Tm (C\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 90 Tm (3 \327 8, because multiplication should be performed before addition) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 69 Tm (D\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 69 Tm (8 + 1, because it is the first operation when reading right to left) Tj T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Order of Operations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (7.) Tj T* ET
+BT 1 0 0 1 78 678 Tm (What do these parentheses indicate in the expression?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 653 Tm (10 \367 5 + 4\(72 ) Tj /F3 13 Tf 15.6 TL (-) Tj /F1 13 Tf 15.6 TL ( 6\)) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 638 Tm (A\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 638 Tm (Divide 10 by 5 before adding 4) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 617 Tm (B\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 617 Tm (Multiply 4 by 72 before subtracting 6) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 596 Tm (C\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 596 Tm (Add 5 and 4 before subtracting 6 from 72) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 575 Tm (D\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 575 Tm (Subtract 6 from 72 before multiplying by 4) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 544 Tm (8.) Tj T* ET
+BT 1 0 0 1 78 544 Tm (Which statement is true about the parentheses in this expression?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 519 Tm (3 \327 \(8 + 2\) \367 2) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 504 Tm (A\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 504 Tm (The parentheses indicate that 8 + 2 should be solved first.) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 483 Tm (B\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 483 Tm (The parentheses indicate that 8 + 2 should be solved last.) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 462 Tm (C\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 462 Tm (The parentheses indicate that 2 \367 2 should be solved last.) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 441 Tm (D\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 441 Tm (The parentheses indicate that 3 \327 8 should be solved first.) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 410 Tm (9.) Tj T* ET
+BT 1 0 0 1 78 410 Tm (An expression is incorrectly simplified as shown. In which step does the error first appear?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 385 Tm (Given: 60 \367 6[\(1 \327 2\) + \(4 \327 2\)]) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 365 Tm (Step 1: 60 \367 6[2 + 8]) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 345 Tm (Step 2: 60 \367 12 + 8) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 325 Tm (Step 3: 5 + 8) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 305 Tm (Step 4: 13) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 290 Tm (A\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 290 Tm (Step 1, because 2 + 4 should be simplified first) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 269 Tm (B\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 269 Tm (Step 2, because 2 + 8 should be simplified first) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 248 Tm (C\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 248 Tm (Step 3, because 12 + 8 should be simplified first) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 78 227 Tm (D\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 227 Tm (Step 4, because 5 + 8 = 12) Tj T* ET
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Order of Operations: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (B\) 972: [45 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( \(6 + 3\)] \327 27 = [45 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 9] \327 27 = 36 \327 27 = 972) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (A\) 10 1/4: 1/4 + \(2 \327 5\) = 1/4 + 10 = 10 1/4) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 668 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 668 Tm (A\) 6[2 + 3.91] + 39) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 648 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 648 Tm (B, D\) 28 + 7 \327 8 and 28 + 56) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 628 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 628 Tm (A\) \(36 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 3\) \327 4. \(36 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 3\) \327 4 = 132; 2 \327 \(8 + 4\) = 24; 96 \367 \(12 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 8\) = 24;) Tj T* ET
+BT 1 0 0 1 82 608 Tm (\(40 + 8\) \367 2 = 24) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 588 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 588 Tm (B\) 5 + 3, because the operation in the parentheses should be performed first) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 568 Tm (7.) Tj T* ET
+BT 1 0 0 1 82 568 Tm (D\) Subtract 6 from 72 before multiplying by 4) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 548 Tm (8.) Tj T* ET
+BT 1 0 0 1 82 548 Tm (A\) The parentheses indicate that 8 + 2 should be solved first.) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 528 Tm (9.) Tj T* ET
+BT 1 0 0 1 82 528 Tm (B\) Step 2, because 2 + 8 should be simplified first. Step 2 should be 60 \367) Tj T* ET
+BT 1 0 0 1 82 508 Tm (6\(10\).) Tj T* ET
+
+=== tiles_answer_key ===
+title: Order of Operations
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Order of Operations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 78 678 Tm (What is the value of this expression?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 653 Tm ([45 ) Tj /F3 13 Tf 15.6 TL (-) Tj /F1 13 Tf 15.6 TL ( \(6 + 3\)] \327 27) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 622 Tm (2.) Tj T* ET
+BT 1 0 0 1 78 622 Tm (What is the value of this expression?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT /F1 11.05 Tf 13.26 TL ET
+BT 1 0 0 1 96.6 597.11 Tm (1) Tj T* ET
+BT 1 0 0 1 96.6 584.734 Tm (4) Tj T* ET
+n 95.3 594.9 m 104.0438 594.9 l S
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 105.3438 591 Tm ( + \(2 \327 5\)) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 554 Tm (3.) Tj T* ET
+BT 1 0 0 1 78 554 Tm (What is the value of this expression?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 529 Tm (4[4.5 ) Tj /F3 13 Tf 15.6 TL (-) Tj /F1 13 Tf 15.6 TL ( 2\(1.2\)]) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 498 Tm (4.) Tj T* ET
+BT 1 0 0 1 78 498 Tm (What number goes in the box?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 473 Tm (28 + 7 \327 \(12 ) Tj /F3 13 Tf 15.6 TL (-) Tj /F1 13 Tf 15.6 TL ( 4\) = 28 + ) Tj T* ET
+n 234.127 468.45 18.2 18.2 re S
+BT 1 0 0 1 252.327 473 Tm  T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 442 Tm (5.) Tj T* ET
+BT 1 0 0 1 78 442 Tm (What number goes in the box?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 417 Tm (28 + 7 \327 \(12 ) Tj /F3 13 Tf 15.6 TL (-) Tj /F1 13 Tf 15.6 TL ( 4\) = 28 + 7 \327 ) Tj T* ET
+n 256.175 412.45 18.2 18.2 re S
+BT 1 0 0 1 274.375 417 Tm  T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 386 Tm (6.) Tj T* ET
+BT 1 0 0 1 78 386 Tm (How many of these expressions have a value of 24?) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 366 Tm (\(36 ) Tj /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL ( 3\) \327 4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 222 366 Tm (2 \327 \(8 + 4\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 342 366 Tm (96 \367 \(12 ) Tj /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL ( 8\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 462 366 Tm (\(40 + 8\) \367 2) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 335 Tm (7.) Tj T* ET
+BT 1 0 0 1 78 335 Tm (How many of these expressions have a value of 132?) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 102 315 Tm (\(36 ) Tj /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL ( 3\) \327 4) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 222 315 Tm (2 \327 \(8 + 4\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 342 315 Tm (96 \367 \(12 ) Tj /F3 12 Tf 14.4 TL (-) Tj /F1 12 Tf 14.4 TL ( 8\)) Tj T* ET
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 462 315 Tm (\(40 + 8\) \367 2) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 284 Tm (8.) Tj T* ET
+BT 1 0 0 1 78 284 Tm (What number does the first operation give?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 259 Tm (10 \367 5 + 4\(72 ) Tj /F3 13 Tf 15.6 TL (-) Tj /F1 13 Tf 15.6 TL ( 6\)) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 228 Tm (9.) Tj T* ET
+BT 1 0 0 1 78 228 Tm (What number does the first operation give?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 203 Tm ([36 + \(3 \327 2\)] \367 6) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 172 Tm (10.) Tj T* ET
+BT 1 0 0 1 78 172 Tm (What is the value of this expression?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 147 Tm (3\(25 + 19\) + 4\(3\)) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 116 Tm (11.) Tj T* ET
+BT 1 0 0 1 78 116 Tm (What is the value of this expression?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 91 Tm (10[3 + \(7 + 5\) \367 3]) Tj T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Order of Operations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (12.) Tj T* ET
+BT 1 0 0 1 78 678 Tm (What is the value of this expression?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 653 Tm (2 \327 [30 ) Tj /F3 13 Tf 15.6 TL (-) Tj /F1 13 Tf 15.6 TL ( 20 \367 \(5 \327 2\)]) Tj T* ET
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Order of Operations) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (Answer bank) Tj T* ET
+BT /F1 11 Tf 13.2 TL ET
+BT 1 0 0 1 54 662 Tm (Put each numbered tile in the slot whose letter matches the answer to its question.) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 578 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 91.552 595 Tm (1) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.668 626 Tm (A) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 578 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 166.656 595 Tm (144) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 626 Tm (B) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 578 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 255.104 595 Tm (56) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 259.668 626 Tm (C) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 578 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 339.104 595 Tm (66) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 343.668 626 Tm (D) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 578 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 427.552 595 Tm (8) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.998 626 Tm (E) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 578 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 507.104 595 Tm (70) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 626 Tm (F) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 54 534 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 87.104 551 Tm (56) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 91.332 520 Tm (G) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 138 534 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 166.656 551 Tm (972) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 175.668 520 Tm (H) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 222 534 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 259.552 551 Tm (3) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 262.332 520 Tm (I) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 306 534 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 329.8992 551 Tm (10 ) Tj T* ET
+BT /F1 13.6 Tf 16.32 TL ET
+BT 1 0 0 1 355.3392 558.52 Tm (1) Tj T* ET
+BT 1 0 0 1 355.3392 543.288 Tm (4) Tj T* ET
+n 353.7392 555.8 m 364.5008 555.8 l S
+BT /F1 16 Tf 19.2 TL ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 344.664 520 Tm (J) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 390 534 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 420.88 551 Tm (8.4) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 427.668 520 Tm (K) Tj T* ET
+q
+.85098 .85098 .85098 rg
+n 474 534 84 44 re S
+Q
+BT /F1 16 Tf 19.2 TL ET
+BT /F1 16 Tf 19.2 TL ET
+BT 1 0 0 1 511.552 551 Tm (6) Tj T* ET
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 512.334 520 Tm (L) Tj T* ET
+q
+1 1 1 rg
+n 318 432 40 40 re f*
+.941176 .745098 0 rg
+n 358 472 m 338 472 l 338 452 l 318 432 l 358 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 358 432 40 40 re f*
+.941176 .745098 0 rg
+n 358 472 m 378 472 l 378 452 l 398 432 l 358 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 398 432 40 40 re f*
+0 .235294 .784314 rg
+n 438 472 m 418 472 l 418 452 l 398 432 l 438 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 438 432 40 40 re f*
+0 .235294 .784314 rg
+n 438 472 m 458 472 l 458 452 l 478 432 l 438 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 478 432 40 40 re f*
+.85098 .14902 .172549 rg
+n 518 472 m 498 472 l 498 452 l 478 432 l 518 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 518 432 40 40 re f*
+.85098 .14902 .172549 rg
+n 518 472 m 538 472 l 538 452 l 558 432 l 518 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 432 40 40 re S
+Q
+q
+1 1 1 rg
+n 318 392 40 40 re f*
+.941176 .745098 0 rg
+n 358 392 m 338 392 l 338 412 l 318 432 l 358 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 318 392 40 40 re S
+Q
+q
+1 1 1 rg
+n 358 392 40 40 re f*
+.941176 .745098 0 rg
+n 358 392 m 378 392 l 378 412 l 398 432 l 358 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 358 392 40 40 re S
+Q
+q
+1 1 1 rg
+n 398 392 40 40 re f*
+0 .235294 .784314 rg
+n 438 392 m 418 392 l 418 412 l 398 432 l 438 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 398 392 40 40 re S
+Q
+q
+1 1 1 rg
+n 438 392 40 40 re f*
+0 .235294 .784314 rg
+n 438 392 m 458 392 l 458 412 l 478 432 l 438 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 438 392 40 40 re S
+Q
+q
+1 1 1 rg
+n 478 392 40 40 re f*
+.85098 .14902 .172549 rg
+n 518 392 m 498 392 l 498 412 l 478 432 l 518 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 478 392 40 40 re S
+Q
+q
+1 1 1 rg
+n 518 392 40 40 re f*
+.85098 .14902 .172549 rg
+n 518 392 m 538 392 l 538 412 l 558 432 l 518 432 l h
+f*
+.501961 .501961 .501961 RG
+.5 w
+n 518 392 40 40 re S
+Q
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 458 Tm (Close the case and flip it over. If every) Tj T* ET
+BT 1 0 0 1 54 443 Tm (answer is right, the back looks like this.) Tj T* ET
+--- stream 4
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Order of Operations: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (972: [45 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( \(6 + 3\)] \327 27 = [45 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 9] \327 27 = 36 \327 27 = 972    \(H\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (10 1/4: 1/4 + \(2 \327 5\) = 1/4 + 10 = 10 1/4    \(J\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 668 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 668 Tm (8.4: 4[4.5 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 2\(1.2\)] = 4[4.5 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 2.4] = 4\(2.1\) = 8.4    \(K\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 648 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 648 Tm (56: 28 + 7 \327 \(12 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 4\) = 28 + 56    \(G\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 628 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 628 Tm (8: 28 + 7 \327 \(12 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 4\) = 28 + 7 \327 8    \(E\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 608 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 608 Tm (3: \(36 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 3\) \327 4 = 132; 2 \327 \(8 + 4\) = 24; 96 \367 \(12 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 8\) = 24; \(40 + 8\) \367 2 = 24) Tj T* ET
+BT 1 0 0 1 82 588 Tm (\(I\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 568 Tm (7.) Tj T* ET
+BT 1 0 0 1 82 568 Tm (1: \(36 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 3\) \327 4 = 132; 2 \327 \(8 + 4\) = 24; 96 \367 \(12 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 8\) = 24; \(40 + 8\) \367 2 = 24) Tj T* ET
+BT 1 0 0 1 82 548 Tm (\(A\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 528 Tm (8.) Tj T* ET
+BT 1 0 0 1 82 528 Tm (66: 72 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 6 = 66    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 508 Tm (9.) Tj T* ET
+BT 1 0 0 1 82 508 Tm (6: 3 \327 2 = 6    \(L\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 488 Tm (10.) Tj T* ET
+BT 1 0 0 1 82 488 Tm (144: 3\(25 + 19\) + 4\(3\) = 3\(44\) + 4\(3\) = 132 + 4\(3\) = 132 + 12 = 144    \(B\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 468 Tm (11.) Tj T* ET
+BT 1 0 0 1 82 468 Tm (70: 10[3 + \(7 + 5\) \367 3] = 10[3 + 12 \367 3] = 10[3 + 4] = 10\(7\) = 70    \(F\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 448 Tm (12.) Tj T* ET
+BT 1 0 0 1 82 448 Tm (56: 2 \327 [30 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 20 \367 \(5 \327 2\)] = 2 \327 [30 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 20 \367 10] = 2 \327 [30 ) Tj /F3 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 2] = 2 \327 28 = 56) Tj T* ET
+BT 1 0 0 1 82 428 Tm (\(C\)) Tj T* ET
+
+=== other_title_and_label ===
+title: Simplify
+media boxes: 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Simplify) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Day 2) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (1.) Tj T* ET
+BT 1 0 0 1 78 678 Tm (What is the value of this expression?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 94 653 Tm ([45 ) Tj /F3 13 Tf 15.6 TL (-) Tj /F1 13 Tf 15.6 TL ( \(6 + 3\)] \327 27) Tj T* ET
+n 78 624 m 558 624 l S
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 596 Tm (2.) Tj T* ET
+BT 1 0 0 1 78 596 Tm (What is the value of this expression?) Tj T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT /F1 11.05 Tf 13.26 TL ET
+BT 1 0 0 1 96.6 571.11 Tm (1) Tj T* ET
+BT 1 0 0 1 96.6 558.734 Tm (4) Tj T* ET
+n 95.3 568.9 m 104.0438 568.9 l S
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 105.3438 565 Tm ( + \(2 \327 5\)) Tj T* ET
+n 78 530 m 558 530 l S
+
