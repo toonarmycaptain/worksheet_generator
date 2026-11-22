@@ -24,6 +24,7 @@ from core.basic_operations.word_problems import (
     TEMPLATES,
     TWO_STEP_TEMPLATES,
     two_step_texts,
+    unknown_letter,
     word_problem_texts,
 )
 from tests.helpers import choose_last, sample_first
@@ -133,6 +134,26 @@ TWO_STEP_SLOTS = {"n1", "n2", "obj", "a_obj", "b_obj", "c_obj", "a", "b", "c"}
             True,
             ["A basket held 47 cards. Maria added 25 more. How many cards are in the basket now?"],
         ),
+        # Comparisons for each question, as on a sheet mixing representations: each takes the
+        # last unused template that fits it, so the comparison waits until those that fit both
+        # are used up, and a question without comparisons skips it.
+        (
+            [SUBTRACT, SUBTRACT],
+            [False, True],
+            [
+                "Maria needs 72 cards in all and has 25 so far. How many more cards are needed?",
+                "Maria had 72 points and lost 25 points. How many points does Maria have now?",
+            ],
+        ),
+        (
+            [SUBTRACT, SUBTRACT],
+            [True, False],
+            [
+                "Maria has 72 cards and Jamal has 25 cards. "
+                "How many more cards does Maria have than Jamal?",
+                "Maria needs 72 cards in all and has 25 so far. How many more cards are needed?",
+            ],
+        ),
         # each operation has its own templates, used up separately
         (
             [ADD, SUBTRACT, ADD],
@@ -227,7 +248,7 @@ TWO_STEP_SLOTS = {"n1", "n2", "obj", "a_obj", "b_obj", "c_obj", "a", "b", "c"}
 )
 def test_word_problem_texts(
     questions: list[BasicOperationQuestionData],
-    comparisons: bool,
+    comparisons: bool | list[bool],
     expected: list[str],
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -725,6 +746,95 @@ def test_word_problem_texts(
                 "How many cards does each child get?",
             ],
         ),
+        # The shapes with the first answer in the second step's other place, added last: as the
+        # second number of an addition, or the number taken away. Singular rows: 1 card in the
+        # red box, 2 taken out, 1 lost, 1 loose card, and 1 card taken away.
+        (
+            [
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.ADD, (6, 7), 13),
+                        BasicOperationQuestionData(Operation.ADD, (4, 13), 17),
+                    ),
+                    Unknown.SECOND,
+                    17,
+                ),
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.ADD, (12, 8), 20),
+                        BasicOperationQuestionData(Operation.SUBTRACT, (45, 20), 25),
+                    ),
+                    Unknown.SECOND,
+                    25,
+                ),
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.SUBTRACT, (9, 2), 7),
+                        BasicOperationQuestionData(Operation.ADD, (1, 7), 8),
+                    ),
+                    Unknown.SECOND,
+                    8,
+                ),
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.SUBTRACT, (9, 1), 8),
+                        BasicOperationQuestionData(Operation.SUBTRACT, (20, 8), 12),
+                    ),
+                    Unknown.SECOND,
+                    12,
+                ),
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.MULTIPLY, (3, 4), 12),
+                        BasicOperationQuestionData(Operation.ADD, (1, 12), 13),
+                    ),
+                    Unknown.SECOND,
+                    13,
+                ),
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.MULTIPLY, (4, 6), 24),
+                        BasicOperationQuestionData(Operation.SUBTRACT, (24, 1), 23),
+                    ),
+                    Unknown.FIRST,
+                    23,
+                ),
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.DIVIDE, (12, 3), 4),
+                        BasicOperationQuestionData(Operation.ADD, (5, 4), 9),
+                    ),
+                    Unknown.SECOND,
+                    9,
+                ),
+                TwoStepQuestionData(
+                    (
+                        BasicOperationQuestionData(Operation.DIVIDE, (20, 4), 5),
+                        BasicOperationQuestionData(Operation.SUBTRACT, (30, 5), 25),
+                    ),
+                    Unknown.SECOND,
+                    25,
+                ),
+            ],
+            [
+                "A shelf has 4 cards. Maria brings 6 more, and Jamal brings 7 more. "
+                "How many cards are on the shelf now?",
+                "A box held 45 cards. Maria took 12 and Jamal took 8. "
+                "How many cards are left in the box?",
+                "There is 1 card in the red box. The blue box had 9 cards, and 2 were taken out. "
+                "How many cards are in the two boxes now?",
+                "A class wants to collect 20 cards. They collected 9, but 1 was lost. "
+                "How many more cards do they need?",
+                "A shelf has 1 loose card and 3 boxes with 4 cards in each box. "
+                "How many cards are on the shelf?",
+                "There are 4 rows with 6 cards in each row. Maria takes away 1 card. "
+                "How many cards are left?",
+                "A jar has 5 cards. Maria splits 12 cards equally into 3 piles and adds one pile "
+                "to the jar. How many cards are in the jar now?",
+                "A store had 30 cards. A school ordered 20 cards in 4 equal boxes, and the store "
+                "sent the first box. How many cards does the store have left?",
+            ],
+        ),
     ],
 )
 def test_two_step_texts(
@@ -930,6 +1040,54 @@ def test_no_template_repeats_until_all_are_used(
             TWO_STEP_SLOTS,
             id="divide then share into that many",
         ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.ADD, Operation.ADD, Unknown.SECOND],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="add then added to",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.ADD, Operation.SUBTRACT, Unknown.SECOND],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="add then subtract from",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.SUBTRACT, Operation.ADD, Unknown.SECOND],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="subtract then added to",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.SUBTRACT, Operation.SUBTRACT, Unknown.SECOND],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="subtract then subtract from",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.MULTIPLY, Operation.ADD, Unknown.SECOND],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="multiply then added to",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.MULTIPLY, Operation.SUBTRACT, Unknown.FIRST],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="multiply then subtract",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.DIVIDE, Operation.ADD, Unknown.SECOND],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="divide then added to",
+        ),
+        pytest.param(
+            TWO_STEP_TEMPLATES[Operation.DIVIDE, Operation.SUBTRACT, Unknown.SECOND],
+            {"a", "b", "c"},
+            TWO_STEP_SLOTS,
+            id="divide then subtract from",
+        ),
     ],
 )
 def test_every_template_shows_its_numbers_and_uses_only_the_shared_slots(
@@ -942,3 +1100,33 @@ def test_every_template_shows_its_numbers_and_uses_only_the_shared_slots(
     for template in templates:
         slots = {field for _, field, _, _ in Formatter().parse(template) if field}
         assert numbers <= slots <= allowed, template
+
+
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        ("Ana has 24 stickers to share. How many stickers does each friend get?", "s"),
+        # after "how many more", and in any case
+        ("Ana needs 30 stickers and has 12. How many more stickers does Ana need?", "s"),
+        ("Ana collects 6 stickers a day. At that rate, how many stickers will Ana get?", "s"),
+        # the last question's
+        ("Ana asked how many boxes there were. How many cards are in each box?", "c"),
+        # l reads as 1, so n stands in
+        ("A tree had 40 leaves, and 12 fell. How many leaves are on the tree now?", "n"),
+    ],
+)
+def test_unknown_letter(text: str, expected: str) -> None:
+    assert unknown_letter(text) == expected
+
+
+def test_unknown_letter_errors() -> None:
+    with pytest.raises(ValueError) as error:
+        unknown_letter("Ana has 24 stickers.")
+    assert str(error.value) == "No \"how many\" question in 'Ana has 24 stickers.'."
+
+
+def test_every_two_step_template_asks_how_many() -> None:
+    """Every two-step story asks "how many", so its equations get a letter."""
+    for templates in TWO_STEP_TEMPLATES.values():
+        for template in templates:
+            assert unknown_letter(template.replace("{obj}", "cards")), template

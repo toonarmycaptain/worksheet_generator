@@ -4,12 +4,13 @@ step or two.
 """
 
 import random
-from collections.abc import Collection, Iterator, Sequence
+from collections.abc import Callable, Collection, Iterable, Iterator, Sequence
 from dataclasses import replace
 from functools import partial
-from itertools import accumulate
+from itertools import accumulate, islice
 from typing import Literal, assert_never
 
+from core.base_ten_blocks import LARGEST_BLOCKS_OPERAND
 from core.basic_operations.data import (
     BasicOperationMultipleChoiceQuestion,
     BasicOperationQuestionData,
@@ -25,19 +26,30 @@ from core.basic_operations.multiplication_models import (
     multiplication_model_choices,
 )
 from core.basic_operations.representation import (
+    COMPARISON_REPRESENTATIONS,
+    REPRESENTATION_OPERATIONS,
     STRIP_TWO_STEP_SHAPES,
     EquationChoiceQuestion,
     NumberLineChoiceQuestion,
+    Representation,
+    Response,
     StripChoiceQuestion,
+    TwoStepEquationChoiceQuestion,
     TwoStepStripChoiceQuestion,
+    WordProblemKind,
+    WordProblemQuestion,
     equation_choices,
+    has_fair_equation_choices,
     number_line_choices,
+    stem,
     strip_choices,
+    two_step_equation_choices,
     two_step_strip_choices,
 )
 from core.basic_operations.word_problems import (
     TWO_STEP_TEMPLATES,
     two_step_texts,
+    unknown_letter,
     word_problem_texts,
 )
 from core.question import FreeResponse, Question, multiple_choice
@@ -51,8 +63,7 @@ MAXIMUM_OPERAND = 999  # the most a sheet allows for ``high`` and ``largest_divi
 # The smallest operand of an addition or subtraction word problem. The bank's templates make
 # their words agree with 1: "1 sticker", "There was 1".
 SMALLEST_WORD_PROBLEM_NUMBER = 1
-# The default and the most for a word problem's largest number, which caps every number in an
-# addition or subtraction problem, its answer included
+# The default and the most for a word problem's largest number
 LARGEST_WORD_PROBLEM_NUMBER = 999
 # The number of equal groups in a multiplication or division word problem: the smallest, and the
 # default for the largest
@@ -532,7 +543,7 @@ def count_possible_word_problems(
     *,
     distinct_answers: bool = False,
     up_to: int,
-    largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
+    largest_number: int | None = LARGEST_WORD_PROBLEM_NUMBER,
     largest_operand: int = LARGEST_WORD_PROBLEM_NUMBER,
     largest_smaller_operand: int | None = None,
     largest_groups: int = WORD_PROBLEM_GROUPS[1],
@@ -546,20 +557,22 @@ def count_possible_word_problems(
     Count the word problems ``generate_word_problems`` can produce for ``operations``, with its
     limits, ``excluded_operands`` and ``larger_first``.
 
-    As in ``count_possible_sheet_questions``, any one operation may be drawn for every problem,
-    so the count is the smallest that any one operation allows by itself: its distinct answers
-    with ``distinct_answers``, and otherwise its distinct problems. Addition and subtraction
-    count their answers either way, which are fewer than their problems: every sum and every
-    difference from the smallest to the largest the limits allow. An excluded pair is taken to
-    leave its answer to another pair, as 2 + 2 leaves 4 to 1 + 3. Multiplication and division
-    leave out the excluded pairs, and stop counting at ``up_to``.
+    As in ``count_possible_sheet_questions``, any one operation may be drawn for every problem, so
+    the count is the smallest that any one operation allows by itself: its distinct answers with
+    ``distinct_answers``, and otherwise its distinct problems. Addition and subtraction count their
+    answers either way, which are fewer than their problems: every sum and every difference from the
+    smallest to the largest the limits allow, the largest sum being at most ``largest_number`` only
+    if that is given. An excluded pair is taken to leave its answer to another pair, as 2 + 2 leaves
+    4 to 1 + 3. Multiplication and division leave out the excluded pairs, and stop counting at
+    ``up_to``.
+
 
     With ``split_evenly`` and without ``distinct_answers``, each operation needs only enough for
     its share, at most one more than an even split, so the count is that smallest count for each
     operation. The count is capped at ``up_to``.
     """
     smallest = SMALLEST_WORD_PROBLEM_NUMBER
-    largest = min(largest_number, largest_operand)
+    largest = _given_limit(largest_number, largest_operand)
     smaller = largest if largest_smaller_operand is None else min(largest_smaller_operand, largest)
     counts = []
     for operation in operations:
@@ -567,10 +580,12 @@ def count_possible_word_problems(
             case Operation.ADD:
                 if larger_first:  # from smallest + 1 + smallest, with a smaller second number
                     lowest = 2 * smallest + 1
-                    highest = min(largest_number, largest + min(smaller, largest - 1))
+                    highest = largest + min(smaller, largest - 1)
                 else:  # from smallest + smallest
                     lowest = 2 * smallest
-                    highest = min(largest_number, largest + smaller)
+                    highest = largest + smaller
+                if largest_number is not None:
+                    highest = min(highest, largest_number)
                 counts.append(max(highest - lowest + 1, 0))
             case Operation.SUBTRACT:
                 counts.append(max(largest - smallest, 0))  # from 1, with 1 taken away
@@ -601,7 +616,7 @@ def generate_word_problems(
     *,
     distinct_answers: bool = False,
     comparisons: bool = False,
-    largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
+    largest_number: int | None = LARGEST_WORD_PROBLEM_NUMBER,
     largest_operand: int = LARGEST_WORD_PROBLEM_NUMBER,
     largest_smaller_operand: int | None = None,
     largest_groups: int = WORD_PROBLEM_GROUPS[1],
@@ -610,6 +625,7 @@ def generate_word_problems(
     excluded_operands: Collection[tuple[int, int]] = (),
     split_evenly: bool = False,
     larger_first: bool = False,
+    taken: Collection[BasicOperationQuestionData] = (),
 ) -> list[Question[BasicOperationQuestionData, FreeResponse]]:
     """
     Generate ``count`` word problems, each with an operation drawn at random from ``operations``.
@@ -617,22 +633,25 @@ def generate_word_problems(
     ``_shares``, with any extra problems going to operations chosen at random, and the problems
     are shuffled.
 
-    Addition and subtraction draw their operands at random, as in ``_sum_or_difference``: every
-    number in the problem, its answer included, is at most ``largest_number``, and the operands
-    are also at most ``largest_operand``, for a representation that can show only so much. Base-ten
-    blocks, for example, show at most 599. With ``largest_smaller_operand``, the smaller operand is
-    at most that too. With ``larger_first``, an addition's larger operand comes first, and its
-    operands differ, as a subtraction's do. Multiplication and division are equal groups, as in
-    ``_equal_groups``, with at most ``largest_groups`` groups of at most ``largest_size`` each
-    and, if given, a whole (the product, or the dividend) of at most ``largest_whole``. They
-    ignore the other limits. The wording comes from the word-problem bank, with its comparisons
-    too if ``comparisons`` is set. The problems are answered in writing, so they have no wrong
-    answers.
+    Addition and subtraction draw their operands at random, as in ``_sum_or_difference``: the
+    operands are at most ``largest_operand``, the numbers the problem gives, or for a representation
+    that can show only so much, such as base-ten blocks, which show at most 599. With
+    ``largest_number``, every number in the problem, its answer included, is at most that too;
+    without it, a sum is whatever its operands make. With ``largest_smaller_operand``, the smaller
+    operand is at most that too. With ``larger_first``, an addition's larger operand comes first,
+    and its operands differ, as a subtraction's do. Multiplication and division are equal groups, as
+    in ``_equal_groups``, with at most ``largest_groups`` groups of at most ``largest_size`` each
+    and, if given, a whole (the product, or the dividend) of at most ``largest_whole``. They ignore
+    the other limits. The wording comes from the word-problem bank, with its comparisons too if
+    ``comparisons`` is set. The problems are answered in writing, so they have no wrong answers.
+
 
     No two problems of the same operation have the same operands, and with ``distinct_answers``
     no two problems share an answer either: a problem that breaks either rule is drawn again.
     Neither does any problem have operands in ``excluded_operands``, for a representation that
-    can't tell them apart.
+    can't tell them apart. Nor does any repeat the operation and operands of a problem in
+    ``taken``, those already on the sheet, or with ``distinct_answers`` share its answer: the
+    caller checks first that enough are left, as ``generate_mixed_word_problems`` does.
 
     Raises ``ValueError`` if the operations allow fewer than ``count`` such problems, as counted
     by ``count_possible_word_problems``.
@@ -656,8 +675,8 @@ def generate_word_problems(
         raise ValueError(f"Cannot make {count} {kind}: only {possible} possible.")
 
     unworded: list[BasicOperationQuestionData] = []
-    seen: set[tuple[Operation, tuple[int, int]]] = set()
-    answers: set[int] = set()
+    seen = {(data.operation, data.operands) for data in taken}
+    answers = {data.answer for data in taken}
     for operation in _deal(operations, count, split_evenly):
         match operation:
             case Operation.ADD | Operation.SUBTRACT:
@@ -766,7 +785,8 @@ def count_possible_equation_choice_problems(
     return count_possible_word_problems(
         operations,
         up_to=up_to,
-        largest_number=largest_number,
+        largest_number=None,
+        largest_operand=largest_number,
         largest_groups=largest_groups,
         largest_size=largest_size,
         excluded_operands=EQUATION_CHOICE_EXCLUDED_OPERANDS,
@@ -781,23 +801,28 @@ def generate_equation_choice_problems(
     largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
     largest_groups: int = WORD_PROBLEM_GROUPS[1],
     largest_size: int = WORD_PROBLEM_GROUP_SIZES[1],
+    taken: Collection[BasicOperationQuestionData] = (),
 ) -> list[EquationChoiceQuestion]:
     """
     Generate ``count`` word problems as ``generate_word_problems`` does, comparisons included,
     each with its equation to choose from those of ``equation_choices``. The operations are split
-    evenly, and the limits are those of any word problem: ``largest_number`` caps an addition's
-    or subtraction's numbers, and ``largest_groups`` and ``largest_size`` a multiplication's or
-    division's equal groups. No problem's operands are in ``EQUATION_CHOICE_EXCLUDED_OPERANDS``.
+    evenly, and the limits are those of any word problem: ``largest_number`` caps the numbers an
+    addition or subtraction gives, not its answer, and ``largest_groups`` and ``largest_size`` a
+    multiplication's or division's equal groups. No problem's operands are in
+    ``EQUATION_CHOICE_EXCLUDED_OPERANDS``, or repeats one in ``taken``, as in
+    ``generate_word_problems``.
     """
     problems = generate_word_problems(
         count,
         operations,
         comparisons=True,
-        largest_number=largest_number,
+        largest_number=None,
+        largest_operand=largest_number,
         largest_groups=largest_groups,
         largest_size=largest_size,
         excluded_operands=EQUATION_CHOICE_EXCLUDED_OPERANDS,
         split_evenly=True,
+        taken=taken,
     )
     return [Question(problem.data, equation_choices(problem.data)) for problem in problems]
 
@@ -815,7 +840,8 @@ def count_possible_number_line_choice_problems(
     return count_possible_word_problems(
         operations,
         up_to=up_to,
-        largest_number=largest_number,
+        largest_number=None,
+        largest_operand=largest_number,
         split_evenly=True,
         larger_first=True,
     )
@@ -826,21 +852,25 @@ def generate_number_line_choice_problems(
     operations: Sequence[Operation],
     *,
     largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
+    taken: Collection[BasicOperationQuestionData] = (),
 ) -> list[NumberLineChoiceQuestion]:
     """
     Generate ``count`` addition and subtraction word problems as ``generate_word_problems`` does,
     comparisons included, each with its number line to choose from those of
-    ``number_line_choices``. The operations are split evenly, and ``largest_number`` caps every
-    number in a problem. An addition's larger number comes first, as ``number_line_choices``
-    needs.
+    ``number_line_choices``. The operations are split evenly, and ``largest_number`` caps the
+    numbers a problem gives, not its answer. An addition's larger number comes first, as
+    ``number_line_choices`` needs. No problem repeats one in ``taken``, as in
+    ``generate_word_problems``.
     """
     problems = generate_word_problems(
         count,
         operations,
         comparisons=True,
-        largest_number=largest_number,
+        largest_number=None,
+        largest_operand=largest_number,
         split_evenly=True,
         larger_first=True,
+        taken=taken,
     )
     return [Question(problem.data, number_line_choices(problem.data)) for problem in problems]
 
@@ -917,28 +947,38 @@ def count_possible_two_step_problems(
     *,
     distinct_answers: bool = False,
     up_to: int,
-    largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
+    largest_number: int | None = LARGEST_WORD_PROBLEM_NUMBER,
+    largest_given: int = LARGEST_WORD_PROBLEM_NUMBER,
     largest_groups: int = WORD_PROBLEM_GROUPS[1],
     largest_size: int = WORD_PROBLEM_GROUP_SIZES[1],
     split_evenly: bool = False,
     shapes: Collection[TwoStepShape] | None = None,
+    keep: Callable[[TwoStepQuestionData], bool] | None = None,
 ) -> int:
     """
     Count the two-step word problems ``generate_two_step_problems`` can produce for
-    ``operations``, with its limits and ``shapes``, or return 0 if ``two_step_shapes`` has none
-    for them.
+    ``operations``, with its limits, ``shapes`` and ``keep``, or return 0 if ``two_step_shapes``
+    has none for them.
 
     As in ``count_possible_word_problems``, any one shape may be drawn for every problem, so the
     count is the smallest that any one shape allows by itself: its distinct answers with
     ``distinct_answers``, and otherwise its distinct problems. A shape the limits allow no problem
-    of isn't drawn, so it doesn't count: multiplying twice needs a largest number of at least 24,
-    as in 2 groups of 3 groups of 4. With ``split_evenly`` and without ``distinct_answers``, each
-    shape needs only enough for its share, so the count is that smallest count for each shape.
-    The count is capped at ``up_to``.
+    of isn't drawn, so it doesn't count: multiplying twice needs a largest number, if given, of
+    at least 24, as in 2 groups of 3 groups of 4. With ``split_evenly`` and without
+    ``distinct_answers``, each shape needs only enough for its share, so the count is that
+    smallest count for each shape. The count is capped at ``up_to``.
     """
+    given = _given_limit(largest_number, largest_given)
     counts = [
         _count_shape_problems(
-            shape, distinct_answers, up_to, largest_number, largest_groups, largest_size
+            shape,
+            distinct_answers,
+            up_to,
+            given,
+            largest_number,
+            largest_groups,
+            largest_size,
+            keep,
         )
         for shape in two_step_shapes(operations, shapes)
     ]
@@ -954,32 +994,52 @@ def generate_two_step_problems(
     operations: Sequence[Operation],
     *,
     distinct_answers: bool = False,
-    largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
+    largest_number: int | None = LARGEST_WORD_PROBLEM_NUMBER,
+    largest_given: int = LARGEST_WORD_PROBLEM_NUMBER,
     largest_groups: int = WORD_PROBLEM_GROUPS[1],
     largest_size: int = WORD_PROBLEM_GROUP_SIZES[1],
     split_evenly: bool = False,
     shapes: Collection[TwoStepShape] | None = None,
+    keep: Callable[[TwoStepQuestionData], bool] | None = None,
+    taken: Collection[TwoStepQuestionData] = (),
 ) -> list[Question[TwoStepQuestionData, FreeResponse]]:
     """
     Generate ``count`` two-step word problems, each of a shape drawn at random from
     ``two_step_shapes(operations, shapes)``, or with ``split_evenly`` dealt out as evenly as
     possible, as in ``generate_word_problems``. ``shapes`` limits them to those a representation
-    can show, such as ``STRIP_TWO_STEP_SHAPES``. A shape the limits allow no problem of isn't
-    drawn.
+    can show, such as ``STRIP_TWO_STEP_SHAPES``, and ``keep`` to those it's true of, such as
+    those with fair equations to choose from. A shape the limits and ``keep`` allow no problem of
+    isn't drawn.
 
-    The first step's answer is carried into the second step as one of its operands. Every number
-    in a problem is at most ``largest_number``, the first step's answer and the final answer
-    included. Otherwise each step keeps the word-problem limits: addition and subtraction operands
-    from ``SMALLEST_WORD_PROBLEM_NUMBER``, a difference of at least 1, and multiplication and
-    division as equal groups, at most ``largest_groups`` of them, of at most ``largest_size``
-    each, so every division comes out even. The wording comes from the word-problem bank. The
-    problems are answered in writing, so they have no wrong answers.
+    The first step's answer is carried into the second step as one of its operands. The limits
+    cap the numbers the problem gives (``TwoStepQuestionData.given_numbers``): an addition's and
+    a subtraction's numbers, and a division's whole, are at most ``largest_given``, and
+    multiplication and division are equal groups, at most ``largest_groups`` of them, of at most
+    ``largest_size`` each, so every division comes out even. Addition and subtraction operands
+    start at ``SMALLEST_WORD_PROBLEM_NUMBER``, and a difference is at least 1. The number carried
+    isn't given, so as a number of groups or a group size it need only be at least the smallest:
+    3 shelves of 4 boxes, with 15 books in each box, makes 12 boxes with a largest number of
+    groups of 6. The answer isn't given either, so only a division's, the size of each group, is
+    capped, by ``largest_size``. A given number that counts groups, or the size of each group,
+    keeps that limit, even in an addition or subtraction, so no story shares among 972 friends
+    after 969 go home.
+
+    With ``largest_number``, every number in a problem is at most that, the first step's answer
+    and the final answer included, and a problem that takes from equal groups, such as 6 boxes of
+    9 with 2 of the boxes given away, starts with at most ``largest_number`` in all. The wording
+    comes from the word-problem bank. The problems are answered in writing, so
+    they have no wrong answers.
 
     No problem repeats one of its given numbers: each draw offers only the steps that make such a
     problem. (A strip diagram's choices can't tell two equal numbers apart, and another part the
-    size of the equal groups beside them would look like one more group.) No two problems have
-    the same steps, and with ``distinct_answers`` no two problems share an answer: a problem that
-    breaks either rule is drawn again.
+    size of the equal groups beside them would look like one more group.) No two problems are the
+    same, though two may share their steps: (2 x 3) x 6 and 6 x (2 x 3) both work 2 x 3 = 6 then
+    6 x 6 = 36, but tell different stories. With ``distinct_answers`` no two problems share an
+    answer: a problem that breaks either rule is drawn again. Nor does any repeat a problem in
+    ``taken``, those already on the sheet, or with ``distinct_answers`` share its answer: the
+    caller checks first that enough are left, as ``generate_mixed_word_problems`` does. A problem
+    ``keep`` is false of is rare, so it isn't left out of the draws, which would cost a check of
+    every candidate; the draw moves on to the next in a shuffled order instead.
 
     Raises ``ValueError`` if the operations allow fewer than ``count`` such problems, as counted
     by ``count_possible_two_step_problems``.
@@ -989,33 +1049,35 @@ def generate_two_step_problems(
         distinct_answers=distinct_answers,
         up_to=count,
         largest_number=largest_number,
+        largest_given=largest_given,
         largest_groups=largest_groups,
         largest_size=largest_size,
         split_evenly=split_evenly,
         shapes=shapes,
+        keep=keep,
     )
     if count > possible:
         kind = "problems with different answers" if distinct_answers else "different problems"
         raise ValueError(f"Cannot make {count} {kind}: only {possible} possible.")
 
+    given = _given_limit(largest_number, largest_given)
+    limits = (given, largest_number, largest_groups, largest_size)
     carried_numbers = {
-        shape: list(_carried_numbers(shape, largest_number, largest_groups, largest_size))
+        shape: list(_carried_numbers(shape, *limits))
         for shape in two_step_shapes(operations, shapes)
     }
-    # a shape the limits allow no problem of isn't drawn
-    drawn = [shape for shape, numbers in carried_numbers.items() if numbers]
+    # a shape the limits and keep allow no problem of isn't drawn
+    drawn = [
+        shape
+        for shape, numbers in carried_numbers.items()
+        if numbers and (keep is None or _count_shape_problems(shape, False, 1, *limits, keep))
+    ]
     unworded: list[TwoStepQuestionData] = []
-    seen: set[TwoStepQuestionData] = set()
-    answers: set[int] = set()
+    # unworded, as the draws are
+    seen = {replace(data, question_text=None) for data in taken}
+    answers = {data.answer for data in taken}
     for shape in _deal(drawn, count, split_evenly):
-        draw = partial(
-            _two_step_problem,
-            shape,
-            carried_numbers[shape],
-            largest_number,
-            largest_groups,
-            largest_size,
-        )
+        draw = partial(_two_step_problem, shape, carried_numbers[shape], *limits, keep)
         data = draw()
         while data in seen or (distinct_answers and data.answer in answers):
             data = draw()
@@ -1054,6 +1116,427 @@ def generate_two_step_strip_choice_problems(
     return [Question(problem.data, two_step_strip_choices(problem.data)) for problem in problems]
 
 
+def count_possible_two_step_equation_choice_problems(
+    operations: Sequence[Operation],
+    *,
+    up_to: int,
+    largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
+    largest_groups: int = WORD_PROBLEM_GROUPS[1],
+    largest_size: int = WORD_PROBLEM_GROUP_SIZES[1],
+) -> int:
+    """
+    Count the problems ``generate_two_step_equation_choice_problems`` can produce, as
+    ``count_possible_two_step_problems`` counts them: every shape, split evenly, and only problems
+    with fair equations to choose from.
+    """
+    return count_possible_two_step_problems(
+        operations,
+        up_to=up_to,
+        largest_number=None,
+        largest_given=largest_number,
+        largest_groups=largest_groups,
+        largest_size=largest_size,
+        split_evenly=True,
+        keep=partial(has_fair_equation_choices, operations=operations),
+    )
+
+
+def generate_two_step_equation_choice_problems(
+    count: int,
+    operations: Sequence[Operation],
+    *,
+    largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
+    largest_groups: int = WORD_PROBLEM_GROUPS[1],
+    largest_size: int = WORD_PROBLEM_GROUP_SIZES[1],
+    shapes: Collection[TwoStepShape] | None = None,
+    taken: Collection[TwoStepQuestionData] = (),
+) -> list[TwoStepEquationChoiceQuestion]:
+    """
+    Generate ``count`` two-step word problems as ``generate_two_step_problems`` does, of every
+    shape, split evenly, each with its equation to choose from those of
+    ``two_step_equation_choices``. Only problems with a fair set of wrong equations are drawn
+    (``has_fair_equation_choices``). The letter for what to find is the one ``unknown_letter``
+    gives for the problem's wording. ``largest_number`` caps the numbers each problem gives, not
+    the first step's answer or the final answer. ``shapes`` and ``taken`` are as in
+    ``generate_two_step_problems``.
+
+    Raises ``ValueError`` if the operations allow fewer than ``count`` such problems, as counted
+    by ``count_possible_two_step_equation_choice_problems``.
+    """
+    problems = generate_two_step_problems(
+        count,
+        operations,
+        largest_number=None,
+        largest_given=largest_number,
+        largest_groups=largest_groups,
+        largest_size=largest_size,
+        split_evenly=True,
+        shapes=shapes,
+        keep=partial(has_fair_equation_choices, operations=operations),
+        taken=taken,
+    )
+    # every problem is worded, so its stem is its wording
+    return [
+        Question(
+            problem.data,
+            two_step_equation_choices(problem.data, unknown_letter(stem(problem.data)), operations),
+        )
+        for problem in problems
+    ]
+
+
+def count_possible_mixed_word_problems(
+    operations: Sequence[Operation],
+    kinds: Sequence[WordProblemKind],
+    *,
+    up_to: int,
+    two_steps: bool = False,
+    distinct_answers: bool = False,
+    largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
+    largest_groups: int = WORD_PROBLEM_GROUPS[1],
+    largest_size: int = WORD_PROBLEM_GROUP_SIZES[1],
+) -> int:
+    """
+    Count the word problems ``generate_mixed_word_problems`` can produce for ``operations`` and
+    ``kinds``, with its limits, or return 0 if a ticked operation has no kind to show it.
+
+    As in ``count_possible_word_problems``, any one problem may be drawn as any one kind that can
+    show it, so the count is the smallest that any one kind allows by itself for any one operation
+    it can show, or with ``two_steps`` any one shape of problem it draws, each counted as on a
+    sheet of that kind alone. A kind with no problem to draw, such as a two-step one whose limits
+    allow none, isn't drawn, but if every kind answered one way is like that, the count is 0. The
+    count is capped at ``up_to``.
+
+    Raises ``ValueError`` with ``distinct_answers`` and a kind answered by multiple choice, whose
+    answers are letters.
+    """
+    _no_choices_with_distinct_answers(kinds, distinct_answers)
+    limits = (largest_number, largest_groups, largest_size)
+    topics = {kind: _kind_topics(kind, operations, two_steps, *limits) for kind in kinds}
+    # a way of answering whose kinds can make no problem leaves its share with none to draw
+    for response in {response for _, response in kinds}:
+        if not any(topics[kind] for kind in kinds if kind[1] is response):
+            return 0
+    if not two_steps and not {topic for each in topics.values() for topic in each}.issuperset(
+        operations
+    ):
+        return 0
+    counts = [
+        _count_kind_problems(kind, topic, operations, up_to, distinct_answers, *limits)
+        for kind in kinds
+        for topic in topics[kind]
+    ]
+    return min(min(counts, default=0), up_to)
+
+
+def generate_mixed_word_problems(
+    count: int,
+    operations: Sequence[Operation],
+    kinds: Sequence[WordProblemKind],
+    *,
+    two_steps: bool = False,
+    distinct_answers: bool = False,
+    largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
+    largest_groups: int = WORD_PROBLEM_GROUPS[1],
+    largest_size: int = WORD_PROBLEM_GROUP_SIZES[1],
+) -> list[tuple[Representation, WordProblemQuestion]]:
+    """
+    Generate ``count`` word problems of a mix of ``kinds``, as ``word_problem_kinds`` returns
+    them, each with the representation it's drawn with, in a shuffled order.
+
+    The ways of answering are dealt out evenly. Each problem's operation, or with ``two_steps``
+    its shape, is then drawn as on a sheet of one kind: at random from those that some kind
+    answered that way can show, or for multiple choice dealt out evenly. Each problem goes to a
+    kind answered that way that can show it, to whichever representation has the fewest problems
+    so far, and those that the fewest kinds can show go first. Each kind's problems are made as on
+    a sheet of that kind alone, with its own limits within the sheet's: ``largest_number`` caps
+    the numbers each problem gives, and base-ten blocks show at most ``LARGEST_BLOCKS_OPERAND``.
+    No problem repeats one already made, and with ``distinct_answers`` no two share an answer.
+
+    Raises ``ValueError`` if the kinds allow fewer than ``count`` such problems, as counted by
+    ``count_possible_mixed_word_problems``, which also guarantees that every kind has enough left
+    after the others.
+    """
+    limits = (largest_number, largest_groups, largest_size)
+    possible = count_possible_mixed_word_problems(
+        operations,
+        kinds,
+        up_to=count,
+        two_steps=two_steps,
+        distinct_answers=distinct_answers,
+        largest_number=largest_number,
+        largest_groups=largest_groups,
+        largest_size=largest_size,
+    )
+    if count > possible:
+        wanted = "problems with different answers" if distinct_answers else "different problems"
+        raise ValueError(f"Cannot make {count} {wanted}: only {possible} possible.")
+
+    topics = {kind: _kind_topics(kind, operations, two_steps, *limits) for kind in kinds}
+    responses = [response for response in Response if any(each is response for _, each in kinds)]
+    dealt = _deal(responses, count, split_evenly=True)
+    problems: list[tuple[Response, Operation | TwoStepShape]] = []
+    for response in responses:
+        answered = [kind for kind in kinds if kind[1] is response]
+        shown = [
+            topic
+            for topic in _topics(operations, two_steps)
+            if any(topic in topics[kind] for kind in answered)
+        ]
+        multiple_choice = response is Response.MULTIPLE_CHOICE
+        problems += [
+            (response, topic) for topic in _deal(shown, dealt.count(response), multiple_choice)
+        ]
+
+    # each problem's kind, those the fewest kinds can show first
+    def candidates(problem: tuple[Response, Operation | TwoStepShape]) -> list[WordProblemKind]:
+        response, topic = problem
+        return [kind for kind in kinds if kind[1] is response and topic in topics[kind]]
+
+    tallies = dict.fromkeys((representation for representation, _ in kinds), 0)
+    groups: dict[tuple[WordProblemKind, Operation | TwoStepShape], int] = {}
+    for problem in sorted(problems, key=lambda each: len(candidates(each))):
+        able = candidates(problem)
+        fewest = min(tallies[representation] for representation, _ in able)
+        kind = random.choice([each for each in able if tallies[each[0]] == fewest])
+        tallies[kind[0]] += 1
+        groups[kind, problem[1]] = groups.get((kind, problem[1]), 0) + 1
+
+    made: list[tuple[WordProblemKind, BasicOperationQuestionData | TwoStepQuestionData]] = []
+    for (kind, topic), share in groups.items():
+        taken = [data for _, data in made]
+        questions = _kind_problems(kind, topic, share, operations, taken, distinct_answers, *limits)
+        made += [(kind, question.data) for question in questions]
+    random.shuffle(made)
+    return _worded_together(made, operations)
+
+
+def _worded_together(
+    made: Sequence[tuple[WordProblemKind, BasicOperationQuestionData | TwoStepQuestionData]],
+    operations: Sequence[Operation],
+) -> list[tuple[Representation, WordProblemQuestion]]:
+    """
+    Word a mixed sheet's problems again, all together, so that no story repeats until all of its
+    operation's, or two-step shape's, have been used, as on a sheet of one kind (each kind's
+    problems were worded apart), and return each with its representation and its response, made
+    as its kind makes it. A problem has "how many more than" stories where its representation
+    does (``COMPARISON_REPRESENTATIONS``), and two-step equations to choose from have the letter
+    the new wording gives.
+    """
+    one_step = [
+        (index, data)
+        for index, (_, data) in enumerate(made)
+        if isinstance(data, BasicOperationQuestionData)
+    ]
+    two_step = [
+        (index, data)
+        for index, (_, data) in enumerate(made)
+        if isinstance(data, TwoStepQuestionData)
+    ]
+    compared = [made[index][0][0] in COMPARISON_REPRESENTATIONS for index, _ in one_step]
+    one_step_texts = word_problem_texts([data for _, data in one_step], comparisons=compared)
+    texts = dict(zip([index for index, _ in one_step], one_step_texts, strict=True))
+    two_step_worded = two_step_texts([data for _, data in two_step])
+    texts.update(zip([index for index, _ in two_step], two_step_worded, strict=True))
+    worded: list[tuple[Representation, WordProblemQuestion]] = []
+    for index, ((representation, response), unworded) in enumerate(made):
+        data = replace(unworded, question_text=texts[index])
+        choices = response is Response.MULTIPLE_CHOICE
+        question: WordProblemQuestion
+        if isinstance(data, TwoStepQuestionData) and choices:
+            letter = unknown_letter(texts[index])
+            question = Question(data, two_step_equation_choices(data, letter, operations))
+        elif isinstance(data, TwoStepQuestionData):
+            question = Question(data, FreeResponse())
+        elif choices and representation is Representation.NUMBER_LINE:
+            question = Question(data, number_line_choices(data))
+        elif choices:
+            question = Question(data, equation_choices(data))
+        else:
+            question = Question(data, FreeResponse())
+        worded.append((representation, question))
+    return worded
+
+
+def _no_choices_with_distinct_answers(
+    kinds: Sequence[WordProblemKind], distinct_answers: bool
+) -> None:
+    """Raise ``ValueError`` with ``distinct_answers`` and a kind answered by multiple choice."""
+    if distinct_answers and any(response is Response.MULTIPLE_CHOICE for _, response in kinds):
+        raise ValueError("Multiple choice answers are letters, so they can't be distinct answers.")
+
+
+def _topics(operations: Sequence[Operation], two_steps: bool) -> list[Operation | TwoStepShape]:
+    """Return ``operations``, or with ``two_steps`` the shapes of problem in the bank for them."""
+    if two_steps:
+        return list(two_step_shapes(operations))
+    return list(operations)
+
+
+def _kind_topics(
+    kind: WordProblemKind,
+    operations: Sequence[Operation],
+    two_steps: bool,
+    largest_number: int,
+    largest_groups: int,
+    largest_size: int,
+) -> list[Operation | TwoStepShape]:
+    """
+    Return what a word problem of ``kind`` can be: each of ``operations`` its representation shows,
+    or with ``two_steps`` each shape of problem in the bank for them that it shows and that the
+    limits allow a problem of, as ``generate_two_step_problems`` draws them.
+    """
+    representation, response = kind
+    if not two_steps:
+        return [
+            operation
+            for operation in operations
+            if operation in REPRESENTATION_OPERATIONS[representation]
+        ]
+    shapes = STRIP_TWO_STEP_SHAPES if representation is Representation.STRIP else None
+    keep = _two_step_keep(response, operations)
+    return [
+        shape
+        for shape in two_step_shapes(operations, shapes)
+        if _count_shape_problems(
+            shape, False, 1, largest_number, None, largest_groups, largest_size, keep
+        )
+    ]
+
+
+def _two_step_keep(
+    response: Response, operations: Sequence[Operation]
+) -> Callable[[TwoStepQuestionData], bool] | None:
+    """
+    Return which two-step problems a kind answered by ``response`` draws: for multiple choice,
+    only those with fair equations to choose from, and otherwise any.
+    """
+    if response is Response.MULTIPLE_CHOICE:
+        return partial(has_fair_equation_choices, operations=operations)
+    return None
+
+
+def _largest_drawn_operand(representation: Representation, largest_number: int) -> int:
+    """Return the most an operand drawn with ``representation`` may be: base-ten blocks show 599."""
+    if representation is Representation.BLOCKS:
+        return min(largest_number, LARGEST_BLOCKS_OPERAND)
+    return largest_number
+
+
+def _count_kind_problems(
+    kind: WordProblemKind,
+    topic: Operation | TwoStepShape,
+    operations: Sequence[Operation],
+    up_to: int,
+    distinct_answers: bool,
+    largest_number: int,
+    largest_groups: int,
+    largest_size: int,
+) -> int:
+    """
+    Count the problems of ``kind`` and ``topic``, an operation or a two-step shape, as on a sheet
+    of that kind alone, as ``generate_mixed_word_problems`` makes them, stopping at ``up_to``.
+    """
+    representation, response = kind
+    if not isinstance(topic, Operation):
+        keep = _two_step_keep(response, operations)
+        return _count_shape_problems(
+            topic, distinct_answers, up_to, largest_number, None, largest_groups, largest_size, keep
+        )
+    match kind:
+        case (Representation.NUMBER_LINE, Response.MULTIPLE_CHOICE):
+            return count_possible_number_line_choice_problems(
+                [topic], up_to=up_to, largest_number=largest_number
+            )
+        case (Representation.EQUATION, Response.MULTIPLE_CHOICE):
+            return count_possible_equation_choice_problems(
+                [topic],
+                up_to=up_to,
+                largest_number=largest_number,
+                largest_groups=largest_groups,
+                largest_size=largest_size,
+            )
+        case _:
+            return count_possible_word_problems(
+                [topic],
+                distinct_answers=distinct_answers,
+                up_to=up_to,
+                largest_number=None,
+                largest_operand=_largest_drawn_operand(representation, largest_number),
+                largest_groups=largest_groups,
+                largest_size=largest_size,
+            )
+
+
+def _kind_problems(
+    kind: WordProblemKind,
+    topic: Operation | TwoStepShape,
+    count: int,
+    operations: Sequence[Operation],
+    taken: Sequence[BasicOperationQuestionData | TwoStepQuestionData],
+    distinct_answers: bool,
+    largest_number: int,
+    largest_groups: int,
+    largest_size: int,
+) -> Sequence[WordProblemQuestion]:
+    """
+    Generate ``count`` problems of ``kind`` and ``topic``, an operation or a two-step shape, as on
+    a sheet of that kind alone, none repeating a problem in ``taken``, or with
+    ``distinct_answers`` sharing its answer.
+    """
+    representation, response = kind
+    if not isinstance(topic, Operation):
+        taken_two = [data for data in taken if isinstance(data, TwoStepQuestionData)]
+        if response is Response.MULTIPLE_CHOICE:
+            return generate_two_step_equation_choice_problems(
+                count,
+                operations,
+                largest_number=largest_number,
+                largest_groups=largest_groups,
+                largest_size=largest_size,
+                shapes={topic},
+                taken=taken_two,
+            )
+        return generate_two_step_problems(
+            count,
+            operations,
+            distinct_answers=distinct_answers,
+            largest_number=None,
+            largest_given=largest_number,
+            largest_groups=largest_groups,
+            largest_size=largest_size,
+            shapes={topic},
+            taken=taken_two,
+        )
+    taken_one = [data for data in taken if isinstance(data, BasicOperationQuestionData)]
+    match kind:
+        case (Representation.NUMBER_LINE, Response.MULTIPLE_CHOICE):
+            return generate_number_line_choice_problems(
+                count, [topic], largest_number=largest_number, taken=taken_one
+            )
+        case (Representation.EQUATION, Response.MULTIPLE_CHOICE):
+            return generate_equation_choice_problems(
+                count,
+                [topic],
+                largest_number=largest_number,
+                largest_groups=largest_groups,
+                largest_size=largest_size,
+                taken=taken_one,
+            )
+        case _:
+            return generate_word_problems(
+                count,
+                [topic],
+                distinct_answers=distinct_answers,
+                comparisons=representation in COMPARISON_REPRESENTATIONS,
+                largest_number=None,
+                largest_operand=_largest_drawn_operand(representation, largest_number),
+                largest_groups=largest_groups,
+                largest_size=largest_size,
+                taken=taken_one,
+            )
+
+
 def two_step_shapes(
     operations: Collection[Operation], shapes: Collection[TwoStepShape] | None = None
 ) -> list[TwoStepShape]:
@@ -1071,15 +1554,15 @@ def two_step_shapes(
 
 def _sum_or_difference(
     operation: Literal[Operation.ADD, Operation.SUBTRACT],
-    largest_number: int,
+    largest_number: int | None,
     largest_operand: int,
     largest_smaller_operand: int | None = None,
     larger_first: bool = False,
 ) -> BasicOperationQuestionData:
     """
-    Draw two operands at random from ``SMALLEST_WORD_PROBLEM_NUMBER`` to the smaller of
-    ``largest_number`` and ``largest_operand``, redrawing until they meet the word-problem
-    limits: a sum is at most ``largest_number``, and a difference is at least 1, with the larger
+    Draw two operands at random from ``SMALLEST_WORD_PROBLEM_NUMBER`` to ``largest_operand``, and
+    to ``largest_number`` too if given, redrawing until they meet the word-problem limits: a sum
+    is at most ``largest_number`` if given, and a difference is at least 1, with the larger
     operand first. With ``largest_smaller_operand``, the second operand is drawn no larger than
     that, and then an addition's operands are put in random order. With ``larger_first``, an
     addition's larger operand comes first instead, and its operands differ.
@@ -1088,7 +1571,7 @@ def _sum_or_difference(
     does. Then about half of all draws meet them, and even the tightest limits meet one draw in
     five, so the redraws end quickly.
     """
-    largest = min(largest_number, largest_operand)
+    largest = _given_limit(largest_number, largest_operand)
     smaller = largest if largest_smaller_operand is None else min(largest_smaller_operand, largest)
     while True:
         first = random.randint(SMALLEST_WORD_PROBLEM_NUMBER, largest)
@@ -1101,7 +1584,7 @@ def _sum_or_difference(
                     first, second = max(first, second), min(first, second)
                 elif smaller < largest:
                     first, second = random.sample((first, second), 2)
-                if first + second <= largest_number:
+                if largest_number is None or first + second <= largest_number:
                     return BasicOperationQuestionData(operation, (first, second), first + second)
             case Operation.SUBTRACT:
                 first, second = max(first, second), min(first, second)
@@ -1196,49 +1679,95 @@ def _group_sizes(largest_size: int) -> range:
     return range(WORD_PROBLEM_GROUP_SIZES[0], largest_size + 1)
 
 
+def _given_limit(largest_number: int | None, largest_given: int) -> int:
+    """
+    Return the most any number a word problem gives may be: ``largest_given``, and at most
+    ``largest_number`` too if given, which caps every number.
+    """
+    return largest_given if largest_number is None else min(largest_number, largest_given)
+
+
 def _distinct_numbers(data: TwoStepQuestionData) -> bool:
     """Return whether no two of the two-step problem's given numbers are the same."""
     return len(set(data.given_numbers)) == len(data.given_numbers)
+
+
+def _allowed(data: TwoStepQuestionData, largest_number: int | None) -> bool:
+    """
+    Return whether the two-step problem repeats none of its given numbers and, with
+    ``largest_number``, if it takes from equal groups, as in 6 boxes of 9 with 2 of the boxes
+    given away, starts with at most ``largest_number`` in all, as the whole of any multiplication
+    is. That starting total isn't given, so without ``largest_number`` nothing caps it.
+    """
+    first, second = data.steps
+    if (
+        largest_number is not None
+        and first.operation is Operation.SUBTRACT
+        and second.operation is Operation.MULTIPLY
+    ):
+        groups, size = second.operands
+        other = size if data.carried is Unknown.FIRST else groups
+        if first.operands[0] * other > largest_number:
+            return False
+    return _distinct_numbers(data)
 
 
 def _count_shape_problems(
     shape: TwoStepShape,
     distinct_answers: bool,
     up_to: int,
-    largest_number: int,
+    largest_given: int,
+    largest_number: int | None,
     largest_groups: int,
     largest_size: int,
+    keep: Callable[[TwoStepQuestionData], bool] | None,
 ) -> int:
     """
-    Count the two-step problems of ``shape`` that ``generate_two_step_problems`` can draw, or
-    with ``distinct_answers`` their distinct answers, stopping at ``up_to``.
+    Count the two-step problems of ``shape`` that ``generate_two_step_problems`` can draw, those
+    ``keep`` is true of if given, or with ``distinct_answers`` their distinct answers, stopping at
+    ``up_to``. ``largest_given`` caps the numbers each problem gives, already within
+    ``largest_number``, as ``_given_limit`` returns it.
     """
     first_operation, second_operation, carried = shape
-    largest_carried = _largest_carried_size(shape, largest_number, largest_size)
+    largest_first_operand = _largest_first_operand(
+        shape, largest_given, largest_groups, largest_size
+    )
     problems = 0
     answers: set[int] = set()
-    for number in _carried_numbers(shape, largest_number, largest_groups, largest_size):
+    for number in _carried_numbers(
+        shape, largest_given, largest_number, largest_groups, largest_size
+    ):
         for second in _second_steps(
-            second_operation, carried, number, largest_number, largest_groups, largest_size
+            second_operation,
+            carried,
+            number,
+            largest_given,
+            largest_number,
+            largest_groups,
+            largest_size,
         ):
             if distinct_answers and second.answer in answers:
                 continue
             firsts = _first_steps(
                 first_operation,
                 number,
-                largest_number,
+                largest_given,
                 largest_groups,
                 largest_size,
-                largest_carried,
+                largest_first_operand,
             )
+            joined = (_join_steps(shape, first, second) for first in firsts)
             allowed = (
-                first for first in firsts if _distinct_numbers(_join_steps(shape, first, second))
+                data
+                for data in joined
+                if _allowed(data, largest_number) and (keep is None or keep(data))
             )
             if distinct_answers:
                 if next(allowed, None) is not None:
                     answers.add(second.answer)
             else:
-                problems += sum(1 for _ in allowed)
+                # no further than the cap, which spares checking ``keep`` past it
+                problems += sum(1 for _ in islice(allowed, up_to - problems))
             if max(problems, len(answers)) >= up_to:
                 return up_to
     return len(answers) if distinct_answers else problems
@@ -1247,31 +1776,83 @@ def _count_shape_problems(
 def _two_step_problem(
     shape: TwoStepShape,
     carried_numbers: Sequence[int],
-    largest_number: int,
+    largest_given: int,
+    largest_number: int | None,
     largest_groups: int,
     largest_size: int,
+    keep: Callable[[TwoStepQuestionData], bool] | None,
 ) -> TwoStepQuestionData:
     """
-    Draw a two-step problem of ``shape`` that repeats none of its given numbers: the number its
-    first step carries into its second, from ``carried_numbers``, then its first step, from those
-    of ``_followed_first_steps``, then its second step, from those of ``_second_steps`` that can
-    follow the first.
+    Draw a two-step problem of ``shape`` that ``_allowed`` allows: the number its first step
+    carries into its second, from ``carried_numbers``, then its first step, from those of
+    ``_followed_first_steps``, then its second step, from those of ``_following_seconds``.
+
+    A problem that ``keep`` is false of gives way to the first that it's true of in a shuffled
+    order of the shape's problems. The caller checks first that there is one, as
+    ``generate_two_step_problems`` does with ``_count_shape_problems``.
+    """
+    limits = (largest_given, largest_number, largest_groups, largest_size)
+    number = random.choice(carried_numbers)
+    first = random.choice(list(_followed_first_steps(shape, number, *limits)))
+    second = random.choice(_following_seconds(shape, first, number, *limits))
+    data = _join_steps(shape, first, second)
+    if keep is None or keep(data):
+        return data
+    for candidate in _shuffled_problems(shape, carried_numbers, *limits):
+        if keep(candidate):
+            return candidate
+    raise ValueError(f"No problem of {shape} is kept.")
+
+
+def _following_seconds(
+    shape: TwoStepShape,
+    first: BasicOperationQuestionData,
+    number: int,
+    largest_given: int,
+    largest_number: int | None,
+    largest_groups: int,
+    largest_size: int,
+) -> list[BasicOperationQuestionData]:
+    """
+    Return the second steps of a ``shape`` problem, carrying ``number``, the answer of ``first``,
+    that follow ``first`` in a problem that ``_allowed`` allows.
     """
     _, second_operation, carried = shape
-    number = random.choice(carried_numbers)
-    first = random.choice(
-        list(_followed_first_steps(shape, number, largest_number, largest_groups, largest_size))
-    )
-    second = random.choice(
-        [
-            second
-            for second in _second_steps(
-                second_operation, carried, number, largest_number, largest_groups, largest_size
-            )
-            if _distinct_numbers(_join_steps(shape, first, second))
-        ]
-    )
-    return _join_steps(shape, first, second)
+    return [
+        second
+        for second in _second_steps(
+            second_operation,
+            carried,
+            number,
+            largest_given,
+            largest_number,
+            largest_groups,
+            largest_size,
+        )
+        if _allowed(_join_steps(shape, first, second), largest_number)
+    ]
+
+
+def _shuffled_problems(
+    shape: TwoStepShape,
+    carried_numbers: Sequence[int],
+    largest_given: int,
+    largest_number: int | None,
+    largest_groups: int,
+    largest_size: int,
+) -> Iterator[TwoStepQuestionData]:
+    """
+    Yield every ``shape`` problem that ``_allowed`` allows, in a shuffled order: the numbers
+    carried from ``carried_numbers`` shuffled, each one's first steps shuffled, and each first
+    step's second steps shuffled.
+    """
+    limits = (largest_given, largest_number, largest_groups, largest_size)
+    for number in random.sample(carried_numbers, len(carried_numbers)):
+        firsts = list(_followed_first_steps(shape, number, *limits))
+        for first in random.sample(firsts, len(firsts)):
+            seconds = _following_seconds(shape, first, number, *limits)
+            for second in random.sample(seconds, len(seconds)):
+                yield _join_steps(shape, first, second)
 
 
 def _join_steps(
@@ -1282,24 +1863,45 @@ def _join_steps(
 
 
 def _carried_numbers(
-    shape: TwoStepShape, largest_number: int, largest_groups: int, largest_size: int
+    shape: TwoStepShape,
+    largest_given: int,
+    largest_number: int | None,
+    largest_groups: int,
+    largest_size: int,
 ) -> Iterator[int]:
     """
     Yield, smallest first, every number that the first step of a ``shape`` problem can carry into
-    its second step, in a problem that repeats none of its given numbers.
+    its second step, in a problem that ``_allowed`` allows.
     """
-    for number in range(SMALLEST_WORD_PROBLEM_NUMBER, largest_number + 1):
-        if any(_followed_first_steps(shape, number, largest_number, largest_groups, largest_size)):
+    limits = (largest_given, largest_number, largest_groups, largest_size)
+    largest = _largest_carried(shape, *limits)
+    numbers: Iterable[int]
+    if shape[0] is Operation.MULTIPLY:  # only products, far fewer than the numbers up to the most
+        products = {
+            groups * size
+            for groups in _group_counts(largest_groups)
+            for size in _group_sizes(min(largest_size, largest // groups))
+        }
+        numbers = sorted(products)
+    else:
+        numbers = range(SMALLEST_WORD_PROBLEM_NUMBER, largest + 1)
+    for number in numbers:
+        if any(_followed_first_steps(shape, number, *limits)):
             yield number
 
 
 def _followed_first_steps(
-    shape: TwoStepShape, number: int, largest_number: int, largest_groups: int, largest_size: int
+    shape: TwoStepShape,
+    number: int,
+    largest_given: int,
+    largest_number: int | None,
+    largest_groups: int,
+    largest_size: int,
 ) -> Iterator[BasicOperationQuestionData]:
     """
     Yield every first step of a ``shape`` problem whose answer is ``number``, as ``_first_steps``
-    does, that some second step of ``_second_steps`` can follow without the problem repeating one
-    of its given numbers.
+    does, that some second step of ``_second_steps`` can follow in a problem that ``_allowed``
+    allows.
     """
     first_operation, second_operation, carried = shape
     seconds = partial(
@@ -1307,68 +1909,117 @@ def _followed_first_steps(
         second_operation,
         carried,
         number,
+        largest_given,
         largest_number,
         largest_groups,
         largest_size,
     )
     if next(seconds(), None) is None:  # no second step, so nothing to follow any first step
         return
-    largest_carried = _largest_carried_size(shape, largest_number, largest_size)
     firsts = _first_steps(
-        first_operation, number, largest_number, largest_groups, largest_size, largest_carried
+        first_operation,
+        number,
+        largest_given,
+        largest_groups,
+        largest_size,
+        _largest_first_operand(shape, largest_given, largest_groups, largest_size),
     )
     for first in firsts:
-        if any(_distinct_numbers(_join_steps(shape, first, second)) for second in seconds()):
+        if any(_allowed(_join_steps(shape, first, second), largest_number) for second in seconds()):
             yield first
 
 
-def _largest_carried_size(shape: TwoStepShape, largest_number: int, largest_size: int) -> int:
+def _largest_carried(
+    shape: TwoStepShape,
+    largest_given: int,
+    largest_number: int | None,
+    largest_groups: int,
+    largest_size: int,
+) -> int:
     """
-    Return the largest answer a ``shape`` problem's first step may have if it's a division:
-    ``largest_size``, except in ÷ then ÷, which divides that answer again, so it may be up to
-    ``largest_number``. Otherwise ÷ then ÷'s answers would be at most half the largest group size.
+    Return the largest number a ``shape`` problem's first step can carry into its second: the
+    most its given numbers can make, and at most ``largest_number`` if given. The number carried
+    isn't given, so the limits on given numbers don't cap it: 3 shelves of 4 boxes, with 15 books
+    in each box, makes 12 boxes, though the largest number of groups is 6.
     """
-    first_operation, second_operation, _ = shape
-    if first_operation is Operation.DIVIDE and second_operation is Operation.DIVIDE:
-        return largest_number
-    return largest_size
+    largest_operand = _largest_first_operand(shape, largest_given, largest_groups, largest_size)
+    first_operation = shape[0]
+    match first_operation:
+        case Operation.ADD:
+            most = 2 * largest_operand
+        case Operation.SUBTRACT:
+            most = largest_operand - SMALLEST_WORD_PROBLEM_NUMBER
+        case Operation.MULTIPLY:
+            most = largest_groups * largest_size
+        case Operation.DIVIDE:  # the whole, which is given, shared into the fewest groups
+            most = largest_given // WORD_PROBLEM_GROUPS[0]
+        case _:
+            assert_never(first_operation)
+    return most if largest_number is None else min(most, largest_number)
+
+
+def _largest_first_operand(
+    shape: TwoStepShape, largest_given: int, largest_groups: int, largest_size: int
+) -> int:
+    """
+    Return the largest operand a ``shape`` problem's first step may have if it's an addition or
+    subtraction: the largest of the numbers it adds, or the number it takes from. Those numbers
+    count the same things as its answer, so they keep the limit for those things:
+    ``largest_groups`` if the answer is the number of groups, as in 12 friends with 3 of them
+    gone home, or 3 bags and 4 more bags with 5 apples in each, ``largest_size`` if it's the size
+    of each group, and ``largest_given`` otherwise, but never more than ``largest_given``. The
+    answer itself isn't given, so it may pass that limit: 3 bags and 4 more make 7 bags, though
+    the largest number of groups is 6.
+    """
+    _, second_operation, carried = shape
+    match second_operation, carried:
+        case (Operation.MULTIPLY, Unknown.FIRST) | (Operation.DIVIDE, Unknown.SECOND):
+            return min(largest_groups, largest_given)
+        case (Operation.MULTIPLY, Unknown.SECOND):
+            return min(largest_size, largest_given)
+        case _:
+            return largest_given
 
 
 def _first_steps(
     operation: Operation,
     answer: int,
-    largest_number: int,
+    largest_given: int,
     largest_groups: int,
     largest_size: int,
-    largest_carried: int,
+    largest_operand: int,
 ) -> Iterator[BasicOperationQuestionData]:
     """
-    Yield every first step of a two-step problem whose answer is ``answer``, with every number at
-    most ``largest_number``.
+    Yield every first step of a two-step problem whose answer is ``answer``. Its operands are
+    numbers the problem gives.
 
-    Addition and subtraction operands start at ``SMALLEST_WORD_PROBLEM_NUMBER``. Multiplication
-    and division are equal groups, as ``_equal_groups_problem`` makes them, of up to
-    ``largest_groups`` groups of up to ``largest_size``, except that a division's answer, the
-    size of each group, may be up to ``largest_carried``.
+    An addition's operands start at ``SMALLEST_WORD_PROBLEM_NUMBER`` and are at most
+    ``largest_operand``, as is the number a subtraction takes from. Multiplication and division
+    are equal groups, as ``_equal_groups_problem`` makes them, of up to ``largest_groups``
+    groups, with a multiplication's groups of up to ``largest_size`` each, and a division's
+    whole at most ``largest_given``. A division's answer, the size of each group, is carried into
+    the second step, not given, so no limit but the smallest group size applies to it.
     """
     smallest = SMALLEST_WORD_PROBLEM_NUMBER
     match operation:
         case Operation.ADD:
-            for first in range(smallest, answer - smallest + 1):
+            lowest = max(smallest, answer - largest_operand)
+            for first in range(lowest, min(largest_operand, answer - smallest) + 1):
                 yield BasicOperationQuestionData(operation, (first, answer - first), answer)
         case Operation.SUBTRACT:
-            for second in range(smallest, largest_number - answer + 1):
+            for second in range(smallest, largest_operand - answer + 1):
                 yield BasicOperationQuestionData(operation, (answer + second, second), answer)
-        case Operation.MULTIPLY:
-            for groups in _group_counts(largest_groups):
+        case Operation.MULTIPLY:  # only as many groups as leave each a size within the limits
+            fewest = max(WORD_PROBLEM_GROUPS[0], -(-answer // largest_size))
+            most = min(largest_groups, answer // WORD_PROBLEM_GROUP_SIZES[0])
+            for groups in range(fewest, most + 1):
                 size, remainder = divmod(answer, groups)
-                if not remainder and size in _group_sizes(largest_size):
+                if not remainder:
                     yield _equal_groups_problem(operation, groups, size)
         case Operation.DIVIDE:
-            if WORD_PROBLEM_GROUP_SIZES[0] <= answer <= largest_carried:
-                for groups in _group_counts(largest_groups):
-                    if groups * answer <= largest_number:
-                        yield _equal_groups_problem(operation, groups, answer)
+            if answer >= WORD_PROBLEM_GROUP_SIZES[0]:
+                for groups in _group_counts(min(largest_groups, largest_given // answer)):
+                    yield _equal_groups_problem(operation, groups, answer)
         case _:
             assert_never(operation)
 
@@ -1377,49 +2028,57 @@ def _second_steps(
     operation: Operation,
     carried: Unknown,
     number: int,
-    largest_number: int,
+    largest_given: int,
+    largest_number: int | None,
     largest_groups: int,
     largest_size: int,
 ) -> Iterator[BasicOperationQuestionData]:
     """
-    Yield every second step of a two-step problem whose ``carried`` operand is ``number``, with
-    every number at most ``largest_number``, and with the limits of ``_first_steps``. A
-    difference is at least 1.
+    Yield every second step of a two-step problem whose ``carried`` operand is ``number``.
+
+    The other operand is a number the problem gives, with the limits of ``_first_steps``: an
+    addition's or subtraction's at most ``largest_given``, a multiplication's groups or size at
+    most ``largest_groups`` or ``largest_size``, and a division's whole at most ``largest_given``
+    and its groups at most ``largest_groups``. ``number`` isn't given, so as a number of groups
+    or a group size it need only be at least the smallest. The answer is at most
+    ``largest_number`` if given, and a division's answer, the size of each group, is at most
+    ``largest_size``. A difference is at least 1.
     """
     smallest = SMALLEST_WORD_PROBLEM_NUMBER
-    group_counts = _group_counts(largest_groups)
-    group_sizes = _group_sizes(largest_size)
     match operation:
         case Operation.ADD:
-            for other in range(smallest, largest_number - number + 1):
+            most = largest_given if largest_number is None else largest_number - number
+            for other in range(smallest, min(largest_given, most) + 1):
                 operands = (number, other) if carried is Unknown.FIRST else (other, number)
                 yield BasicOperationQuestionData(operation, operands, number + other)
         case Operation.SUBTRACT if carried is Unknown.FIRST:  # taking from the number
-            for other in range(smallest, number):
+            for other in range(smallest, min(number - 1, largest_given) + 1):
                 yield BasicOperationQuestionData(operation, (number, other), number - other)
         case Operation.SUBTRACT:  # taking the number away
-            for other in range(number + 1, largest_number + 1):
+            for other in range(number + 1, largest_given + 1):
                 yield BasicOperationQuestionData(operation, (other, number), other - number)
         case Operation.MULTIPLY if carried is Unknown.FIRST:  # the number of groups
-            if number in group_counts:
-                for size in group_sizes:
-                    if number * size <= largest_number:
-                        yield _equal_groups_problem(operation, number, size)
+            if number >= WORD_PROBLEM_GROUPS[0]:
+                most = largest_size if largest_number is None else largest_number // number
+                for size in _group_sizes(min(largest_size, most)):
+                    yield _equal_groups_problem(operation, number, size)
         case Operation.MULTIPLY:  # the size of each group
-            if number in group_sizes:
-                for groups in group_counts:
-                    if groups * number <= largest_number:
-                        yield _equal_groups_problem(operation, groups, number)
+            if number >= WORD_PROBLEM_GROUP_SIZES[0]:
+                most = largest_groups if largest_number is None else largest_number // number
+                for groups in _group_counts(min(largest_groups, most)):
+                    yield _equal_groups_problem(operation, groups, number)
         case Operation.DIVIDE if carried is Unknown.FIRST:  # the whole shared
-            for groups in group_counts:
+            # only as many groups as leave each a size within the limits
+            fewest = max(WORD_PROBLEM_GROUPS[0], -(-number // largest_size))
+            most = min(largest_groups, number // WORD_PROBLEM_GROUP_SIZES[0])
+            for groups in range(fewest, most + 1):
                 size, remainder = divmod(number, groups)
-                if not remainder and size in group_sizes:
+                if not remainder:
                     yield _equal_groups_problem(operation, groups, size)
         case Operation.DIVIDE:  # the number of groups shared into
-            if number in group_counts:
-                for size in group_sizes:
-                    if number * size <= largest_number:
-                        yield _equal_groups_problem(operation, number, size)
+            if number >= WORD_PROBLEM_GROUPS[0]:  # the whole, which is given, within its limit
+                for size in _group_sizes(min(largest_size, largest_given // number)):
+                    yield _equal_groups_problem(operation, number, size)
         case _:
             assert_never(operation)
 

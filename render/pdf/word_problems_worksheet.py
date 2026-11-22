@@ -1,17 +1,17 @@
 """
-PDF worksheets of word problems, each drawn with the sheet's representation, with an optional answer
-key page.
+PDF worksheets of word problems, each drawn with the sheet's representation, or on a sheet that
+mixes them, its own, with an optional answer key page.
 
-The first page has the representation's instruction under its header, and for base-ten blocks a key
-to the blocks. Each problem has its number and wording, a hint if the representation has one and
-hints aren't turned off, the representation, and an answer line. A text-only problem's
-representation is a box to show the work in, unless the boxes are left out, and an equation's is a
-line to write it on. A number line's last box is its answer, so it has no answer line. A
-multiple-choice problem, whose representation is
-chosen, has no hint, and has its lettered equations or number lines instead, in rows of two. A
-two-step problem is shown only with strip diagrams, as one bar under its whole, or as text only.
-A sheet for the self-check tiles case has no answer lines, and ends with a page for the answer
-bank and pattern.
+The first page has the instruction under its header, a line for each representation on the sheet and
+each way it's answered, and if any problem is drawn with base-ten blocks, a key to the blocks. Each
+problem has its number and wording, a hint if the representation has one and hints aren't turned
+off, the representation, and an answer line. A text-only problem's representation is a box to show
+the work in, unless the boxes are left out, and an equation's is a line to write it on. A number
+line's last box is its answer, so it has no answer line. A multiple-choice problem, whose
+representation is chosen, has no hint, and has its lettered equations or number lines instead, in
+rows of two. A two-step problem is shown only with strip diagrams, as one bar under its whole, as
+text only, or with its equation. A sheet for the self-check tiles case has no answer lines, and ends
+with a page for the answer bank and pattern.
 """
 
 from collections.abc import Sequence
@@ -118,25 +118,27 @@ def render_word_problems_worksheet(
     path: str | BinaryIO,
     header: Header,
     answer_key: bool,
-    representation: Representation,
+    representation: Representation | Sequence[Representation],
     hints: bool,
     slot_of: Sequence[int] | None,
     black_and_white: bool = False,
     work_box: bool = False,
 ) -> None:
     """
-    Render word problems, each drawn with ``representation``, and the answer key if requested, to
-    ``path``.
+    Render word problems, each drawn with ``representation``, or with the representation at its
+    index if a sequence of them is given, and the answer key if requested, to ``path``. The
+    instruction has a line for each representation on the sheet and each way it's answered, in
+    the order of ``Representation``, written ones first.
 
     Each problem's hint is left out when ``hints`` is False, and so is the note beside base-ten
     blocks saying how many to cross out. Base-ten blocks are grey when ``black_and_white`` is
     set. Text-only problems have no box to show the work in when ``work_box`` is False. A problem
     that would run past the bottom margin starts on the next page. A multiple-choice problem has
     its lettered options instead of its representation and an answer line, and no hint; on a
-    sheet of them, the instruction says to choose. A two-step problem needs ``representation`` to
-    be strip diagrams or text only, or raises ``ValueError``. The answer key gives each problem's
-    equation and answer (each step's, for a two-step problem), and a multiple-choice problem's
-    correct letter.
+    sheet of them, the instruction says to choose. A two-step problem needs its representation to
+    be strip diagrams, text only or equations, or raises ``ValueError``. The answer key gives each
+    problem's equation and answer (each step's, for a two-step problem), and a multiple-choice
+    problem's correct letter.
     ``path`` is a filename or a binary file-like object.
 
     With ``slot_of``, the sheet is for the self-check tiles case: the problems have no answer
@@ -144,23 +146,27 @@ def render_word_problems_worksheet(
     slot of question i + 1's answer, as in ``core.self_check_tiles``, so there are at most 12
     questions, and their answers must be distinct. The answer key adds each answer's slot letter.
     """
-    two_steps = any(isinstance(question.data, TwoStepQuestionData) for question in questions)
-    if two_steps and representation not in TWO_STEP_REPRESENTATIONS:
-        raise ValueError("Only strip diagrams and text only show two-step problems.")
+    representations = (
+        [representation] * len(questions)
+        if isinstance(representation, Representation)
+        else list(representation)
+    )
+    drawn = list(zip(representations, questions, strict=True))
+    if any(
+        isinstance(question.data, TwoStepQuestionData) and each not in TWO_STEP_REPRESENTATIONS
+        for each, question in drawn
+    ):
+        raise ValueError("Only strip diagrams, text only and equations show two-step problems.")
     pdf = new_pdf(path, header.title)
-    answer_lines = slot_of is None and representation is not Representation.NUMBER_LINE
     colours = GREY_BLOCKS if black_and_white else COLOUR_BLOCKS
 
-    operations = {step.operation for question in questions for step in _steps(question.data)}
-    choices = any(isinstance(question.response, MultipleChoice) for question in questions)
-    y = draw_instruction(
-        pdf, instruction(representation, operations, work_box, choices), start_page(pdf, header)
-    )
-    if representation is Representation.BLOCKS:
+    y = draw_instruction(pdf, _instructions(drawn, work_box), start_page(pdf, header))
+    if Representation.BLOCKS in representations:
         top = y + REPRESENTATION_RAISE
         draw_blocks_key(pdf, MARGIN, top, colours)
         y = top - BLOCKS_KEY_HEIGHT - PROBLEM_GAP
-    for number, question in enumerate(questions, start=1):
+    for number, (representation, question) in enumerate(drawn, start=1):
+        answer_lines = slot_of is None and representation is not Representation.NUMBER_LINE
         lines = wrap(stem(question.data), TEXT_SIZE, TEXT_WIDTH)
         hint_text = (
             hint(question.data, representation)
@@ -202,6 +208,34 @@ def render_word_problems_worksheet(
     pdf.save()
 
 
+def _instructions(
+    drawn: Sequence[tuple[Representation, WordProblemQuestion]], work_box: bool
+) -> str:
+    """
+    Return the sheet's instruction: a line for each representation in ``drawn`` and each way it's
+    answered, written first, in the order of ``Representation``, each for the operations of its
+    own problems, and whether they have two steps. ``work_box`` is as in ``instruction``.
+    """
+    lines = []
+    for representation in Representation:
+        for choices in (False, True):
+            questions = [
+                question
+                for each, question in drawn
+                if each is representation
+                and isinstance(question.response, MultipleChoice) is choices
+            ]
+            if questions:
+                operations = {
+                    step.operation for question in questions for step in _steps(question.data)
+                }
+                two_steps = any(
+                    isinstance(question.data, TwoStepQuestionData) for question in questions
+                )
+                lines.append(instruction(representation, operations, work_box, choices, two_steps))
+    return "\n".join(lines)
+
+
 def _steps(
     data: BasicOperationQuestionData | TwoStepQuestionData,
 ) -> tuple[BasicOperationQuestionData, ...]:
@@ -219,13 +253,15 @@ def _tile_question(data: BasicOperationQuestionData | TwoStepQuestionData) -> Ti
 def _solution(question: WordProblemQuestion) -> str:
     """
     Return the problem's line in the answer key: each step solved for a two-step problem, or
-    else its equation solved, with its correct letter if it has choices.
+    else its equation solved, followed by its correct letter if it has choices.
     """
     if isinstance(question.data, TwoStepQuestionData):
-        return solved_steps(question.data)
+        solved = solved_steps(question.data)
+    else:
+        solved = solved_equation(question.data)
     if isinstance(question.response, MultipleChoice):
-        return f"{solved_equation(question.data)}    ({correct_letters(question.response)})"
-    return solved_equation(question.data)
+        return f"{solved}    ({correct_letters(question.response)})"
+    return solved
 
 
 def _body_height(

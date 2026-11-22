@@ -29,14 +29,20 @@ them.
 Two-step problems have their own templates, in ``TWO_STEP_TEMPLATES``, keyed by their shape. They
 take the same slots, with ``{a}`` and ``{b}`` as the first step's operands, plus ``{c}``,
 ``{c_obj}`` and ``{c:...}`` for the second step's other operand. The first step's answer, which
-the second step also uses, is never stated. There is an entry for each of the 16 orders of two
-operations. Where the second step multiplies or divides, the first answer can be the size of each
-group or the number of groups, so each of those orders has an entry for each, 24 in all. Text
-only shows them all, and a strip diagram the five that one bar can show (``STRIP_TWO_STEP_SHAPES``
-in ``core.basic_operations.representation``).
+the second step also uses, is never stated. Each of the 16 orders of two operations has an entry
+for each place the first answer can take in the second step: its first number, as in
+(a - b) ÷ c, or its second, as in c - (a + b), 32 in all. Where the second step multiplies or
+divides, those places are the size of each group and the number of groups. An equation writes the
+first step in brackets, so for any two operations some story puts the brackets on the first two
+numbers and some on the last two. Text only and equations show them all, and a strip diagram the
+five that one bar can show (``STRIP_TWO_STEP_SHAPES`` in
+``core.basic_operations.representation``). Every two-step template ends by asking "how many
+...?", and the word after it, or after "how many more", gives the letter that stands for the
+answer in an equation (``unknown_letter``).
 """
 
 import random
+import re
 from collections.abc import Sequence
 
 from core.basic_operations.data import (
@@ -363,6 +369,64 @@ TWO_STEP_TEMPLATES: dict[TwoStepShape, tuple[str, ...]] = {
         "{n1} puts {a} boxes equally onto {b} shelves, and then shares {c} {c_obj} equally among "
         "the boxes on one shelf. How many {obj} are in each of those boxes?",
     ),
+    # The other place of the first answer, for the orders that have only one above: kept last, so
+    # the shapes above keep their order
+    # {c} + ({a} + {b})
+    (Operation.ADD, Operation.ADD, Unknown.SECOND): (
+        "{n1} had {c} {c_obj}. Then {n1} got {a} from {n2} and {b} from a cousin. "
+        "How many {obj} does {n1} have now?",
+        "A shelf has {c} {c_obj}. {n1} brings {a} more, and {n2} brings {b} more. "
+        "How many {obj} are on the shelf now?",
+    ),
+    # {c} - ({a} + {b})
+    (Operation.ADD, Operation.SUBTRACT, Unknown.SECOND): (
+        "{n1} had {c} {c_obj}. {n1} gave {a} to {n2} and {b} to a cousin. "
+        "How many {obj} does {n1} have left?",
+        "A box held {c} {c_obj}. {n1} took {a} and {n2} took {b}. "
+        "How many {obj} are left in the box?",
+    ),
+    # {c} + ({a} - {b})
+    (Operation.SUBTRACT, Operation.ADD, Unknown.SECOND): (
+        "{n1} has {c} {c_obj}. {n2} had {a} {a_obj} and lost {b}. "
+        "How many {obj} do they have together now?",
+        "There {c:is|are} {c} {c_obj} in the red box. The blue box had {a} {a_obj}, and {b} "
+        "{b:was|were} taken out. How many {obj} are in the two boxes now?",
+    ),
+    # {c} - ({a} - {b})
+    (Operation.SUBTRACT, Operation.SUBTRACT, Unknown.SECOND): (
+        "{n1} needs {c} {c_obj}. {n1} bought {a} and then gave {b} to {n2}. "
+        "How many more {obj} does {n1} need?",
+        "A class wants to collect {c} {c_obj}. They collected {a}, but {b} {b:was|were} lost. "
+        "How many more {obj} do they need?",
+    ),
+    # {c} + ({a} groups of {b})
+    (Operation.MULTIPLY, Operation.ADD, Unknown.SECOND): (
+        "{n1} had {c} {c_obj} and bought {a} packs with {b} {obj} in each pack. "
+        "How many {obj} does {n1} have now?",
+        "A shelf has {c} loose {c_obj} and {a} boxes with {b} {obj} in each box. "
+        "How many {obj} are on the shelf?",
+    ),
+    # ({a} groups of {b}) - {c}
+    (Operation.MULTIPLY, Operation.SUBTRACT, Unknown.FIRST): (
+        "{n1} bought {a} packs with {b} {obj} in each pack. {n1} used {c} {c_obj}. "
+        "How many {obj} does {n1} have left?",
+        "There are {a} rows with {b} {obj} in each row. {n1} takes away {c} {c_obj}. "
+        "How many {obj} are left?",
+    ),
+    # {c} + ({a} shared equally into {b} groups)
+    (Operation.DIVIDE, Operation.ADD, Unknown.SECOND): (
+        "{n1} had {c} {c_obj}. Then {n1} got one equal share of {a} {obj} shared among {b} "
+        "friends. How many {obj} does {n1} have now?",
+        "A jar has {c} {c_obj}. {n1} splits {a} {obj} equally into {b} piles and adds one pile "
+        "to the jar. How many {obj} are in the jar now?",
+    ),
+    # {c} - ({a} shared equally into {b} groups)
+    (Operation.DIVIDE, Operation.SUBTRACT, Unknown.SECOND): (
+        "A bus has {c} seats. {a} students split into {b} equal groups, and one group gets on. "
+        "How many seats are empty?",
+        "A store had {c} {c_obj}. A school ordered {a} {obj} in {b} equal boxes, and the store "
+        "sent the first box. How many {obj} does the store have left?",
+    ),
 }
 
 
@@ -381,19 +445,24 @@ class _Count(int):
 
 
 def word_problem_texts(
-    questions: Sequence[BasicOperationQuestionData], *, comparisons: bool = False
+    questions: Sequence[BasicOperationQuestionData], *, comparisons: bool | Sequence[bool] = False
 ) -> list[str]:
     """
     Word each question with a template for its operation, two different names and an object.
 
-    With ``comparisons``, an operation's ``COMPARISON_TEMPLATES`` join its templates. No template
-    is used twice for the same operation until all of that operation's templates have been used.
+    With ``comparisons``, an operation's ``COMPARISON_TEMPLATES`` join its templates for every
+    question, or given one for each question, for those it's true for, as on a sheet mixing
+    representations. No template is used twice for the same operation until all of that
+    operation's templates that fit have been used.
     """
+    compared = (
+        [comparisons] * len(questions) if isinstance(comparisons, bool) else list(comparisons)
+    )
     unused: dict[Operation, list[str]] = {}
     texts = []
-    for data in questions:
+    for data, compare in zip(questions, compared, strict=True):
         pool = TEMPLATES[data.operation]
-        if comparisons:
+        if compare:
             pool += COMPARISON_TEMPLATES.get(data.operation, ())
         template = _next_template(unused.setdefault(data.operation, []), pool)
         texts.append(_fill(template, data.operands))
@@ -416,11 +485,40 @@ def two_step_texts(questions: Sequence[TwoStepQuestionData]) -> list[str]:
     return texts
 
 
+# The first letter of the word after "how many", or "how many more", in any case: the question a
+# two-step template ends with
+_ASKED_LETTER = re.compile(r"how many (?:more )?(\w)", re.IGNORECASE)
+# Letters that read as a digit or a sign: i and l as 1, o as 0, and x as the times sign
+_LOOKALIKE_LETTERS = frozenset("ilox")
+LOOKALIKE_STAND_IN = "n"  # the letter used instead of one of those
+
+
+def unknown_letter(text: str) -> str:
+    """
+    Return the letter that stands for the number a worded problem asks for: the first letter of
+    the word after its last "how many", or "how many more", in any case, as s for "How many
+    stickers does each friend get?", "How many more stickers does Ana need?" or "At that rate,
+    how many stickers...". A letter that reads as a digit or a sign gives ``LOOKALIKE_STAND_IN``
+    instead: "How many leaves ..." gives n, not l. Raises ``ValueError`` if ``text`` doesn't ask
+    "how many".
+    """
+    asked = _ASKED_LETTER.findall(text)
+    if not asked:
+        raise ValueError(f'No "how many" question in {text!r}.')
+    letter = asked[-1].lower()
+    return LOOKALIKE_STAND_IN if letter in _LOOKALIKE_LETTERS else letter
+
+
 def _next_template(unused: list[str], pool: Sequence[str]) -> str:
-    """Take a template from ``unused``, first refilling it with ``pool`` shuffled if it's empty."""
-    if not unused:
+    """
+    Take the last template in ``unused`` that's in ``pool``, first adding ``pool`` shuffled to the
+    end of ``unused`` if none is, as when it's empty.
+    """
+    fitting = [index for index, template in enumerate(unused) if template in pool]
+    if not fitting:
         unused += random.sample(pool, len(pool))
-    return unused.pop()
+        return unused.pop()
+    return unused.pop(fitting[-1])
 
 
 def _fill(template: str, numbers: Sequence[int]) -> str:

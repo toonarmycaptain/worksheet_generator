@@ -27,6 +27,7 @@ from core.base_ten_blocks import BlocksQuestionData
 from core.basic_operations.data import (
     BasicOperationQuestionData,
     MissingNumberQuestionData,
+    Operation,
     TwoStepQuestionData,
 )
 from core.basic_operations.multiplication_models import MultiplicationModelsQuestion
@@ -38,9 +39,12 @@ from core.basic_operations.representation import (
     WordProblemQuestion,
     equation_choices,
     number_line_choices,
+    stem,
     strip_choices,
+    two_step_equation_choices,
     two_step_strip_choices,
 )
+from core.basic_operations.word_problems import unknown_letter
 from core.discrete_data.data import (
     CategoricalDataProblemData,
     DiscreteDataProblem,
@@ -189,12 +193,21 @@ def choose_last(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(random, "choice", lambda items: items[-1])
 
 
+class _Last:
+    """The type of ``LAST``."""
+
+
+LAST = _Last()  # a pick for ``choice_returns``: the last of its call's items
+
+
 def choice_returns(monkeypatch: pytest.MonkeyPatch, picks: list[Any]) -> list[Sequence[Any]]:
     """
     Make ``random.choice`` return ``picks`` in order, and return the items of each call.
 
     A pick that is not among its call's items raises ``ValueError``, as the real ``choice`` never
-    returns one, so a pick also shows that the code offered it.
+    returns one, so a pick also shows that the code offered it. A pick of ``LAST`` takes its
+    call's last item, for a choice among values the code builds itself, such as the sets of wrong
+    equations ``two_step_equation_choices`` chooses from.
     """
     values = iter(picks)
     offered: list[Sequence[Any]] = []
@@ -202,9 +215,27 @@ def choice_returns(monkeypatch: pytest.MonkeyPatch, picks: list[Any]) -> list[Se
     def choice(items: Sequence[Any]) -> Any:
         offered.append(items)
         pick = next(values)
+        if pick is LAST:
+            return items[-1]
         if pick not in items:
             raise ValueError(f"{pick} is not one of {items}")
         return pick
+
+    monkeypatch.setattr(random, "choice", choice)
+    return offered
+
+
+def choice_indexes(monkeypatch: pytest.MonkeyPatch, indexes: list[int]) -> list[Sequence[Any]]:
+    """
+    Make ``random.choice`` return the item at each of ``indexes`` in turn, and return the items
+    of each call, for choices among values the code builds itself.
+    """
+    positions = iter(indexes)
+    offered: list[Sequence[Any]] = []
+
+    def choice(items: Sequence[Any]) -> Any:
+        offered.append(items)
+        return items[next(positions)]
 
     monkeypatch.setattr(random, "choice", choice)
     return offered
@@ -375,8 +406,8 @@ def render_tiles[Data: QuestionData[Any]](
 
 def render_word_problems(
     questions: list[BasicOperationQuestionData | TwoStepQuestionData],
-    representation: Representation,
-    choices: bool,
+    representation: Representation | list[Representation],
+    choices: bool | list[bool],
     hints: bool,
     black_and_white: bool,
     work_box: bool,
@@ -389,10 +420,24 @@ def render_word_problems(
     """
     Render the word problems sheet, each question free response, with no wrong answers, or with
     ``choices`` multiple choice, its number lines made by ``number_line_choices`` or its equations
-    by ``equation_choices``. Two-step questions are always free response.
+    by ``equation_choices``, or for a two-step question ``two_step_equation_choices``, with its
+    wording's letter and the operations of the sheet's steps as those ticked. A list of
+    representations, or of choices, gives each question its own, as on a mixed sheet.
     """
     out = BytesIO()
-    made = [_word_problem(data, representation, choices) for data in questions]
+    operations = [
+        operation
+        for operation in Operation
+        if any(operation in _operations_of(data) for data in questions)
+    ]
+    representations = (
+        representation if isinstance(representation, list) else [representation] * len(questions)
+    )
+    chosen = choices if isinstance(choices, list) else [choices] * len(questions)
+    made = [
+        _word_problem(data, each, choice, operations)
+        for data, each, choice in zip(questions, representations, chosen, strict=True)
+    ]
     render_word_problems_worksheet(
         questions=made,
         path=out,
@@ -407,14 +452,26 @@ def render_word_problems(
     return out.getvalue()
 
 
+def _operations_of(data: BasicOperationQuestionData | TwoStepQuestionData) -> set[Operation]:
+    """Return the operations of the word problem's steps: its two, or its one."""
+    if isinstance(data, TwoStepQuestionData):
+        return {step.operation for step in data.steps}
+    return {data.operation}
+
+
 def _word_problem(
     data: BasicOperationQuestionData | TwoStepQuestionData,
     representation: Representation,
     choices: bool,
+    operations: list[Operation],
 ) -> WordProblemQuestion:
     """Pair a word problem with its response, as ``render_word_problems`` describes."""
-    if not choices or isinstance(data, TwoStepQuestionData):
+    if not choices:
         return Question(data, FreeResponse())
+    if isinstance(data, TwoStepQuestionData):
+        return Question(
+            data, two_step_equation_choices(data, unknown_letter(stem(data)), operations)
+        )
     if representation is Representation.NUMBER_LINE:
         return Question(data, number_line_choices(data))
     return Question(data, equation_choices(data))

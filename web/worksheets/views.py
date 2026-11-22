@@ -20,6 +20,7 @@ from core.basic_operations.representation import (
     CHOICE_NAMES,
     REPRESENTATION_OPERATIONS,
     STRIP_CHOICE_NAME,
+    WORD_PROBLEMS_NAME,
     Representation,
     operations_name,
     word_problems_title,
@@ -223,10 +224,13 @@ SCRIPT_DATA: dict[str, dict[str, Any]] = {
         },
     },
     "word_problems": {
-        # each representation's value -> the title of word problems drawn with it
+        # each representation's value -> the title of word problems drawn with it, and mixed's
         "representation_titles": {
-            representation.value: word_problems_title(representation)
-            for representation in Representation
+            **{
+                representation.value: word_problems_title(representation)
+                for representation in Representation
+            },
+            "mixed": WORD_PROBLEMS_NAME,
         },
         # each value of a representation offered as multiple choice -> the title of word problems
         # choosing it

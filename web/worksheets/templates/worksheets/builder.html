@@ -354,38 +354,104 @@
   {{ choice_titles|json_script:"choice-titles" }}
   {{ representation_operations|json_script:"representation-operations" }}
   <script type="module">
-    // The word problems form: the only one with a representation.
+    // The word problems form: the only one with a representation. Every control that depends on
+    // the representations, the response, the steps or the operations is set in one pass, as each
+    // depends on others: the pass runs on any change to them, and a change event it sends itself
+    // doesn't start another.
     const representation = document.querySelector("select[name=representation]");
     const form = representation.form;
     const tiles = form.elements.self_check_tiles;
-
-    // The response radios show only when there's a choice to make: for a representation offered
-    // as multiple choice (one with a choice title), while tiles, which aren't available with
-    // multiple choice, are unticked. Otherwise they're hidden, and disabled so they aren't sent,
-    // which gives free response.
     const choiceTitles = JSON.parse(document.getElementById("choice-titles").textContent);
+    const titles = JSON.parse(document.getElementById("representation-titles").textContent);
+    const shown = JSON.parse(document.getElementById("representation-operations").textContent);
+    const mixes = [...form.querySelectorAll("input[name=representation_mix]")];
     const responses = [...form.querySelectorAll("input[name=response]")];
     const freeResponse = responses.find((radio) => radio.value === "free_response");
-    const multipleChoice = responses.find((radio) => radio.value === "multiple_choice");
-    const choosing = () => multipleChoice.checked && !multipleChoice.disabled;
-    function showResponses() {
-      const show = representation.value in choiceTitles && !tiles.checked;
-      for (const radio of responses) radio.disabled = !show;
-      // so a representation offered both ways starts at free response
-      if (!show) freeResponse.checked = true;
-      responses[0].closest("[role=radiogroup]").style.display = show ? "" : "none";
-    }
-    representation.addEventListener("change", showResponses);
-    tiles.addEventListener("change", showResponses);
-    window.addEventListener("pageshow", showResponses);
-    showResponses();
-
-    // Multiple choice greys out the tiles box and pattern, so they aren't sent: each choice's
-    // letter would need coding as a number. Ticked tiles are unticked, which puts back the
-    // normal number of problems.
+    const steps = [...form.querySelectorAll("input[name=steps]")];
+    const operations = [...form.querySelectorAll("input[name=operations]")];
     const patterns = [...form.querySelectorAll("input[name=tile_pattern]")];
+    // the representations that show two steps
+    const twoStepRepresentations = ["strip", "none", "equation"];
+
+    const mixed = () => representation.value === "mixed";
+    // the representations picked: for mixed those ticked, greyed out or not
+    const picked = () =>
+      mixed() ? mixes.filter((box) => box.checked).map((box) => box.value) : [representation.value];
+    // the representations the problems are drawn with: for mixed those ticked and not greyed out
+    const drawn = () =>
+      mixed()
+        ? mixes.filter((box) => box.checked && !box.disabled).map((box) => box.value)
+        : [representation.value];
+    const response = () =>
+      responses.find((radio) => radio.checked && !radio.disabled)?.value ?? "free_response";
+    const twoSteps = () => steps.some((radio) => radio.checked && !radio.disabled && radio.value === "two");
+    const ticked = (boxes) => boxes.filter((box) => box.checked && !box.disabled).map((box) => box.value);
+    // the page's CSS shows labels as blocks, which would win over the hidden attribute
+    const show = (element, visible) => (element.style.display = visible ? "" : "none");
+    // a field with a place of its own in the layout keeps it while hidden, so nothing moves
+    const keepPlace = (element, visible) => (element.style.visibility = visible ? "" : "hidden");
+
+    // Mixed shows the representations' checkboxes under the dropdown; hidden, they're disabled,
+    // so they aren't sent.
+    function showMixes() {
+      for (const box of mixes) box.disabled = !mixed();
+      show(mixes[0].closest("[role=group]"), mixed());
+    }
+
+    // The response radios show only when there's a choice to make: while a representation
+    // offered as multiple choice (one with a choice title) is picked, and tiles, which aren't
+    // available with multiple choice, are unticked. Otherwise they're hidden, and disabled so
+    // they aren't sent, which gives free response.
+    function showResponses() {
+      const visible = picked().some((each) => each in choiceTitles) && !tiles.checked;
+      for (const radio of responses) radio.disabled = !visible;
+      // so a representation offered both ways starts at free response
+      if (!visible) freeResponse.checked = true;
+      show(responses[0].closest("[role=radiogroup]"), visible);
+    }
+
+    // Only strip diagrams, text only and equations show two steps, so the steps radios show only
+    // while one of them is picked, and are disabled otherwise, so they aren't sent.
+    function showSteps() {
+      const visible = picked().some((each) => twoStepRepresentations.includes(each));
+      for (const radio of steps) radio.disabled = !visible;
+      show(steps[0].closest("[role=radiogroup]"), visible);
+    }
+
+    // Mixed greys out a representation that can't be drawn: one that shows none of the ticked
+    // operations, such as blocks with only multiplication; one without two steps while two steps
+    // are picked; one without choices while multiple choice is the only response. Greyed out,
+    // it isn't sent, and its tick comes back when it can be drawn again.
+    function greyOutMixes() {
+      if (!mixed()) return;
+      const wanted = operations.filter((box) => box.checked).map((box) => box.value);
+      for (const box of mixes) {
+        box.disabled =
+          (wanted.length > 0 && !wanted.some((each) => shown[box.value].includes(each))) ||
+          (twoSteps() && !twoStepRepresentations.includes(box.value)) ||
+          (response() === "multiple_choice" && !(box.value in choiceTitles));
+      }
+      // setting disabled doesn't fire change, which the checkboxes script listens for
+      mixes[0].dispatchEvent(new Event("change"));
+    }
+
+    // The operations no representation drawn can show, such as multiplication on a number line,
+    // are greyed out, so they aren't sent. Their ticks come back with a representation that can
+    // show them.
+    function greyOutOperations() {
+      const can = drawn().flatMap((each) => shown[each]);
+      for (const box of operations) {
+        box.disabled = !can.includes(box.value);
+        // the checkboxes script counts only the boxes that aren't greyed out
+        box.dispatchEvent(new Event("change"));
+      }
+    }
+
+    // Multiple choice, alone or mixed, greys out the tiles box and pattern, so they aren't sent:
+    // each choice's letter would need coding as a number. Ticked tiles are unticked, which puts
+    // back the normal number of problems.
     function greyOutTiles() {
-      const available = !choosing();
+      const available = response() === "free_response";
       if (!available && tiles.checked) {
         tiles.checked = false;
         // setting checked doesn't fire change, which the tiles script listens for
@@ -394,141 +460,108 @@
       tiles.disabled = !available;
       for (const radio of patterns) radio.disabled = !available;
     }
-    // after showResponses, which sets the response for the representation
-    representation.addEventListener("change", greyOutTiles);
-    for (const radio of responses) radio.addEventListener("change", greyOutTiles);
-    window.addEventListener("pageshow", greyOutTiles);
-    greyOutTiles();
-
-    // The title follows the representation and response, unless it has been changed to something
-    // else.
-    const titles = JSON.parse(document.getElementById("representation-titles").textContent);
-    function followTitle() {
-      const known = [...Object.values(titles), ...Object.values(choiceTitles)];
-      if (known.includes(form.elements.title.value)) {
-        const chosen = choosing() ? choiceTitles : titles;
-        form.elements.title.value = chosen[representation.value];
-      }
-    }
-    representation.addEventListener("change", followTitle);
-    for (const radio of responses) radio.addEventListener("change", followTitle);
 
     // Text only and equations have no hints, and neither does multiple choice, so the box to
-    // leave them out is hidden, and disabled so it isn't sent.
+    // leave them out shows only while a representation with hints is drawn and answered in
+    // writing. Hidden, it's disabled, so it isn't sent.
     function showNoHints() {
-      const show = !["none", "equation"].includes(representation.value) && !choosing();
-      form.elements.no_hints.disabled = !show;
-      // the page's CSS shows labels as blocks, which would win over the hidden attribute
-      form.elements.no_hints.closest("label").style.display = show ? "" : "none";
+      const visible =
+        drawn().some((each) => !["none", "equation"].includes(each)) &&
+        response() !== "multiple_choice";
+      form.elements.no_hints.disabled = !visible;
+      show(form.elements.no_hints.closest("label"), visible);
     }
-    representation.addEventListener("change", showNoHints);
-    for (const radio of responses) radio.addEventListener("change", showNoHints);
-    // also when the browser restores the choices, going back to the page
-    window.addEventListener("pageshow", showNoHints);
-    showNoHints();
 
-    // Only base-ten blocks have colours to leave out, so the black and white box is hidden, and
-    // disabled, for the other representations.
-    function showBlackAndWhite() {
-      const show = representation.value === "blocks";
-      form.elements.black_and_white.disabled = !show;
-      // the page's CSS shows labels as blocks, which would win over the hidden attribute
-      form.elements.black_and_white.closest("label").style.display = show ? "" : "none";
-    }
-    representation.addEventListener("change", showBlackAndWhite);
-    window.addEventListener("pageshow", showBlackAndWhite);
-    showBlackAndWhite();
-
-    // Only text only has working out space, so its box is hidden, and disabled, for the other
-    // representations.
-    function showWorkBox() {
-      const show = representation.value === "none";
-      form.elements.work_box.disabled = !show;
-      // the page's CSS shows labels as blocks, which would win over the hidden attribute
-      form.elements.work_box.closest("label").style.display = show ? "" : "none";
-    }
-    representation.addEventListener("change", showWorkBox);
-    window.addEventListener("pageshow", showWorkBox);
-    showWorkBox();
-
-    // Ticking the tiles unchecks the working out space, which can be ticked again.
-    form.elements.self_check_tiles.addEventListener("change", () => {
-      if (form.elements.self_check_tiles.checked) {
-        form.elements.work_box.checked = false;
-      }
-    });
-
-    // The operations the representation can't show, such as multiplication on a number line, are
-    // greyed out, so they aren't sent. Their ticks come back with a representation that can show
-    // them.
-    const shown = JSON.parse(document.getElementById("representation-operations").textContent);
-    const operations = [...form.querySelectorAll("input[name=operations]")];
-    function greyOutOperations() {
-      for (const box of operations) {
-        box.disabled = !shown[representation.value].includes(box.value);
-        // the checkboxes script counts only the boxes that aren't greyed out
-        box.dispatchEvent(new Event("change"));
+    // Only base-ten blocks have colours to leave out, and only text only has working out space,
+    // so each box shows only while its representation is drawn. Hidden, it's disabled.
+    function showRepresentationBoxes() {
+      for (const [name, each] of [["black_and_white", "blocks"], ["work_box", "none"]]) {
+        const visible = drawn().includes(each);
+        form.elements[name].disabled = !visible;
+        show(form.elements[name].closest("label"), visible);
       }
     }
-    representation.addEventListener("change", greyOutOperations);
-    window.addEventListener("pageshow", greyOutOperations);
-    greyOutOperations();
 
-    // Only strip diagrams and text only show two steps, so the steps radios show only for them,
-    // and are disabled otherwise, so they aren't sent.
-    const steps = [...form.querySelectorAll("input[name=steps]")];
-    function showSteps() {
-      const show = ["strip", "none"].includes(representation.value);
-      for (const radio of steps) radio.disabled = !show;
-      steps[0].closest("[role=radiogroup]").style.display = show ? "" : "none";
-    }
-    representation.addEventListener("change", showSteps);
-    window.addEventListener("pageshow", showSteps);
-    showSteps();
-
-    // The largest number is for addition and subtraction, so it shows only while one of them is
-    // ticked, and is disabled otherwise, so it isn't sent. Two steps share a number, so with two
-    // steps it caps every number, always shows, and its label drops "in addition and
-    // subtraction". The label's first text is the field's label, before its input.
+    // The largest number caps the numbers an addition or subtraction gives, and with two steps a
+    // division's whole too, so it shows only while one of those operations is ticked, and is
+    // disabled otherwise, so it isn't sent. Hidden, it keeps its line. With two steps its label
+    // drops "in addition and subtraction". The label's first text is the field's label, before
+    // its input.
     const largestNumber = form.elements.max_number;
     const oneStepLabel = largestNumber.dataset.label;
     function showLargestNumber() {
-      const twoSteps = steps.some((radio) => radio.checked && !radio.disabled && radio.value === "two");
-      const show = twoSteps || operations.some(
-        (box) => box.checked && !box.disabled && ["add", "subtract"].includes(box.value),
-      );
-      largestNumber.disabled = !show;
+      const capped = twoSteps() ? ["add", "subtract", "divide"] : ["add", "subtract"];
+      const visible = ticked(operations).some((each) => capped.includes(each));
+      largestNumber.disabled = !visible;
       const label = largestNumber.closest("label");
-      // the page's CSS shows labels as blocks, which would win over the hidden attribute
-      label.style.display = show ? "" : "none";
-      largestNumber.dataset.label = twoSteps ? "Largest number" : oneStepLabel;
+      keepPlace(label, visible);
+      largestNumber.dataset.label = twoSteps() ? "Largest number" : oneStepLabel;
       label.firstChild.textContent = `${largestNumber.dataset.label} `;
     }
-    for (const box of operations) box.addEventListener("change", showLargestNumber);
-    for (const radio of steps) radio.addEventListener("change", showLargestNumber);
-    // after showSteps, which the operations' change events, sent on a change of representation,
-    // run ahead of
-    representation.addEventListener("change", showLargestNumber);
-    window.addEventListener("pageshow", showLargestNumber);
-    showLargestNumber();
 
     // A strip diagram has room for fewer equal groups than the field allows, so its limit drops
-    // while strip diagrams are picked.
+    // while strip diagrams are drawn.
     const groups = form.elements.max_groups;
     const mostGroups = groups.max;
     function limitGroups() {
-      groups.max = representation.value === "strip" ? {{ strip_largest_groups }} : mostGroups;
+      groups.max = drawn().includes("strip") ? {{ strip_largest_groups }} : mostGroups;
     }
-    representation.addEventListener("change", limitGroups);
-    window.addEventListener("pageshow", limitGroups);
-    limitGroups();
+
+    let updating = false;
+    function update() {
+      if (updating) return;
+      updating = true;
+      try {
+        // each after those it depends on
+        showMixes();
+        showResponses();
+        showSteps();
+        greyOutMixes();
+        greyOutOperations();
+        greyOutTiles();
+        showNoHints();
+        showRepresentationBoxes();
+        showLargestNumber();
+        limitGroups();
+      } finally {
+        updating = false;
+      }
+    }
+
+    // The title follows the representation and response, unless it has been changed to something
+    // else: a mixed sheet's, or one answered both ways, is the representation's.
+    function followTitle() {
+      const known = [...Object.values(titles), ...Object.values(choiceTitles)];
+      if (known.includes(form.elements.title.value)) {
+        const chosen =
+          response() === "multiple_choice" && representation.value in choiceTitles
+            ? choiceTitles
+            : titles;
+        form.elements.title.value = chosen[representation.value];
+      }
+    }
+
+    for (const control of [representation, tiles, ...mixes, ...responses, ...steps, ...operations]) {
+      control.addEventListener("change", update);
+    }
+    representation.addEventListener("change", followTitle);
+    for (const radio of responses) radio.addEventListener("change", followTitle);
+    // also when the browser restores the choices, going back to the page
+    window.addEventListener("pageshow", update);
+    update();
+
+    // Ticking the tiles unchecks the working out space, which can be ticked again.
+    tiles.addEventListener("change", () => {
+      if (tiles.checked) form.elements.work_box.checked = false;
+    });
   </script>
   {% endif %}
 
   <script type="module">
     // A field for some operations only, such as the largest group size for multiplication and
     // division, shows only while one of them is ticked, and isn't greyed out. Otherwise it's
-    // hidden, and disabled so it isn't sent. Its label names the operations (see field.html).
+    // hidden, keeping its place so the fields after it don't move, and disabled so it isn't sent.
+    // Its label names the operations (see field.html).
     for (const label of document.querySelectorAll("label[data-operations]")) {
       const field = label.querySelector("input");
       const operations = label.dataset.operations.split(" ");
@@ -538,8 +571,7 @@
           (box) => box.checked && !box.disabled && operations.includes(box.value),
         );
         field.disabled = !show;
-        // the page's CSS shows labels as blocks, which would win over the hidden attribute
-        label.style.display = show ? "" : "none";
+        label.style.visibility = show ? "" : "hidden";
       }
       // greying out a box sends it a change event too (see the word problems script)
       for (const box of boxes) box.addEventListener("change", showField);

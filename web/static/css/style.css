@@ -148,6 +148,11 @@ main > .card { max-width: 48rem; }
   /* the legacy page's Name/Date, beside its Title box, lines up with it as in a sheet's header */
   .fields > label:has(> input[name=name_line]) { align-self: end; margin-bottom: calc(0.45rem + 1px); }
 }
+/* the word problems form: the largest number on a line of its own, the group limits on the line
+   below it, and the representation starting the line below them. Those three fields keep their
+   place while hidden (see builder.html), so one that comes and goes moves nothing. */
+.fields:has(> label > input[name=max_groups]) > label:has(> input[name=max_number]) { grid-column: 1 / -1; }
+.fields > .nest:has(> label > select[name=representation]) { grid-column-start: 1; }
 /* the place-value form: two columns however narrow, so From sits beside To and Smallest number
    beside Largest, with Problems on a row of its own above them */
 .fields:has(select[name=given]) { grid-template-columns: repeat(2, minmax(0, 1fr)); }

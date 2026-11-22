@@ -3,14 +3,17 @@ Wording of basic-operation questions: each operation's symbol and name, the equa
 questions' steps, and the questions as the self-check tiles sheet shows them. Also the
 representations drawn with, or chosen for, word problems, with their sheet titles, instructions,
 hints and diagram descriptions, the equations and number lines a problem's own is chosen from,
-and the strip diagrams a problem's own is chosen from, two-step problems' included, with what
-each problem shows.
+and the strip diagrams a problem's own is chosen from, two-step problems' equations and strip
+diagrams included, with what each problem shows.
 """
 
 import random
-from collections.abc import Collection, Iterable, Iterator, Sequence
-from dataclasses import dataclass
+from collections.abc import Callable, Collection, Iterable, Iterator, Sequence
+from dataclasses import dataclass, replace
 from enum import StrEnum
+from fractions import Fraction
+from functools import partial
+from itertools import combinations, product
 from typing import assert_never
 
 from core.basic_operations.data import (
@@ -72,13 +75,7 @@ def _equation_stem(data: BasicOperationQuestionData | TwoStepQuestionData) -> st
     """
     if isinstance(data, BasicOperationQuestionData):
         return f"{equation(data)} = ?"
-    first, second = data.steps
-    bracketed = f"({equation(first)})"
-    left, right = second.operands
-    operands = (
-        (bracketed, f"{right:,}") if data.carried is Unknown.FIRST else (f"{left:,}", bracketed)
-    )
-    return f"{operands[0]} {SYMBOLS[second.operation]} {operands[1]} = ?"
+    return f"{_written_text(_written_steps(data))} = ?"
 
 
 def solved_equation(data: BasicOperationQuestionData) -> str:
@@ -166,8 +163,63 @@ REPRESENTATION_OPERATIONS = {
 }
 
 
-# The representations that can show a two-step problem: one bar of strip diagram, or text only
-TWO_STEP_REPRESENTATIONS = frozenset({Representation.STRIP, Representation.NONE})
+# The representations that can show a two-step problem: one bar of strip diagram, text only, or
+# its equation, with the first step in brackets
+TWO_STEP_REPRESENTATIONS = frozenset(
+    {Representation.STRIP, Representation.NONE, Representation.EQUATION}
+)
+
+
+# The representations whose sheets have "how many more than" stories. A strip shows parts making a
+# whole, and blocks show the first number with the second crossed out, taken away, so neither
+# shows a comparison.
+COMPARISON_REPRESENTATIONS = frozenset(
+    {Representation.NONE, Representation.NUMBER_LINE, Representation.EQUATION}
+)
+
+
+class Response(StrEnum):
+    """
+    How each word problem on a sheet is answered. Values are stable identifiers for the API and
+    storage.
+    """
+
+    FREE_RESPONSE = "free_response"  # written, beside or under its representation
+    MULTIPLE_CHOICE = "multiple_choice"  # its representation chosen from lettered ones
+
+
+# A kind of word problem on a sheet that mixes them: its representation, and how it's answered
+type WordProblemKind = tuple[Representation, Response]
+
+
+def word_problem_kinds(
+    representations: Collection[Representation],
+    responses: Collection[Response],
+    two_steps: bool = False,
+) -> list[WordProblemKind]:
+    """
+    Return the kinds of word problem a sheet mixing ``representations`` and ``responses`` can
+    draw, in the order of ``Representation``, then of ``Response``: each representation answered
+    each way it can be. Only a representation in ``CHOICE_NAMES`` is chosen, and with
+    ``two_steps`` only one in ``TWO_STEP_REPRESENTATIONS`` is drawn, and only equations are
+    chosen.
+    """
+    return [
+        (representation, response)
+        for representation in Representation
+        if representation in representations
+        and (not two_steps or representation in TWO_STEP_REPRESENTATIONS)
+        for response in Response
+        if response in responses
+        and (
+            response is Response.FREE_RESPONSE
+            or (
+                representation in CHOICE_NAMES
+                and (not two_steps or representation is Representation.EQUATION)
+            )
+        )
+    ]
+
 
 # The shapes of two-step problem one bar of strip diagram can show: three parts, the whole less a
 # part shared into equal parts, or equal parts and one other. Text only shows every shape.
@@ -434,12 +486,15 @@ def _groups_and_other(data: BasicOperationQuestionData) -> tuple[int, int]:
 
 # A word problem as presented: its equation chosen from lettered equations
 type EquationChoiceQuestion = Question[BasicOperationQuestionData, MultipleChoice[str]]
-# A word problem as presented: answered in writing, with one step or two, or its equation or
-# number line chosen
+# A two-step word problem as presented: its equation chosen from lettered equations
+type TwoStepEquationChoiceQuestion = Question[TwoStepQuestionData, MultipleChoice[str]]
+# A word problem as presented: answered in writing, with one step or two, or its equation, with
+# one step or two, or number line chosen
 type WordProblemQuestion = (
     Question[BasicOperationQuestionData, FreeResponse]
     | Question[TwoStepQuestionData, FreeResponse]
     | EquationChoiceQuestion
+    | TwoStepEquationChoiceQuestion
     | NumberLineChoiceQuestion
 )
 
@@ -487,6 +542,369 @@ def _operation_equation(operation: Operation, data: BasicOperationQuestionData) 
         case _:
             assert_never(operation)
     return f"{numbers[0]:,} {SYMBOLS[operation]} {numbers[1]:,} = {BLANK}"
+
+
+@dataclass(frozen=True)
+class _WrittenSteps:
+    """
+    A two-step equation's left side as written: ``numbers`` and the two signs between them, left
+    to right, with the brackets around the first two numbers if ``brackets_first``, or else the
+    last two. (24 - 6) ÷ 3 is ``((24, 6, 3), SUBTRACT, DIVIDE, True)``, and 45 - (5 x 3) is
+    ``((45, 5, 3), SUBTRACT, MULTIPLY, False)``.
+    """
+
+    numbers: tuple[int, int, int]
+    first_sign: Operation
+    second_sign: Operation
+    brackets_first: bool
+
+
+@dataclass(frozen=True)
+class _WrittenStep:
+    """
+    A one-step equation's left side as written, as a two-step equation stopped after one step
+    gives it: 12 + 8 is ``((12, 8), ADD)``.
+    """
+
+    numbers: tuple[int, int]
+    sign: Operation
+
+
+# an equation's left side to choose, the right one or a wrong one
+type _Written = _WrittenSteps | _WrittenStep
+
+
+def _written_steps(data: TwoStepQuestionData) -> _WrittenSteps:
+    """Return the two-step question's equation as written, with its first step in brackets."""
+    first, second = data.steps
+    if data.carried is Unknown.FIRST:  # (a ○ b) ● c
+        numbers = (*first.operands, second.operands[1])
+        return _WrittenSteps(numbers, first.operation, second.operation, brackets_first=True)
+    numbers = (second.operands[0], *first.operands)  # c ● (a ○ b)
+    return _WrittenSteps(numbers, second.operation, first.operation, brackets_first=False)
+
+
+def _written_text(written: _Written) -> str:
+    """Return the written equation's left side, as in (24 - 6) ÷ 3, with a comma in 1,000 and up."""
+    if isinstance(written, _WrittenStep):
+        left, right = written.numbers
+        return f"{left:,} {SYMBOLS[written.sign]} {right:,}"
+    first, second, third = (f"{number:,}" for number in written.numbers)
+    first_sign, second_sign = SYMBOLS[written.first_sign], SYMBOLS[written.second_sign]
+    if written.brackets_first:
+        return f"({first} {first_sign} {second}) {second_sign} {third}"
+    return f"{first} {first_sign} ({second} {second_sign} {third})"
+
+
+def two_step_equation_choices(
+    data: TwoStepQuestionData, unknown: str, operations: Collection[Operation]
+) -> MultipleChoice[str]:
+    """
+    Return the equations to choose from for a two-step word problem: its own, with its first step
+    in brackets and ``unknown`` for what to find, as in (24 - 6) ÷ 3 = s, and three wrong ones.
+
+    The wrong equations cross two mistakes: one wrong equation has one mistake, one the other, and
+    one both, so each change is in exactly two of the four choices, and no choice is the one most
+    like the others. The mistakes depend on ``operations``, the sheet's, as ``_mistake_pairs``
+    gives them:
+
+    - With two or more operations, two of three: the first sign written changed, the second sign
+      written changed, and the brackets moved to the other pair of numbers. For (24 - 6) ÷ 3 they
+      can be (24 + 6) ÷ 3, 24 - (6 ÷ 3) and 24 + (6 ÷ 3). A changed sign is one of
+      ``operations``: a sign that no problem on the sheet has in its own equation would rule a
+      choice out. The brackets can go on either pair, since for any two operations the
+      word-problem bank has stories with each.
+    - With subtraction or division alone, the brackets moved, and the step outside them written
+      the other way round. For (45 - 12) - 8 they are 45 - (12 - 8), 8 - (45 - 12) and
+      (12 - 8) - 45.
+    - With addition or multiplication alone, where neither of those changes the value, a number
+      copied with its digits the other way round, and the equation stopped after one step. For
+      (12 + 8) + 5 they can be (21 + 8) + 5, 12 + 8 and 21 + 8.
+    - With multiplication alone, when those give no fair set, as with no number of two digits to
+      reverse, the first sign and the second changed to +. For 5 x (3 x 2) they are
+      5 + (3 x 2), 5 x (3 + 2) and 5 + (3 + 2). A student who knows the sheet is multiplication
+      alone can rule out a + choice, but nothing else changes the value of three numbers
+      multiplied, and few problems have a number to reverse.
+
+    Which two mistakes, and which ways of making them, are drawn at random among those that make
+    a fair set. Every choice has the problem's numbers in the same order: the story's, unless that
+    gives no fair set with those mistakes and the brackets add or multiply, when the two numbers in
+    them go the other way round, so 3 and then 5 more, and then 2 more, can be (5 + 3) + 2,
+    (5 - 3) + 2, (5 + 3) - 2 and (5 - 3) - 2.
+
+    A set is fair when no wrong equation has the problem's answer, as moving the brackets in
+    (5 + 3) + 2 would, and none can be ruled out without working it out: its brackets never take
+    a number from one no larger, or divide a number by a larger one, as 3 - 5 or 3 ÷ 5 would. A
+    wrong equation that works out uneven or below zero is allowed, as (25 + 5) ÷ 4 is.
+
+    Raises ``ValueError`` if no set is fair.
+    """
+    for pairs, right in product(_mistake_pairs(operations), _written_orders(data)):
+        fair_by_mistakes: dict[int, list[tuple[_Written, _Written, _Written]]] = {}
+        for mistakes, wrong in _fair_sets(right, pairs):
+            fair_by_mistakes.setdefault(mistakes, []).append(wrong)
+        if fair_by_mistakes:
+            break
+    else:
+        raise ValueError(f"No fair wrong equations for {_written_text(_written_steps(data))}.")
+    wrong = random.choice(random.choice(list(fair_by_mistakes.values())))
+    return multiple_choice(
+        (f"{_written_text(right)} = {unknown}",),
+        tuple(f"{_written_text(written)} = {unknown}" for written in wrong),
+    )
+
+
+def has_fair_equation_choices(data: TwoStepQuestionData, operations: Collection[Operation]) -> bool:
+    """
+    Return whether ``two_step_equation_choices`` can give the two-step word problem a fair set of
+    wrong equations for a sheet of ``operations``.
+    """
+    return any(
+        next(_fair_sets(right, pairs), None) is not None
+        for pairs, right in product(_mistake_pairs(operations), _written_orders(data))
+    )
+
+
+def _written_orders(data: TwoStepQuestionData) -> list[_WrittenSteps]:
+    """
+    Return the ways to write the two-step question's equation that ``two_step_equation_choices``
+    tries, in turn: the story's order, and then, if its brackets add or multiply, the same with
+    the two numbers in them the other way round.
+    """
+    story_order = _written_steps(data)
+    if _bracketed(story_order)[0] in (Operation.ADD, Operation.MULTIPLY):
+        return [story_order, _swapped(story_order)]
+    return [story_order]
+
+
+# A mistake in a written two-step equation: it returns the equation with each way of making it
+type _Mistake = Callable[[_WrittenSteps], list[_WrittenSteps]]
+# A mistake that may leave a step out, so its equations take no further mistake: crossed with
+# another, it's made second
+type _LastMistake = Callable[[_WrittenSteps], Sequence[_Written]]
+# two mistakes for wrong choices to cross, the second made last
+type _MistakePair = tuple[_Mistake, _LastMistake]
+
+
+def _fair_sets(
+    right: _WrittenSteps, pairs: Sequence[_MistakePair]
+) -> Iterator[tuple[int, tuple[_Written, _Written, _Written]]]:
+    """
+    Yield every fair set of three wrong equations for ``right`` that crosses one of ``pairs`` of
+    mistakes, each with the index of its pair.
+    """
+    answer = _value(right)
+    for mistakes, (one, other) in enumerate(pairs):
+        for wrong in _crossed_mistakes(right, one, other):
+            if _is_fair(answer, wrong):
+                yield mistakes, wrong
+
+
+def _first_signs_changed(
+    written: _WrittenSteps, signs: Collection[Operation]
+) -> list[_WrittenSteps]:
+    """
+    Return the written equation with each other first sign of ``signs``, in ``Operation``'s
+    order.
+    """
+    return [
+        replace(written, first_sign=sign)
+        for sign in Operation
+        if sign in signs and sign is not written.first_sign
+    ]
+
+
+def _second_signs_changed(
+    written: _WrittenSteps, signs: Collection[Operation]
+) -> list[_WrittenSteps]:
+    """
+    Return the written equation with each other second sign of ``signs``, in ``Operation``'s
+    order.
+    """
+    return [
+        replace(written, second_sign=sign)
+        for sign in Operation
+        if sign in signs and sign is not written.second_sign
+    ]
+
+
+def _brackets_moved(written: _WrittenSteps) -> list[_WrittenSteps]:
+    """Return the written equation with its brackets around the other pair of numbers."""
+    return [replace(written, brackets_first=not written.brackets_first)]
+
+
+def _order_swapped(written: _WrittenSteps) -> list[_WrittenSteps]:
+    """
+    Return the written equation with the step outside its brackets written the other way round:
+    the brackets and the number outside them swap places, so (45 - 12) - 8 is 8 - (45 - 12).
+    """
+    first, second, third = written.numbers
+    if written.brackets_first:
+        numbers, brackets_first = (third, first, second), False
+    else:
+        numbers, brackets_first = (second, third, first), True
+    return [_WrittenSteps(numbers, written.second_sign, written.first_sign, brackets_first)]
+
+
+def _digits_reversed(written: _WrittenSteps) -> list[_WrittenSteps]:
+    """
+    Return the written equation with each of its numbers in turn, left to right, copied with its
+    digits the other way round, as 21 for 12. A number has no such copy if it reads the same
+    either way, as 44 and 7 do, if the copy would start with 0, as 30's would, or if the copy is
+    another of the equation's numbers.
+    """
+    first, second, third = written.numbers
+    copies = (
+        (_reversed_digits(first), second, third),
+        (first, _reversed_digits(second), third),
+        (first, second, _reversed_digits(third)),
+    )
+    return [
+        replace(written, numbers=numbers)
+        for numbers in copies
+        if numbers != written.numbers and len(set(numbers)) == len(numbers)
+    ]
+
+
+def _reversed_digits(number: int) -> int:
+    """
+    Return ``number`` with its digits the other way round, as 21 for 12, or ``number`` itself if
+    the copy would start with 0, as 30's would.
+    """
+    return number if number % 10 == 0 else int(str(number)[::-1])
+
+
+def _step_left_out(written: _WrittenSteps) -> list[_WrittenStep]:
+    """
+    Return the written equation stopped after one step: its first two numbers with its first
+    sign, then its last two with its second, as either step can come first in adding or
+    multiplying three numbers. (12 + 8) + 5 gives 12 + 8 and 8 + 5.
+    """
+    first, second, third = written.numbers
+    return [
+        _WrittenStep((first, second), written.first_sign),
+        _WrittenStep((second, third), written.second_sign),
+    ]
+
+
+def _mistake_pairs(signs: Collection[Operation]) -> Sequence[Sequence[_MistakePair]]:
+    """
+    Return the pairs of mistakes a two-step equation's wrong choices can cross, on a sheet of the
+    operations ``signs``, in tiers: a tier's pairs are used only when no pair of an earlier tier
+    gives a fair set. Each mistake changes a part of the equation that the other leaves alone.
+
+    With two or more operations, any two of: the first sign or the second changed to another of
+    ``signs``, and the brackets moved. With subtraction or division alone: the brackets moved,
+    and the step outside them written the other way round. With addition or multiplication
+    alone, where neither of those changes the value: a number with its digits reversed, and a
+    step left out; with multiplication alone, failing those, the first sign and the second
+    changed to +.
+    """
+    if len(set(signs)) > 1:
+        mistakes: tuple[_Mistake, ...] = (
+            partial(_first_signs_changed, signs=signs),
+            partial(_second_signs_changed, signs=signs),
+            _brackets_moved,
+        )
+        return [list(combinations(mistakes, 2))]
+    if set(signs) <= {Operation.SUBTRACT, Operation.DIVIDE}:
+        return [[(_brackets_moved, _order_swapped)]]
+    tiers: list[list[_MistakePair]] = [[(_digits_reversed, _step_left_out)]]
+    if Operation.MULTIPLY in signs:
+        with_add = {Operation.ADD, Operation.MULTIPLY}
+        signs_changed = (
+            partial(_first_signs_changed, signs=with_add),
+            partial(_second_signs_changed, signs=with_add),
+        )
+        tiers.append([signs_changed])
+    return tiers
+
+
+def _crossed_mistakes(
+    right: _WrittenSteps, one: _Mistake, other: _LastMistake
+) -> Iterator[tuple[_Written, _Written, _Written]]:
+    """
+    Yield every set of three wrong equations that crosses the mistakes ``one`` and ``other`` in
+    ``right``: a way of making the first, a way of making the second, and both at once.
+    """
+    for first in one(right):
+        # ``other`` changes a part ``one`` leaves alone, so it gives ``first`` its ways of being
+        # made in the same order as ``right``'s
+        for index, second in enumerate(other(right)):
+            yield first, second, other(first)[index]
+
+
+def _is_fair(answer: Fraction, wrong: Sequence[_Written]) -> bool:
+    """
+    Return whether every equation of ``wrong`` needs working out to rule out, and no two of them
+    or ``answer`` share a value: a wrong equation with the answer's value would be a second right
+    one, and two with the same value, as (5 + 3) + 2 and 5 + (3 + 2), would rule each other out.
+    """
+    # Checked first: a number taken from itself would leave 0 to divide by.
+    if any(_ruled_out_at_a_glance(written) for written in wrong):
+        return False
+    return len({answer, *(_value(written) for written in wrong)}) == len(wrong) + 1
+
+
+def _bracketed(written: _WrittenSteps) -> tuple[Operation, int, int]:
+    """Return the sign in the written equation's brackets and the numbers either side of it."""
+    first, second, third = written.numbers
+    if written.brackets_first:
+        return written.first_sign, first, second
+    return written.second_sign, second, third
+
+
+def _swapped(written: _WrittenSteps) -> _WrittenSteps:
+    """Return the written equation with the two numbers in its brackets the other way round."""
+    first, second, third = written.numbers
+    numbers = (second, first, third) if written.brackets_first else (first, third, second)
+    return replace(written, numbers=numbers)
+
+
+def _ruled_out_at_a_glance(written: _Written) -> bool:
+    """
+    Return whether the written equation's brackets, or its one step, take a number from one no
+    larger, or divide a number by a larger one, as in 3 - 5 or 3 ÷ 5.
+    """
+    if isinstance(written, _WrittenStep):
+        sign, (left, right) = written.sign, written.numbers
+    else:
+        sign, left, right = _bracketed(written)
+    match sign:
+        case Operation.SUBTRACT:
+            return left <= right
+        case Operation.DIVIDE:
+            return left < right
+        case Operation.ADD | Operation.MULTIPLY:
+            return False
+        case _:
+            assert_never(sign)
+
+
+def _value(written: _Written) -> Fraction:
+    """Return the written equation's value, worked out exactly."""
+    if isinstance(written, _WrittenStep):
+        left, right = written.numbers
+        return _worked(written.sign, Fraction(left), Fraction(right))
+    first, second, third = (Fraction(number) for number in written.numbers)
+    if written.brackets_first:
+        return _worked(written.second_sign, _worked(written.first_sign, first, second), third)
+    return _worked(written.first_sign, first, _worked(written.second_sign, second, third))
+
+
+def _worked(operation: Operation, left: Fraction, right: Fraction) -> Fraction:
+    """Return ``operation`` applied to ``left`` and ``right``."""
+    match operation:
+        case Operation.ADD:
+            return left + right
+        case Operation.SUBTRACT:
+            return left - right
+        case Operation.MULTIPLY:
+            return left * right
+        case Operation.DIVIDE:
+            return left / right
+        case _:
+            assert_never(operation)
 
 
 STRIP_CHOICE_NAME = (
@@ -688,12 +1106,14 @@ def instruction(
     operations: Collection[Operation],
     work_box: bool,
     choices: bool = False,
+    two_steps: bool = False,
 ) -> str:
     """
     Return the instruction printed under a word-problem sheet's header, for its representation and
     the operations of its problems. ``work_box`` is for text only: whether each problem has a box
     to show the work in. ``choices`` is for number lines and equations: whether each problem's is
-    chosen from lettered ones.
+    chosen from lettered ones. ``two_steps`` is for equations to choose from: whether the problems
+    have two steps, whose equations have a letter for what to find.
     """
     match representation:
         case Representation.STRIP:
@@ -723,6 +1143,11 @@ def instruction(
         case Representation.BLOCKS:
             return "Use the base-ten blocks to help you solve each problem."
         case Representation.EQUATION:
+            if choices and two_steps:
+                return (
+                    "Choose the equation that matches each problem. The letter stands for the "
+                    "number to find."
+                )
             if choices:
                 return (
                     f"Choose the equation that matches each problem. The {BLANK} shows what to "
@@ -739,7 +1164,7 @@ def hint(
     """
     Return the hint printed under a word problem, for the representation drawn with it, or None if
     the representation has no hints. Strip diagrams have a hint for each shape of two-step
-    problem, and text only, the other representation that shows two steps, has none.
+    problem, and text only and equations, the others that show two steps, have none.
     """
     if isinstance(data, TwoStepQuestionData):
         return _TWO_STEP_STRIP_HINTS[data.shape] if representation is Representation.STRIP else None

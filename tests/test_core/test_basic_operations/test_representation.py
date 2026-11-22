@@ -19,11 +19,14 @@ from core.basic_operations.representation import (
     EqualStripDiagram,
     Prompt,
     Representation,
+    Response,
     StripDiagram,
     TwoJumpLine,
     TwoStepStripDiagram,
+    WordProblemKind,
     basic_operation_tile_question,
     equation_choices,
+    has_fair_equation_choices,
     hint,
     instruction,
     missing_number_equation,
@@ -34,14 +37,16 @@ from core.basic_operations.representation import (
     prompt_texts,
     strip_choices,
     strip_diagram,
+    two_step_equation_choices,
     two_step_strip,
     two_step_strip_choices,
     two_step_tile_question,
+    word_problem_kinds,
     word_problems_title,
 )
 from core.question import BLANK, MultipleChoice
 from core.self_check_tiles import TileQuestion
-from tests.helpers import choice_returns, reverse_shuffle
+from tests.helpers import choice_indexes, choice_returns, reverse_shuffle
 
 
 @pytest.mark.parametrize(
@@ -560,6 +565,404 @@ def test_equation_choices(
     assert equation_choices(data) == expected
 
 
+# (24 - 6) + 5, and 4 shared into (12 shared into 6 groups) groups
+SUBTRACT_ADD = TwoStepQuestionData(
+    (
+        BasicOperationQuestionData(Operation.SUBTRACT, (24, 6), 18),
+        BasicOperationQuestionData(Operation.ADD, (18, 5), 23),
+    ),
+    Unknown.FIRST,
+    23,
+)
+DIVIDE_INTO_DIVIDE = TwoStepQuestionData(
+    (
+        BasicOperationQuestionData(Operation.DIVIDE, (12, 6), 2),
+        BasicOperationQuestionData(Operation.DIVIDE, (4, 2), 2),
+    ),
+    Unknown.SECOND,
+    2,
+)
+# one operation twice: (45 - 12) - 8, (30 shared into 5 groups) shared into 3, (12 + 8) + 5,
+# (2 groups of 3) groups of 16, and 5 groups of (3 groups of 2)
+SUBTRACT_TWICE = TwoStepQuestionData(
+    (
+        BasicOperationQuestionData(Operation.SUBTRACT, (45, 12), 33),
+        BasicOperationQuestionData(Operation.SUBTRACT, (33, 8), 25),
+    ),
+    Unknown.FIRST,
+    25,
+)
+DIVIDE_TWICE = TwoStepQuestionData(
+    (
+        BasicOperationQuestionData(Operation.DIVIDE, (30, 5), 6),
+        BasicOperationQuestionData(Operation.DIVIDE, (6, 3), 2),
+    ),
+    Unknown.FIRST,
+    2,
+)
+ADD_TWICE = TwoStepQuestionData(
+    (
+        BasicOperationQuestionData(Operation.ADD, (12, 8), 20),
+        BasicOperationQuestionData(Operation.ADD, (20, 5), 25),
+    ),
+    Unknown.FIRST,
+    25,
+)
+MULTIPLY_TWICE = TwoStepQuestionData(
+    (
+        BasicOperationQuestionData(Operation.MULTIPLY, (2, 3), 6),
+        BasicOperationQuestionData(Operation.MULTIPLY, (6, 16), 96),
+    ),
+    Unknown.FIRST,
+    96,
+)
+MULTIPLY_INTO_MULTIPLY = TwoStepQuestionData(
+    (
+        BasicOperationQuestionData(Operation.MULTIPLY, (3, 2), 6),
+        BasicOperationQuestionData(Operation.MULTIPLY, (5, 6), 30),
+    ),
+    Unknown.SECOND,
+    30,
+)
+
+
+@pytest.mark.parametrize(
+    ("data", "operations", "picks", "mistake_pairs", "expected"),
+    [
+        # Taking away, then sharing: each mistake pair has fair sets. The first sign and the
+        # brackets here, with + as the first sign.
+        (
+            SUBTRACT_DIVIDE,
+            list(Operation),
+            [1, 0],
+            3,
+            MultipleChoice(
+                (
+                    "24 + (6 \N{DIVISION SIGN} 3) = s",
+                    "24 \N{MINUS SIGN} (6 \N{DIVISION SIGN} 3) = s",
+                    "(24 + 6) \N{DIVISION SIGN} 3 = s",
+                    "(24 \N{MINUS SIGN} 6) \N{DIVISION SIGN} 3 = s",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # both signs, the first + and the second +
+        (
+            SUBTRACT_DIVIDE,
+            list(Operation),
+            [0, 0],
+            3,
+            MultipleChoice(
+                (
+                    "(24 + 6) + 3 = s",
+                    "(24 \N{MINUS SIGN} 6) + 3 = s",
+                    "(24 + 6) \N{DIVISION SIGN} 3 = s",
+                    "(24 \N{MINUS SIGN} 6) \N{DIVISION SIGN} 3 = s",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # only the ticked operations' signs: the second sign and the brackets
+        (
+            SUBTRACT_DIVIDE,
+            [Operation.SUBTRACT, Operation.DIVIDE],
+            [2, 0],
+            3,
+            MultipleChoice(
+                (
+                    "24 \N{MINUS SIGN} (6 \N{MINUS SIGN} 3) = s",
+                    "24 \N{MINUS SIGN} (6 \N{DIVISION SIGN} 3) = s",
+                    "(24 \N{MINUS SIGN} 6) \N{MINUS SIGN} 3 = s",
+                    "(24 \N{MINUS SIGN} 6) \N{DIVISION SIGN} 3 = s",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # Only the signs: moving the brackets with a sign changed gives two wrong equations of the
+        # same value, (24 + 6) + 5 and 24 + (6 + 5), or (24 - 6) - 5 and 24 - (6 + 5).
+        (
+            SUBTRACT_ADD,
+            [Operation.ADD, Operation.SUBTRACT],
+            [0, 0],
+            1,
+            MultipleChoice(
+                (
+                    "(24 + 6) \N{MINUS SIGN} 5 = s",
+                    "(24 \N{MINUS SIGN} 6) \N{MINUS SIGN} 5 = s",
+                    "(24 + 6) + 5 = s",
+                    "(24 \N{MINUS SIGN} 6) + 5 = s",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # In the story's order 4 - 6 is ruled out at a glance, and moving the brackets gives the
+        # answer, so every choice has 6 + 4 the other way round.
+        (
+            ADD_ADD,
+            [Operation.ADD, Operation.SUBTRACT],
+            [0, 0],
+            1,
+            MultipleChoice(
+                (
+                    "(6 \N{MINUS SIGN} 4) \N{MINUS SIGN} 7 = s",
+                    "(6 + 4) \N{MINUS SIGN} 7 = s",
+                    "(6 \N{MINUS SIGN} 4) + 7 = s",
+                    "(6 + 4) + 7 = s",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # with multiplication ticked, 4 x 6 keeps the story's order; the brackets still can't move
+        (
+            ADD_ADD,
+            [Operation.ADD, Operation.MULTIPLY],
+            [0, 0],
+            1,
+            MultipleChoice(
+                (
+                    "(4 \N{MULTIPLICATION SIGN} 6) \N{MULTIPLICATION SIGN} 7 = s",
+                    "(4 + 6) \N{MULTIPLICATION SIGN} 7 = s",
+                    "(4 \N{MULTIPLICATION SIGN} 6) + 7 = s",
+                    "(4 + 6) + 7 = s",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # Taking away equal groups, with the brackets on the last two numbers: moving them puts
+        # them on the first two.
+        (
+            MULTIPLY_SUBTRACT,
+            list(Operation),
+            [1, 0],
+            3,
+            MultipleChoice(
+                (
+                    "(45 + 3) \N{MULTIPLICATION SIGN} 5 = s",
+                    "(45 \N{MINUS SIGN} 3) \N{MULTIPLICATION SIGN} 5 = s",
+                    "45 + (3 \N{MULTIPLICATION SIGN} 5) = s",
+                    "45 \N{MINUS SIGN} (3 \N{MULTIPLICATION SIGN} 5) = s",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # With only - and x, 3 - 5 is ruled out at a glance, so every choice has 5 x 3 the other
+        # way round. Changing the first sign as well as moving the brackets gives two wrong
+        # equations of the same value, 45 x (5 x 3) and (45 x 5) x 3.
+        (
+            MULTIPLY_SUBTRACT,
+            [Operation.SUBTRACT, Operation.MULTIPLY],
+            [1, 0],
+            2,
+            MultipleChoice(
+                (
+                    "(45 \N{MINUS SIGN} 5) \N{MINUS SIGN} 3 = s",
+                    "(45 \N{MINUS SIGN} 5) \N{MULTIPLICATION SIGN} 3 = s",
+                    "45 \N{MINUS SIGN} (5 \N{MINUS SIGN} 3) = s",
+                    "45 \N{MINUS SIGN} (5 \N{MULTIPLICATION SIGN} 3) = s",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # 4 ÷ 2 and 4 - 2 are both 2, so the first sign can't be -, and moving the brackets gives
+        # 4 ÷ 12, ruled out at a glance: only the signs
+        (
+            DIVIDE_INTO_DIVIDE,
+            list(Operation),
+            [0, 0],
+            1,
+            MultipleChoice(
+                (
+                    "4 + (12 + 6) = s",
+                    "4 \N{DIVISION SIGN} (12 + 6) = s",
+                    "4 + (12 \N{DIVISION SIGN} 6) = s",
+                    "4 \N{DIVISION SIGN} (12 \N{DIVISION SIGN} 6) = s",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # Subtraction alone: the brackets moved, and the step outside them the other way round.
+        (
+            SUBTRACT_TWICE,
+            [Operation.SUBTRACT],
+            [0, 0],
+            1,
+            MultipleChoice(
+                (
+                    "(12 \N{MINUS SIGN} 8) \N{MINUS SIGN} 45 = s",
+                    "8 \N{MINUS SIGN} (45 \N{MINUS SIGN} 12) = s",
+                    "45 \N{MINUS SIGN} (12 \N{MINUS SIGN} 8) = s",
+                    "(45 \N{MINUS SIGN} 12) \N{MINUS SIGN} 8 = s",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # and division alone
+        (
+            DIVIDE_TWICE,
+            [Operation.DIVIDE],
+            [0, 0],
+            1,
+            MultipleChoice(
+                (
+                    "(5 \N{DIVISION SIGN} 3) \N{DIVISION SIGN} 30 = s",
+                    "3 \N{DIVISION SIGN} (30 \N{DIVISION SIGN} 5) = s",
+                    "30 \N{DIVISION SIGN} (5 \N{DIVISION SIGN} 3) = s",
+                    "(30 \N{DIVISION SIGN} 5) \N{DIVISION SIGN} 3 = s",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # Addition alone: 12 copied as 21, and a step left out. Only 12 can be reversed, so the
+        # step left can only be 12 + 8: left with 8 + 5, both mistakes would look like one.
+        (
+            ADD_TWICE,
+            [Operation.ADD],
+            [0, 0],
+            1,
+            MultipleChoice(
+                (
+                    "21 + 8 = s",
+                    "12 + 8 = s",
+                    "(21 + 8) + 5 = s",
+                    "(12 + 8) + 5 = s",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # And multiplication alone, where only 16 can be reversed, so the step left is 3 x 16. The
+        # signs changed to + aren't offered, as these give a fair set.
+        (
+            MULTIPLY_TWICE,
+            [Operation.MULTIPLY],
+            [0, 0],
+            1,
+            MultipleChoice(
+                (
+                    "3 \N{MULTIPLICATION SIGN} 61 = s",
+                    "3 \N{MULTIPLICATION SIGN} 16 = s",
+                    "(2 \N{MULTIPLICATION SIGN} 3) \N{MULTIPLICATION SIGN} 61 = s",
+                    "(2 \N{MULTIPLICATION SIGN} 3) \N{MULTIPLICATION SIGN} 16 = s",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # With no number to reverse, multiplication alone changes the first sign and the second
+        # to +.
+        (
+            MULTIPLY_INTO_MULTIPLY,
+            [Operation.MULTIPLY],
+            [0, 0],
+            1,
+            MultipleChoice(
+                (
+                    "5 + (3 + 2) = s",
+                    "5 \N{MULTIPLICATION SIGN} (3 + 2) = s",
+                    "5 + (3 \N{MULTIPLICATION SIGN} 2) = s",
+                    "5 \N{MULTIPLICATION SIGN} (3 \N{MULTIPLICATION SIGN} 2) = s",
+                ),
+                frozenset({3}),
+            ),
+        ),
+    ],
+)
+def test_two_step_equation_choices(
+    data: TwoStepQuestionData,
+    operations: list[Operation],
+    picks: list[int],
+    mistake_pairs: int,
+    expected: MultipleChoice[str],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """
+    The wrong equations cross two mistakes: the right one, one with each mistake, and one with
+    both. ``choice`` picks the pair of mistakes, among the ``mistake_pairs`` with a fair set (with
+    two or more operations ticked, the first sign and the second, the first sign and the
+    brackets, the second sign and the brackets; with one, its only pair, or with multiplication
+    alone, the signs changed to + if its digit reversed and step left out give none), and then a
+    set, and
+    ``shuffle`` reverses, so the choices come both mistakes, the second, the first, then the
+    right one. A changed sign is the next of the ticked operations in ``Operation``'s order.
+    """
+    offered = choice_indexes(monkeypatch, picks)
+    reverse_shuffle(monkeypatch)
+    assert two_step_equation_choices(data, "s", operations) == expected
+    assert len(offered[0]) == mistake_pairs
+
+
+@pytest.mark.parametrize(
+    ("data", "operations", "message"),
+    [
+        # 4 ÷ 2 and 4 - 2 are both 2, and 4 ÷ 12 is ruled out at a glance
+        (
+            DIVIDE_INTO_DIVIDE,
+            [Operation.SUBTRACT, Operation.DIVIDE],
+            "No fair wrong equations for 4 \N{DIVISION SIGN} (12 \N{DIVISION SIGN} 6).",
+        ),
+        # subtraction alone: both its mistakes move the brackets, which gives 5 - 8, ruled out at
+        # a glance
+        (
+            SUBTRACT_SUBTRACT,
+            [Operation.SUBTRACT],
+            "No fair wrong equations for (25 \N{MINUS SIGN} 5) \N{MINUS SIGN} 8.",
+        ),
+        # division alone: likewise 4 ÷ 12
+        (
+            DIVIDE_INTO_DIVIDE,
+            [Operation.DIVIDE],
+            "No fair wrong equations for 4 \N{DIVISION SIGN} (12 \N{DIVISION SIGN} 6).",
+        ),
+        # addition alone: no number to reverse, in either order of 4 + 6
+        (
+            ADD_ADD,
+            [Operation.ADD],
+            "No fair wrong equations for (4 + 6) + 7.",
+        ),
+        # nor when reversing a number copies another: 12 and 21
+        (
+            TwoStepQuestionData(
+                (
+                    BasicOperationQuestionData(Operation.ADD, (12, 21), 33),
+                    BasicOperationQuestionData(Operation.ADD, (33, 5), 38),
+                ),
+                Unknown.FIRST,
+                38,
+            ),
+            [Operation.ADD],
+            "No fair wrong equations for (12 + 21) + 5.",
+        ),
+    ],
+)
+def test_two_step_equation_choices_errors(
+    data: TwoStepQuestionData, operations: list[Operation], message: str
+) -> None:
+    with pytest.raises(ValueError) as error:
+        two_step_equation_choices(data, "s", operations)
+    assert str(error.value) == message
+
+
+@pytest.mark.parametrize(
+    ("data", "operations", "expected"),
+    [
+        (SUBTRACT_DIVIDE, [Operation.SUBTRACT, Operation.DIVIDE], True),
+        # one operation, as above
+        (SUBTRACT_SUBTRACT, [Operation.SUBTRACT], False),
+        (SUBTRACT_TWICE, [Operation.SUBTRACT], True),
+        (ADD_ADD, [Operation.ADD], False),
+        (MULTIPLY_TWICE, [Operation.MULTIPLY], True),
+        (MULTIPLY_INTO_MULTIPLY, [Operation.MULTIPLY], True),
+        # with only - and ÷ there's none, as above, and with all four there is
+        (DIVIDE_INTO_DIVIDE, [Operation.SUBTRACT, Operation.DIVIDE], False),
+        (DIVIDE_INTO_DIVIDE, list(Operation), True),
+        # only with 6 + 4 the other way round
+        (ADD_ADD, [Operation.ADD, Operation.SUBTRACT], True),
+    ],
+)
+def test_has_fair_equation_choices(
+    data: TwoStepQuestionData, operations: list[Operation], expected: bool
+) -> None:
+    assert has_fair_equation_choices(data, operations) is expected
+
+
 @pytest.mark.parametrize(
     ("data", "prompt", "expected"),
     [
@@ -1056,8 +1459,9 @@ def test_number_line_choices_errors(data: BasicOperationQuestionData, message: s
             "Multiply to find the equal parts together, then subtract them from the whole to find "
             "the missing part.",
         ),
-        # text only still has none
+        # text only still has none, nor do equations
         (SUBTRACT_DIVIDE, Representation.NONE, None),
+        (SUBTRACT_DIVIDE, Representation.EQUATION, None),
     ],
 )
 def test_hint(
@@ -1069,12 +1473,13 @@ def test_hint(
 
 
 @pytest.mark.parametrize(
-    ("representation", "operations", "work_box", "choices", "expected"),
+    ("representation", "operations", "work_box", "choices", "two_steps", "expected"),
     [
         (
             Representation.STRIP,
             [Operation.ADD, Operation.SUBTRACT],
             True,
+            False,
             False,
             "Use the strip diagram (bar model): two parts make a whole. The ? shows what to find.",
         ),
@@ -1083,6 +1488,7 @@ def test_hint(
             [Operation.ADD],
             True,
             False,
+            False,
             "Use the strip diagram (bar model): two parts make a whole. The ? shows what to find.",
         ),
         (
@@ -1090,12 +1496,14 @@ def test_hint(
             [Operation.SUBTRACT],
             True,
             False,
+            False,
             "Use the strip diagram (bar model): two parts make a whole. The ? shows what to find.",
         ),
         (
             Representation.STRIP,
             [Operation.MULTIPLY, Operation.DIVIDE],
             True,
+            False,
             False,
             "Use the strip diagram (bar model): equal groups make a whole. "
             "The ? shows what to find.",
@@ -1105,6 +1513,7 @@ def test_hint(
             [Operation.MULTIPLY],
             True,
             False,
+            False,
             "Use the strip diagram (bar model): equal groups make a whole. "
             "The ? shows what to find.",
         ),
@@ -1112,6 +1521,7 @@ def test_hint(
             Representation.STRIP,
             [Operation.DIVIDE],
             True,
+            False,
             False,
             "Use the strip diagram (bar model): equal groups make a whole. "
             "The ? shows what to find.",
@@ -1122,6 +1532,7 @@ def test_hint(
             [Operation.SUBTRACT, Operation.MULTIPLY],
             True,
             False,
+            False,
             "Use the strip diagram (bar model): parts or equal groups make a whole. "
             "The ? shows what to find.",
         ),
@@ -1129,6 +1540,7 @@ def test_hint(
             Representation.STRIP,
             [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
             True,
+            False,
             False,
             "Use the strip diagram (bar model): parts or equal groups make a whole. "
             "The ? shows what to find.",
@@ -1139,6 +1551,7 @@ def test_hint(
             [Operation.ADD, Operation.SUBTRACT],
             True,
             False,
+            False,
             "Read each problem. Show your work in the box.",
         ),
         (
@@ -1146,12 +1559,14 @@ def test_hint(
             [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
             True,
             False,
+            False,
             "Read each problem. Show your work in the box.",
         ),
         # without the work boxes, no box to mention
         (
             Representation.NONE,
             [Operation.ADD, Operation.SUBTRACT],
+            False,
             False,
             False,
             "Read each problem and solve it.",
@@ -1162,12 +1577,14 @@ def test_hint(
             [Operation.ADD, Operation.SUBTRACT],
             True,
             False,
+            False,
             "Use the number line. Start at the first number and jump by hundreds, tens, and ones.",
         ),
         (
             Representation.NUMBER_LINE,
             [Operation.SUBTRACT],
             True,
+            False,
             False,
             "Use the number line. Start at the first number and jump by hundreds, tens, and ones.",
         ),
@@ -1177,6 +1594,7 @@ def test_hint(
             [Operation.ADD, Operation.SUBTRACT],
             False,
             True,
+            False,
             "Each number line starts at 0 and shows both numbers as jumps. Circle the correct one.",
         ),
         (
@@ -1184,6 +1602,7 @@ def test_hint(
             [Operation.SUBTRACT],
             False,
             True,
+            False,
             "Each number line starts at 0 and shows both numbers as jumps. Circle the correct one.",
         ),
         # base-ten blocks: the same for addition, subtraction or both
@@ -1192,12 +1611,14 @@ def test_hint(
             [Operation.ADD, Operation.SUBTRACT],
             True,
             False,
+            False,
             "Use the base-ten blocks to help you solve each problem.",
         ),
         (
             Representation.BLOCKS,
             [Operation.ADD],
             True,
+            False,
             False,
             "Use the base-ten blocks to help you solve each problem.",
         ),
@@ -1207,6 +1628,7 @@ def test_hint(
             [Operation.ADD, Operation.SUBTRACT],
             False,
             True,
+            False,
             f"Choose the equation that matches each problem. The {BLANK} shows what to find.",
         ),
         (
@@ -1214,12 +1636,14 @@ def test_hint(
             [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
             False,
             True,
+            False,
             f"Choose the equation that matches each problem. The {BLANK} shows what to find.",
         ),
         # equations, written: the same for any operations
         (
             Representation.EQUATION,
             [Operation.ADD, Operation.SUBTRACT],
+            False,
             False,
             False,
             f"Write an equation for each problem, with a {BLANK} for what to find. Solve it.",
@@ -1229,6 +1653,26 @@ def test_hint(
             [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
             False,
             False,
+            False,
+            f"Write an equation for each problem, with a {BLANK} for what to find. Solve it.",
+        ),
+        # two steps: equations to choose from have a letter for what to find
+        (
+            Representation.EQUATION,
+            [Operation.ADD, Operation.SUBTRACT],
+            False,
+            True,
+            True,
+            "Choose the equation that matches each problem. The letter stands for the number to "
+            "find.",
+        ),
+        # written equations still ask for a square
+        (
+            Representation.EQUATION,
+            [Operation.ADD, Operation.SUBTRACT],
+            False,
+            False,
+            True,
             f"Write an equation for each problem, with a {BLANK} for what to find. Solve it.",
         ),
     ],
@@ -1238,9 +1682,10 @@ def test_instruction(
     operations: list[Operation],
     work_box: bool,
     choices: bool,
+    two_steps: bool,
     expected: str,
 ) -> None:
-    assert instruction(representation, operations, work_box, choices) == expected
+    assert instruction(representation, operations, work_box, choices, two_steps) == expected
 
 
 @pytest.mark.parametrize(
@@ -1274,3 +1719,63 @@ def test_operations_name(operations: list[Operation], expected: str) -> None:
 )
 def test_word_problems_title(representation: Representation, choices: bool, expected: str) -> None:
     assert word_problems_title(representation, choices) == expected
+
+
+@pytest.mark.parametrize(
+    ("representations", "responses", "two_steps", "expected"),
+    [
+        # each representation written, in Representation's order
+        (
+            [Representation.EQUATION, Representation.STRIP, Representation.BLOCKS],
+            [Response.FREE_RESPONSE],
+            False,
+            [
+                (Representation.STRIP, Response.FREE_RESPONSE),
+                (Representation.BLOCKS, Response.FREE_RESPONSE),
+                (Representation.EQUATION, Response.FREE_RESPONSE),
+            ],
+        ),
+        # only number lines and equations are chosen
+        (
+            list(Representation),
+            [Response.MULTIPLE_CHOICE],
+            False,
+            [
+                (Representation.NUMBER_LINE, Response.MULTIPLE_CHOICE),
+                (Representation.EQUATION, Response.MULTIPLE_CHOICE),
+            ],
+        ),
+        # both ways: each representation written, then chosen where it can be
+        (
+            [Representation.NUMBER_LINE, Representation.STRIP],
+            list(Response),
+            False,
+            [
+                (Representation.STRIP, Response.FREE_RESPONSE),
+                (Representation.NUMBER_LINE, Response.FREE_RESPONSE),
+                (Representation.NUMBER_LINE, Response.MULTIPLE_CHOICE),
+            ],
+        ),
+        # two steps: no number lines or blocks, and only equations chosen
+        (
+            list(Representation),
+            list(Response),
+            True,
+            [
+                (Representation.STRIP, Response.FREE_RESPONSE),
+                (Representation.NONE, Response.FREE_RESPONSE),
+                (Representation.EQUATION, Response.FREE_RESPONSE),
+                (Representation.EQUATION, Response.MULTIPLE_CHOICE),
+            ],
+        ),
+        # none: blocks aren't chosen
+        ([Representation.BLOCKS], [Response.MULTIPLE_CHOICE], False, []),
+    ],
+)
+def test_word_problem_kinds(
+    representations: list[Representation],
+    responses: list[Response],
+    two_steps: bool,
+    expected: list[WordProblemKind],
+) -> None:
+    assert word_problem_kinds(representations, responses, two_steps) == expected

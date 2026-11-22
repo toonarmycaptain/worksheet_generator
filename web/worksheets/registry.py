@@ -51,18 +51,22 @@ from core.basic_operations.generator import (
     WORD_PROBLEM_STRIP_LARGEST_GROUPS,
     count_possible_equation_choice_problems,
     count_possible_missing_number_questions,
+    count_possible_mixed_word_problems,
     count_possible_multiplication_model_problems,
     count_possible_number_line_choice_problems,
     count_possible_sheet_questions,
     count_possible_strip_choice_problems,
+    count_possible_two_step_equation_choice_problems,
     count_possible_two_step_problems,
     count_possible_word_problems,
     generate_basic_operation_questions,
     generate_equation_choice_problems,
     generate_missing_number_questions,
+    generate_mixed_word_problems,
     generate_multiplication_model_problems,
     generate_number_line_choice_problems,
     generate_strip_choice_problems,
+    generate_two_step_equation_choice_problems,
     generate_two_step_problems,
     generate_two_step_strip_choice_problems,
     generate_word_problems,
@@ -72,20 +76,25 @@ from core.basic_operations.multiplication_models import MULTIPLICATION_MODELS_NA
 from core.basic_operations.regrouping import REGROUPING_NAMES, Regrouping
 from core.basic_operations.representation import (
     CHOICE_NAMES,
+    COMPARISON_REPRESENTATIONS,
     OPERATION_NAMES,
     REPRESENTATION_NAMES,
     REPRESENTATION_OPERATIONS,
     STRIP_CHOICE_NAME,
     STRIP_TWO_STEP_SHAPES,
     TWO_STEP_REPRESENTATIONS,
+    WORD_PROBLEMS_NAME,
     Prompt,
     Representation,
+    Response,
     StripChoiceQuestion,
     TwoStepStripChoiceQuestion,
+    WordProblemKind,
     WordProblemQuestion,
     basic_operation_tile_question,
     missing_number_tile_question,
     operations_name,
+    word_problem_kinds,
     word_problems_title,
 )
 from core.discrete_data.data import DataDisplay, DiscreteDataPart
@@ -256,16 +265,20 @@ FORM_CHOICE_LABELS: dict[str, JsonValue] = {
     **{form.value: name for form, name in FORM_NAMES.items()},
     "mixed": "mixed",
 }
-# Representation dropdown labels: each representation's name
+RepresentationChoice = Literal["strip", "none", "number_line", "blocks", "equation"]
+# Representation dropdown labels: each representation's name, plus mixed, which the
+# representations' checkboxes also use
 REPRESENTATION_LABELS: dict[str, JsonValue] = {
-    representation.value: name for representation, name in REPRESENTATION_NAMES.items()
+    **{representation.value: name for representation, name in REPRESENTATION_NAMES.items()},
+    "mixed": "Mixed",
 }
 StepsChoice = Literal["one", "two"]
 STEPS_LABELS: dict[str, JsonValue] = {"one": "One step", "two": "Two steps"}
-ResponseChoice = Literal["free_response", "multiple_choice"]
+ResponseChoice = Literal["free_response", "multiple_choice", "mixed"]  # a Response value, or both
 RESPONSE_LABELS: dict[str, JsonValue] = {
     "free_response": "Free response",
     "multiple_choice": "Multiple choice",
+    "mixed": "Mixed",
 }
 PromptChoice = Literal["word_problem", "equation", "both"]  # a Prompt value
 # Show radio labels
@@ -842,16 +855,17 @@ class WordProblemOptions(HeaderOptions):
     problems: Problems = 4
     # Each problem's operation is drawn at random from those ticked.
     operations: Operations = Field(["add", "subtract"])
-    # Addition and subtraction only: every number in the problem, its answer included. With two
-    # steps, which share a number, every number, multiplication's and division's too, and the
-    # page's label drops "in addition and subtraction". It's at least the smallest sum, which
-    # leaves room for a subtraction too.
+    # The numbers an addition or subtraction gives, not its answer. With two steps, also the
+    # whole a division shares, and the page's label drops "in addition and subtraction"; the first
+    # step's answer isn't given, so nothing caps it. It's at least the smallest sum, which leaves
+    # room for a subtraction too.
     max_number: WordProblemLargestNumber = Field(
         LARGEST_WORD_PROBLEM_NUMBER, title="Largest number in addition and subtraction"
     )
-    # Multiplication and division: the number of equal groups and the size of each. The product,
-    # or the total shared, is whatever they make. A strip diagram has room for fewer groups than
-    # the most, so the page lowers the field's limit for strip diagrams.
+    # Multiplication and division: the number of equal groups and the size of each, where the
+    # problem gives them, and the size of each when it's the answer. The product, or the total
+    # shared, is whatever they make. A strip diagram has room for fewer groups than the most, so
+    # the page lowers the field's limit for strip diagrams.
     max_groups: int = Field(
         WORD_PROBLEM_GROUPS[1],
         ge=WORD_PROBLEM_GROUPS[0],
@@ -860,18 +874,28 @@ class WordProblemOptions(HeaderOptions):
         json_schema_extra={"operations": ["multiply", "divide"]},
     )
     max_group_size: LargestGroupSize = WORD_PROBLEM_GROUP_SIZES[1]
-    representation: Literal["strip", "none", "number_line", "blocks", "equation"] = Field(
+    representation: Literal[RepresentationChoice, "mixed"] = Field(
         "none", title="Representation", json_schema_extra={"labels": REPRESENTATION_LABELS}
     )
+    # The representations mixed draws from, every one ticked to start with. Used only while the
+    # representation is mixed, and the page shows it under the dropdown only then, greying out
+    # those that can't show any ticked operation, two steps, or multiple choice when that's the
+    # only response (see builder.html).
+    representation_mix: list[RepresentationChoice] = Field(
+        list(get_args(RepresentationChoice)),
+        min_length=1,
+        title="Representations",
+        json_schema_extra={"labels": REPRESENTATION_LABELS, "under": "representation"},
+    )
     # Multiple choice is for the representations in CHOICE_NAMES: each problem's is chosen from
-    # lettered ones.
+    # lettered ones. Mixed answers about half the problems each way.
     response: ResponseChoice = Field(
         "free_response",
         title="Response",
         json_schema_extra={"input": "radio", "labels": RESPONSE_LABELS},
     )
-    # Strip diagrams and text only: with strip diagrams, two steps draw one bar, the whole over
-    # its parts.
+    # Strip diagrams, text only and equations: with strip diagrams, two steps draw one bar, the
+    # whole over its parts.
     steps: StepsChoice = Field(
         "one", title="Steps", json_schema_extra={"input": "radio", "labels": STEPS_LABELS}
     )
@@ -884,26 +908,55 @@ class WordProblemOptions(HeaderOptions):
     tile_pattern: TilePattern = "simple"
 
     @property
+    def mixed(self) -> bool:
+        """Whether the sheet mixes representations, or ways of answering, or both."""
+        return self.representation == "mixed" or self.response == "mixed"
+
+    @property
+    def representations(self) -> list[Representation]:
+        """The representations the problems are drawn with: those ticked for mixed, or the one."""
+        if self.representation == "mixed":
+            return [Representation(each) for each in self.representation_mix]
+        return [Representation(self.representation)]
+
+    @property
+    def responses(self) -> list[Response]:
+        """The ways the problems are answered: both for mixed, or the one."""
+        if self.response == "mixed":
+            return list(Response)
+        return [Response(self.response)]
+
+    @property
+    def kinds(self) -> list[WordProblemKind]:
+        """The kinds of problem a mixed sheet draws, as ``word_problem_kinds`` returns them."""
+        return word_problem_kinds(self.representations, self.responses, self.steps == "two")
+
+    @property
     def largest_operand(self) -> int:
-        """The largest operand the representation can show: base-ten blocks show at most 599."""
-        if Representation(self.representation) is Representation.BLOCKS:
+        """
+        The largest operand the representation can show: base-ten blocks show at most 599. A mixed
+        sheet's kinds keep their own limits (see ``generate_mixed_word_problems``).
+        """
+        if self.representation == Representation.BLOCKS.value:
             return LARGEST_BLOCKS_OPERAND
         return LARGEST_WORD_PROBLEM_NUMBER
 
     @property
     def shapes(self) -> frozenset[TwoStepShape] | None:
         """
-        The shapes of two-step problem the representation can show: a strip diagram's five, or
-        with text only, all of them.
+        The shapes of two-step problem the representations can show between them: strip diagrams
+        alone, their five, or with text only or equations, all of them.
         """
-        if Representation(self.representation) is Representation.STRIP:
+        if self.representations == [Representation.STRIP]:
             return STRIP_TWO_STEP_SHAPES
         return None
 
     @property
     def most_groups(self) -> int:
-        """The most equal groups the representation can show: a strip diagram has room for 12."""
-        if Representation(self.representation) is Representation.STRIP:
+        """
+        The most equal groups the representations can show: a strip diagram has room for 12.
+        """
+        if Representation.STRIP in self.representations:
             return WORD_PROBLEM_STRIP_LARGEST_GROUPS
         return WORD_PROBLEM_LARGEST_GROUPS
 
@@ -914,12 +967,17 @@ class WordProblemOptions(HeaderOptions):
 
     @model_validator(mode="after")
     def _choices_are_available(self) -> Self:
-        # The page hides the response radios for a representation without choices. Runs before
+        # The page hides the response radios for representations without choices, and with
+        # multiple choice alone greys out the representations to mix that have none. Runs before
         # the title follows the response, which needs a choice title for multiple choice.
-        representation = Representation(self.representation)
-        if self.choices and representation not in CHOICE_NAMES:
-            name = REPRESENTATION_NAMES[representation]
-            raise ValueError(f"response: multiple choice not available with {name}")
+        without = [each for each in self.representations if each not in CHOICE_NAMES]
+        if not without:
+            return self
+        names = _listed([REPRESENTATION_NAMES[each] for each in without])
+        if self.response != "free_response" and len(without) == len(self.representations):
+            raise ValueError(f"response: multiple choice not available with {names}")
+        if self.choices:
+            raise ValueError(f"representation_mix: multiple choice not available with {names}")
         return self
 
     @model_validator(mode="after")
@@ -927,17 +985,35 @@ class WordProblemOptions(HeaderOptions):
         # The default is the default representation's title. A request that picks another, or
         # multiple choice, and gives no title gets its title.
         if "title" not in self.model_fields_set:
-            self.title = word_problems_title(Representation(self.representation), self.choices)
+            if self.representation == "mixed":
+                self.title = WORD_PROBLEMS_NAME
+            else:
+                representation = Representation(self.representation)
+                self.title = word_problems_title(representation, self.choices)
         return self
 
     @model_validator(mode="after")
     def _representation_shows_the_operations(self) -> Self:
-        representation = Representation(self.representation)
-        shown = REPRESENTATION_OPERATIONS[representation]
-        if not shown.issuperset(_operations(self.operations)):
+        # Mixed: every ticked operation needs a representation to show it, and the page greys
+        # out a representation that shows none of them, such as blocks with only multiplication.
+        operations = _operations(self.operations)
+        for representation in self.representations:
+            shown = REPRESENTATION_OPERATIONS[representation]
             names = operations_name([operation for operation in Operation if operation in shown])
+            name = REPRESENTATION_NAMES[representation]
+            if self.representation != "mixed" and not shown.issuperset(operations):
+                raise ValueError(f"operations: {name} show only {names.lower()}")
+            if self.representation == "mixed" and shown.isdisjoint(operations):
+                raise ValueError(f"representation_mix: {name} show only {names.lower()}")
+        shown_by_any = {
+            operation
+            for representation in self.representations
+            for operation in REPRESENTATION_OPERATIONS[representation]
+        }
+        if not shown_by_any.issuperset(operations):
+            missing = [operation for operation in operations if operation not in shown_by_any]
             raise ValueError(
-                f"operations: {REPRESENTATION_NAMES[representation]} show only {names.lower()}"
+                f"operations: no representation ticked shows {operations_name(missing).lower()}"
             )
         return self
 
@@ -945,26 +1021,32 @@ class WordProblemOptions(HeaderOptions):
     def _groups_fit_the_representation(self) -> Self:
         # The page lowers the field's limit for strip diagrams.
         if self.max_groups > self.most_groups:
-            name = REPRESENTATION_NAMES[Representation(self.representation)]
+            name = REPRESENTATION_NAMES[Representation.STRIP]
             raise ValueError(f"max_groups: at most {self.most_groups} with {name}")
         return self
 
     @model_validator(mode="after")
     def _two_steps_are_available(self) -> Self:
-        # Only strip diagrams and text only show two steps. The page hides the steps for the
-        # others.
-        representation = Representation(self.representation)
-        if self.steps == "two" and representation not in TWO_STEP_REPRESENTATIONS:
-            raise ValueError(
-                f"steps: two steps not available with {REPRESENTATION_NAMES[representation]}"
-            )
+        # Only strip diagrams, text only and equations show two steps. The page hides the steps
+        # for the others.
+        # With mixed, the page greys out the representations that can't.
+        without = [each for each in self.representations if each not in TWO_STEP_REPRESENTATIONS]
+        if self.steps == "two" and without:
+            field = "representation_mix" if self.representation == "mixed" else "steps"
+            names = _listed([REPRESENTATION_NAMES[each] for each in without])
+            raise ValueError(f"{field}: two steps not available with {names}")
+        if self.mixed and any(
+            not any(kind[1] is response for kind in self.kinds) for response in self.responses
+        ):
+            # only with mixed responses and two steps: of those, only equations are chosen
+            raise ValueError("response: multiple choice with two steps is only for equations")
         return self
 
     @model_validator(mode="after")
     def _tiles_are_available(self) -> Self:
         # Not built for multiple choice: each choice's letter would need coding as a number. The
         # page greys each out while the other is picked.
-        if self.self_check_tiles and self.choices:
+        if self.self_check_tiles and self.response != "free_response":
             raise ValueError("self_check_tiles: not available with multiple choice")
         return self
 
@@ -973,18 +1055,39 @@ class WordProblemOptions(HeaderOptions):
         if self.self_check_tiles:
             _at_most_one_question_per_tile(self.problems)
         # Any one operation may be drawn for every problem, and with tiles each tile needs a
-        # distinct answer.
+        # distinct answer. Equations to choose from split the operations, or with two steps the
+        # shapes, evenly.
         operations = _operations(self.operations)
         if self.steps == "two":
             _two_steps_can_be_made(operations, self.shapes)
 
         def possible_with(largest: int, groups: int, size: int) -> int:
+            if self.mixed:
+                return count_possible_mixed_word_problems(
+                    operations,
+                    self.kinds,
+                    up_to=self.problems,
+                    two_steps=self.steps == "two",
+                    distinct_answers=self.self_check_tiles,
+                    largest_number=largest,
+                    largest_groups=groups,
+                    largest_size=size,
+                )
+            if self.steps == "two" and self.choices:
+                return count_possible_two_step_equation_choice_problems(
+                    operations,
+                    up_to=self.problems,
+                    largest_number=largest,
+                    largest_groups=groups,
+                    largest_size=size,
+                )
             if self.steps == "two":
                 return count_possible_two_step_problems(
                     operations,
                     distinct_answers=self.self_check_tiles,
                     up_to=self.problems,
-                    largest_number=largest,
+                    largest_number=None,
+                    largest_given=largest,
                     largest_groups=groups,
                     largest_size=size,
                     shapes=self.shapes,
@@ -1005,8 +1108,8 @@ class WordProblemOptions(HeaderOptions):
                 operations,
                 distinct_answers=self.self_check_tiles,
                 up_to=self.problems,
-                largest_number=largest,
-                largest_operand=self.largest_operand,
+                largest_number=None,
+                largest_operand=min(largest, self.largest_operand),
                 largest_groups=groups,
                 largest_size=size,
             )
@@ -1017,10 +1120,11 @@ class WordProblemOptions(HeaderOptions):
             return self
         repeats = "repeated answers" if self.self_check_tiles else "repeats"
         # The limits the count depends on: the largest number for addition and subtraction, and
-        # with two steps, which share a number, for every operation; the groups' number and size
-        # for multiplication and division.
+        # with two steps for division's whole too; the groups' number and size for multiplication
+        # and division.
         raises: dict[str, int | None] = {}
-        if self.steps == "two" or not {Operation.ADD, Operation.SUBTRACT}.isdisjoint(operations):
+        two_step_division = self.steps == "two" and Operation.DIVIDE in operations
+        if two_step_division or not {Operation.ADD, Operation.SUBTRACT}.isdisjoint(operations):
             raises["largest number"] = _smallest_raise(
                 lambda each: possible_with(each, groups, size),
                 self.problems,
@@ -2188,11 +2292,34 @@ def _tile_slots(
 
 
 def _word_problems(options: WordProblemOptions, out: BinaryIO) -> None:
+    if options.mixed:
+        mixed = generate_mixed_word_problems(
+            options.problems,
+            _operations(options.operations),
+            options.kinds,
+            two_steps=options.steps == "two",
+            distinct_answers=options.self_check_tiles,
+            largest_number=options.max_number,
+            largest_groups=options.max_groups,
+            largest_size=options.max_group_size,
+        )
+        _render_word_problems(
+            options, [question for _, question in mixed], [each for each, _ in mixed], out
+        )
+        return
     representation = Representation(options.representation)
     questions: Sequence[WordProblemQuestion]
     if options.choices and representation is Representation.NUMBER_LINE:
         questions = generate_number_line_choice_problems(
             options.problems, _operations(options.operations), largest_number=options.max_number
+        )
+    elif options.choices and options.steps == "two":
+        questions = generate_two_step_equation_choice_problems(
+            options.problems,
+            _operations(options.operations),
+            largest_number=options.max_number,
+            largest_groups=options.max_groups,
+            largest_size=options.max_group_size,
         )
     elif options.choices:
         questions = generate_equation_choice_problems(
@@ -2207,7 +2334,8 @@ def _word_problems(options: WordProblemOptions, out: BinaryIO) -> None:
             options.problems,
             _operations(options.operations),
             distinct_answers=options.self_check_tiles,
-            largest_number=options.max_number,
+            largest_number=None,
+            largest_given=options.max_number,
             largest_groups=options.max_groups,
             largest_size=options.max_group_size,
             shapes=options.shapes,
@@ -2217,14 +2345,21 @@ def _word_problems(options: WordProblemOptions, out: BinaryIO) -> None:
             options.problems,
             _operations(options.operations),
             distinct_answers=options.self_check_tiles,
-            # No comparisons on strip or blocks sheets: a strip shows parts making a whole, and
-            # blocks show the first number with the second crossed out, taken away.
-            comparisons=representation not in (Representation.STRIP, Representation.BLOCKS),
-            largest_number=options.max_number,
-            largest_operand=options.largest_operand,
+            comparisons=representation in COMPARISON_REPRESENTATIONS,
+            largest_number=None,
+            largest_operand=min(options.max_number, options.largest_operand),
             largest_groups=options.max_groups,
             largest_size=options.max_group_size,
         )
+    _render_word_problems(options, questions, representation, out)
+
+
+def _render_word_problems(
+    options: WordProblemOptions,
+    questions: Sequence[WordProblemQuestion],
+    representation: Representation | Sequence[Representation],
+    out: BinaryIO,
+) -> None:
     render_word_problems_worksheet(
         questions=questions,
         path=out,

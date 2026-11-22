@@ -6,6 +6,7 @@ import re
 import pytest
 from django.test import Client
 
+from core.basic_operations.representation import TWO_STEP_REPRESENTATIONS
 from tests.data import MINUS, TIMES
 
 
@@ -75,11 +76,17 @@ def test_pages(client: Client) -> None:
                 b"max_groups",
                 b"max_group_size",
                 b"representation",
+                b"representation_mix",  # a checkbox for each representation, under it
+                b"representation_mix",
+                b"representation_mix",
+                b"representation_mix",
+                b"representation_mix",
                 b"steps",  # a radio button for each choice
                 b"steps",
                 b"no_hints",
                 b"black_and_white",
                 b"response",  # a radio button for each choice
+                b"response",
                 b"response",
                 b"work_box",
                 b"answer_key",
@@ -526,6 +533,7 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
             [
                 (b"free_response", b" checked", b"Free response"),
                 (b"multiple_choice", b"", b"Multiple choice"),
+                (b"mixed", b"", b"Mixed"),
             ],
         ),
         # the strip choice form's Show: the wording by default
@@ -585,6 +593,7 @@ def test_radio_buttons_send_each_choice_s_id_and_show_its_name(
                 (b"number_line", b"", b"Number Lines"),
                 (b"blocks", b"", b"Base-Ten Blocks"),
                 (b"equation", b"", b"Equations"),
+                (b"mixed", b"", b"Mixed"),
             ],
         ),
         (
@@ -619,8 +628,8 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
     """
     Each dropdown option sends its ID and displays its name, with the expected default selected.
 
-    Representation defaults to text only, and also offers strip diagrams. From defaults to standard
-    and To to expanded, and each also offers mixed.
+    Representation defaults to text only, and also offers strip diagrams and mixed. From defaults
+    to standard and To to expanded, and each also offers mixed.
     """
     content = client.get(url).content
     select = re.search(
@@ -673,6 +682,20 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
                 (b"subtract", b" checked", b"Subtraction"),
                 (b"multiply", b" checked", b"Multiplication"),
                 (b"divide", b" checked", b"Division"),
+            ],
+            True,
+        ),
+        # every representation by default for mixed on the word problems form, with an All box
+        (
+            "/worksheets/basic-operations/word-problems/",
+            b"/api/worksheets/word_problems.pdf",
+            "representation_mix",
+            [
+                (b"strip", b" checked", b"Strip Diagrams"),
+                (b"none", b" checked", b"Text Only"),
+                (b"number_line", b" checked", b"Number Lines"),
+                (b"blocks", b" checked", b"Base-Ten Blocks"),
+                (b"equation", b" checked", b"Equations"),
             ],
             True,
         ),
@@ -1803,4 +1826,16 @@ def test_fields_for_some_operations_name_them(
     content = client.get(url).content
     labels = rb'<label data-operations="([^"]+)">[^<]*<input type="number" name="([^"]+)"'
     assert re.findall(labels, content) == expected
-    assert (b'representation.value === "strip" ? 12 : mostGroups' in content) is strip_limit
+    assert (b'drawn().includes("strip") ? 12 : mostGroups' in content) is strip_limit
+
+
+def test_the_steps_radios_show_for_the_representations_with_two_steps(client: Client) -> None:
+    """
+    The word problems page's script shows the Steps radios only while a representation that can
+    show two steps, one of ``TWO_STEP_REPRESENTATIONS``, is picked. Whether the script works is
+    checked manually in a browser.
+    """
+    content = client.get("/worksheets/basic-operations/word-problems/").content
+    found = re.search(rb"const twoStepRepresentations = \[([^\]]*)\]", content)
+    shown = set(re.findall(rb'"([a-z_]+)"', found.group(1))) if found else set()
+    assert shown == {representation.value.encode() for representation in TWO_STEP_REPRESENTATIONS}

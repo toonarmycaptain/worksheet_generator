@@ -22,7 +22,9 @@ The PDF tests replace these functions:
 - ``random.choice`` returns the ``chosen`` values listed in the test case, and raises
   ``ValueError`` for a value its call did not offer. They are, for each two-step problem, the
   number its first step carries and then each step, followed by the object of each problem, and,
-  for number lines to choose from, the side of the answer that each wrong landing tries first.
+  for number lines to choose from, the side of the answer that each wrong landing tries first,
+  or for two-step equations to choose from, ``LAST`` for each problem's pair of mistakes and its
+  set of wrong equations; both for the request and again for the expected PDF.
 - ``conventional_slot_of``, which gives the slots of the simple tile pattern, returns the slots
   of a real case.
 """
@@ -39,9 +41,10 @@ from core.basic_operations.data import (
     TwoStepShape,
     Unknown,
 )
-from core.basic_operations.representation import Representation
+from core.basic_operations.representation import Representation, Response
 from tests.data import REAL_CASE_SLOTS
 from tests.helpers import (
+    LAST,
     choice_returns,
     choices_returns,
     conventional_slot_of_returns,
@@ -556,7 +559,8 @@ ADD = BasicOperationQuestionData(
             },
             "word_problems-sheet-a.pdf",
         ),
-        # two steps only with strip diagrams or text only, and every shape adds or subtracts
+        # two steps only with strip diagrams, text only or equations, and every strip shape adds
+        # or subtracts
         (
             "/api/worksheets/word_problems.pdf?representation=number_line&steps=two",
             [],
@@ -578,12 +582,143 @@ ADD = BasicOperationQuestionData(
             None,
         ),
         (
-            "/api/worksheets/word_problems.pdf?representation=equation&steps=two",
+            # equations show two steps: written, with an equation line under the problem
+            "/api/worksheets/word_problems.pdf?representation=equation&steps=two&problems=1"
+            "&sheet=1ab2c3",
+            [(Operation.SUBTRACT, Operation.SUBTRACT, Unknown.FIRST)],
+            [],
+            [
+                20,
+                BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                BasicOperationQuestionData(Operation.SUBTRACT, (20, 8), 12),
+                ("card", "cards"),
+            ],
+            200,
+            None,
+            {
+                "questions": [
+                    TwoStepQuestionData(
+                        (
+                            BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
+                            BasicOperationQuestionData(Operation.SUBTRACT, (20, 8), 12),
+                        ),
+                        Unknown.FIRST,
+                        12,
+                        "A box held 25 cards. Maria took out 5, and then Jamal took out 8. "
+                        "How many cards are left in the box?",
+                    ),
+                ],
+                "representation": Representation.EQUATION,
+                "choices": False,
+                "hints": True,
+                "black_and_white": False,
+                "work_box": False,
+                "slot_of": None,
+                "answer_key": False,
+                "title": "Word Problems — Equations",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        (
+            # and to choose from, with the key: two problems split among the eight shapes of + and
+            # -, so the last two, as ``sample`` keeps their order, then shuffled. Each has its
+            # letter, c for cards, and its wrong equations use + and - only.
+            "/api/worksheets/word_problems.pdf?representation=equation&response=multiple_choice"
+            "&steps=two&problems=2&answer_key=true&sheet=1ab2c3",
+            [],
+            [],
+            [
+                8,
+                BasicOperationQuestionData(Operation.SUBTRACT, (9, 1), 8),
+                BasicOperationQuestionData(Operation.SUBTRACT, (20, 8), 12),
+                7,
+                BasicOperationQuestionData(Operation.SUBTRACT, (9, 2), 7),
+                BasicOperationQuestionData(Operation.ADD, (1, 7), 8),
+                ("card", "cards"),
+                ("card", "cards"),
+                LAST,
+                LAST,
+                LAST,
+                LAST,
+                LAST,
+                LAST,
+                LAST,
+                LAST,
+            ],
+            200,
+            None,
+            {
+                "questions": [
+                    TwoStepQuestionData(
+                        (
+                            BasicOperationQuestionData(Operation.SUBTRACT, (9, 1), 8),
+                            BasicOperationQuestionData(Operation.SUBTRACT, (20, 8), 12),
+                        ),
+                        Unknown.SECOND,
+                        12,
+                        "A class wants to collect 20 cards. They collected 9, but 1 was lost. "
+                        "How many more cards do they need?",
+                    ),
+                    TwoStepQuestionData(
+                        (
+                            BasicOperationQuestionData(Operation.SUBTRACT, (9, 2), 7),
+                            BasicOperationQuestionData(Operation.ADD, (1, 7), 8),
+                        ),
+                        Unknown.SECOND,
+                        8,
+                        "There is 1 card in the red box. The blue box had 9 cards, and 2 were "
+                        "taken out. How many cards are in the two boxes now?",
+                    ),
+                ],
+                "representation": Representation.EQUATION,
+                "choices": True,
+                "hints": True,
+                "black_and_white": False,
+                "work_box": False,
+                "slot_of": None,
+                "answer_key": True,
+                "title": "Word Problems — Equation multiple choice",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        (
+            # Multiplication alone with 2 groups of up to 5: c x (a x b) needs two numbers of
+            # groups, both 2, so only (2 x b) x c, with b and c two different numbers from 3 to 5,
+            # 6. The largest number caps none of these numbers, so it isn't named.
+            "/api/worksheets/word_problems.pdf?representation=equation&response=multiple_choice"
+            "&steps=two&operations=multiply&max_groups=2&max_group_size=5&problems=20",
             [],
             [],
             [],
             422,
-            refused("steps: two steps not available with Equations"),
+            refused(
+                "problems: at most 6 without repeats for that largest number of groups and largest "
+                "group size. Lower problems to 6, or raise the largest number of groups to 4, or "
+                "raise the largest group size to 7."
+            ),
+            None,
+            None,
+        ),
+        (
+            # Within 3 every addition adds 1, 2 and 3, and multiplying them gives the same answer,
+            # so none has fair equations to choose from, and with 2 groups of 2 every
+            # multiplication repeats a number; raising any of the three to 4 is enough.
+            "/api/worksheets/word_problems.pdf?representation=equation&response=multiple_choice"
+            "&steps=two&operations=add&operations=multiply&max_number=3&max_groups=2"
+            "&max_group_size=2&problems=2",
+            [],
+            [],
+            [],
+            422,
+            refused(
+                "problems: none possible for that largest number, largest number of groups and "
+                "largest group size. Raise the largest number to 4, or raise the largest number "
+                "of groups to 4, or raise the largest group size to 4."
+            ),
             None,
             None,
         ),
@@ -640,16 +775,17 @@ ADD = BasicOperationQuestionData(
             "word_problems-sheet-a.pdf",
         ),
         (
-            # with tiles, three different numbers within 10 make only the answers 6 to 10
+            # with tiles, three different numbers up to 6, the answer no longer capped, make only
+            # the answers 6 to 15
             "/api/worksheets/word_problems.pdf?representation=none&steps=two&operations=add"
-            "&max_number=10&self_check_tiles=true&problems=12",
+            "&max_number=6&self_check_tiles=true&problems=12",
             [],
             [],
             [],
             422,
             refused(
-                "problems: at most 5 without repeated answers for that largest number. Lower "
-                "problems to 5, or raise the largest number to 17."
+                "problems: at most 10 without repeated answers for that largest number. Lower "
+                "problems to 10, or raise the largest number to 7."
             ),
             None,
             None,
@@ -897,17 +1033,17 @@ ADD = BasicOperationQuestionData(
             None,
         ),
         (
-            # Split evenly, addition needs 3 of 6 problems, and a largest number of 3 allows 2
-            # sums. Text only would allow 2 problems in all.
+            # Split evenly, addition needs 6 of 11 problems, and numbers up to 3 make 5 sums, 2 to
+            # 6. Text only would allow 5 problems in all.
             "/api/worksheets/word_problems.pdf?representation=equation&response=multiple_choice"
-            "&operations=add&operations=multiply&problems=6&max_number=3",
+            "&operations=add&operations=multiply&problems=11&max_number=3",
             [],
             [],
             [],
             422,
             refused(
-                "problems: at most 4 without repeats for that largest number, largest number of "
-                "groups and largest group size. Lower problems to 4, or raise the largest number "
+                "problems: at most 10 without repeats for that largest number, largest number of "
+                "groups and largest group size. Lower problems to 10, or raise the largest number "
                 "to 4."
             ),
             None,
@@ -962,30 +1098,32 @@ ADD = BasicOperationQuestionData(
             None,
         ),
         (
-            # an addition's numbers differ, so a largest number of 3 allows only 2 + 1
+            # an addition's numbers differ, so a largest number of 3 allows only 2 + 1, 3 + 1 and
+            # 3 + 2
             "/api/worksheets/word_problems.pdf?representation=number_line"
-            "&response=multiple_choice&operations=add&problems=2&max_number=3",
+            "&response=multiple_choice&operations=add&problems=4&max_number=3",
             [],
             [],
             [],
             422,
             refused(
-                "problems: at most 1 without repeats for that largest number. Lower problems to 1, "
+                "problems: at most 3 without repeats for that largest number. Lower problems to 3, "
                 "or raise the largest number to 4."
             ),
             None,
             None,
         ),
         (
-            # and 2 allows none, so lowering the problems can't help
+            # and 2 allows only 2 + 1
             "/api/worksheets/word_problems.pdf?representation=number_line"
-            "&response=multiple_choice&operations=add&problems=1&max_number=2",
+            "&response=multiple_choice&operations=add&problems=2&max_number=2",
             [],
             [],
             [],
             422,
             refused(
-                "problems: none possible for that largest number. Raise the largest number to 3."
+                "problems: at most 1 without repeats for that largest number. Lower problems to 1, "
+                "or raise the largest number to 3."
             ),
             None,
             None,
@@ -1090,16 +1228,24 @@ ADD = BasicOperationQuestionData(
             "word_problems-sheet-a.pdf",
         ),
         (
-            # a largest number of 99 caps the sum too, so 60 + 50 is redrawn
+            # a largest number of 99 caps the numbers given, not the sum, so 60 + 50 = 110 stands
             "/api/worksheets/word_problems.pdf?representation=strip&operations=add&problems=1"
             "&max_number=99&sheet=1ab2c3",
             [Operation.ADD],
-            [60, 50, 47, 25],
+            [60, 50],
             [("card", "cards")],
             200,
             None,
             {
-                "questions": [ADD],
+                "questions": [
+                    BasicOperationQuestionData(
+                        Operation.ADD,
+                        (60, 50),
+                        110,
+                        "A basket held 60 cards. Maria added 50 more. "
+                        "How many cards are in the basket now?",
+                    )
+                ],
                 "representation": Representation.STRIP,
                 "choices": False,
                 "hints": True,
@@ -1129,17 +1275,18 @@ ADD = BasicOperationQuestionData(
             None,
         ),
         (
-            # with multiplication too, raising the largest number helps only the addition
-            "/api/worksheets/word_problems.pdf?operations=add&operations=multiply&problems=4"
+            # with multiplication too, raising the largest number helps only the addition, whose
+            # numbers up to 3 make 5 sums, 2 to 6
+            "/api/worksheets/word_problems.pdf?operations=add&operations=multiply&problems=6"
             "&max_number=3",
             [],
             [],
             [],
             422,
             refused(
-                "problems: at most 2 without repeats for that largest number, largest number of "
-                "groups and largest group size. Lower problems to 2, or raise the largest number "
-                "to 5."
+                "problems: at most 5 without repeats for that largest number, largest number of "
+                "groups and largest group size. Lower problems to 5, or raise the largest number "
+                "to 4."
             ),
             None,
             None,
@@ -1363,7 +1510,9 @@ ADD = BasicOperationQuestionData(
             None,
         ),
         (
-            # two steps share a number, so the largest number counts for multiplication too
+            # With two steps the largest number caps a division's whole. Multiplying twice, which
+            # within 3 groups of 4 needs 2 x 3 x 4 in some order, always makes 24, so with tiles
+            # the sheet allows 1.
             "/api/worksheets/word_problems.pdf?operations=multiply&operations=divide&steps=two"
             "&max_groups=3&max_group_size=4&self_check_tiles=true&problems=12",
             [],
@@ -1371,9 +1520,9 @@ ADD = BasicOperationQuestionData(
             [],
             422,
             refused(
-                "problems: at most 3 without repeated answers for that largest number, largest "
-                "number of groups and largest group size. Lower problems to 3, or raise the "
-                "largest group size to 30."
+                "problems: at most 1 without repeated answers for that largest number, largest "
+                "number of groups and largest group size. Lower problems to 1, or raise the "
+                "largest group size to 24."
             ),
             None,
             None,
@@ -1451,6 +1600,137 @@ ADD = BasicOperationQuestionData(
                     },
                 ],
             },
+            None,
+            None,
+        ),
+        # Mixed: one strip addition, as the only representation ticked shows it, worded once more
+        # with the sheet, and titled "Word Problems". Each draw of the object is scripted.
+        (
+            "/api/worksheets/word_problems.pdf?representation=mixed&representation_mix=strip"
+            "&operations=add&problems=1&sheet=1ab2c3",
+            [Operation.ADD],
+            [47, 25],
+            [
+                (Representation.STRIP, Response.FREE_RESPONSE),
+                ("card", "cards"),
+                ("card", "cards"),
+            ],
+            200,
+            None,
+            {
+                "questions": [ADD],
+                "representation": [Representation.STRIP],
+                "choices": False,
+                "hints": True,
+                "black_and_white": False,
+                "work_box": False,
+                "slot_of": None,
+                "answer_key": False,
+                "title": "Word Problems",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        # mixed refuses a representation that shows none of the operations, as the page greys
+        # it out
+        (
+            "/api/worksheets/word_problems.pdf?representation=mixed&representation_mix=blocks"
+            "&representation_mix=strip&operations=multiply",
+            [],
+            [],
+            [],
+            422,
+            refused("representation_mix: Base-Ten Blocks show only addition and subtraction"),
+            None,
+            None,
+        ),
+        # and an operation no representation ticked shows
+        (
+            "/api/worksheets/word_problems.pdf?representation=mixed&representation_mix=number_line"
+            "&representation_mix=blocks&operations=add&operations=multiply",
+            [],
+            [],
+            [],
+            422,
+            refused("operations: no representation ticked shows multiplication"),
+            None,
+            None,
+        ),
+        # multiple choice alone needs every representation ticked to have choices
+        (
+            "/api/worksheets/word_problems.pdf?representation=mixed&response=multiple_choice"
+            "&representation_mix=strip&representation_mix=equation",
+            [],
+            [],
+            [],
+            422,
+            refused("representation_mix: multiple choice not available with Strip Diagrams"),
+            None,
+            None,
+        ),
+        # mixed answering needs one of them to
+        (
+            "/api/worksheets/word_problems.pdf?representation=mixed&response=mixed"
+            "&representation_mix=strip&representation_mix=none",
+            [],
+            [],
+            [],
+            422,
+            refused("response: multiple choice not available with Strip Diagrams and Text Only"),
+            None,
+            None,
+        ),
+        # two steps need every representation ticked to show them
+        (
+            "/api/worksheets/word_problems.pdf?representation=mixed&steps=two"
+            "&representation_mix=strip&representation_mix=number_line",
+            [],
+            [],
+            [],
+            422,
+            refused("representation_mix: two steps not available with Number Lines"),
+            None,
+            None,
+        ),
+        # Mixed answering, two steps of addition alone: equations to choose from need a number
+        # whose digits reversed make another, the smallest 12, so within 3 the half answered by
+        # choosing has none, though the written half has some.
+        (
+            "/api/worksheets/word_problems.pdf?representation=mixed&response=mixed&steps=two"
+            "&representation_mix=strip&representation_mix=none&representation_mix=equation"
+            "&operations=add&max_number=3&problems=2",
+            [],
+            [],
+            [],
+            422,
+            refused(
+                "problems: none possible for that largest number. Raise the largest number to 12."
+            ),
+            None,
+            None,
+        ),
+        # no tiles with mixed answering, as with multiple choice
+        (
+            "/api/worksheets/word_problems.pdf?representation=equation&response=mixed"
+            "&self_check_tiles=true&problems=12",
+            [],
+            [],
+            [],
+            422,
+            refused("self_check_tiles: not available with multiple choice"),
+            None,
+            None,
+        ),
+        # a strip among those mixed limits the groups to 12
+        (
+            "/api/worksheets/word_problems.pdf?representation=mixed&representation_mix=strip"
+            "&representation_mix=none&operations=multiply&max_groups=13",
+            [],
+            [],
+            [],
+            422,
+            refused("max_groups: at most 12 with Strip Diagrams"),
             None,
             None,
         ),

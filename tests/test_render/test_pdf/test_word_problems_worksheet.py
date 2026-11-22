@@ -834,13 +834,83 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             TEXT_ONLY_TITLE,
             "Sheet A",
         ),
+        # Equations: written, an equation line under each problem, and the key has each step.
+        (
+            "two_steps_equation_answer_key",
+            TWO_STEPS,
+            Representation.EQUATION,
+            False,
+            True,
+            False,
+            False,
+            None,
+            True,
+            EQUATION_TITLE,
+            "Sheet A",
+        ),
+        # To choose from, in rows of two, with the letter instruction, each problem's letter
+        # from its question (m for marbles), and no hint. With all four operations ticked the
+        # story's order always works. The key has each step and the letter.
+        (
+            "two_steps_equation_choice_answer_key",
+            TWO_STEPS,
+            Representation.EQUATION,
+            True,
+            True,
+            False,
+            False,
+            None,
+            True,
+            EQUATION_CHOICE_TITLE,
+            "Sheet A",
+        ),
+        # The widest equations, (999 - 879) ÷ 6 = b. With +, - and ÷ ticked, 1 - 2 and 1 ÷ 2 are
+        # ruled out at a glance and moving the brackets gives the answer, so every choice has
+        # 2 + 1 the other way round.
+        (
+            "two_steps_equation_choice_at_their_limits",
+            TWO_STEPS_AT_THEIR_LIMITS,
+            Representation.EQUATION,
+            True,
+            True,
+            False,
+            False,
+            None,
+            False,
+            EQUATION_CHOICE_TITLE,
+            "Sheet A",
+        ),
+        # A mixed sheet: each problem its own representation, written or chosen. The instruction
+        # has a line for each representation and way of answering, in Representation's order,
+        # written first; the blocks' key shows as one problem has blocks; number lines have no
+        # answer line, and the chosen problems no hint.
+        (
+            "mixed_representations_and_responses",
+            ADD_AND_SUBTRACT + MULTIPLY_AND_DIVIDE + ADD_AND_SUBTRACT,
+            [
+                Representation.BLOCKS,
+                Representation.NUMBER_LINE,
+                Representation.STRIP,
+                Representation.EQUATION,
+                Representation.NONE,
+                Representation.NUMBER_LINE,
+            ],
+            [False, False, False, True, False, True],
+            True,
+            False,
+            True,
+            None,
+            True,
+            TEXT_ONLY_TITLE,
+            "Sheet A",
+        ),
     ],
 )
 def test_pdf_draws_the_expected_text(
     case_name: str,
     questions: list[BasicOperationQuestionData | TwoStepQuestionData],
-    representation: Representation,
-    choices: bool,
+    representation: Representation | list[Representation],
+    choices: bool | list[bool],
     hints: bool,
     black_and_white: bool,
     work_box: bool,
@@ -886,16 +956,22 @@ def test_pdf_draws_the_expected_text(
     [
         (
             Representation.NUMBER_LINE,
-            "Only strip diagrams and text only show two-step problems.",
+            "Only strip diagrams, text only and equations show two-step problems.",
         ),
-        (Representation.BLOCKS, "Only strip diagrams and text only show two-step problems."),
         (
-            Representation.EQUATION,
-            "Only strip diagrams and text only show two-step problems.",
+            Representation.BLOCKS,
+            "Only strip diagrams, text only and equations show two-step problems.",
+        ),
+        # on a mixed sheet, the problem's own representation
+        (
+            [Representation.NUMBER_LINE],
+            "Only strip diagrams, text only and equations show two-step problems.",
         ),
     ],
 )
-def test_word_problems_worksheet_errors(representation: Representation, message: str) -> None:
+def test_word_problems_worksheet_errors(
+    representation: Representation | list[Representation], message: str
+) -> None:
     """A two-step problem with a representation that shows only one step raises ``ValueError``."""
     with pytest.raises(ValueError) as error:
         render_word_problems(
