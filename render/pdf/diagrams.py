@@ -169,7 +169,7 @@ def draw_strip(
     pdf.setFillColor("black")
     pdf.setFont(BOLD_FONT, PART_LABEL_SIZE)
     label_y = bottom + STRIP_BAR_HEIGHT / 2 - PART_LABEL_SIZE / 3
-    pdf.drawCentredString((x + split_x) / 2, label_y, str(left))
+    pdf.drawCentredString((x + split_x) / 2, label_y, f"{left:,}")
     pdf.drawCentredString((split_x + end_x) / 2, label_y, _label(right))
 
     pdf.restoreState()
@@ -294,7 +294,7 @@ def _draw_centred_label(
 
 def _label(value: int | None) -> str:
     """Return how a strip shows a value: the number, or "?" if it's unknown."""
-    return UNKNOWN_LABEL if value is None else str(value)
+    return UNKNOWN_LABEL if value is None else f"{value:,}"
 
 
 def _draw_whole(pdf: Canvas, x: float, top: float, label: str, width: float) -> None:
@@ -331,7 +331,7 @@ def draw_number_line(pdf: Canvas, x: float, top: float, start: int, jumps: Seque
     # the start under its tick, and a box under each landing
     pdf.setFillColor("black")
     pdf.setFont(BOLD_FONT, 11)
-    pdf.drawCentredString(ticks[0], line_y - 17, str(start))
+    pdf.drawCentredString(ticks[0], line_y - 17, f"{start:,}")
     pdf.setStrokeColor(LANDING_BOX_COLOUR)
     pdf.setLineWidth(1)
     box_bottom = line_y - LANDING_BOX_DROP - LANDING_BOX_HEIGHT
@@ -382,7 +382,7 @@ def draw_two_jump_line(
     pdf.setFillColor("black")
     pdf.setFont(BOLD_FONT, TWO_JUMP_LABEL_SIZE)
     for value, tick in tick_of.items():
-        pdf.drawCentredString(tick, line_y - TWO_JUMP_NUMBER_DROP, str(value))
+        pdf.drawCentredString(tick, line_y - TWO_JUMP_NUMBER_DROP, f"{value:,}")
 
     pdf.setStrokeColor(JUMP_COLOUR)
     pdf.setFillColor(JUMP_COLOUR)
@@ -467,7 +467,7 @@ def _draw_line(pdf: Canvas, x: float, width: float, line_y: float, ticks: Sequen
 def _jump_label(jump: int) -> str:
     """Return a jump's label, its sign and size: "+ 25", or "- 25" for a jump back."""
     sign = SYMBOLS[Operation.ADD if jump > 0 else Operation.SUBTRACT]
-    return f"{sign} {abs(jump)}"
+    return f"{sign} {abs(jump):,}"
 
 
 def _draw_jump(

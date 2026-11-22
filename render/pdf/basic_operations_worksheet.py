@@ -124,5 +124,5 @@ def _draw_question(
     column_width = TEXT_WIDTH / len(question.response.options)
     for column, value in enumerate(question.response.options):
         x = MARGIN + TEXT_INDENT + column * column_width
-        pdf.drawString(x, y - 6, f"{choice_label(column)} {value}")
+        pdf.drawString(x, y - 6, f"{choice_label(column)} {value:,}")
     return y - OPTIONS_HEIGHT

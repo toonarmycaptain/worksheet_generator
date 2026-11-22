@@ -369,14 +369,15 @@ TWO_STEP_TEMPLATES: dict[TwoStepShape, tuple[str, ...]] = {
 class _Count(int):
     """
     A number in a template, which also gives the word that agrees with it: ``{a:was|were}`` is
-    "was" when ``a`` is 1, and "were" otherwise. Any other format spec formats the number.
+    "was" when ``a`` is 1, and "were" otherwise. Any other format spec formats the number, and
+    none writes it with a comma in 1,000 and up.
     """
 
     def __format__(self, spec: str) -> str:
         if "|" in spec:
             singular, plural = spec.split("|")
             return singular if self == 1 else plural
-        return super().__format__(spec)
+        return super().__format__(spec or ",")
 
 
 def word_problem_texts(

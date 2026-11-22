@@ -53,8 +53,9 @@ def operations_name(operations: Sequence[Operation]) -> str:
 
 
 def equation(data: BasicOperationQuestionData) -> str:
+    """Return the question's equation, as in 47 + 25, with a comma in 1,000 and up."""
     first, second = data.operands
-    return f"{first} {SYMBOLS[data.operation]} {second}"
+    return f"{first:,} {SYMBOLS[data.operation]} {second:,}"
 
 
 def stem(data: BasicOperationQuestionData | TwoStepQuestionData) -> str:
@@ -74,13 +75,15 @@ def _equation_stem(data: BasicOperationQuestionData | TwoStepQuestionData) -> st
     first, second = data.steps
     bracketed = f"({equation(first)})"
     left, right = second.operands
-    operands = (bracketed, right) if data.carried is Unknown.FIRST else (left, bracketed)
+    operands = (
+        (bracketed, f"{right:,}") if data.carried is Unknown.FIRST else (f"{left:,}", bracketed)
+    )
     return f"{operands[0]} {SYMBOLS[second.operation]} {operands[1]} = ?"
 
 
 def solved_equation(data: BasicOperationQuestionData) -> str:
     """Return the question's equation with its answer, as in 47 + 25 = 72."""
-    return f"{equation(data)} = {data.answer}"
+    return f"{equation(data)} = {data.answer:,}"
 
 
 def solved_steps(data: TwoStepQuestionData) -> str:
@@ -90,7 +93,9 @@ def solved_steps(data: TwoStepQuestionData) -> str:
 
 def basic_operation_tile_question(data: BasicOperationQuestionData) -> TileQuestion:
     """Convert the question to a ``TileQuestion`` for the self-check tiles sheet."""
-    return TileQuestion(prompt=stem(data), answer=str(data.answer), solution=solved_equation(data))
+    return TileQuestion(
+        prompt=stem(data), answer=f"{data.answer:,}", solution=solved_equation(data)
+    )
 
 
 def missing_number_equation(data: MissingNumberQuestionData, missing: int | str = BLANK) -> str:
@@ -98,24 +103,26 @@ def missing_number_equation(data: MissingNumberQuestionData, missing: int | str 
     Return the equation with ``missing`` in place of its missing operand.
 
     By default the gap is a ``BLANK`` (□ ÷ 4 = 7); passing the answer gives the completed
-    equation (28 ÷ 4 = 7).
+    equation (28 ÷ 4 = 7). Numbers of 1,000 and up have a comma.
     """
-    operands = (missing, data.known) if data.unknown is Unknown.FIRST else (data.known, missing)
-    return f"{operands[0]} {SYMBOLS[data.operation]} {operands[1]} = {data.result}"
+    shown = f"{missing:,}" if isinstance(missing, int) else missing
+    known = f"{data.known:,}"
+    operands = (shown, known) if data.unknown is Unknown.FIRST else (known, shown)
+    return f"{operands[0]} {SYMBOLS[data.operation]} {operands[1]} = {data.result:,}"
 
 
 def missing_number_tile_question(data: MissingNumberQuestionData) -> TileQuestion:
     """Convert the equation to a ``TileQuestion``, with a square for the missing number."""
     return TileQuestion(
         prompt=missing_number_equation(data),
-        answer=str(data.answer),
+        answer=f"{data.answer:,}",
         solution=missing_number_equation(data, data.answer),
     )
 
 
 def two_step_tile_question(data: TwoStepQuestionData) -> TileQuestion:
     """Convert the two-step question to a ``TileQuestion`` for the self-check tiles sheet."""
-    return TileQuestion(prompt=stem(data), answer=str(data.answer), solution=solved_steps(data))
+    return TileQuestion(prompt=stem(data), answer=f"{data.answer:,}", solution=solved_steps(data))
 
 
 class Representation(StrEnum):
@@ -479,7 +486,7 @@ def _operation_equation(operation: Operation, data: BasicOperationQuestionData) 
             numbers = other, groups
         case _:
             assert_never(operation)
-    return f"{numbers[0]} {SYMBOLS[operation]} {numbers[1]} = {BLANK}"
+    return f"{numbers[0]:,} {SYMBOLS[operation]} {numbers[1]:,} = {BLANK}"
 
 
 STRIP_CHOICE_NAME = (
