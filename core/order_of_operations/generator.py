@@ -668,7 +668,13 @@ def _find_error_question(
     and half the time the error's step, with a wrong reason.
     """
     level = draw.level()
-    limits = draw.limits(level, LONG_OPERATIONS, sign_before_implied=draw.settings.implied)
+    # Every step works an operation or more, so an expression too short for the error's step
+    # could never be drawn with it: one operation for each step before the error, the error's,
+    # and one for each step after it, or in the last step, a line of two operations or more to
+    # go wrong in. Drawing only long enough expressions leaves the others' chances as they were.
+    fewest = total + 1 if error == total else total
+    operations = range(max(fewest, LONG_OPERATIONS.start), LONG_OPERATIONS.stop)
+    limits = draw.limits(level, operations, sign_before_implied=draw.settings.implied)
     expression = random_expression(limits)
     made = _wrong_working(expression, limits, total, error)
     if made is None:
