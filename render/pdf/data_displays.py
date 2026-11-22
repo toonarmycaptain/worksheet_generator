@@ -1,6 +1,7 @@
 """
-Displays of data sets, as plain functions over a canvas: frequency tables, pictographs, bar
-graphs and dot plots of categories, and lists and number-line dot plots of numbers.
+Displays of data sets, as plain functions over a canvas: frequency tables, tally tables,
+pictographs, bar graphs (with bars up or across) and dot plots of categories, and lists and
+number-line dot plots of numbers.
 
 ``draw_display`` fills a panel, given its top-left corner, width and height. Every word it draws
 comes from ``core.discrete_data.representation``. A display to complete leaves out the counts at
@@ -40,6 +41,12 @@ BODY_DROP = 16  # from the panel's top down to the display under the title
 TABLE_WIDTH = 200  # at most; a table is centred in its panel
 TABLE_LABEL_SHARE = 0.45  # of the table's width, for the categories' column
 TABLE_ROW_HEIGHT = 20  # at most
+TALLY_HEADER = "Tally"
+TALLY_LABEL_SHARE = 0.36  # of a tally table's width, for the categories' column
+TALLY_STROKE_GAP = 3.2  # between tally marks, at most
+TALLY_GROUP_GAP = 1.6  # between groups of five, as a share of the gap between marks
+TALLY_HEIGHT = 0.6  # of a row's height
+TALLY_PADDING = 6  # inside a tally cell, on each side
 
 PICTOGRAPH_LABEL_WIDTH = 66
 PICTOGRAPH_ROW_HEIGHT = 24  # at most
@@ -49,6 +56,7 @@ KEY_LABEL = "Key:"
 KEY_LABEL_WIDTH = 26  # from the key's left edge to its symbol
 
 BAR_AXIS_WIDTH = 36  # left of the axis, for its numbers and title
+BAR_LABEL_WIDTH = 58  # left of a horizontal bar graph's axis, for its categories
 BAR_SHARE = 0.6  # of each category's slot, for its bar
 SMALLEST_INTERVAL_HEIGHT = 9  # a smaller interval labels every other line
 
@@ -90,16 +98,20 @@ def draw_display(
     leaving out the counts at ``blanks``. ``list_style`` is for a list.
 
     Raises ``ValueError`` if ``display`` can't show ``dataset``: a categorical data set is shown
-    in a table, pictograph, bar graph or dot plot, and a numerical one in a list or a number-line
-    dot plot.
+    in a table, tally table, pictograph, bar graph or dot plot, and a numerical one in a list or
+    a number-line dot plot.
     """
     pdf.saveState()
     _draw_title(pdf, x, top, width, display_title(dataset))
     match display, dataset:
         case DataDisplay.TABLE, CategoricalData():
             _draw_table(pdf, x, top, width, height, dataset, blanks)
+        case DataDisplay.TALLY_TABLE, CategoricalData():
+            _draw_tally_table(pdf, x, top, width, height, dataset, blanks)
         case DataDisplay.PICTOGRAPH, CategoricalData():
             _draw_pictograph(pdf, x, top, width, height, dataset, blanks)
+        case DataDisplay.BAR_GRAPH, CategoricalData() if dataset.horizontal_bars:
+            _draw_horizontal_bar_graph(pdf, x, top, width, height, dataset, blanks)
         case DataDisplay.BAR_GRAPH, CategoricalData():
             _draw_bar_graph(pdf, x, top, width, height, dataset, blanks)
         case DataDisplay.DOT_PLOT, CategoricalData():
@@ -150,6 +162,61 @@ def _draw_table(
     )
 
 
+def _draw_tally_table(
+    pdf: Canvas,
+    x: float,
+    top: float,
+    width: float,
+    height: float,
+    dataset: CategoricalData,
+    blanks: Collection[int],
+) -> None:
+    """
+    A tally table: a header row, then each category beside its count in tally marks, in groups
+    of five, the fifth across the four. The marks are spaced to fit the longest row.
+    """
+    table_width = min(width, TABLE_WIDTH)
+    label_width = table_width * TALLY_LABEL_SHARE
+    tally_width = table_width - label_width
+    cells: list[list[str | None]] = [[category_header(dataset), TALLY_HEADER]]
+    cells += [[label, None] for label in labels(dataset)]
+    row_height = min(TABLE_ROW_HEIGHT, (height - 18) / len(cells))
+    left = x + (width - table_width) / 2
+    table_top = top - BODY_DROP
+    draw_table(
+        pdf,
+        left,
+        table_top,
+        [label_width, tally_width],
+        [row_height] * len(cells),
+        cells,
+        heading_row=True,
+        heading_size=9,
+        body_size=10,
+    )
+    groups = max(1, *(math.ceil(count / 5) for count in dataset.counts))
+    room = tally_width - 2 * TALLY_PADDING
+    gap = min(TALLY_STROKE_GAP, room / (4 * groups + TALLY_GROUP_GAP * (groups - 1)))
+    mark_height = row_height * TALLY_HEIGHT
+    pdf.setStrokeColor(MARK_COLOUR)
+    pdf.setLineWidth(1)
+    for row, count in enumerate(dataset.counts):
+        if row in blanks:
+            continue
+        middle = table_top - (row + 1.5) * row_height
+        bottom, mark_top = middle - mark_height / 2, middle + mark_height / 2
+        mark_x = left + label_width + TALLY_PADDING
+        for group in range(math.ceil(count / 5)):
+            marks = min(5, count - 5 * group)
+            group_left = mark_x
+            for _ in range(min(marks, 4)):
+                pdf.line(mark_x, bottom, mark_x, mark_top)
+                mark_x += gap
+            if marks == 5:
+                pdf.line(group_left - gap / 2, bottom + 1, mark_x - gap / 2, mark_top - 1)
+            mark_x += gap * TALLY_GROUP_GAP
+
+
 def _draw_pictograph(
     pdf: Canvas,
     x: float,
@@ -161,13 +228,18 @@ def _draw_pictograph(
 ) -> None:
     """
     A pictograph: a row of stars for each category, each star worth the scale, and a half star
-    for half of it, with the key under the rows.
+    for half of it, with the key under the rows. The stars shrink, if need be, to fit the longest
+    row in the panel.
     """
     rows = len(dataset.counts)
     grid_top = top - BODY_DROP
     row_height = min(PICTOGRAPH_ROW_HEIGHT, (height - BODY_DROP - 20) / rows)
     grid_bottom = grid_top - rows * row_height
-    radius = min(SYMBOL_RADIUS, (row_height - 6) / 2)
+    most_symbols = max(1, *(-(-count // dataset.scale) for count in dataset.counts))
+    room = width - PICTOGRAPH_LABEL_WIDTH - 6 - SYMBOL_GAP
+    radius = min(
+        SYMBOL_RADIUS, (row_height - 6) / 2, ((room + SYMBOL_GAP) / most_symbols - SYMBOL_GAP) / 2
+    )
     step = 2 * radius + SYMBOL_GAP
     first_symbol_x = x + PICTOGRAPH_LABEL_WIDTH + 6 + radius
 
@@ -286,6 +358,63 @@ def _draw_bar_graph(
     pdf.setFont(BOLD_FONT, 7)
     pdf.drawCentredString(0, 0, count_header(dataset))
     pdf.restoreState()
+
+
+def _draw_horizontal_bar_graph(
+    pdf: Canvas,
+    x: float,
+    top: float,
+    width: float,
+    height: float,
+    dataset: CategoricalData,
+    blanks: Collection[int],
+) -> None:
+    """
+    A bar graph with its bars across: a bar for each category, from an axis on the left, along
+    an axis at the bottom with intervals of the scale, which goes one interval past the largest
+    count. Bars may end between grid lines.
+    """
+    scale = dataset.scale
+    axis_end_value = (max(dataset.counts) // scale + 1) * scale
+    left, right = x + BAR_LABEL_WIDTH, x + width - 8
+    bottom, plot_top = top - height + 26, top - 18
+    intervals = axis_end_value // scale
+    label_every = 1 if (right - left) / intervals >= 2 * SMALLEST_INTERVAL_HEIGHT else 2
+
+    def x_for(value: float) -> float:
+        return left + (right - left) * value / axis_end_value
+
+    pdf.setLineWidth(0.6)
+    for interval in range(intervals + 1):
+        value = interval * scale
+        pdf.setStrokeColor(GRID_COLOUR)
+        pdf.line(x_for(value), bottom, x_for(value), plot_top)
+        if interval % label_every == 0:
+            pdf.setFillColor("black")
+            pdf.setFont(FONT, 7)
+            pdf.drawCentredString(x_for(value), bottom - 9, str(value))
+    slot = (plot_top - bottom) / len(dataset.counts)
+    for index, (label, count) in enumerate(zip(labels(dataset), dataset.counts, strict=True)):
+        middle = plot_top - slot * (index + 0.5)
+        if index not in blanks:
+            bar_height = slot * BAR_SHARE
+            pdf.setStrokeColor(OUTLINE_COLOUR)
+            pdf.setFillColor(BAR_FILL)
+            pdf.setLineWidth(1)
+            pdf.rect(
+                left, middle - bar_height / 2, x_for(count) - left, bar_height, stroke=1, fill=1
+            )
+        pdf.setFillColor("black")
+        fit_font(pdf, label, FONT, 8, BAR_LABEL_WIDTH - 6)
+        pdf.drawRightString(left - 4, middle - 3, label)
+
+    pdf.setStrokeColor(OUTLINE_COLOUR)
+    pdf.setLineWidth(1)
+    pdf.line(left, bottom, right, bottom)
+    pdf.line(left, bottom, left, plot_top)
+    pdf.setFillColor("black")
+    pdf.setFont(BOLD_FONT, 7)
+    pdf.drawCentredString((left + right) / 2, bottom - 19, count_header(dataset))
 
 
 def _draw_dot_plot(

@@ -14,25 +14,53 @@ from core.discrete_data.data import (
     CategoricalDataProblemData,
     CategoricalProblemType,
     DataDisplay,
+    DiscreteDataProblem,
+    DisplayChoice,
+    DisplayMistake,
+    DoesntMatchQuestionData,
+    ErrorChoice,
+    EveryTick,
+    FindErrorQuestionData,
     NumericalData,
     NumericalDataProblemData,
     NumericalProblemType,
+    Off,
+    OneEach,
+    ReadCountsQuestionData,
+    RoundDown,
+    ShownDisplay,
+    SummarizeData,
     SummarizeDataQuestionData,
+    SummarizeResponse,
+    Swap,
+    WrongScale,
 )
 from core.discrete_data.topics import FriendsTopic, NumberListTopic, SurveyTopic
+from core.question import MultipleChoice, Question
 
 _MINUS = "\N{MINUS SIGN}"
 
 DISPLAY_NAMES = {
     DataDisplay.TABLE: "frequency table",
+    DataDisplay.TALLY_TABLE: "tally table",
     DataDisplay.PICTOGRAPH: "pictograph",
     DataDisplay.BAR_GRAPH: "bar graph",
     DataDisplay.DOT_PLOT: "dot plot",
     DataDisplay.LIST: "list",
     DataDisplay.NUMBER_LINE_DOT_PLOT: "dot plot",
 }
-INSTRUCTION = "Read the data. Complete the second graph or table, then solve the problems."
 FRIENDS_CATEGORY_HEADER = "Name"  # heading a table of friends, whose categories are names
+NUMBER_WORDS = {3: "Three", 4: "Four", 5: "Five", 6: "Six"}  # how many friends, in words
+BLANK_LINE = "____"  # where a student writes in a sentence to complete
+# Sentences that fix an error, for each display: {name} is the category or number in error,
+# {count} its right count, and for a pictograph, {symbols} its symbols
+_FIXES = {
+    DataDisplay.DOT_PLOT: "there should be {count} X's above {name}",
+    DataDisplay.NUMBER_LINE_DOT_PLOT: "there should be {count} X's above {name}",
+    DataDisplay.BAR_GRAPH: "the bar for {name} should end at {count}",
+    DataDisplay.PICTOGRAPH: "the row for {name} should have {symbols} symbols",
+    DataDisplay.TALLY_TABLE: "the row for {name} should have {count} tally marks",
+}
 
 # The problems about a survey, where {a}, {b} and {c} are the problem's categories
 _SURVEY_PROBLEMS = {
@@ -63,26 +91,246 @@ _FRIENDS_PROBLEMS = {
 }
 
 
-def intro(data: SummarizeDataQuestionData) -> str:
-    """Return the problem's opening text, which introduces the data set and its given display."""
-    dataset = data.dataset
+def instruction(problems: Sequence[DiscreteDataProblem]) -> str:
+    """
+    Return the sheet's instruction for ``problems``: "Read the data. Complete the second graph or
+    table, then solve the problems." when every problem completes a display, and likewise for
+    choosing one, or for problems alone; otherwise "Read the data, then answer the questions."
+    """
+    counts = {len(problem.word_problems) for problem in problems}
+    solve = "solve the problem" if counts == {1} else "solve the problems"
+    tasks = {_task(problem) for problem in problems}
+    if tasks == {None}:
+        return f"Read the data, then {solve}."
+    if len(tasks) > 1 or None in tasks or "" in tasks:
+        return "Read the data, then answer the questions."
+    (task,) = tasks
+    return f"Read the data. {task}, then {solve}." if counts != {0} else f"Read the data. {task}."
+
+
+def tiles_note(problems: Sequence[DiscreteDataProblem]) -> str | None:
+    """
+    Return the line under a self-check tiles sheet's instruction saying which parts go on the
+    tiles: "Answer part a on the sheet. Parts b and c go on the tiles." when the problems have a
+    first part, which then every problem has, or ``None`` when every part goes on a tile.
+    """
+    if all(problem.summarize is None for problem in problems):
+        return None
+    if max(len(problem.word_problems) for problem in problems) == 1:
+        return "Answer part a on the sheet. Part b goes on the tiles."
+    return "Answer part a on the sheet. Parts b and c go on the tiles."
+
+
+def _task(problem: DiscreteDataProblem) -> str | None:
+    """Return what a problem's first part asks of a display to complete or choose, ``None``
+    without a first part, or an empty string for any other first part."""
+    summarize = problem.summarize
+    if summarize is None:
+        return None
+    if not isinstance(summarize.data, SummarizeDataQuestionData):
+        return ""
+    if isinstance(summarize.response, MultipleChoice):
+        return "Choose the graph or table that shows the same data"
+    return "Complete the second graph or table"
+
+
+def intro(dataset: CategoricalData | NumericalData, given: DataDisplay | None) -> str:
+    """
+    Return the problem's opening text, which introduces the data set and its ``given`` display,
+    or with none, states its counts.
+    """
     if isinstance(dataset, NumericalData):
         return dataset.topic.intro.format(person=dataset.person)
+    topic = dataset.topic
+    names = labels(dataset)
+    match topic:
+        case SurveyTopic():
+            opening = (
+                f"{dataset.person} asked some students to name their favorite {topic.favorite}."
+            )
+            stated = _listed(
+                [
+                    f"{count} chose {category}"
+                    for count, category in zip(dataset.counts, dataset.categories, strict=True)
+                ]
+            )
+            shows = "shows the results"
+        case FriendsTopic():
+            opening = topic.intro.format(count=NUMBER_WORDS[len(dataset.categories)])
+            stated = _listed(
+                [
+                    f"{name} {topic.verb_past} {count} {topic.unit}"
+                    for name, count in zip(names, dataset.counts, strict=True)
+                ]
+            )
+            shows = f"shows how many {topic.unit} each friend {topic.verb_past}"
+        case _:
+            assert_never(topic)
+    if given is None:
+        return f"{opening} {stated[0].upper()}{stated[1:]}."
+    return f"{opening} The {DISPLAY_NAMES[given]} {shows}."
+
+
+def choice_stem(data: SummarizeDataQuestionData) -> str:
+    """Return the question asking for the display to choose: "Which bar graph shows the same
+    data?"."""
+    return f"Which {DISPLAY_NAMES[data.target]} shows the same data?"
+
+
+def summarize_stem(question: Question[SummarizeData, SummarizeResponse]) -> str:
+    """
+    Return the text of a problem's first question: "Use the frequency table to complete the bar
+    graph.", "Which list matches the data in the pictograph?", "A dot plot of the data has one
+    mistake. Complete the sentence to fix it.", "Which one does NOT show the data in the
+    frequency table?".
+    """
+    data = question.data
+    choose = isinstance(question.response, MultipleChoice)
+    match data:
+        case SummarizeDataQuestionData():
+            return choice_stem(data) if choose else _summarize_stem(data)
+        case ReadCountsQuestionData():
+            return _read_counts_stem(data, choose)
+        case FindErrorQuestionData():
+            return _find_error_stem(data, choose)
+        case DoesntMatchQuestionData():
+            if data.source is None:
+                return "Which one does NOT show these data?"
+            return f"Which one does NOT show the data in the {DISPLAY_NAMES[data.source]}?"
+        case _:
+            assert_never(data)
+
+
+def _read_counts_stem(data: ReadCountsQuestionData, choose: bool) -> str:
+    dataset = data.dataset
     given = DISPLAY_NAMES[data.given]
+    if isinstance(dataset, NumericalData):
+        if choose:
+            return f"Which list of numbers does the {given} show?"
+        return f"Write the numbers the {given} shows, from least to greatest."
+    if choose:
+        return f"Which list matches the data in the {given}?"
     topic = dataset.topic
     match topic:
         case SurveyTopic():
-            return (
-                f"{dataset.person} asked some students to name their favorite {topic.favorite}. "
-                f"The {given} shows the results."
-            )
+            return f"Use the {given} to write how many students chose each {topic.favorite}."
         case FriendsTopic():
-            return (
-                f"{topic.intro} The {given} shows how many {topic.unit} each friend "
-                f"{topic.verb_past}."
-            )
+            return f"Use the {given} to write how many {topic.unit} each friend {topic.verb_past}."
         case _:
             assert_never(topic)
+
+
+def _find_error_stem(data: FindErrorQuestionData, choose: bool) -> str:
+    wrong = DISPLAY_NAMES[data.wrong]
+    if not choose:
+        return f"A {wrong} of the data has one mistake. Complete the sentence to fix it."
+    if data.other is None:
+        return f"A {wrong} of the data has one mistake. Which sentence fixes it?"
+    first, second = (DISPLAY_NAMES[display] for display in _in_order(data.wrong, data.other))
+    return (
+        f"A {first} and a {second} of the data should match, but one has a mistake. Which one "
+        "has the mistake, and how should it be fixed?"
+    )
+
+
+def error_displays(data: FindErrorQuestionData) -> tuple[DataDisplay, ...]:
+    """Return the displays a question to find an error shows, in the order of ``DataDisplay``,
+    so where the wrong one stands says nothing."""
+    if data.other is None:
+        return (data.wrong,)
+    return _in_order(data.wrong, data.other)
+
+
+def _in_order(*displays: DataDisplay) -> tuple[DataDisplay, ...]:
+    order = list(DataDisplay)
+    return tuple(sorted(displays, key=order.index))
+
+
+def error_sentence(data: FindErrorQuestionData) -> str:
+    """Return the sentence to complete that fixes the error: "There should be ____ X's above
+    ____.", "The bar for ____ should end at ____."."""
+    if data.wrong in (DataDisplay.DOT_PLOT, DataDisplay.NUMBER_LINE_DOT_PLOT):
+        return f"There should be {BLANK_LINE} X's above {BLANK_LINE}."
+    fix = _FIXES[data.wrong].format(name=BLANK_LINE, count=BLANK_LINE, symbols=BLANK_LINE)
+    return f"{fix[0].upper()}{fix[1:]}."
+
+
+def error_fix(data: FindErrorQuestionData, choice: ErrorChoice) -> str:
+    """
+    Return a statement of an error, as a choice or the answer key gives it: "The row for Sports
+    should have 1½ symbols", or naming the display, "Pictograph, because the row for Sports
+    should have 1½ symbols".
+    """
+    dataset = data.dataset
+    scale = dataset.scale if isinstance(dataset, CategoricalData) else 1
+    fix = _FIXES[choice.display].format(
+        name=labels(dataset)[choice.index],
+        count=choice.count,
+        symbols=_symbols(choice.count, scale),
+    )
+    if data.other is None:
+        return f"{fix[0].upper()}{fix[1:]}"
+    return f"{DISPLAY_NAMES[choice.display].capitalize()}, because {fix}"
+
+
+def _symbols(count: int, scale: int) -> str:
+    """Return how many symbols show ``count`` on ``scale``: "3", or with a half, "1½"."""
+    whole, half = divmod(2 * count // scale, 2)
+    if not half:
+        return str(whole)
+    return f"{whole}\N{VULGAR FRACTION ONE HALF}" if whole else "\N{VULGAR FRACTION ONE HALF}"
+
+
+def counts_text(dataset: CategoricalData | NumericalData, counts: Sequence[int]) -> str:
+    """
+    Return a list of counts as a choice or the answer key gives it: "Apples: 12,  Grapes: 3",
+    or for a list of numbers, its numbers from least to greatest: "20, 21, 21, 23".
+    """
+    names = labels(dataset)
+    if isinstance(dataset, NumericalData):
+        pairs = zip(names, counts, strict=True)
+        return ", ".join(name for name, count in pairs for _ in range(count))
+    return ",  ".join(f"{name}: {count}" for name, count in zip(names, counts, strict=True))
+
+
+def _listed(items: Sequence[str]) -> str:
+    """Return ``items`` as a list in a sentence: "a, b, and c"."""
+    if len(items) <= 2:
+        return " and ".join(items)
+    return f"{', '.join(items[:-1])}, and {items[-1]}"
+
+
+def mistake(
+    data: SummarizeDataQuestionData | ReadCountsQuestionData | DoesntMatchQuestionData,
+    choice: DisplayChoice | ShownDisplay,
+) -> str:
+    """
+    Return what is wrong with a wrong choice, as the answer key says it: "Soccer and Tennis are
+    switched", or on a number line, "2 X's above 21 instead of 3". A choice with two mistakes
+    names both: "Soccer and Tennis are switched, and the scale counts by 5, not by 10".
+    """
+    dataset = data.dataset
+    given: DataDisplay | None
+    shown: DataDisplay | None
+    match data:
+        case SummarizeDataQuestionData():
+            given, shown, scale = data.given, data.target, _scale(dataset)
+        case ReadCountsQuestionData():
+            given, shown, scale = data.given, None, _scale(dataset)
+        case DoesntMatchQuestionData():
+            if not isinstance(choice, ShownDisplay):
+                raise ValueError("A display that doesn't match is a ShownDisplay.")
+            given, shown, scale = None, choice.display, choice.scale
+    made = choice.choice if isinstance(choice, ShownDisplay) else choice
+    if not made.mistakes:
+        raise ValueError("The correct choice has no mistake.")
+    return ", and ".join(
+        _mistake_text(dataset, given, shown, scale, each) for each in made.mistakes
+    )
+
+
+def _scale(dataset: CategoricalData | NumericalData) -> int:
+    return dataset.scale if isinstance(dataset, CategoricalData) else 1
 
 
 def stem(
@@ -181,6 +429,71 @@ def axis_title(dataset: NumericalData) -> str:
     return dataset.topic.axis_title
 
 
+def _mistake_text(
+    dataset: CategoricalData | NumericalData,
+    given: DataDisplay | None,
+    shown: DataDisplay | None,
+    scale: int,
+    mistake: DisplayMistake,
+) -> str:
+    """Return one mistake's description, from the data set's labels and counts."""
+    names = labels(dataset)
+    on_line = isinstance(dataset, NumericalData)
+    match mistake:
+        case Swap():
+            first, second = names[mistake.first], names[mistake.second]
+            pair = f"the X's for {first} and {second}" if on_line else f"{first} and {second}"
+            return f"{pair} are switched"
+        case Off():
+            name, count, wrong = names[mistake.index], dataset.counts[mistake.index], mistake.count
+            if on_line:
+                marks = "1 X" if wrong == 1 else f"{wrong} X's"
+                return f"{marks} above {name} instead of {count}"
+            return f"{name} shows {wrong} instead of {count}"
+        case WrongScale():
+            return _scale_mistake(given, shown, scale, mistake.scale)
+        case OneEach():
+            return "only one X for each number in the list"
+        case EveryTick():
+            return "one X above every number on the line"
+        case RoundDown():
+            return _round_down_mistake(given, shown)
+        case _:
+            assert_never(mistake)
+
+
+def _scale_mistake(
+    given: DataDisplay | None, shown: DataDisplay | None, scale: int, wrong_scale: int
+) -> str:
+    """Return a wrong scale's mistake: in the display shown if it has a scale, or else in
+    reading the given display's."""
+    if shown is DataDisplay.PICTOGRAPH:
+        return f"the key says each star = {wrong_scale}, not {scale}"
+    if shown is DataDisplay.BAR_GRAPH:
+        return f"the scale counts by {wrong_scale}, not by {scale}"
+    if given is DataDisplay.PICTOGRAPH:
+        if wrong_scale == 1:
+            return "counts each star as 1"
+        return f"uses a key of {wrong_scale}, not {scale}"
+    if given is DataDisplay.BAR_GRAPH:
+        return f"reads the scale as counting by {wrong_scale}, not by {scale}"
+    raise ValueError("Neither display has a scale.")
+
+
+def _round_down_mistake(given: DataDisplay | None, shown: DataDisplay | None) -> str:
+    """Return the mistake of taking counts between steps at the step below: in the display shown
+    if it has a scale, or else in reading the given display."""
+    if shown is DataDisplay.PICTOGRAPH:
+        return "leaves out the half stars"
+    if shown is DataDisplay.BAR_GRAPH:
+        return "each bar that ends between lines stops at the line below"
+    if given is DataDisplay.PICTOGRAPH:
+        return "doesn't count the half stars"
+    if given is DataDisplay.BAR_GRAPH:
+        return "reads each bar that ends between lines at the line below"
+    raise ValueError("Neither display has a scale.")
+
+
 def _summarize_stem(data: SummarizeDataQuestionData) -> str:
     text = f"Use the {DISPLAY_NAMES[data.given]} to complete the {DISPLAY_NAMES[data.target]}."
     if data.given is DataDisplay.LIST:
@@ -225,6 +538,16 @@ def _numerical_stem(data: NumericalDataProblemData) -> str:
         case NumericalProblemType.AT_MOST:
             at_most = _phrase(topic, f"{ticks[0]} or fewer {topic.amount_plural}")
             return f"How many {topic.unit} {at_most}?"
+        case NumericalProblemType.MORE_THAN:
+            more_than = _phrase(topic, f"more than {ticks[0]} {topic.amount_plural}")
+            return f"How many {topic.unit} {more_than}?"
+        case NumericalProblemType.FEWER_THAN:
+            fewer_than = _phrase(topic, f"fewer than {ticks[0]} {topic.amount_plural}")
+            return f"How many {topic.unit} {fewer_than}?"
+        case NumericalProblemType.MISSING_VALUE:
+            if topic.missing_question is None or data.total is None:
+                raise ValueError("A missing number needs its topic's question and a total.")
+            return topic.missing_question.format(total=data.total)
         case _:
             assert_never(problem_type)
 
@@ -269,6 +592,17 @@ def _numerical_work(data: NumericalDataProblemData) -> str:
         case NumericalProblemType.AT_MOST:
             threshold = data.tick_indexes[0]
             return _sum_text([count for count in counts[: threshold + 1] if count])
+        case NumericalProblemType.MORE_THAN:
+            threshold = data.tick_indexes[0]
+            return _sum_text([count for count in counts[threshold + 1 :] if count])
+        case NumericalProblemType.FEWER_THAN:
+            threshold = data.tick_indexes[0]
+            return _sum_text([count for count in counts[:threshold] if count])
+        case NumericalProblemType.MISSING_VALUE:
+            if data.total is None:
+                raise ValueError("A missing number needs a total.")
+            listed = sum(data.dataset.values)
+            return f"{_sum_text(data.dataset.values)},  {_difference_text(data.total, listed)}"
         case _:
             assert_never(problem_type)
 

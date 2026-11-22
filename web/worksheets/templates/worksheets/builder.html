@@ -80,6 +80,68 @@
   </script>
   {% endif %}
 
+  {% if word_problem_tiles %}
+  {{ question_availability|json_script:"question-availability" }}
+  <script type="module">
+    // Data and Graphs. A question the ticked graphs and tables can't make is greyed out, so it
+    // isn't sent, with a note saying why. Each word problem takes a self-check tile, so the
+    // tiles box and pattern are greyed out while no word problem is ticked. With tiles, the
+    // problems are set to as many as the tiles allow, and changing the word problems sets them
+    // again; unticking puts back the normal default and limit. Tiles and multiple choice work
+    // together, as the tiles take only the word problems.
+    const availability = JSON.parse(document.getElementById("question-availability").textContent);
+    const form = document.querySelector("input[name=displays]").form;
+    const questions = [...form.querySelectorAll("input[name=questions]")];
+    const displays = [...form.querySelectorAll("input[name=displays]")];
+    const tiles = form.elements.self_check_tiles;
+    const patterns = [...form.querySelectorAll("input[name=tile_pattern]")];
+    const problems = form.elements.problems;
+    const normalMax = problems.max;
+    const note = document.createElement("small");
+    note.className = "hint";
+    note.textContent = "Greyed-out questions need other graphs or tables.";
+    questions[0].closest("[role=group]").append(note);
+    const wordProblems = ["one_step", "two_step"];
+    function greyQuestions() {
+      const ticked = displays.filter((box) => box.checked).map((box) => box.value).join(",");
+      const available = availability[ticked] ?? [];
+      for (const box of questions) box.disabled = !available.includes(box.value);
+      // the page's CSS shows hints as blocks, which would win over the hidden attribute
+      const greyed = questions.some((box) => box.disabled) && ticked !== "";
+      note.style.display = greyed ? "" : "none";
+      // setting disabled doesn't fire change, which the checkboxes script listens for
+      questions[0].dispatchEvent(new Event("change"));
+    }
+    // reset: set the number of problems too, not only the limit
+    function limitProblems(reset) {
+      const perProblem = questions.filter(
+        (box) => box.checked && !box.disabled && wordProblems.includes(box.value),
+      ).length;
+      tiles.disabled = perProblem === 0;
+      for (const radio of patterns) radio.disabled = tiles.disabled;
+      const withTiles = tiles.checked && !tiles.disabled;
+      problems.max = withTiles ? Math.floor({{ word_problem_tiles }} / perProblem) : normalMax;
+      if (reset) problems.value = withTiles ? problems.max : problems.defaultValue;
+    }
+    for (const box of questions) box.addEventListener("change", () => limitProblems(tiles.checked));
+    for (const box of displays) {
+      box.addEventListener("change", () => {
+        greyQuestions();
+        limitProblems(tiles.checked);
+      });
+    }
+    tiles.addEventListener("change", () => limitProblems(true));
+    // also when the browser restores the choices, going back to the page: only the limit, as
+    // the browser has put back the number of problems too
+    window.addEventListener("pageshow", () => {
+      greyQuestions();
+      limitProblems(false);
+    });
+    greyQuestions();
+    limitProblems(false);
+  </script>
+  {% endif %}
+
   {% if distinct_forms %}
   <script type="module">
     // The place-value form's From and To. Mixed picks one of the forms ticked for it, and those

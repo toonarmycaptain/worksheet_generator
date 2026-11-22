@@ -500,6 +500,8 @@ def discrete_data_problem(
 ) -> DiscreteDataProblem:
     """Make a data set's problem from its three questions' data, each free response."""
     return DiscreteDataProblem(
+        dataset=summarize.dataset,
+        given=summarize.given,
         summarize=Question(summarize, FreeResponse()),
         one_step=Question(one_step, FreeResponse()),
         two_step=Question(two_step, FreeResponse()),
@@ -508,20 +510,22 @@ def discrete_data_problem(
 
 def render_data_graphs(
     problems: list[DiscreteDataProblem],
-    list_style: NumberListStyle,
+    list_styles: Sequence[NumberListStyle],
     answer_key: bool,
     title: str,
     label: str,
+    slot_of: Sequence[int] | None = None,
     name_line: bool = True,
 ) -> bytes:
-    """Render the data and graphs sheet."""
+    """Render the data and graphs sheet, problem i's list in ``list_styles[i]``."""
     out = BytesIO()
     render_data_graphs_worksheet(
         problems=problems,
         path=out,
         header=Header(title=title, label=label, name_line=name_line),
         answer_key=answer_key,
-        list_style=list_style,
+        list_styles=list_styles,
+        slot_of=slot_of,
     )
     return out.getvalue()
 

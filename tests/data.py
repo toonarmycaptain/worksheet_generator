@@ -69,7 +69,7 @@ CANS = FriendsTopic(
     unit_singular="can",
     verb="collect",
     verb_past="collected",
-    intro="Four friends collected cans for a food drive.",
+    intro="{count} friends collected cans for a food drive.",
 )
 CLASSES = NumberListTopic(
     title="Students in Each Class",

@@ -84,7 +84,13 @@ from core.basic_operations.representation import (
     operations_name,
     word_problems_title,
 )
-from core.discrete_data.generator import generate_discrete_data_problems
+from core.discrete_data.data import DataDisplay, DiscreteDataPart
+from core.discrete_data.generator import (
+    TILE_PARTS,
+    available_parts,
+    generate_discrete_data_problems,
+    most_tile_problems,
+)
 from core.input_output_tables.data import Blanks, ChoiceType
 from core.input_output_tables.generator import (
     count_possible_answers,
@@ -264,7 +270,30 @@ REGROUPING_LABELS: dict[str, JsonValue] = {
     regrouping.value: name for regrouping, name in REGROUPING_NAMES.items()
 }
 NumberListStyleChoice = Literal["grid", "commas"]  # a NumberListStyle value
-NUMBER_LIST_STYLE_LABELS: dict[str, JsonValue] = {"grid": "Grid", "commas": "Commas"}
+# A list style, or mix, where each list's style is drawn at random
+MixedListStyleChoice = Literal[NumberListStyleChoice, "mix"]
+NUMBER_LIST_STYLE_LABELS: dict[str, JsonValue] = {"grid": "Grid", "commas": "Commas", "mix": "Mix"}
+# a SHEET_DISPLAYS value
+DataDisplayChoice = Literal["table", "tally_table", "pictograph", "bar_graph", "dot_plot", "list"]
+DATA_DISPLAY_LABELS: dict[str, JsonValue] = {
+    "table": "Frequency table",
+    "tally_table": "Tally table",
+    "pictograph": "Pictograph",
+    "bar_graph": "Bar graph",
+    "dot_plot": "Dot plot",
+    "list": "List of numbers",
+}
+DataPartChoice = Literal[  # a DiscreteDataPart value
+    "another_display", "read_counts", "find_error", "doesnt_match", "one_step", "two_step"
+]
+DATA_PART_LABELS: dict[str, JsonValue] = {
+    "another_display": "Show the data another way",
+    "read_counts": "Read the counts",
+    "find_error": "Find the error",
+    "doesnt_match": "Which one doesn't match",
+    "one_step": "One-step word problem",
+    "two_step": "Two-step word problem",
+}
 BlanksChoice = Literal["inputs", "outputs", "inputs_and_outputs"]  # a Blanks value
 # Missing table values radio button labels: each choice's name
 BLANKS_LABELS: dict[str, JsonValue] = {blanks.value: name for blanks, name in BLANKS_NAMES.items()}
@@ -1183,12 +1212,80 @@ class DataGraphsOptions(HeaderOptions):
 
     title: Title = "Data and Graphs — Read, Complete, Solve"
     problems: Problems = 4
-    list_style: NumberListStyleChoice = Field(
+    # The data sets are shown in the ticked displays. The page greys out the questions they
+    # can't make.
+    displays: list[DataDisplayChoice] = Field(
+        list(get_args(DataDisplayChoice)),
+        min_length=1,
+        title="Graphs and tables",
+        description="A list of numbers is plotted as a dot plot on a number line.",
+        json_schema_extra={"labels": DATA_DISPLAY_LABELS},
+    )
+    # Each problem asks one of the first four ticked first, dealt in turn, then the word problems.
+    questions: list[DataPartChoice] = Field(
+        list(get_args(DataPartChoice)),
+        min_length=1,
+        title="Questions",
+        json_schema_extra={"labels": DATA_PART_LABELS},
+    )
+    list_style: MixedListStyleChoice = Field(
         "grid",
         title="Show lists of numbers as",
         json_schema_extra={"input": "radio", "labels": NUMBER_LIST_STYLE_LABELS},
     )
+    multiple_choice: bool = Field(
+        False,
+        title="Multiple choice",
+        description="Lettered choices instead of written answers: the matching graph or table, "
+        "list, fix or number. The wrong ones are common mistakes. Which one doesn't match "
+        "always has choices, and with self-check tiles, the word problems keep their tiles.",
+    )
     answer_key: AnswerKey = False
+    # Tiles take the word problems' answers, one tile each, and add an answer bank page. The
+    # page greys them out while no word problem is ticked.
+    self_check_tiles: bool = Field(
+        False,
+        title="Self-check tile answers",
+        description="Swaps the answer boxes for an answer bank and a picture to match against "
+        f"the flipped case. Each word problem takes one of the {SLOTS} tiles, so ticking this "
+        f"sets the problems to {SLOTS // len(TILE_PARTS)} with both word problems, or "
+        f"{SLOTS} with one.",
+    )
+    tile_pattern: TilePattern = "simple"
+
+    @model_validator(mode="after")
+    def _displays_make_the_questions(self) -> Self:
+        # Some questions need displays of more than one kind, or ones whose counts take reading.
+        available = available_parts([DataDisplay(display) for display in self.displays])
+        missing = [part for part in self.questions if part not in available]
+        if missing:
+            names = [str(DATA_PART_LABELS[part]) for part in missing]
+            raise ValueError(f"questions: those graphs and tables can't make {_listed(names)}")
+        return self
+
+    @model_validator(mode="after")
+    def _tiles_fit(self) -> Self:
+        # Each word problem takes a tile, and question n's tiles follow question n - 1's.
+        if self.self_check_tiles:
+            per_problem = sum(part in self.questions for part in TILE_PARTS)
+            if not per_problem:
+                raise ValueError("self_check_tiles: needs a one-step or two-step word problem")
+            if self.problems * per_problem > SLOTS:
+                raise ValueError(
+                    f"problems: self-check tiles has {SLOTS} tiles, one for each word problem, "
+                    f"so at most {SLOTS // per_problem}"
+                )
+            displays = [DataDisplay(display) for display in self.displays]
+            parts = [DiscreteDataPart(part) for part in self.questions]
+            most = most_tile_problems(displays, parts)
+            if most is not None and self.problems > most:
+                doesnt_match = DATA_PART_LABELS[DiscreteDataPart.DOESNT_MATCH]
+                raise ValueError(
+                    f"problems: at most {most} with a different answer on every tile, as "
+                    f"{doesnt_match} has few different answers with those graphs and tables. "
+                    "Tick more graphs and tables or questions, or untick it"
+                )
+        return self
 
 
 class InputOutputTableOptions(HeaderOptions):
@@ -2001,11 +2098,16 @@ def _tile_slots(
     | OrderOfOperationsOptions
     | SlopeAndInterceptsOptions
     | WritingLinearEquationsOptions
-    | GraphingLinearEquationsOptions,
+    | GraphingLinearEquationsOptions
+    | DataGraphsOptions,
+    tiles: int | None = None,
 ) -> Sequence[int]:
-    """Return the slot of each question's answer, for the requested tile pattern."""
+    """
+    Return the slot of each tile's answer, for the requested tile pattern. There is a tile for
+    each question, unless ``tiles`` says how many.
+    """
     make_slots = conventional_slot_of if options.tile_pattern == "simple" else random_slot_of
-    return make_slots(options.problems)
+    return make_slots(options.problems if tiles is None else tiles)
 
 
 def _word_problems(options: WordProblemOptions, out: BinaryIO) -> None:
@@ -2107,13 +2209,29 @@ def _base_ten_blocks(options: BaseTenBlocksOptions, out: BinaryIO) -> None:
 
 
 def _data_graphs(options: DataGraphsOptions, out: BinaryIO) -> None:
+    problems = generate_discrete_data_problems(
+        options.problems,
+        [DataDisplay(display) for display in options.displays],
+        [DiscreteDataPart(part) for part in options.questions],
+        multiple_choice=options.multiple_choice,
+        distinct_answers=options.self_check_tiles,
+    )
+    tiles = sum(len(problem.word_problems) for problem in problems)
     render_data_graphs_worksheet(
-        problems=generate_discrete_data_problems(options.problems),
+        problems=problems,
         path=out,
         header=options.header(),
         answer_key=options.answer_key,
-        list_style=NumberListStyle(options.list_style),
+        list_styles=_list_styles(options.list_style, len(problems)),
+        slot_of=_tile_slots(options, tiles) if options.self_check_tiles else None,
     )
+
+
+def _list_styles(choice: MixedListStyleChoice, count: int) -> list[NumberListStyle]:
+    """Return each problem's list style: the one chosen, or for mix, one drawn at random."""
+    if choice == "mix":
+        return [random.choice(list(NumberListStyle)) for _ in range(count)]
+    return [NumberListStyle(choice)] * count
 
 
 def _input_output_tables(options: InputOutputTableOptions, out: BinaryIO) -> None:

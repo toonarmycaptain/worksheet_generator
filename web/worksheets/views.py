@@ -23,6 +23,8 @@ from core.basic_operations.representation import (
     operations_name,
     word_problems_title,
 )
+from core.discrete_data.data import DataDisplay
+from core.discrete_data.generator import SHEET_DISPLAYS, available_parts
 from core.input_output_tables.representation import INPUT_OUTPUT_TABLES_NAME
 from core.line_equations.representation import (
     GRAPHING_LINEAR_EQUATIONS_NAME,
@@ -244,6 +246,17 @@ SCRIPT_DATA: dict[str, dict[str, Any]] = {
     },
     "slope_and_intercepts": {"intercept_answers": True, "blank_grids": True},
     "writing_linear_equations": {"blank_grids": True, "statements": True},
+    "data_graphs": {
+        # tiles go one to each word problem, so the page's own script sets the problems
+        "word_problem_tiles": SLOTS,
+        # each combination of ticked displays, as their values joined by commas -> the
+        # questions it can make
+        "question_availability": {
+            ",".join(ticked): list(available_parts([DataDisplay(each) for each in ticked]))
+            for size in range(len(SHEET_DISPLAYS) + 1)
+            for ticked in combinations(SHEET_DISPLAYS, size)
+        },
+    },
 }
 
 
@@ -260,7 +273,8 @@ def sheet(request: HttpRequest, kind: str) -> HttpResponse:
         "forms": forms,
         **SCRIPT_DATA.get(kind, {}),
     }
-    if any(field["name"] == "self_check_tiles" for field in forms[0]["fields"]):
+    has_tiles = any(field["name"] == "self_check_tiles" for field in forms[0]["fields"])
+    if has_tiles and "word_problem_tiles" not in context:
         context["self_check_tiles_problems"] = SLOTS
     return render(request, "worksheets/builder.html", context)
 

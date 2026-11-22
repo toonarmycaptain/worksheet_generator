@@ -2,7 +2,7 @@
 The topic bank for data sets: what a data set is about, and the words that describe it.
 
 A categorical data set's topic is a survey, such as students' favorite fruit, or a friends topic,
-such as the cans four friends collected. A numerical data set's topic is a list of numbers, such
+such as the cans some friends collected. A numerical data set's topic is a list of numbers, such
 as the number of students in each class. A new topic is one more entry in its tuple.
 
 Number-list topics word their questions with two templates:
@@ -30,8 +30,9 @@ class SurveyTopic:
 @dataclass(frozen=True)
 class FriendsTopic:
     """
-    Four friends each count something, such as the cans each collected for a food drive. Each
-    friend is a category, and their count is their number of ``unit``.
+    Some friends each count something, such as the cans each collected for a food drive. Each
+    friend is a category, and their count is their number of ``unit``. ``intro``'s ``{count}``
+    is the number of friends, in words: "Four friends collected…".
 
     A friends topic has no category header: its categories are always names.
     """
@@ -41,7 +42,7 @@ class FriendsTopic:
     unit_singular: str  # "can"
     verb: str  # "collect", as in "How many more cans did Maria collect than Leo?"
     verb_past: str  # "collected", as in "How many cans were collected in all?"
-    intro: str  # "Four friends collected cans for a food drive."
+    intro: str  # "{count} friends collected cans for a food drive."
 
 
 @dataclass(frozen=True)
@@ -65,6 +66,10 @@ class NumberListTopic:
     amount_plural: str  # "students"
     intro: str
     possible_values: tuple[int, ...] | None = None
+    # For a topic whose numbers add up to a total, the question asking for one missing number
+    # from the total, ``{total}``: "One coin is missing from the list. All the coins together
+    # are worth {total} cents. How many cents is the missing coin worth?"
+    missing_question: str | None = None
 
 
 CATEGORY_TOPICS: tuple[SurveyTopic | FriendsTopic, ...] = (
@@ -110,7 +115,7 @@ CATEGORY_TOPICS: tuple[SurveyTopic | FriendsTopic, ...] = (
         unit_singular="can",
         verb="collect",
         verb_past="collected",
-        intro="Four friends collected cans for a food drive.",
+        intro="{count} friends collected cans for a food drive.",
     ),
     FriendsTopic(
         title="Books Read",
@@ -118,7 +123,7 @@ CATEGORY_TOPICS: tuple[SurveyTopic | FriendsTopic, ...] = (
         unit_singular="book",
         verb="read",
         verb_past="read",
-        intro="Four friends kept track of how many books they read this year.",
+        intro="{count} friends kept track of how many books they read this year.",
     ),
     FriendsTopic(
         title="Points Scored",
@@ -126,7 +131,7 @@ CATEGORY_TOPICS: tuple[SurveyTopic | FriendsTopic, ...] = (
         unit_singular="point",
         verb="score",
         verb_past="scored",
-        intro="Four friends played a game and kept track of their points.",
+        intro="{count} friends played a game and kept track of their points.",
     ),
     FriendsTopic(
         title="Tickets Sold",
@@ -134,7 +139,7 @@ CATEGORY_TOPICS: tuple[SurveyTopic | FriendsTopic, ...] = (
         unit_singular="ticket",
         verb="sell",
         verb_past="sold",
-        intro="Four friends sold tickets for the school play.",
+        intro="{count} friends sold tickets for the school play.",
     ),
 )
 
@@ -149,6 +154,10 @@ NUMBER_LIST_TOPICS = (
         amount_singular="student",
         amount_plural="students",
         intro="The list shows how many students are in each class at {person}'s school.",
+        missing_question=(
+            "One class is missing from the list. All the classes together have {total} "
+            "students. How many students are in the missing class?"
+        ),
     ),
     NumberListTopic(
         title="Points per Game",
@@ -162,6 +171,10 @@ NUMBER_LIST_TOPICS = (
         intro=(
             "The list shows how many points {person}'s basketball team scored in each game "
             "this season."
+        ),
+        missing_question=(
+            "One game is missing from the list. The team scored {total} points in all the games "
+            "together. How many points did the team score in the missing game?"
         ),
     ),
     NumberListTopic(
@@ -203,6 +216,10 @@ NUMBER_LIST_TOPICS = (
         amount_plural="cents",
         intro="{person} emptied a piggy bank. The list shows the value of each coin in cents.",
         possible_values=(5, 10, 25),
+        missing_question=(
+            "One coin is missing from the list. All the coins together are worth {total} cents. "
+            "How many cents is the missing coin worth?"
+        ),
     ),
     NumberListTopic(
         title="Books Read This Year",
@@ -216,6 +233,10 @@ NUMBER_LIST_TOPICS = (
         intro=(
             "{person} asked some students how many books they read this year. "
             "The list shows their answers."
+        ),
+        missing_question=(
+            "One student is missing from the list. All the students together read {total} "
+            "books. How many books did the missing student read?"
         ),
     ),
 )

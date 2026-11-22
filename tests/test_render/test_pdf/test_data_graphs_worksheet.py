@@ -6,11 +6,13 @@ The problem generator is not used. Problems are built by hand from the test topi
 
 Each case's output is stored as text decoded from the PDF, in one file with a section per case:
 ``goldens/data_graphs_worksheet_pdf_expecteds.txt``. The text includes the instruction, every
-problem's introduction, task, displays and questions with their answer boxes, the answer key and
-the page breaks. To regenerate sections after an intended change, uncomment the ``write_section``
-lines in ``test_pdf_draws_the_expected_text`` and run it (``-k`` selects cases).
+problem's introduction, task, displays and questions with their answer boxes, choices or tile
+numbers, the answer bank page, the answer key and the page breaks. To regenerate sections after
+an intended change, uncomment the ``write_section`` lines in ``test_pdf_draws_the_expected_text``
+and run it (``-k`` selects cases).
 """
 
+from dataclasses import replace
 from io import BytesIO
 
 import pytest
@@ -21,12 +23,22 @@ from core.discrete_data.data import (
     CategoricalProblemType,
     DataDisplay,
     DiscreteDataProblem,
+    DisplayChoice,
+    DoesntMatchQuestionData,
+    ErrorChoice,
+    EveryTick,
+    FindErrorQuestionData,
     NumericalData,
     NumericalDataProblemData,
     NumericalProblemType,
+    Off,
+    ReadCountsQuestionData,
+    ShownDisplay,
     SummarizeDataQuestionData,
+    Swap,
 )
 from core.discrete_data.topics import NumberListTopic
+from core.question import FreeResponse, MultipleChoice, Question
 from render.pdf.data_displays import NumberListStyle, draw_display
 from render.pdf.page import new_pdf
 from tests.data import CANS, CLASSES, FRUIT
@@ -38,7 +50,9 @@ from tests.helpers import (
     render_data_graphs,
 )
 
-TABLE, PICTOGRAPH, BAR_GRAPH, DOT_PLOT, LIST, NUMBER_LINE_DOT_PLOT = DataDisplay  # enum order
+TABLE, TALLY_TABLE, PICTOGRAPH, BAR_GRAPH, DOT_PLOT, LIST, NUMBER_LINE_DOT_PLOT = (
+    DataDisplay  # enum order
+)
 GRID, COMMAS = NumberListStyle  # in the enum's order
 TITLE = "Data and Graphs — Read, Complete, Solve"
 
@@ -134,31 +148,281 @@ LONG_QUESTIONS = [
     ),
 ]
 
+# The word problems the new layouts share, written or with choices
+FRUIT_MORE = CategoricalDataProblemData(FRUIT_DATA, CategoricalProblemType.MORE, (0, 1), 7)
+FRUIT_ALL = CategoricalDataProblemData(FRUIT_DATA, CategoricalProblemType.ALL, (), 30)
+CANS_FEWER = CategoricalDataProblemData(CANS_DATA, CategoricalProblemType.FEWER, (2, 1), 10)
+CANS_ALL_BUT = CategoricalDataProblemData(CANS_DATA, CategoricalProblemType.ALL_BUT, (0,), 50)
+CLASSES_MORE = NumericalDataProblemData(CLASSES_DATA, NumericalProblemType.MORE, (0, 2), 1)
+CLASSES_AT_LEAST = NumericalDataProblemData(CLASSES_DATA, NumericalProblemType.AT_LEAST, (2,), 4)
+# A data set's counts with no mistake, to choose
+FRUIT_RIGHT = DisplayChoice((12, 5, 9, 4), 2, ())
+CANS_RIGHT = DisplayChoice((30, 15, 25, 10), 5, ())
+CLASSES_RIGHT = DisplayChoice((3, 0, 2, 1, 0, 1), 1, ())
+# a number line's four choices: one X above every number, and 23 shown with 2 Xs
+CLASSES_CHOICES = MultipleChoice(
+    (
+        DisplayChoice((1, 1, 1, 1, 1, 2), 1, (EveryTick(), Off(5, 2))),
+        CLASSES_RIGHT,
+        DisplayChoice((3, 0, 2, 1, 0, 2), 1, (Off(5, 2),)),
+        DisplayChoice((1, 1, 1, 1, 1, 1), 1, (EveryTick(),)),
+    ),
+    frozenset({1}),
+)
+
+
+def _written(
+    data: CategoricalDataProblemData | NumericalDataProblemData,
+) -> Question[CategoricalDataProblemData | NumericalDataProblemData, FreeResponse]:
+    return Question(data, FreeResponse())
+
+
+# Choosing the matching display, two to a row under the given display, and the word problems'
+# numbers on a line under each
+CHOOSE_DISPLAYS = [
+    DiscreteDataProblem(
+        dataset=FRUIT_DATA,
+        given=TABLE,
+        summarize=Question(
+            SummarizeDataQuestionData(FRUIT_DATA, TABLE, BAR_GRAPH, (0, 1, 2, 3), (12, 5, 9, 4)),
+            MultipleChoice(
+                (
+                    DisplayChoice((12, 7, 4, 9), 2, (Swap(2, 3), Off(1, 7))),
+                    DisplayChoice((12, 7, 9, 4), 2, (Off(1, 7),)),
+                    DisplayChoice((12, 5, 4, 9), 2, (Swap(2, 3),)),
+                    FRUIT_RIGHT,
+                ),
+                frozenset({3}),
+            ),
+        ),
+        one_step=Question(FRUIT_MORE, MultipleChoice((17, 6, 5, 7), frozenset({3}))),
+        two_step=Question(FRUIT_ALL, MultipleChoice((18, 30, 25, 31), frozenset({1}))),
+    ),
+    DiscreteDataProblem(
+        dataset=CLASSES_DATA,
+        given=LIST,
+        summarize=Question(
+            SummarizeDataQuestionData(
+                CLASSES_DATA, LIST, NUMBER_LINE_DOT_PLOT, (0, 1, 2, 3, 4, 5), (3, 0, 2, 1, 0, 1)
+            ),
+            CLASSES_CHOICES,
+        ),
+        one_step=Question(CLASSES_MORE, MultipleChoice((1, 5, 3, 2), frozenset({0}))),
+        two_step=Question(CLASSES_AT_LEAST, MultipleChoice((2, 4, 3, 5), frozenset({1}))),
+    ),
+]
+# Reading the counts: written into a box for each category, or a cell for each number, then
+# chosen from lists
+READ_COUNTS = [
+    DiscreteDataProblem(
+        dataset=FRUIT_DATA,
+        given=PICTOGRAPH,
+        summarize=Question(
+            ReadCountsQuestionData(FRUIT_DATA, PICTOGRAPH, (12, 5, 9, 4)), FreeResponse()
+        ),
+        one_step=_written(FRUIT_MORE),
+        two_step=_written(FRUIT_ALL),
+    ),
+    DiscreteDataProblem(
+        dataset=CLASSES_DATA,
+        given=NUMBER_LINE_DOT_PLOT,
+        summarize=Question(
+            ReadCountsQuestionData(
+                CLASSES_DATA, NUMBER_LINE_DOT_PLOT, (18, 18, 18, 20, 20, 21, 23)
+            ),
+            FreeResponse(),
+        ),
+        one_step=_written(CLASSES_MORE),
+        two_step=_written(CLASSES_AT_LEAST),
+    ),
+    DiscreteDataProblem(
+        dataset=CANS_DATA,
+        given=BAR_GRAPH,
+        summarize=Question(
+            ReadCountsQuestionData(CANS_DATA, BAR_GRAPH, (30, 15, 25, 10)),
+            MultipleChoice(
+                (
+                    DisplayChoice((30, 20, 10, 25), 5, (Swap(2, 3), Off(1, 20))),
+                    CANS_RIGHT,
+                    DisplayChoice((30, 20, 25, 10), 5, (Off(1, 20),)),
+                    DisplayChoice((30, 15, 10, 25), 5, (Swap(2, 3),)),
+                ),
+                frozenset({1}),
+            ),
+        ),
+        one_step=_written(CANS_FEWER),
+        two_step=_written(CANS_ALL_BUT),
+    ),
+    DiscreteDataProblem(
+        dataset=CLASSES_DATA,
+        given=NUMBER_LINE_DOT_PLOT,
+        summarize=Question(
+            ReadCountsQuestionData(
+                CLASSES_DATA, NUMBER_LINE_DOT_PLOT, (18, 18, 18, 20, 20, 21, 23)
+            ),
+            CLASSES_CHOICES,
+        ),
+        one_step=_written(CLASSES_MORE),
+        two_step=_written(CLASSES_AT_LEAST),
+    ),
+]
+# Finding the error: a sentence to complete beside the data's table, or with the counts stated
+# in the introduction; then statements to choose from, with a second display, or on a number
+# line beside the list
+FIND_ERROR = [
+    DiscreteDataProblem(
+        dataset=CANS_DATA,
+        given=TABLE,
+        summarize=Question(
+            FindErrorQuestionData(CANS_DATA, TABLE, BAR_GRAPH, None, 0, 25, 30), FreeResponse()
+        ),
+        one_step=_written(CANS_FEWER),
+        two_step=_written(CANS_ALL_BUT),
+    ),
+    DiscreteDataProblem(
+        dataset=FRUIT_DATA,
+        given=None,
+        summarize=Question(
+            FindErrorQuestionData(FRUIT_DATA, None, PICTOGRAPH, None, 1, 7, 5), FreeResponse()
+        ),
+        one_step=_written(FRUIT_MORE),
+        two_step=_written(FRUIT_ALL),
+    ),
+    DiscreteDataProblem(
+        dataset=FRUIT_DATA,
+        given=TABLE,
+        summarize=Question(
+            FindErrorQuestionData(FRUIT_DATA, TABLE, PICTOGRAPH, BAR_GRAPH, 1, 7, 5),
+            MultipleChoice(
+                (
+                    ErrorChoice(BAR_GRAPH, 3, 5),
+                    ErrorChoice(BAR_GRAPH, 1, 4),
+                    ErrorChoice(PICTOGRAPH, 3, 5),
+                    ErrorChoice(PICTOGRAPH, 1, 5),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        one_step=_written(FRUIT_MORE),
+        two_step=_written(FRUIT_ALL),
+    ),
+    DiscreteDataProblem(
+        dataset=CLASSES_DATA,
+        given=LIST,
+        summarize=Question(
+            FindErrorQuestionData(CLASSES_DATA, LIST, NUMBER_LINE_DOT_PLOT, None, 0, 2, 3),
+            MultipleChoice(
+                (
+                    ErrorChoice(NUMBER_LINE_DOT_PLOT, 3, 0),
+                    ErrorChoice(NUMBER_LINE_DOT_PLOT, 3, 2),
+                    ErrorChoice(NUMBER_LINE_DOT_PLOT, 0, 4),
+                    ErrorChoice(NUMBER_LINE_DOT_PLOT, 0, 3),
+                ),
+                frozenset({3}),
+            ),
+        ),
+        one_step=_written(CLASSES_MORE),
+        two_step=_written(CLASSES_AT_LEAST),
+    ),
+]
+# Counts in sixes, shown four ways: a bar graph with apples and bananas switched, a pictograph
+# keyed 12, a tally table and a bar graph counting by 3
+SIXES_DATA = CategoricalData(
+    topic=FRUIT,
+    categories=("apples", "bananas", "grapes"),
+    counts=(6, 12, 18),
+    scale=6,
+    person="Ana",
+)
+SIXES_SHOWN = (
+    ShownDisplay(PICTOGRAPH, 12, DisplayChoice((6, 12, 18), 12, ())),
+    ShownDisplay(BAR_GRAPH, 6, DisplayChoice((12, 6, 18), 6, (Swap(0, 1),))),
+    ShownDisplay(TALLY_TABLE, 6, DisplayChoice((6, 12, 18), 6, ())),
+    ShownDisplay(BAR_GRAPH, 3, DisplayChoice((6, 12, 18), 3, ())),
+)
+SIXES_MORE = CategoricalDataProblemData(SIXES_DATA, CategoricalProblemType.MORE, (2, 0), 12)
+SIXES_ALL = CategoricalDataProblemData(SIXES_DATA, CategoricalProblemType.ALL, (), 36)
+DOESNT_MATCH = [
+    DiscreteDataProblem(
+        dataset=SIXES_DATA,
+        given=TABLE,
+        summarize=Question(
+            DoesntMatchQuestionData(SIXES_DATA, TABLE, SIXES_SHOWN[1]),
+            MultipleChoice(SIXES_SHOWN, frozenset({1})),
+        ),
+        one_step=_written(SIXES_MORE),
+        two_step=_written(SIXES_ALL),
+    ),
+    # with no table, the introduction states the counts
+    DiscreteDataProblem(
+        dataset=SIXES_DATA,
+        given=None,
+        summarize=Question(
+            DoesntMatchQuestionData(SIXES_DATA, None, SIXES_SHOWN[1]),
+            MultipleChoice(SIXES_SHOWN, frozenset({1})),
+        ),
+        one_step=_written(SIXES_MORE),
+        two_step=_written(SIXES_ALL),
+    ),
+]
+# A tally table completed as a bar graph with its bars across, and a pictograph completed as a
+# tally table
+ACROSS_DATA = replace(CANS_DATA, horizontal_bars=True)
+TALLIES_AND_BARS_ACROSS = [
+    discrete_data_problem(
+        SummarizeDataQuestionData(ACROSS_DATA, TALLY_TABLE, BAR_GRAPH, (0, 3), (30, 10)),
+        CategoricalDataProblemData(ACROSS_DATA, CategoricalProblemType.FEWER, (2, 1), 10),
+        CategoricalDataProblemData(ACROSS_DATA, CategoricalProblemType.ALL_BUT, (0,), 50),
+    ),
+    discrete_data_problem(
+        SummarizeDataQuestionData(FRUIT_DATA, PICTOGRAPH, TALLY_TABLE, (1, 2), (5, 9)),
+        FRUIT_MORE,
+        FRUIT_ALL,
+    ),
+]
+# Word problems only: the given display alone; then one problem only
+WORD_PROBLEMS_ONLY = [
+    DiscreteDataProblem(FRUIT_DATA, BAR_GRAPH, None, _written(FRUIT_MORE), _written(FRUIT_ALL)),
+    DiscreteDataProblem(CLASSES_DATA, LIST, None, _written(CLASSES_MORE), None),
+]
+
 EXPECTED = GOLDENS / "data_graphs_worksheet_pdf_expecteds.txt"
 
 
 @pytest.mark.parametrize(
-    ("case_name", "problems", "list_style", "answer_key", "title", "label"),
+    ("case_name", "problems", "list_style", "slot_of", "answer_key", "title", "label"),
     [
         # The instruction under the header. Each problem's introduction, task and two displays,
         # the second missing its blank counts, then two questions with answer boxes. A list is
         # a grid of boxes.
-        ("every_display", EVERY_DISPLAY, GRID, False, TITLE, "Sheet A"),
+        ("every_display", EVERY_DISPLAY, GRID, None, False, TITLE, "Sheet A"),
         # the list's numbers separated by commas, in a box
-        ("commas", EVERY_DISPLAY[2:3], COMMAS, False, TITLE, "Sheet A"),
+        ("commas", EVERY_DISPLAY[2:3], COMMAS, None, False, TITLE, "Sheet A"),
         # the key has each problem's blank counts, then its answers with their work
-        ("answer_key", EVERY_DISPLAY, GRID, True, TITLE, "Sheet A"),
+        ("answer_key", EVERY_DISPLAY, GRID, None, True, TITLE, "Sheet A"),
         # Questions of two lines, each answer box beside its first, and the label clear of the
         # text. Three rows in the grid.
-        ("long_questions", LONG_QUESTIONS, GRID, False, TITLE, "Sheet A"),
+        ("long_questions", LONG_QUESTIONS, GRID, None, False, TITLE, "Sheet A"),
         # the title and label are the ones given
-        ("title_and_label", EVERY_DISPLAY[:1], GRID, True, "Graphs Practice", "Week 3"),
+        ("title_and_label", EVERY_DISPLAY[:1], GRID, None, True, "Graphs Practice", "Week 3"),
+        # The four choices two to a row, under the given display, and each word problem's
+        # numbers on a line under it. The key names each wrong choice's mistakes.
+        ("choose_displays", CHOOSE_DISPLAYS, GRID, None, True, TITLE, "Sheet A"),
+        ("read_counts", READ_COUNTS, GRID, None, True, TITLE, "Sheet A"),
+        ("find_error", FIND_ERROR, GRID, None, True, TITLE, "Sheet A"),
+        ("doesnt_match", DOESNT_MATCH, GRID, None, True, TITLE, "Sheet A"),
+        ("tallies_and_bars_across", TALLIES_AND_BARS_ACROSS, GRID, None, False, TITLE, "Sheet A"),
+        ("word_problems_only", WORD_PROBLEMS_ONLY, GRID, None, True, TITLE, "Sheet A"),
+        # With tiles, each word problem's tile number in place of its box, the line saying which
+        # parts go on the tiles, the answer bank page, and each answer's slot in the key.
+        ("tiles", EVERY_DISPLAY[:2], GRID, (7, 9, 10, 6), True, TITLE, "Sheet A"),
     ],
 )
 def test_pdf_draws_the_expected_text(
     case_name: str,
     problems: list[DiscreteDataProblem],
     list_style: NumberListStyle,
+    slot_of: tuple[int, ...] | None,
     answer_key: bool,
     title: str,
     label: str,
@@ -167,10 +431,14 @@ def test_pdf_draws_the_expected_text(
     The decoded PDF matches this case's section of ``data_graphs_worksheet_pdf_expecteds.txt``.
 
     One comparison covers the instruction, the introductions and tasks, the displays and their
-    blanks, the questions and answer boxes, the answer key, the page breaks, and the title and
-    label.
+    blanks, the questions and answer boxes or choices, the tiles, the answer key, the page breaks,
+    and the title and label.
     """
-    actual = pdf_text(render_data_graphs(problems, list_style, answer_key, title, label))
+    actual = pdf_text(
+        render_data_graphs(
+            problems, [list_style] * len(problems), answer_key, title, label, slot_of=slot_of
+        )
+    )
 
     # to regenerate, uncomment:
     # from tests.helpers import write_section

@@ -1,5 +1,6 @@
 """Tests for the site's pages: every link works, and each sheet's page has its form."""
 
+import json
 import re
 
 import pytest
@@ -181,9 +182,26 @@ def test_pages(client: Client) -> None:
                 b"label",
                 b"name_line",
                 b"problems",
+                b"displays",  # a checkbox for each display
+                b"displays",
+                b"displays",
+                b"displays",
+                b"displays",
+                b"displays",
+                b"questions",  # a checkbox for each question
+                b"questions",
+                b"questions",
+                b"questions",
+                b"questions",
+                b"questions",
                 b"list_style",  # a radio button for each style
                 b"list_style",
+                b"list_style",
+                b"multiple_choice",
                 b"answer_key",
+                b"self_check_tiles",
+                b"tile_pattern",  # a radio button for each pattern
+                b"tile_pattern",
             ],
         ),
         (
@@ -532,7 +550,7 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
         (
             "/worksheets/data-and-graphs/",
             "list_style",
-            [(b"grid", b" checked", b"Grid"), (b"commas", b"", b"Commas")],
+            [(b"grid", b" checked", b"Grid"), (b"commas", b"", b"Commas"), (b"mix", b"", b"Mix")],
         ),
     ],
 )
@@ -1672,3 +1690,76 @@ def test_group_and_old_paths_redirect(client: Client, url: str, location: str) -
     """A group's own path, and a sheet's old one, redirect to the sheet's page."""
     response = client.get(url)
     assert (response.status_code, response["Location"]) == (302, location)
+
+
+@pytest.mark.parametrize(
+    ("url", "script"),
+    [
+        ("/worksheets/basic-operations/arithmetic/", False),
+        ("/worksheets/basic-operations/word-problems/", False),
+        ("/worksheets/basic-operations/strip-choice/", False),
+        ("/worksheets/basic-operations/base-ten-blocks/", False),
+        ("/worksheets/basic-operations/multiplication-models/", False),
+        ("/worksheets/place-value/", False),
+        ("/worksheets/data-and-graphs/", True),
+        ("/worksheets/algebra-and-functions/input-output-tables/", False),
+        ("/worksheets/algebra-and-functions/slope-and-intercepts/", False),
+        ("/worksheets/algebra-and-functions/writing-linear-equations/", False),
+        ("/worksheets/algebra-and-functions/graphing-linear-equations/", False),
+        ("/worksheets/algebra-and-functions/order-of-operations/", False),
+        ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
+        ("/worksheets/legacy/", False),
+    ],
+)
+def test_the_data_graphs_page_greys_out_questions_and_sets_its_tiles(
+    client: Client, url: str, script: bool
+) -> None:
+    """
+    Only the data and graphs page includes its script, with the questions each set of graphs and
+    tables can make: it greys out the questions the ticked ones can't make, with a note, and
+    with tiles, sets the problems to the tiles the ticked word problems take.
+
+    Whether the script works is checked manually in a browser.
+    """
+    content = client.get(url).content
+    assert (
+        b"function greyQuestions()" in content,
+        b"function limitProblems(reset)" in content,
+        b'<script id="question-availability"' in content,
+    ) == (script, script, script)
+
+
+def test_the_data_graphs_script_s_data(client: Client) -> None:
+    """
+    The question availability the data and graphs script reads: for each of the 64 sets of
+    graphs and tables, their values joined by commas in the order of the boxes, the questions
+    they can make.
+    """
+    content = client.get("/worksheets/data-and-graphs/").content
+    found = re.search(
+        rb'<script id="question-availability" type="application/json">(.*?)</script>', content
+    )
+    assert found is not None
+    availability = json.loads(found.group(1))
+    assert (
+        len(availability),
+        availability[""],
+        availability["table"],
+        availability["pictograph"],
+        availability["table,tally_table"],
+        availability["table,tally_table,pictograph,bar_graph,dot_plot,list"],
+    ) == (
+        64,
+        [],
+        ["one_step", "two_step"],
+        ["read_counts", "find_error", "doesnt_match", "one_step", "two_step"],
+        ["another_display", "read_counts", "find_error", "one_step", "two_step"],
+        [
+            "another_display",
+            "read_counts",
+            "find_error",
+            "doesnt_match",
+            "one_step",
+            "two_step",
+        ],
+    )
