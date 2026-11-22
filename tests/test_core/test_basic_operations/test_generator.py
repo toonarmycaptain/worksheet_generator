@@ -1482,6 +1482,8 @@ GROUP_SIZES = (2, 20)  # and the size of each group
         "distinct_answers",
         "largest_number",
         "largest_operand",
+        "largest_groups",
+        "largest_size",
         "drawn",
         "bounds",
         "expected",
@@ -1495,6 +1497,8 @@ GROUP_SIZES = (2, 20)  # and the size of each group
             False,
             999,
             999,
+            6,
+            20,
             [1, 99],
             [(1, 999), (1, 999)],
             [
@@ -1516,6 +1520,8 @@ GROUP_SIZES = (2, 20)  # and the size of each group
             False,
             999,
             999,
+            6,
+            20,
             [305, 305, 300, 645, 512, 48, 600, 950, 47, 925, 99, 99],
             [
                 (1, 999),
@@ -1569,6 +1575,8 @@ GROUP_SIZES = (2, 20)  # and the size of each group
             False,
             99,
             999,
+            6,
+            20,
             [60, 50, 47, 25, 25, 72],
             [(1, 99), (1, 99), (1, 99), (1, 99), (1, 99), (1, 99)],
             [
@@ -1597,6 +1605,8 @@ GROUP_SIZES = (2, 20)  # and the size of each group
             False,
             999,
             599,
+            6,
+            20,
             [450, 380],
             [(1, 599), (1, 599)],
             [
@@ -1617,6 +1627,8 @@ GROUP_SIZES = (2, 20)  # and the size of each group
             False,
             99,
             599,
+            6,
+            20,
             [25, 72],
             [(1, 99), (1, 99)],
             [
@@ -1637,6 +1649,8 @@ GROUP_SIZES = (2, 20)  # and the size of each group
             False,
             999,
             999,
+            6,
+            20,
             [40, 150, 55, 55],
             [(1, 999), (1, 999), (1, 999), (1, 999)],
             [
@@ -1664,6 +1678,8 @@ GROUP_SIZES = (2, 20)  # and the size of each group
             True,
             999,
             999,
+            6,
+            20,
             [40, 150, 55, 55, 47, 25],
             [(1, 999), (1, 999), (1, 999), (1, 999), (1, 999), (1, 999)],
             [
@@ -1691,6 +1707,8 @@ GROUP_SIZES = (2, 20)  # and the size of each group
             False,
             999,
             999,
+            6,
+            20,
             [3, 4],
             [GROUPS, GROUP_SIZES],
             [
@@ -1710,6 +1728,8 @@ GROUP_SIZES = (2, 20)  # and the size of each group
             False,
             999,
             999,
+            6,
+            20,
             [3, 4],
             [GROUPS, GROUP_SIZES],
             [
@@ -1730,6 +1750,8 @@ GROUP_SIZES = (2, 20)  # and the size of each group
             False,
             999,
             999,
+            6,
+            20,
             [3, 4, 3, 4, 4, 3],
             [GROUPS, GROUP_SIZES, GROUPS, GROUP_SIZES, GROUPS, GROUP_SIZES],
             [
@@ -1755,6 +1777,8 @@ GROUP_SIZES = (2, 20)  # and the size of each group
             True,
             999,
             999,
+            6,
+            20,
             [2, 2, 3, 4, 3, 5],
             [GROUPS, GROUP_SIZES, GROUPS, GROUP_SIZES, GROUPS, GROUP_SIZES],
             [
@@ -1780,6 +1804,8 @@ GROUP_SIZES = (2, 20)  # and the size of each group
             False,
             20,
             999,
+            6,
+            20,
             [7, 9, 6, 20],
             [(1, 20), (1, 20), GROUPS, GROUP_SIZES],
             [
@@ -1798,6 +1824,50 @@ GROUP_SIZES = (2, 20)  # and the size of each group
                 ),
             ],
         ),
+        # the number of groups and the size of each have limits of their own, and the product
+        # is whatever they make, past the largest number
+        (
+            1,
+            [Operation.MULTIPLY],
+            [Operation.MULTIPLY],
+            False,
+            999,
+            999,
+            12,
+            999,
+            [12, 999],
+            [(2, 12), (2, 999)],
+            [
+                BasicOperationQuestionData(
+                    Operation.MULTIPLY,
+                    (12, 999),
+                    11_988,
+                    "12 friends each have 999 cards. How many cards do they have together?",
+                ),
+            ],
+        ),
+        # and so is the total a division shares, written with a comma
+        (
+            1,
+            [Operation.DIVIDE],
+            [Operation.DIVIDE],
+            False,
+            999,
+            999,
+            12,
+            999,
+            [12, 987],
+            [(2, 12), (2, 999)],
+            [
+                BasicOperationQuestionData(
+                    Operation.DIVIDE,
+                    (11_844, 12),
+                    987,
+                    "Maria divides 11,844 cards into 12 equal piles. "
+                    "How many cards are in each pile?",
+                ),
+            ],
+        ),
     ],
 )
 def test_word_problems_from_scripted_draws(
@@ -1807,6 +1877,8 @@ def test_word_problems_from_scripted_draws(
     distinct_answers: bool,
     largest_number: int,
     largest_operand: int,
+    largest_groups: int,
+    largest_size: int,
     drawn: list[int],
     bounds: list[tuple[int, int]],
     expected: list[BasicOperationQuestionData],
@@ -1832,6 +1904,8 @@ def test_word_problems_from_scripted_draws(
         distinct_answers=distinct_answers,
         largest_number=largest_number,
         largest_operand=largest_operand,
+        largest_groups=largest_groups,
+        largest_size=largest_size,
     )
 
     assert drawn_from == bounds
@@ -1867,39 +1941,61 @@ def test_random_word_problems_have_distinct_answers(
 
 
 @pytest.mark.parametrize(
-    ("operations", "distinct_answers", "up_to", "largest_number", "largest_operand", "expected"),
+    (
+        "operations",
+        "distinct_answers",
+        "up_to",
+        "largest_number",
+        "largest_operand",
+        "largest_groups",
+        "largest_size",
+        "expected",
+    ),
     [
         # addition's answers, the sums from 1 + 1 to 999
-        ([Operation.ADD], False, 1000, 999, 999, 998),
-        ([Operation.ADD], True, 1000, 999, 999, 998),
+        ([Operation.ADD], False, 1000, 999, 999, 6, 20, 998),
+        ([Operation.ADD], True, 1000, 999, 999, 6, 20, 998),
         # subtraction's, the differences from 1 to 999 - 1
-        ([Operation.SUBTRACT], True, 1000, 999, 999, 998),
+        ([Operation.SUBTRACT], True, 1000, 999, 999, 6, 20, 998),
         # with a largest number of 20
-        ([Operation.ADD], True, 100, 20, 999, 19),
-        ([Operation.SUBTRACT], True, 100, 20, 999, 19),
+        ([Operation.ADD], True, 100, 20, 999, 6, 20, 19),
+        ([Operation.SUBTRACT], True, 100, 20, 999, 6, 20, 19),
         # base-ten blocks: the operands stop at 599, but a sum can still reach 999
-        ([Operation.ADD], True, 1000, 999, 599, 998),
-        ([Operation.SUBTRACT], True, 1000, 999, 599, 598),
+        ([Operation.ADD], True, 1000, 999, 599, 6, 20, 998),
+        ([Operation.SUBTRACT], True, 1000, 999, 599, 6, 20, 598),
         # the smallest largest number with a sum, 1 + 1, and a difference, 2 - 1
-        ([Operation.ADD], True, 100, 2, 999, 1),
-        ([Operation.SUBTRACT], True, 100, 2, 999, 1),
+        ([Operation.ADD], True, 100, 2, 999, 6, 20, 1),
+        ([Operation.SUBTRACT], True, 100, 2, 999, 6, 20, 1),
         # below that, none
-        ([Operation.ADD], True, 100, 1, 999, 0),
-        ([Operation.SUBTRACT], True, 100, 1, 999, 0),
+        ([Operation.ADD], True, 100, 1, 999, 6, 20, 0),
+        ([Operation.SUBTRACT], True, 100, 1, 999, 6, 20, 0),
         # 5 group counts (2 to 6) times 19 sizes (2 to 20)
-        ([Operation.MULTIPLY], False, 100, 999, 999, 95),
-        ([Operation.DIVIDE], False, 100, 999, 999, 95),
+        ([Operation.MULTIPLY], False, 100, 999, 999, 6, 20, 95),
+        ([Operation.DIVIDE], False, 100, 999, 999, 6, 20, 95),
         # the distinct products of those
-        ([Operation.MULTIPLY], True, 100, 999, 999, 59),
+        ([Operation.MULTIPLY], True, 100, 999, 999, 6, 20, 59),
         # a division's answer is the size of each group
-        ([Operation.DIVIDE], True, 100, 999, 999, 19),
+        ([Operation.DIVIDE], True, 100, 999, 999, 6, 20, 19),
         # multiplication and division ignore the largest number
-        ([Operation.DIVIDE], True, 100, 20, 999, 19),
+        ([Operation.DIVIDE], True, 100, 20, 999, 6, 20, 19),
         # the least of the operations'
-        ([Operation.ADD, Operation.DIVIDE], True, 100, 999, 999, 19),
-        ([Operation.ADD, Operation.DIVIDE], True, 100, 10, 999, 9),
+        ([Operation.ADD, Operation.DIVIDE], True, 100, 999, 999, 6, 20, 19),
+        ([Operation.ADD, Operation.DIVIDE], True, 100, 10, 999, 6, 20, 9),
         # capped
-        ([Operation.MULTIPLY, Operation.DIVIDE], False, 12, 999, 999, 12),
+        ([Operation.MULTIPLY, Operation.DIVIDE], False, 12, 999, 999, 6, 20, 12),
+        # 2 to 10 groups of 2 to 10: 9 group counts times 9 sizes
+        ([Operation.MULTIPLY], False, 100, 999, 999, 10, 10, 81),
+        # a division's answers, the sizes 2 to 10, so 12 different answers need sizes up to 13
+        ([Operation.DIVIDE], True, 100, 999, 999, 10, 10, 9),
+        ([Operation.DIVIDE], True, 100, 999, 999, 10, 13, 12),
+        # the products of 2 groups of 2 to 13: 4, 6 and on to 26
+        ([Operation.MULTIPLY], True, 100, 999, 999, 2, 13, 12),
+        # the fewest, 2 groups of 2
+        ([Operation.MULTIPLY], False, 100, 999, 999, 2, 2, 1),
+        ([Operation.DIVIDE], False, 100, 999, 999, 2, 2, 1),
+        # the most, 99 groups of up to 999, capped too
+        ([Operation.MULTIPLY], False, 20, 999, 999, 99, 999, 20),
+        ([Operation.DIVIDE], True, 20, 999, 999, 99, 999, 20),
     ],
 )
 def test_count_possible_word_problems(
@@ -1908,6 +2004,8 @@ def test_count_possible_word_problems(
     up_to: int,
     largest_number: int,
     largest_operand: int,
+    largest_groups: int,
+    largest_size: int,
     expected: int,
 ) -> None:
     """
@@ -1920,6 +2018,8 @@ def test_count_possible_word_problems(
         up_to=up_to,
         largest_number=largest_number,
         largest_operand=largest_operand,
+        largest_groups=largest_groups,
+        largest_size=largest_size,
     )
     assert possible == expected
 
@@ -1979,7 +2079,16 @@ def test_word_problem_sheet_errors(
 
 
 @pytest.mark.parametrize(
-    ("count", "operations", "largest_number", "largest_groups", "drawn", "bounds", "expected"),
+    (
+        "count",
+        "operations",
+        "largest_number",
+        "largest_groups",
+        "largest_size",
+        "drawn",
+        "bounds",
+        "expected",
+    ),
     [
         # The defaults, a largest number of 100 and 12 groups: one of each operation, then the
         # sheet is shuffled. An addition's or subtraction's smaller number is at most 12.
@@ -1988,6 +2097,7 @@ def test_word_problem_sheet_errors(
             [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
             100,
             12,
+            20,
             [3, 4, 3, 4, 47, 9, 47, 5],
             [(2, 12), (2, 20), (2, 12), (2, 20), (1, 100), (1, 12), (1, 100), (1, 12)],
             [
@@ -2025,6 +2135,7 @@ def test_word_problem_sheet_errors(
             [Operation.MULTIPLY, Operation.DIVIDE],
             100,
             12,
+            20,
             [6, 20, 4, 5, 12, 20, 6, 7],
             [(2, 12), (2, 20), (2, 12), (2, 20), (2, 12), (2, 20), (2, 12), (2, 20)],
             [
@@ -2048,6 +2159,7 @@ def test_word_problem_sheet_errors(
             [Operation.ADD, Operation.MULTIPLY],
             100,
             12,
+            20,
             [2, 2, 2, 3, 2, 2, 2, 3],
             [(2, 12), (2, 20), (2, 12), (2, 20), (1, 100), (1, 12), (1, 100), (1, 12)],
             [
@@ -2074,6 +2186,7 @@ def test_word_problem_sheet_errors(
             [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
             100,
             5,
+            20,
             [5, 20, 5, 20, 100, 5, 95, 5],
             [(2, 5), (2, 20), (2, 5), (2, 20), (1, 100), (1, 5), (1, 100), (1, 5)],
             [
@@ -2111,6 +2224,7 @@ def test_word_problem_sheet_errors(
             [Operation.ADD, Operation.SUBTRACT],
             100,
             12,
+            20,
             [47, 9, 60, 12, 47, 5],
             [(1, 100), (1, 12), (1, 100), (1, 12), (1, 100), (1, 12)],
             [
@@ -2141,6 +2255,7 @@ def test_word_problem_sheet_errors(
             [Operation.ADD],
             10,
             12,
+            20,
             [7, 6, 3, 6],
             [(1, 10), (1, 10), (1, 10), (1, 10)],
             [
@@ -2153,6 +2268,24 @@ def test_word_problem_sheet_errors(
                 ),
             ],
         ),
+        # the largest group size caps a multiplication's groups: 12 groups of at most 3
+        (
+            1,
+            [Operation.MULTIPLY],
+            100,
+            12,
+            3,
+            [12, 3],
+            [(2, 12), (2, 3)],
+            [
+                BasicOperationQuestionData(
+                    Operation.MULTIPLY,
+                    (12, 3),
+                    36,
+                    "12 friends each have 3 cards. How many cards do they have together?",
+                ),
+            ],
+        ),
     ],
 )
 def test_strip_choice_problems_from_scripted_draws(
@@ -2160,6 +2293,7 @@ def test_strip_choice_problems_from_scripted_draws(
     operations: list[Operation],
     largest_number: int,
     largest_groups: int,
+    largest_size: int,
     drawn: list[int],
     bounds: list[tuple[int, int]],
     expected: list[BasicOperationQuestionData],
@@ -2183,7 +2317,11 @@ def test_strip_choice_problems_from_scripted_draws(
     choose_last(monkeypatch)
 
     questions = generate_strip_choice_problems(
-        count, operations, largest_number=largest_number, largest_groups=largest_groups
+        count,
+        operations,
+        largest_number=largest_number,
+        largest_groups=largest_groups,
+        largest_size=largest_size,
     )
 
     assert drawn_from == bounds
@@ -2213,28 +2351,35 @@ def test_random_strip_choice_sheets_can_always_be_finished(
 
 
 @pytest.mark.parametrize(
-    ("operations", "up_to", "largest_number", "largest_groups", "expected"),
+    ("operations", "up_to", "largest_number", "largest_groups", "largest_size", "expected"),
     [
         # the defaults: the sums from 1 + 1 to 100, and the differences from 1 to 99
-        ([Operation.ADD], 1000, 100, 12, 99),
-        ([Operation.SUBTRACT], 1000, 100, 12, 99),
+        ([Operation.ADD], 1000, 100, 12, 20, 99),
+        ([Operation.SUBTRACT], 1000, 100, 12, 20, 99),
         # 2 to 12 groups of 2 to 20 within 100, but 2 groups of 2
-        ([Operation.MULTIPLY], 1000, 100, 12, 148),
+        ([Operation.MULTIPLY], 1000, 100, 12, 20, 148),
         # every one of those shared, as 4 shared into 2 draws a strip of its own
-        ([Operation.DIVIDE], 1000, 100, 12, 149),
+        ([Operation.DIVIDE], 1000, 100, 12, 20, 149),
         # 2 groups only: of 3 to 20, or 4 to 40 shared into them
-        ([Operation.MULTIPLY], 1000, 100, 2, 18),
-        ([Operation.DIVIDE], 1000, 100, 2, 19),
+        ([Operation.MULTIPLY], 1000, 100, 2, 20, 18),
+        ([Operation.DIVIDE], 1000, 100, 2, 20, 19),
         # the largest number caps the product too
-        ([Operation.MULTIPLY], 1000, 20, 12, 26),
+        ([Operation.MULTIPLY], 1000, 20, 12, 20, 26),
         # the sums from 1 + 1 to 10
-        ([Operation.ADD], 1000, 10, 12, 9),
+        ([Operation.ADD], 1000, 10, 12, 20, 9),
         # Split evenly, each operation needs only its share: 2 groups of 3, the only
         # multiplication, is enough for 1 of 2 problems, and 1 of 4.
-        ([Operation.ADD, Operation.MULTIPLY], 1000, 6, 2, 2),
-        ([Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE], 1000, 6, 2, 4),
+        ([Operation.ADD, Operation.MULTIPLY], 1000, 6, 2, 20, 2),
+        (
+            [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
+            1000,
+            6,
+            2,
+            20,
+            4,
+        ),
         # 2 groups of 2 is the only multiplication within 5 in 2 groups, and it's left out
-        ([Operation.ADD, Operation.MULTIPLY], 1000, 5, 2, 0),
+        ([Operation.ADD, Operation.MULTIPLY], 1000, 5, 2, 20, 0),
         # capped
         (
             [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
@@ -2242,7 +2387,14 @@ def test_random_strip_choice_sheets_can_always_be_finished(
             100,
             12,
             20,
+            20,
         ),
+        # 2 to 12 groups of 2 or 3, but 2 groups of 2
+        ([Operation.MULTIPLY], 1000, 100, 12, 3, 21),
+        # every one of those shared
+        ([Operation.DIVIDE], 1000, 100, 12, 3, 22),
+        # the largest number still caps the product: 2 groups of 3 to 50
+        ([Operation.MULTIPLY], 1000, 100, 2, 999, 48),
     ],
 )
 def test_count_possible_strip_choice_problems(
@@ -2250,6 +2402,7 @@ def test_count_possible_strip_choice_problems(
     up_to: int,
     largest_number: int,
     largest_groups: int,
+    largest_size: int,
     expected: int,
 ) -> None:
     """
@@ -2258,7 +2411,11 @@ def test_count_possible_strip_choice_problems(
     operations' for each operation.
     """
     possible = count_possible_strip_choice_problems(
-        operations, up_to=up_to, largest_number=largest_number, largest_groups=largest_groups
+        operations,
+        up_to=up_to,
+        largest_number=largest_number,
+        largest_groups=largest_groups,
+        largest_size=largest_size,
     )
     assert possible == expected
 
@@ -2309,7 +2466,16 @@ def test_strip_choice_sheet_errors(
 
 
 @pytest.mark.parametrize(
-    ("count", "operations", "largest_number", "drawn", "bounds", "expected"),
+    (
+        "count",
+        "operations",
+        "largest_number",
+        "largest_groups",
+        "largest_size",
+        "drawn",
+        "bounds",
+        "expected",
+    ),
     [
         # The defaults: one of each operation, then the sheet is shuffled. Multiplication and
         # division are 2 to 6 groups of 2 to 20, as on any word problem. Subtraction is worded with
@@ -2318,6 +2484,8 @@ def test_strip_choice_sheet_errors(
             4,
             [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
             999,
+            6,
+            20,
             [3, 4, 3, 4, 47, 9, 47, 5],
             [(2, 6), (2, 20), (2, 6), (2, 20), (1, 999), (1, 999), (1, 999), (1, 999)],
             [
@@ -2354,6 +2522,8 @@ def test_strip_choice_sheet_errors(
             2,
             [Operation.SUBTRACT, Operation.MULTIPLY],
             999,
+            6,
+            20,
             [2, 2, 2, 3, 4, 2, 4, 3],
             [(2, 6), (2, 20), (2, 6), (2, 20), (1, 999), (1, 999), (1, 999), (1, 999)],
             [
@@ -2378,6 +2548,8 @@ def test_strip_choice_sheet_errors(
             2,
             [Operation.ADD, Operation.DIVIDE],
             999,
+            6,
+            20,
             [2, 2, 2, 3, 2, 2, 4, 2, 2, 4],
             [
                 (2, 6),
@@ -2412,6 +2584,8 @@ def test_strip_choice_sheet_errors(
             2,
             [Operation.ADD, Operation.MULTIPLY],
             10,
+            6,
+            20,
             [6, 20, 7, 6, 3, 6],
             [(2, 6), (2, 20), (1, 10), (1, 10), (1, 10), (1, 10)],
             [
@@ -2436,6 +2610,8 @@ def test_strip_choice_sheet_errors(
             3,
             [Operation.ADD, Operation.SUBTRACT],
             999,
+            6,
+            20,
             [47, 9, 60, 12, 47, 5],
             [(1, 999), (1, 999), (1, 999), (1, 999), (1, 999), (1, 999)],
             [
@@ -2462,12 +2638,33 @@ def test_strip_choice_sheet_errors(
                 ),
             ],
         ),
+        # Equations draw no strip, so up to 99 groups: 32 groups of 28 shared, whose total the
+        # largest number doesn't cap
+        (
+            1,
+            [Operation.DIVIDE],
+            100,
+            32,
+            28,
+            [32, 28],
+            [(2, 32), (2, 28)],
+            [
+                BasicOperationQuestionData(
+                    Operation.DIVIDE,
+                    (896, 32),
+                    28,
+                    "Maria divides 896 cards into 32 equal piles. How many cards are in each pile?",
+                ),
+            ],
+        ),
     ],
 )
 def test_equation_choice_problems_from_scripted_draws(
     count: int,
     operations: list[Operation],
     largest_number: int,
+    largest_groups: int,
+    largest_size: int,
     drawn: list[int],
     bounds: list[tuple[int, int]],
     expected: list[BasicOperationQuestionData],
@@ -2489,7 +2686,13 @@ def test_equation_choice_problems_from_scripted_draws(
     reverse_shuffle(monkeypatch)
     choose_last(monkeypatch)
 
-    questions = generate_equation_choice_problems(count, operations, largest_number=largest_number)
+    questions = generate_equation_choice_problems(
+        count,
+        operations,
+        largest_number=largest_number,
+        largest_groups=largest_groups,
+        largest_size=largest_size,
+    )
 
     assert drawn_from == bounds
     assert questions == [Question(data, equation_choices(data)) for data in expected]
@@ -2518,29 +2721,53 @@ def test_random_equation_choice_sheets_can_always_be_finished(
 
 
 @pytest.mark.parametrize(
-    ("operations", "up_to", "largest_number", "expected"),
+    ("operations", "up_to", "largest_number", "largest_groups", "largest_size", "expected"),
     [
         # the defaults: the sums from 1 + 1 to 999, and the differences from 1 to 998
-        ([Operation.ADD], 1000, 999, 998),
-        ([Operation.SUBTRACT], 1000, 999, 998),
+        ([Operation.ADD], 1000, 999, 6, 20, 998),
+        ([Operation.SUBTRACT], 1000, 999, 6, 20, 998),
         # 2 to 6 groups of 2 to 20, but 2 groups of 2 and 4 groups of 2
-        ([Operation.MULTIPLY], 1000, 999, 93),
+        ([Operation.MULTIPLY], 1000, 999, 6, 20, 93),
         # every one of those shared, but 4 shared into 2
-        ([Operation.DIVIDE], 1000, 999, 94),
+        ([Operation.DIVIDE], 1000, 999, 6, 20, 94),
         # the largest number doesn't cap a product
-        ([Operation.MULTIPLY], 1000, 10, 93),
+        ([Operation.MULTIPLY], 1000, 10, 6, 20, 93),
         # the sums from 1 + 1 to 10
-        ([Operation.ADD], 1000, 10, 9),
+        ([Operation.ADD], 1000, 10, 6, 20, 9),
         # Split evenly, each operation needs only its share: addition's 2 sums within 3 are
         # enough for 2 of 4 problems.
-        ([Operation.ADD, Operation.MULTIPLY], 1000, 3, 4),
-        ([Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE], 1000, 999, 372),
+        ([Operation.ADD, Operation.MULTIPLY], 1000, 3, 6, 20, 4),
+        (
+            [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
+            1000,
+            999,
+            6,
+            20,
+            372,
+        ),
         # capped
-        ([Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE], 20, 999, 20),
+        (
+            [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
+            20,
+            999,
+            6,
+            20,
+            20,
+        ),
+        # 2 to 32 groups of 2 to 28, but 2 groups of 2 and 4 groups of 2
+        ([Operation.MULTIPLY], 1000, 999, 32, 28, 835),
+        # 2 groups of 3 only, as 2 groups of 2 is left out; and 6 shared into 2, as 4 is
+        ([Operation.MULTIPLY], 1000, 999, 2, 3, 1),
+        ([Operation.DIVIDE], 1000, 999, 2, 3, 1),
     ],
 )
 def test_count_possible_equation_choice_problems(
-    operations: list[Operation], up_to: int, largest_number: int, expected: int
+    operations: list[Operation],
+    up_to: int,
+    largest_number: int,
+    largest_groups: int,
+    largest_size: int,
+    expected: int,
 ) -> None:
     """
     Each operation counts as on word problems, except that 2 groups of 2, 4 groups of 2 and 4
@@ -2548,7 +2775,11 @@ def test_count_possible_equation_choice_problems(
     operation.
     """
     possible = count_possible_equation_choice_problems(
-        operations, up_to=up_to, largest_number=largest_number
+        operations,
+        up_to=up_to,
+        largest_number=largest_number,
+        largest_groups=largest_groups,
+        largest_size=largest_size,
     )
     assert possible == expected
 
@@ -2997,6 +3228,7 @@ CARDS = ("card", "cards")  # the object chosen for a problem's wording
         "distinct_answers",
         "largest_number",
         "largest_groups",
+        "largest_size",
         "chosen",
         "expected",
     ),
@@ -3009,6 +3241,7 @@ CARDS = ("card", "cards")  # the object chosen for a problem's wording
             False,
             999,
             6,
+            20,
             [
                 18,
                 BasicOperationQuestionData(Operation.SUBTRACT, (24, 6), 18),
@@ -3036,6 +3269,7 @@ CARDS = ("card", "cards")  # the object chosen for a problem's wording
             False,
             999,
             6,
+            20,
             [
                 15,
                 BasicOperationQuestionData(Operation.MULTIPLY, (3, 5), 15),
@@ -3063,6 +3297,7 @@ CARDS = ("card", "cards")  # the object chosen for a problem's wording
             False,
             999,
             6,
+            20,
             [
                 10,
                 BasicOperationQuestionData(Operation.ADD, (4, 6), 10),
@@ -3090,6 +3325,7 @@ CARDS = ("card", "cards")  # the object chosen for a problem's wording
             False,
             999,
             6,
+            20,
             [
                 15,
                 BasicOperationQuestionData(Operation.MULTIPLY, (3, 5), 15),
@@ -3117,6 +3353,7 @@ CARDS = ("card", "cards")  # the object chosen for a problem's wording
             False,
             999,
             6,
+            20,
             [
                 20,
                 BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
@@ -3161,6 +3398,7 @@ CARDS = ("card", "cards")  # the object chosen for a problem's wording
             True,
             999,
             6,
+            20,
             [
                 10,
                 BasicOperationQuestionData(Operation.ADD, (4, 6), 10),
@@ -3205,6 +3443,7 @@ CARDS = ("card", "cards")  # the object chosen for a problem's wording
             False,
             999,
             6,
+            20,
             [
                 10,
                 BasicOperationQuestionData(Operation.ADD, (4, 6), 10),
@@ -3246,6 +3485,7 @@ CARDS = ("card", "cards")  # the object chosen for a problem's wording
             False,
             999,
             12,
+            20,
             [
                 18,
                 BasicOperationQuestionData(Operation.SUBTRACT, (24, 6), 18),
@@ -3273,6 +3513,7 @@ CARDS = ("card", "cards")  # the object chosen for a problem's wording
             False,
             999,
             6,
+            20,
             [
                 30,
                 BasicOperationQuestionData(Operation.DIVIDE, (60, 2), 30),
@@ -3300,6 +3541,7 @@ CARDS = ("card", "cards")  # the object chosen for a problem's wording
             False,
             999,
             6,
+            20,
             [
                 6,
                 BasicOperationQuestionData(Operation.ADD, (2, 4), 6),
@@ -3326,6 +3568,7 @@ CARDS = ("card", "cards")  # the object chosen for a problem's wording
             False,
             999,
             6,
+            20,
             [
                 6,
                 BasicOperationQuestionData(Operation.DIVIDE, (24, 4), 6),
@@ -3354,6 +3597,7 @@ def test_two_step_problems_from_scripted_draws(
     distinct_answers: bool,
     largest_number: int,
     largest_groups: int,
+    largest_size: int,
     chosen: list[object],
     expected: list[TwoStepQuestionData],
     monkeypatch: pytest.MonkeyPatch,
@@ -3379,13 +3623,22 @@ def test_two_step_problems_from_scripted_draws(
         distinct_answers=distinct_answers,
         largest_number=largest_number,
         largest_groups=largest_groups,
+        largest_size=largest_size,
     )
 
     assert questions == [Question(data, FreeResponse()) for data in expected]
 
 
 @pytest.mark.parametrize(
-    ("operations", "picks", "largest_number", "chosen", "offered"),
+    (
+        "operations",
+        "picks",
+        "largest_number",
+        "largest_groups",
+        "largest_size",
+        "chosen",
+        "offered",
+    ),
     [
         # Three numbers that make at most 7: 7 can't be carried, as nothing is left to add, and
         # 4 is 1 + 3 or 3 + 1, but not 2 + 2. After 1 + 3, only 2 can be added, not 1 or 3.
@@ -3393,6 +3646,8 @@ def test_two_step_problems_from_scripted_draws(
             [Operation.ADD],
             [ADD_THEN_ADD],
             7,
+            6,
+            20,
             [
                 4,
                 BasicOperationQuestionData(Operation.ADD, (1, 3), 4),
@@ -3415,6 +3670,8 @@ def test_two_step_problems_from_scripted_draws(
             [Operation.ADD, Operation.MULTIPLY],
             [MULTIPLY_THEN_ADD],
             10,
+            6,
+            20,
             [
                 6,
                 BasicOperationQuestionData(Operation.MULTIPLY, (2, 3), 6),
@@ -3434,12 +3691,36 @@ def test_two_step_problems_from_scripted_draws(
                 OBJECTS,
             ],
         ),
+        # Dividing twice within 60, in 2 or 3 groups of at most 5. The first answer can still go
+        # past 5, but not to 14, which needs groups of 7. After 30 shared into 2, 15 can only be
+        # shared into 3, and 45 shared into 3 isn't offered, as then the 3 would repeat.
+        (
+            [Operation.DIVIDE],
+            [DIVIDE_THEN_DIVIDE],
+            60,
+            3,
+            5,
+            [
+                15,
+                BasicOperationQuestionData(Operation.DIVIDE, (30, 2), 15),
+                BasicOperationQuestionData(Operation.DIVIDE, (15, 3), 5),
+                CARDS,
+            ],
+            [
+                [4, 6, 8, 9, 10, 12, 15],
+                [BasicOperationQuestionData(Operation.DIVIDE, (30, 2), 15)],
+                [BasicOperationQuestionData(Operation.DIVIDE, (15, 3), 5)],
+                OBJECTS,
+            ],
+        ),
     ],
 )
 def test_two_step_problems_offer_only_steps_that_repeat_no_number(
     operations: list[Operation],
     picks: list[TwoStepShape],
     largest_number: int,
+    largest_groups: int,
+    largest_size: int,
     chosen: list[object],
     offered: list[object],
     monkeypatch: pytest.MonkeyPatch,
@@ -3453,7 +3734,13 @@ def test_two_step_problems_offer_only_steps_that_repeat_no_number(
     drawn_from = choice_returns(monkeypatch, chosen)
     sample_first(monkeypatch)
 
-    generate_two_step_problems(1, operations, largest_number=largest_number)
+    generate_two_step_problems(
+        1,
+        operations,
+        largest_number=largest_number,
+        largest_groups=largest_groups,
+        largest_size=largest_size,
+    )
 
     assert drawn_from == offered
 
@@ -3537,23 +3824,24 @@ def test_random_two_step_problems_have_distinct_answers(
         "up_to",
         "largest_number",
         "largest_groups",
+        "largest_size",
         "split_evenly",
         "shapes",
         "expected",
     ),
     [
         # three different numbers that make at most 6: 1, 2 and 3 in any order, with 1 answer
-        ([Operation.ADD], False, 1000, 6, 6, False, STRIP_TWO_STEP_SHAPES, 6),
-        ([Operation.ADD], True, 1000, 6, 6, False, STRIP_TWO_STEP_SHAPES, 1),
+        ([Operation.ADD], False, 1000, 6, 6, 20, False, STRIP_TWO_STEP_SHAPES, 6),
+        ([Operation.ADD], True, 1000, 6, 6, 20, False, STRIP_TWO_STEP_SHAPES, 1),
         # 5 is too small for three different numbers
-        ([Operation.ADD], False, 1000, 5, 6, False, STRIP_TWO_STEP_SHAPES, 0),
+        ([Operation.ADD], False, 1000, 5, 6, 20, False, STRIP_TWO_STEP_SHAPES, 0),
         # two different numbers taken from a whole of at most 6, leaving 1 to 3
-        ([Operation.SUBTRACT], False, 1000, 6, 6, False, STRIP_TWO_STEP_SHAPES, 14),
-        ([Operation.SUBTRACT], True, 1000, 6, 6, False, STRIP_TWO_STEP_SHAPES, 3),
+        ([Operation.SUBTRACT], False, 1000, 6, 6, 20, False, STRIP_TWO_STEP_SHAPES, 14),
+        ([Operation.SUBTRACT], True, 1000, 6, 6, 20, False, STRIP_TWO_STEP_SHAPES, 3),
         # the default largest number: sums from 1 + 2 + 3 to 999, and differences from 1 to
         # 999 - 1 - 2
-        ([Operation.ADD], True, 1000, 999, 6, False, STRIP_TWO_STEP_SHAPES, 994),
-        ([Operation.SUBTRACT], True, 1000, 999, 6, False, STRIP_TWO_STEP_SHAPES, 996),
+        ([Operation.ADD], True, 1000, 999, 6, 20, False, STRIP_TWO_STEP_SHAPES, 994),
+        ([Operation.SUBTRACT], True, 1000, 999, 6, 20, False, STRIP_TWO_STEP_SHAPES, 996),
         # sharing what's left into 2 groups within 20: 4 to 18 left, each in fewer ways
         (
             [Operation.SUBTRACT, Operation.DIVIDE],
@@ -3561,6 +3849,7 @@ def test_random_two_step_problems_have_distinct_answers(
             1000,
             20,
             2,
+            20,
             False,
             STRIP_TWO_STEP_SHAPES,
             64,
@@ -3572,6 +3861,7 @@ def test_random_two_step_problems_have_distinct_answers(
             1000,
             20,
             6,
+            20,
             False,
             STRIP_TWO_STEP_SHAPES,
             143,
@@ -3583,6 +3873,7 @@ def test_random_two_step_problems_have_distinct_answers(
             1000,
             999,
             6,
+            20,
             False,
             STRIP_TWO_STEP_SHAPES,
             19,
@@ -3594,26 +3885,38 @@ def test_random_two_step_problems_have_distinct_answers(
             1000,
             999,
             6,
+            20,
             False,
             STRIP_TWO_STEP_SHAPES,
             19,
         ),
         # every shape adds or subtracts
-        ([Operation.MULTIPLY], False, 1000, 999, 6, False, STRIP_TWO_STEP_SHAPES, 0),
+        ([Operation.MULTIPLY], False, 1000, 999, 6, 20, False, STRIP_TWO_STEP_SHAPES, 0),
         (
             [Operation.MULTIPLY, Operation.DIVIDE],
             False,
             1000,
             999,
             6,
+            20,
             False,
             STRIP_TWO_STEP_SHAPES,
             0,
         ),
         # Split evenly, each shape needs only its share: 6 of each of two shapes. With distinct
         # answers, any shape's answer can be any problem's.
-        ([Operation.ADD, Operation.SUBTRACT], False, 1000, 6, 6, True, STRIP_TWO_STEP_SHAPES, 12),
-        ([Operation.ADD, Operation.SUBTRACT], True, 1000, 6, 6, True, STRIP_TWO_STEP_SHAPES, 1),
+        (
+            [Operation.ADD, Operation.SUBTRACT],
+            False,
+            1000,
+            6,
+            6,
+            20,
+            True,
+            STRIP_TWO_STEP_SHAPES,
+            12,
+        ),
+        ([Operation.ADD, Operation.SUBTRACT], True, 1000, 6, 6, 20, True, STRIP_TWO_STEP_SHAPES, 1),
         # 2 groups within 12, with a part added: 7 problems, so 7 of each of the five shapes
         (
             [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
@@ -3621,6 +3924,7 @@ def test_random_two_step_problems_have_distinct_answers(
             1000,
             12,
             2,
+            20,
             False,
             STRIP_TWO_STEP_SHAPES,
             7,
@@ -3631,6 +3935,7 @@ def test_random_two_step_problems_have_distinct_answers(
             1000,
             12,
             2,
+            20,
             True,
             STRIP_TWO_STEP_SHAPES,
             35,
@@ -3642,26 +3947,30 @@ def test_random_two_step_problems_have_distinct_answers(
             20,
             999,
             6,
+            20,
             False,
             STRIP_TWO_STEP_SHAPES,
             20,
         ),
         # Every shape, as text only shows them. Multiplying twice within 24, with up to 3 groups:
         # 2 groups of 4 in 3 groups, and 3 groups of 4 in 2, both 24.
-        ([Operation.MULTIPLY], False, 1000, 24, 3, False, None, 2),
-        ([Operation.MULTIPLY], True, 1000, 24, 3, False, None, 1),
-        ([Operation.MULTIPLY], False, 1000, 23, 3, False, None, 0),
+        ([Operation.MULTIPLY], False, 1000, 24, 3, 20, False, None, 2),
+        ([Operation.MULTIPLY], True, 1000, 24, 3, 20, False, None, 1),
+        ([Operation.MULTIPLY], False, 1000, 23, 3, 20, False, None, 0),
         # Dividing twice within 60, with up to 3 groups: 2 then 3 groups, or 3 then 2, with each
         # answer 2 to 10. The first answer can go past 20, up to 30, or there'd be 14.
-        ([Operation.DIVIDE], False, 1000, 60, 3, False, None, 18),
+        ([Operation.DIVIDE], False, 1000, 60, 3, 20, False, None, 18),
         # multiplication and division alone make problems too
-        ([Operation.MULTIPLY, Operation.DIVIDE], False, 20, 999, 6, False, None, 20),
+        ([Operation.MULTIPLY, Operation.DIVIDE], False, 20, 999, 6, 20, False, None, 20),
         # Multiplying twice can't be done within 10, either way, so it isn't drawn: the least of
         # adding three numbers (66), the sum as the size of each group (6) or as the number of
         # groups (6), and multiplying then adding (6)
-        ([Operation.ADD, Operation.MULTIPLY], False, 1000, 10, 6, False, None, 6),
+        ([Operation.ADD, Operation.MULTIPLY], False, 1000, 10, 6, 20, False, None, 6),
         # split evenly among those four
-        ([Operation.ADD, Operation.MULTIPLY], False, 1000, 10, 6, True, None, 24),
+        ([Operation.ADD, Operation.MULTIPLY], False, 1000, 10, 6, 20, True, None, 24),
+        # As above, with each answer at most 5: 4 in each order. The first answer can still go
+        # past 5, up to 15, or there'd be only 1, 12 shared into 3, then into 2.
+        ([Operation.DIVIDE], False, 1000, 60, 3, 5, False, None, 8),
     ],
 )
 def test_count_possible_two_step_problems(
@@ -3670,6 +3979,7 @@ def test_count_possible_two_step_problems(
     up_to: int,
     largest_number: int,
     largest_groups: int,
+    largest_size: int,
     split_evenly: bool,
     shapes: frozenset[TwoStepShape] | None,
     expected: int,
@@ -3686,6 +3996,7 @@ def test_count_possible_two_step_problems(
         up_to=up_to,
         largest_number=largest_number,
         largest_groups=largest_groups,
+        largest_size=largest_size,
         split_evenly=split_evenly,
         shapes=shapes,
     )
@@ -3755,7 +4066,15 @@ def test_two_step_sheet_errors(
 
 
 @pytest.mark.parametrize(
-    ("count", "operations", "largest_number", "largest_groups", "chosen", "expected"),
+    (
+        "count",
+        "operations",
+        "largest_number",
+        "largest_groups",
+        "largest_size",
+        "chosen",
+        "expected",
+    ),
     [
         # the defaults, a largest number of 100 and 12 groups: one of each shape, then the sheet
         # is shuffled
@@ -3764,6 +4083,7 @@ def test_two_step_sheet_errors(
             [Operation.ADD, Operation.SUBTRACT],
             100,
             12,
+            20,
             [
                 20,
                 BasicOperationQuestionData(Operation.SUBTRACT, (25, 5), 20),
@@ -3804,6 +4124,7 @@ def test_two_step_sheet_errors(
             [Operation.SUBTRACT, Operation.DIVIDE],
             100,
             12,
+            20,
             [
                 18,
                 BasicOperationQuestionData(Operation.SUBTRACT, (24, 6), 18),
@@ -3858,6 +4179,7 @@ def test_two_step_strip_choice_problems_from_scripted_draws(
     operations: list[Operation],
     largest_number: int,
     largest_groups: int,
+    largest_size: int,
     chosen: list[object],
     expected: list[TwoStepQuestionData],
     monkeypatch: pytest.MonkeyPatch,
@@ -3875,7 +4197,11 @@ def test_two_step_strip_choice_problems_from_scripted_draws(
     reverse_shuffle(monkeypatch)
 
     questions = generate_two_step_strip_choice_problems(
-        count, operations, largest_number=largest_number, largest_groups=largest_groups
+        count,
+        operations,
+        largest_number=largest_number,
+        largest_groups=largest_groups,
+        largest_size=largest_size,
     )
 
     assert questions == [Question(data, two_step_strip_choices(data)) for data in expected]

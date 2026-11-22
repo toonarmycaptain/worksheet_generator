@@ -906,8 +906,9 @@ ADD = BasicOperationQuestionData(
             [],
             422,
             refused(
-                "problems: at most 4 without repeats for that choice of operations and largest "
-                "number. Lower problems to 4, or raise the largest number to 4."
+                "problems: at most 4 without repeats for that largest number, largest number of "
+                "groups and largest group size. Lower problems to 4, or raise the largest number "
+                "to 4."
             ),
             None,
             None,
@@ -1136,8 +1137,9 @@ ADD = BasicOperationQuestionData(
             [],
             422,
             refused(
-                "problems: at most 2 without repeats for that choice of operations and largest "
-                "number. Lower problems to 2, or raise the largest number to 5."
+                "problems: at most 2 without repeats for that largest number, largest number of "
+                "groups and largest group size. Lower problems to 2, or raise the largest number "
+                "to 5."
             ),
             None,
             None,
@@ -1205,6 +1207,245 @@ ADD = BasicOperationQuestionData(
                     {
                         "type": "less_than_equal",
                         "loc": ["query", "max_number"],
+                        "msg": "Input should be less than or equal to 999",
+                        "ctx": {"le": 999},
+                    },
+                ],
+            },
+            None,
+            None,
+        ),
+        (
+            # Strip diagrams have room for 12 groups. The size of each has a field of its own, and
+            # the total shared is whatever they make, past the largest number.
+            "/api/worksheets/word_problems.pdf?representation=strip&operations=divide"
+            "&max_groups=12&max_group_size=999&problems=1&sheet=1ab2c3",
+            [Operation.DIVIDE],
+            [12, 987],
+            [("card", "cards")],
+            200,
+            None,
+            {
+                "questions": [
+                    BasicOperationQuestionData(
+                        Operation.DIVIDE,
+                        (11_844, 12),
+                        987,
+                        "Maria divides 11,844 cards into 12 equal piles. "
+                        "How many cards are in each pile?",
+                    ),
+                ],
+                "representation": Representation.STRIP,
+                "choices": False,
+                "hints": True,
+                "black_and_white": False,
+                "work_box": False,
+                "slot_of": None,
+                "answer_key": False,
+                "title": "Word Problems — Strip Diagrams",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        (
+            # equations draw no strip, so they can have more groups
+            "/api/worksheets/word_problems.pdf?representation=equation&response=multiple_choice"
+            "&operations=multiply&max_groups=32&max_group_size=28&problems=1&sheet=1ab2c3",
+            [],
+            [32, 28],
+            [("card", "cards")],
+            200,
+            None,
+            {
+                "questions": [
+                    BasicOperationQuestionData(
+                        Operation.MULTIPLY,
+                        (32, 28),
+                        896,
+                        "32 friends each have 28 cards. How many cards do they have together?",
+                    ),
+                ],
+                "representation": Representation.EQUATION,
+                "choices": True,
+                "hints": True,
+                "black_and_white": False,
+                "work_box": False,
+                "slot_of": None,
+                "answer_key": False,
+                "title": "Word Problems — Equation multiple choice",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        (
+            # two steps, text only: 12 groups of 25 needs both limits raised
+            "/api/worksheets/word_problems.pdf?steps=two&operations=add&operations=multiply"
+            "&max_groups=12&max_group_size=25&problems=1&sheet=1ab2c3",
+            [(Operation.MULTIPLY, Operation.ADD, Unknown.FIRST)],
+            [],
+            [
+                300,
+                BasicOperationQuestionData(Operation.MULTIPLY, (12, 25), 300),
+                BasicOperationQuestionData(Operation.ADD, (300, 5), 305),
+                ("card", "cards"),
+            ],
+            200,
+            None,
+            {
+                "questions": [
+                    TwoStepQuestionData(
+                        (
+                            BasicOperationQuestionData(Operation.MULTIPLY, (12, 25), 300),
+                            BasicOperationQuestionData(Operation.ADD, (300, 5), 305),
+                        ),
+                        Unknown.FIRST,
+                        305,
+                        "There are 12 boxes with 25 cards in each box. Maria brings 5 more. "
+                        "How many cards are there now?",
+                    ),
+                ],
+                "representation": Representation.NONE,
+                "choices": False,
+                "hints": True,
+                "black_and_white": False,
+                "work_box": False,
+                "slot_of": None,
+                "answer_key": False,
+                "title": "Word Problems",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        (
+            "/api/worksheets/word_problems.pdf?representation=strip&operations=multiply"
+            "&max_groups=13",
+            [],
+            [],
+            [],
+            422,
+            refused("max_groups: at most 12 with Strip Diagrams"),
+            None,
+            None,
+        ),
+        (
+            # a division's answers are the sizes of each group, 2 to 10, so the size can be raised
+            "/api/worksheets/word_problems.pdf?operations=divide&max_group_size=10"
+            "&self_check_tiles=true&problems=12",
+            [],
+            [],
+            [],
+            422,
+            refused(
+                "problems: at most 9 without repeated answers for that largest number of groups "
+                "and largest group size. Lower problems to 9, or raise the largest group size to "
+                "13."
+            ),
+            None,
+            None,
+        ),
+        (
+            # 2 groups of 2 to 5: either limit can be raised
+            "/api/worksheets/word_problems.pdf?operations=multiply&max_groups=2&max_group_size=5"
+            "&problems=20",
+            [],
+            [],
+            [],
+            422,
+            refused(
+                "problems: at most 4 without repeats for that largest number of groups and "
+                "largest group size. Lower problems to 4, or raise the largest number of groups "
+                "to 6, or raise the largest group size to 21."
+            ),
+            None,
+            None,
+        ),
+        (
+            # two steps share a number, so the largest number counts for multiplication too
+            "/api/worksheets/word_problems.pdf?operations=multiply&operations=divide&steps=two"
+            "&max_groups=3&max_group_size=4&self_check_tiles=true&problems=12",
+            [],
+            [],
+            [],
+            422,
+            refused(
+                "problems: at most 3 without repeated answers for that largest number, largest "
+                "number of groups and largest group size. Lower problems to 3, or raise the "
+                "largest group size to 30."
+            ),
+            None,
+            None,
+        ),
+        (
+            "/api/worksheets/word_problems.pdf?max_groups=1",
+            [],
+            [],
+            [],
+            422,
+            {
+                "detail": [
+                    {
+                        "type": "greater_than_equal",
+                        "loc": ["query", "max_groups"],
+                        "msg": "Input should be greater than or equal to 2",
+                        "ctx": {"ge": 2},
+                    },
+                ],
+            },
+            None,
+            None,
+        ),
+        (
+            "/api/worksheets/word_problems.pdf?max_groups=100",
+            [],
+            [],
+            [],
+            422,
+            {
+                "detail": [
+                    {
+                        "type": "less_than_equal",
+                        "loc": ["query", "max_groups"],
+                        "msg": "Input should be less than or equal to 99",
+                        "ctx": {"le": 99},
+                    },
+                ],
+            },
+            None,
+            None,
+        ),
+        (
+            "/api/worksheets/word_problems.pdf?max_group_size=1",
+            [],
+            [],
+            [],
+            422,
+            {
+                "detail": [
+                    {
+                        "type": "greater_than_equal",
+                        "loc": ["query", "max_group_size"],
+                        "msg": "Input should be greater than or equal to 2",
+                        "ctx": {"ge": 2},
+                    },
+                ],
+            },
+            None,
+            None,
+        ),
+        (
+            "/api/worksheets/word_problems.pdf?max_group_size=1000",
+            [],
+            [],
+            [],
+            422,
+            {
+                "detail": [
+                    {
+                        "type": "less_than_equal",
+                        "loc": ["query", "max_group_size"],
                         "msg": "Input should be less than or equal to 999",
                         "ctx": {"le": 999},
                     },

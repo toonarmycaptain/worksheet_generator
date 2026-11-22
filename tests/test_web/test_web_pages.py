@@ -72,6 +72,8 @@ def test_pages(client: Client) -> None:
                 b"operations",
                 b"operations",
                 b"max_number",
+                b"max_groups",
+                b"max_group_size",
                 b"representation",
                 b"steps",  # a radio button for each choice
                 b"steps",
@@ -102,6 +104,7 @@ def test_pages(client: Client) -> None:
                 b"steps",  # a radio button for each choice
                 b"steps",
                 b"max_groups",
+                b"max_group_size",
                 b"prompt",  # a radio button for each choice
                 b"prompt",
                 b"prompt",
@@ -1415,7 +1418,9 @@ def test_only_core_forms_check_their_options_before_opening_a_tab(
                 (b"label", b"Label"),
                 (b"name_line", b"Add Name/Date blanks"),
                 (b"problems", b"Problems"),
-                (b"max_number", b"Largest number"),
+                (b"max_number", b"Largest number in addition and subtraction"),
+                (b"max_groups", b"Largest number of groups"),
+                (b"max_group_size", b"Largest group size"),
                 (b"representation", b"Representation"),
                 (b"no_hints", b"Leave out the hints"),
                 (b"black_and_white", b"Black and white blocks"),
@@ -1433,6 +1438,7 @@ def test_only_core_forms_check_their_options_before_opening_a_tab(
                 (b"problems", b"Problems"),
                 (b"max_number", b"Largest number"),
                 (b"max_groups", b"Largest number of groups"),
+                (b"max_group_size", b"Largest group size"),
                 (b"answer_key", b"Add an answer key page"),
             ],
         ),
@@ -1763,3 +1769,38 @@ def test_the_data_graphs_script_s_data(client: Client) -> None:
             "two_step",
         ],
     )
+
+
+@pytest.mark.parametrize(
+    ("url", "expected", "strip_limit"),
+    [
+        # the largest number of groups and largest group size, for multiplication and division
+        (
+            "/worksheets/basic-operations/word-problems/",
+            [(b"multiply divide", b"max_groups"), (b"multiply divide", b"max_group_size")],
+            True,
+        ),
+        # Strip Diagram multiple choice's number of groups caps addition and subtraction too
+        (
+            "/worksheets/basic-operations/strip-choice/",
+            [(b"multiply divide", b"max_group_size")],
+            False,
+        ),
+        # the arithmetic page's division fields have a script of their own
+        ("/worksheets/basic-operations/arithmetic/", [], False),
+    ],
+)
+def test_fields_for_some_operations_name_them(
+    client: Client, url: str, expected: list[tuple[bytes, bytes]], strip_limit: bool
+) -> None:
+    """
+    A field for some operations only names them on its label, for the script that shows it only
+    while one of them is ticked. The word problems page's script also lowers the largest number
+    of groups to the 12 a strip diagram has room for.
+
+    Whether the scripts work is checked manually in a browser.
+    """
+    content = client.get(url).content
+    labels = rb'<label data-operations="([^"]+)">[^<]*<input type="number" name="([^"]+)"'
+    assert re.findall(labels, content) == expected
+    assert (b'representation.value === "strip" ? 12 : mostGroups' in content) is strip_limit

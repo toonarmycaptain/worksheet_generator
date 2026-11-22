@@ -36,6 +36,7 @@ from core.basic_operations.generator import (
     DEFAULT_LARGEST_DIVIDEND,
     DEFAULT_LARGEST_DIVISOR,
     DEFAULT_LARGEST_OPERAND,
+    LARGEST_GROUP_SIZE,
     LARGEST_WORD_PROBLEM_NUMBER,
     MAXIMUM_OPERAND,
     MULTIPLICATION_MODELS_DEFAULT_LARGEST_PRODUCT,
@@ -44,7 +45,10 @@ from core.basic_operations.generator import (
     SMALLEST_WORD_PROBLEM_NUMBER,
     STRIP_CHOICE_LARGEST_GROUPS,
     STRIP_CHOICE_LARGEST_NUMBER,
+    WORD_PROBLEM_GROUP_SIZES,
     WORD_PROBLEM_GROUPS,
+    WORD_PROBLEM_LARGEST_GROUPS,
+    WORD_PROBLEM_STRIP_LARGEST_GROUPS,
     count_possible_equation_choice_problems,
     count_possible_missing_number_questions,
     count_possible_multiplication_model_problems,
@@ -234,6 +238,17 @@ WordProblemLargestNumber = Annotated[
     int,
     Field(
         ge=2 * SMALLEST_WORD_PROBLEM_NUMBER, le=LARGEST_WORD_PROBLEM_NUMBER, title="Largest number"
+    ),
+]
+# A word-problem sheet's largest size of equal group, for multiplication and division, which the
+# page shows only while one of them is ticked
+LargestGroupSize = Annotated[
+    int,
+    Field(
+        ge=WORD_PROBLEM_GROUP_SIZES[0],
+        le=LARGEST_GROUP_SIZE,
+        title="Largest group size",
+        json_schema_extra={"operations": ["multiply", "divide"]},
     ),
 ]
 # From and To dropdown labels: each form's name, plus mixed
@@ -828,9 +843,23 @@ class WordProblemOptions(HeaderOptions):
     # Each problem's operation is drawn at random from those ticked.
     operations: Operations = Field(["add", "subtract"])
     # Addition and subtraction only: every number in the problem, its answer included. With two
-    # steps, which share a number, every number, multiplication's and division's too. It's at
-    # least the smallest sum, which leaves room for a subtraction too.
-    max_number: WordProblemLargestNumber = LARGEST_WORD_PROBLEM_NUMBER
+    # steps, which share a number, every number, multiplication's and division's too, and the
+    # page's label drops "in addition and subtraction". It's at least the smallest sum, which
+    # leaves room for a subtraction too.
+    max_number: WordProblemLargestNumber = Field(
+        LARGEST_WORD_PROBLEM_NUMBER, title="Largest number in addition and subtraction"
+    )
+    # Multiplication and division: the number of equal groups and the size of each. The product,
+    # or the total shared, is whatever they make. A strip diagram has room for fewer groups than
+    # the most, so the page lowers the field's limit for strip diagrams.
+    max_groups: int = Field(
+        WORD_PROBLEM_GROUPS[1],
+        ge=WORD_PROBLEM_GROUPS[0],
+        le=WORD_PROBLEM_LARGEST_GROUPS,
+        title="Largest number of groups",
+        json_schema_extra={"operations": ["multiply", "divide"]},
+    )
+    max_group_size: LargestGroupSize = WORD_PROBLEM_GROUP_SIZES[1]
     representation: Literal["strip", "none", "number_line", "blocks", "equation"] = Field(
         "none", title="Representation", json_schema_extra={"labels": REPRESENTATION_LABELS}
     )
@@ -872,6 +901,13 @@ class WordProblemOptions(HeaderOptions):
         return None
 
     @property
+    def most_groups(self) -> int:
+        """The most equal groups the representation can show: a strip diagram has room for 12."""
+        if Representation(self.representation) is Representation.STRIP:
+            return WORD_PROBLEM_STRIP_LARGEST_GROUPS
+        return WORD_PROBLEM_LARGEST_GROUPS
+
+    @property
     def choices(self) -> bool:
         """Whether each problem's representation is chosen from lettered ones."""
         return self.response == "multiple_choice"
@@ -906,6 +942,14 @@ class WordProblemOptions(HeaderOptions):
         return self
 
     @model_validator(mode="after")
+    def _groups_fit_the_representation(self) -> Self:
+        # The page lowers the field's limit for strip diagrams.
+        if self.max_groups > self.most_groups:
+            name = REPRESENTATION_NAMES[Representation(self.representation)]
+            raise ValueError(f"max_groups: at most {self.most_groups} with {name}")
+        return self
+
+    @model_validator(mode="after")
     def _two_steps_are_available(self) -> Self:
         # Only strip diagrams and text only show two steps. The page hides the steps for the
         # others.
@@ -934,13 +978,15 @@ class WordProblemOptions(HeaderOptions):
         if self.steps == "two":
             _two_steps_can_be_made(operations, self.shapes)
 
-        def possible_with(largest: int) -> int:
+        def possible_with(largest: int, groups: int, size: int) -> int:
             if self.steps == "two":
                 return count_possible_two_step_problems(
                     operations,
                     distinct_answers=self.self_check_tiles,
                     up_to=self.problems,
                     largest_number=largest,
+                    largest_groups=groups,
+                    largest_size=size,
                     shapes=self.shapes,
                 )
             if self.choices and Representation(self.representation) is Representation.NUMBER_LINE:
@@ -949,7 +995,11 @@ class WordProblemOptions(HeaderOptions):
                 )
             if self.choices:
                 return count_possible_equation_choice_problems(
-                    operations, up_to=self.problems, largest_number=largest
+                    operations,
+                    up_to=self.problems,
+                    largest_number=largest,
+                    largest_groups=groups,
+                    largest_size=size,
                 )
             return count_possible_word_problems(
                 operations,
@@ -957,23 +1007,40 @@ class WordProblemOptions(HeaderOptions):
                 up_to=self.problems,
                 largest_number=largest,
                 largest_operand=self.largest_operand,
+                largest_groups=groups,
+                largest_size=size,
             )
 
-        possible = possible_with(self.max_number)
+        largest, groups, size = self.max_number, self.max_groups, self.max_group_size
+        possible = possible_with(largest, groups, size)
         if self.problems <= possible:
             return self
         repeats = "repeated answers" if self.self_check_tiles else "repeats"
-        if self.steps == "one" and {Operation.ADD, Operation.SUBTRACT}.isdisjoint(operations):
-            # One-step multiplication and division have no number limits to raise.
-            raise _too_many_problems(possible, repeats, "choice of operations", {})
-        raise_to = _smallest_raise(
-            possible_with, self.problems, self.max_number, LARGEST_WORD_PROBLEM_NUMBER
-        )
-        if {Operation.ADD, Operation.SUBTRACT}.issuperset(operations):
-            limits = "largest number"
-        else:
-            limits = "choice of operations and largest number"
-        raise _too_many_problems(possible, repeats, limits, {"largest number": raise_to})
+        # The limits the count depends on: the largest number for addition and subtraction, and
+        # with two steps, which share a number, for every operation; the groups' number and size
+        # for multiplication and division.
+        raises: dict[str, int | None] = {}
+        if self.steps == "two" or not {Operation.ADD, Operation.SUBTRACT}.isdisjoint(operations):
+            raises["largest number"] = _smallest_raise(
+                lambda each: possible_with(each, groups, size),
+                self.problems,
+                largest,
+                LARGEST_WORD_PROBLEM_NUMBER,
+            )
+        if not {Operation.MULTIPLY, Operation.DIVIDE}.isdisjoint(operations):
+            raises["largest number of groups"] = _smallest_raise(
+                lambda each: possible_with(largest, each, size),
+                self.problems,
+                groups,
+                self.most_groups,
+            )
+            raises["largest group size"] = _smallest_raise(
+                lambda each: possible_with(largest, groups, each),
+                self.problems,
+                size,
+                LARGEST_GROUP_SIZE,
+            )
+        raise _too_many_problems(possible, repeats, _listed(list(raises)), raises)
 
 
 class StripChoiceOptions(HeaderOptions):
@@ -1000,6 +1067,8 @@ class StripChoiceOptions(HeaderOptions):
         le=STRIP_CHOICE_LARGEST_GROUPS,
         title="Largest number of groups",
     )
+    # A multiplication's or division's equal groups: the size of each
+    max_group_size: LargestGroupSize = WORD_PROBLEM_GROUP_SIZES[1]
     prompt: PromptChoice = Field(
         Prompt.WORD_PROBLEM.value,
         title="Show",
@@ -1015,48 +1084,56 @@ class StripChoiceOptions(HeaderOptions):
         if two_steps:
             _two_steps_can_be_made(operations, STRIP_TWO_STEP_SHAPES)
 
-        def possible_with(largest: int, groups: int) -> int:
+        def possible_with(largest: int, groups: int, size: int) -> int:
             if two_steps:
                 return count_possible_two_step_problems(
                     operations,
                     up_to=self.problems,
                     largest_number=largest,
                     largest_groups=groups,
+                    largest_size=size,
                     split_evenly=True,
                     shapes=STRIP_TWO_STEP_SHAPES,
                 )
             return count_possible_strip_choice_problems(
-                operations, up_to=self.problems, largest_number=largest, largest_groups=groups
+                operations,
+                up_to=self.problems,
+                largest_number=largest,
+                largest_groups=groups,
+                largest_size=size,
             )
 
-        possible = possible_with(self.max_number, self.max_groups)
+        largest, groups, size = self.max_number, self.max_groups, self.max_group_size
+        possible = possible_with(largest, groups, size)
         if self.problems <= possible:
             return self
         # Every count depends on the largest number. With one step, every operation's but
         # subtraction's depends on the number of groups too, and with two steps, multiplication's
-        # and division's.
-        limits = ["largest number"]
-        if two_steps:
-            groups_count = not {Operation.MULTIPLY, Operation.DIVIDE}.isdisjoint(operations)
-        else:
-            groups_count = not {Operation.SUBTRACT}.issuperset(operations)
-        if groups_count:
-            limits.append("largest number of groups")
-        raises = {
+        # and division's. Only multiplication's and division's depend on the group size.
+        equal_groups = not {Operation.MULTIPLY, Operation.DIVIDE}.isdisjoint(operations)
+        raises: dict[str, int | None] = {
             "largest number": _smallest_raise(
-                lambda largest: possible_with(largest, self.max_groups),
+                lambda each: possible_with(each, groups, size),
                 self.problems,
-                self.max_number,
+                largest,
                 LARGEST_WORD_PROBLEM_NUMBER,
-            ),
-            "largest number of groups": _smallest_raise(
-                lambda groups: possible_with(self.max_number, groups),
-                self.problems,
-                self.max_groups,
-                STRIP_CHOICE_LARGEST_GROUPS,
-            ),
+            )
         }
-        raise _too_many_problems(possible, "repeats", " and ".join(limits), raises)
+        if equal_groups if two_steps else not {Operation.SUBTRACT}.issuperset(operations):
+            raises["largest number of groups"] = _smallest_raise(
+                lambda each: possible_with(largest, each, size),
+                self.problems,
+                groups,
+                STRIP_CHOICE_LARGEST_GROUPS,
+            )
+        if equal_groups:
+            raises["largest group size"] = _smallest_raise(
+                lambda each: possible_with(largest, groups, each),
+                self.problems,
+                size,
+                LARGEST_GROUP_SIZE,
+            )
+        raise _too_many_problems(possible, "repeats", _listed(list(raises)), raises)
 
 
 class MultiplicationModelsOptions(HeaderOptions):
@@ -2119,7 +2196,11 @@ def _word_problems(options: WordProblemOptions, out: BinaryIO) -> None:
         )
     elif options.choices:
         questions = generate_equation_choice_problems(
-            options.problems, _operations(options.operations), largest_number=options.max_number
+            options.problems,
+            _operations(options.operations),
+            largest_number=options.max_number,
+            largest_groups=options.max_groups,
+            largest_size=options.max_group_size,
         )
     elif options.steps == "two":
         questions = generate_two_step_problems(
@@ -2127,6 +2208,8 @@ def _word_problems(options: WordProblemOptions, out: BinaryIO) -> None:
             _operations(options.operations),
             distinct_answers=options.self_check_tiles,
             largest_number=options.max_number,
+            largest_groups=options.max_groups,
+            largest_size=options.max_group_size,
             shapes=options.shapes,
         )
     else:
@@ -2139,6 +2222,8 @@ def _word_problems(options: WordProblemOptions, out: BinaryIO) -> None:
             comparisons=representation not in (Representation.STRIP, Representation.BLOCKS),
             largest_number=options.max_number,
             largest_operand=options.largest_operand,
+            largest_groups=options.max_groups,
+            largest_size=options.max_group_size,
         )
     render_word_problems_worksheet(
         questions=questions,
@@ -2161,6 +2246,7 @@ def _strip_choice(options: StripChoiceOptions, out: BinaryIO) -> None:
             _operations(options.operations),
             largest_number=options.max_number,
             largest_groups=options.max_groups,
+            largest_size=options.max_group_size,
         )
     else:
         questions = generate_strip_choice_problems(
@@ -2168,6 +2254,7 @@ def _strip_choice(options: StripChoiceOptions, out: BinaryIO) -> None:
             _operations(options.operations),
             largest_number=options.max_number,
             largest_groups=options.max_groups,
+            largest_size=options.max_group_size,
         )
     render_strip_choice_worksheet(
         questions=questions,

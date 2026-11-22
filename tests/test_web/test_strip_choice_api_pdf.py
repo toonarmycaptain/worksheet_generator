@@ -222,9 +222,9 @@ from tests.helpers import (
             [],
             422,
             refused(
-                "problems: at most 2 without repeats for that largest number and largest number "
-                "of groups. Lower problems to 2, or raise the largest number to 8, or raise the "
-                "largest number of groups to 3."
+                "problems: at most 2 without repeats for that largest number, largest number of "
+                "groups and largest group size. Lower problems to 2, or raise the largest number "
+                "to 8, or raise the largest number of groups to 3."
             ),
             None,
             None,
@@ -244,27 +244,31 @@ from tests.helpers import (
             None,
         ),
         (
-            # 2 groups of 20 is the most in 2 groups, so only the groups can be raised
+            # 2 groups of 20 is the most in 2 groups of the default size, so the groups or the
+            # size can be raised
             "/api/worksheets/strip_choice.pdf?operations=multiply&max_groups=2&problems=20",
             [],
             [],
             422,
             refused(
-                "problems: at most 18 without repeats for that largest number and largest number "
-                "of groups. Lower problems to 18, or raise the largest number of groups to 3."
+                "problems: at most 18 without repeats for that largest number, largest number of "
+                "groups and largest group size. Lower problems to 18, or raise the largest number "
+                "of groups to 3, or raise the largest group size to 22."
             ),
             None,
             None,
         ),
         (
-            # the groups are at their most, so only the largest number can be raised
+            # the groups are at their most, and a size past 5 makes a product past 10, so only
+            # the largest number can be raised
             "/api/worksheets/strip_choice.pdf?operations=multiply&max_number=10&problems=20",
             [],
             [],
             422,
             refused(
-                "problems: at most 7 without repeats for that largest number and largest number "
-                "of groups. Lower problems to 7, or raise the largest number to 18."
+                "problems: at most 7 without repeats for that largest number, largest number of "
+                "groups and largest group size. Lower problems to 7, or raise the largest number "
+                "to 18."
             ),
             None,
             None,
@@ -276,9 +280,9 @@ from tests.helpers import (
             [],
             422,
             refused(
-                "problems: at most 8 without repeats for that largest number and largest number "
-                "of groups. Lower problems to 8, or raise the largest number to 28, or raise the "
-                "largest number of groups to 3."
+                "problems: at most 8 without repeats for that largest number, largest number of "
+                "groups and largest group size. Lower problems to 8, or raise the largest number "
+                "to 28, or raise the largest number of groups to 3."
             ),
             None,
             None,
@@ -440,9 +444,9 @@ from tests.helpers import (
             [],
             422,
             refused(
-                "problems: at most 14 without repeats for that largest number and largest number "
-                "of groups. Lower problems to 14, or raise the largest number to 13, or raise the "
-                "largest number of groups to 3."
+                "problems: at most 14 without repeats for that largest number, largest number of "
+                "groups and largest group size. Lower problems to 14, or raise the largest number "
+                "to 13, or raise the largest number of groups to 3."
             ),
             None,
             None,
@@ -515,6 +519,117 @@ from tests.helpers import (
                         "loc": ["query", "prompt"],
                         "msg": "Input should be 'word_problem', 'equation' or 'both'",
                         "ctx": {"expected": "'word_problem', 'equation' or 'both'"},
+                    },
+                ],
+            },
+            None,
+            None,
+        ),
+        (
+            # the largest group size, past the default 20: 2 groups of 25
+            "/api/worksheets/strip_choice.pdf?operations=multiply&max_group_size=25&problems=1"
+            "&sheet=1ab2c3",
+            [2, 25],
+            [("card", "cards")],
+            200,
+            None,
+            {
+                "questions": [
+                    BasicOperationQuestionData(
+                        Operation.MULTIPLY,
+                        (2, 25),
+                        50,
+                        "2 friends each have 25 cards. How many cards do they have together?",
+                    ),
+                ],
+                "prompt": Prompt.WORD_PROBLEM,
+                "answer_key": False,
+                "title": "Strip Diagram multiple choice",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "strip_choice-sheet-a.pdf",
+        ),
+        (
+            # two steps, with the extra problem going to the last shape, equal groups with a part
+            # added: 2 groups of 25
+            "/api/worksheets/strip_choice.pdf?operations=add&operations=multiply&steps=two"
+            "&max_group_size=25&problems=1&sheet=1ab2c3",
+            [],
+            [
+                50,
+                BasicOperationQuestionData(Operation.MULTIPLY, (2, 25), 50),
+                BasicOperationQuestionData(Operation.ADD, (50, 7), 57),
+                ("card", "cards"),
+            ],
+            200,
+            None,
+            {
+                "questions": [
+                    TwoStepQuestionData(
+                        (
+                            BasicOperationQuestionData(Operation.MULTIPLY, (2, 25), 50),
+                            BasicOperationQuestionData(Operation.ADD, (50, 7), 57),
+                        ),
+                        Unknown.FIRST,
+                        57,
+                        "There are 2 boxes with 25 cards in each box. Maria brings 7 more. "
+                        "How many cards are there now?",
+                    ),
+                ],
+                "prompt": Prompt.WORD_PROBLEM,
+                "answer_key": False,
+                "title": "Strip Diagram multiple choice",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "strip_choice-sheet-a.pdf",
+        ),
+        (
+            # 2 groups of 3 to 5, as 2 groups of 2 is left out: either limit can be raised
+            "/api/worksheets/strip_choice.pdf?operations=multiply&max_groups=2&max_group_size=5"
+            "&problems=20",
+            [],
+            [],
+            422,
+            refused(
+                "problems: at most 3 without repeats for that largest number, largest number of "
+                "groups and largest group size. Lower problems to 3, or raise the largest number "
+                "of groups to 7, or raise the largest group size to 22."
+            ),
+            None,
+            None,
+        ),
+        (
+            "/api/worksheets/strip_choice.pdf?max_group_size=1",
+            [],
+            [],
+            422,
+            {
+                "detail": [
+                    {
+                        "type": "greater_than_equal",
+                        "loc": ["query", "max_group_size"],
+                        "msg": "Input should be greater than or equal to 2",
+                        "ctx": {"ge": 2},
+                    },
+                ],
+            },
+            None,
+            None,
+        ),
+        (
+            "/api/worksheets/strip_choice.pdf?max_group_size=1000",
+            [],
+            [],
+            422,
+            {
+                "detail": [
+                    {
+                        "type": "less_than_equal",
+                        "loc": ["query", "max_group_size"],
+                        "msg": "Input should be less than or equal to 999",
+                        "ctx": {"le": 999},
                     },
                 ],
             },

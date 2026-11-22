@@ -488,15 +488,21 @@
 
     // The largest number is for addition and subtraction, so it shows only while one of them is
     // ticked, and is disabled otherwise, so it isn't sent. Two steps share a number, so with two
-    // steps it caps every number, and always shows.
+    // steps it caps every number, always shows, and its label drops "in addition and
+    // subtraction". The label's first text is the field's label, before its input.
+    const largestNumber = form.elements.max_number;
+    const oneStepLabel = largestNumber.dataset.label;
     function showLargestNumber() {
       const twoSteps = steps.some((radio) => radio.checked && !radio.disabled && radio.value === "two");
       const show = twoSteps || operations.some(
         (box) => box.checked && !box.disabled && ["add", "subtract"].includes(box.value),
       );
-      form.elements.max_number.disabled = !show;
+      largestNumber.disabled = !show;
+      const label = largestNumber.closest("label");
       // the page's CSS shows labels as blocks, which would win over the hidden attribute
-      form.elements.max_number.closest("label").style.display = show ? "" : "none";
+      label.style.display = show ? "" : "none";
+      largestNumber.dataset.label = twoSteps ? "Largest number" : oneStepLabel;
+      label.firstChild.textContent = `${largestNumber.dataset.label} `;
     }
     for (const box of operations) box.addEventListener("change", showLargestNumber);
     for (const radio of steps) radio.addEventListener("change", showLargestNumber);
@@ -505,8 +511,43 @@
     representation.addEventListener("change", showLargestNumber);
     window.addEventListener("pageshow", showLargestNumber);
     showLargestNumber();
+
+    // A strip diagram has room for fewer equal groups than the field allows, so its limit drops
+    // while strip diagrams are picked.
+    const groups = form.elements.max_groups;
+    const mostGroups = groups.max;
+    function limitGroups() {
+      groups.max = representation.value === "strip" ? {{ strip_largest_groups }} : mostGroups;
+    }
+    representation.addEventListener("change", limitGroups);
+    window.addEventListener("pageshow", limitGroups);
+    limitGroups();
   </script>
   {% endif %}
+
+  <script type="module">
+    // A field for some operations only, such as the largest group size for multiplication and
+    // division, shows only while one of them is ticked, and isn't greyed out. Otherwise it's
+    // hidden, and disabled so it isn't sent. Its label names the operations (see field.html).
+    for (const label of document.querySelectorAll("label[data-operations]")) {
+      const field = label.querySelector("input");
+      const operations = label.dataset.operations.split(" ");
+      const boxes = [...label.closest("form").querySelectorAll("input[name=operations]")];
+      function showField() {
+        const show = boxes.some(
+          (box) => box.checked && !box.disabled && operations.includes(box.value),
+        );
+        field.disabled = !show;
+        // the page's CSS shows labels as blocks, which would win over the hidden attribute
+        label.style.display = show ? "" : "none";
+      }
+      // greying out a box sends it a change event too (see the word problems script)
+      for (const box of boxes) box.addEventListener("change", showField);
+      // also when the browser restores the choices, going back to the page
+      window.addEventListener("pageshow", showField);
+      showField();
+    }
+  </script>
 
   <script type="module">
     // Regrouping is for addition and subtraction, so on a form with questions to tick, it shows

@@ -14,6 +14,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
 from core.basic_operations.data import Operation
+from core.basic_operations.generator import WORD_PROBLEM_STRIP_LARGEST_GROUPS
 from core.basic_operations.multiplication_models import MULTIPLICATION_MODELS_NAME
 from core.basic_operations.representation import (
     CHOICE_NAMES,
@@ -132,6 +133,8 @@ def _field(name: str, schema: dict[str, Any]) -> dict[str, Any]:
         "mouseover": schema.get("description", "") if schema.get("mouseover") else "",
         # the field it shows under, such as the tiles box for their pattern (see _forms)
         "under": schema.get("under"),
+        # the operations it's for, if not all: the page shows it only while one is ticked
+        "operations": schema.get("operations", []),
     }
     if schema.get("type") == "array":
         # A list of choices renders as a checkbox for each, and the page sends those ticked.
@@ -236,6 +239,8 @@ SCRIPT_DATA: dict[str, dict[str, Any]] = {
             representation.value: [operation.value for operation in Operation if operation in shown]
             for representation, shown in REPRESENTATION_OPERATIONS.items()
         },
+        # the most equal groups a strip diagram has room for, below the field's own limit
+        "strip_largest_groups": WORD_PROBLEM_STRIP_LARGEST_GROUPS,
     },
     "place_value": {"distinct_forms": True},
     "input_output_tables": {"choice_fields": True},
