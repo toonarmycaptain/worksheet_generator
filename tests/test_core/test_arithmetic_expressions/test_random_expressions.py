@@ -1,7 +1,7 @@
 """
 Tests for random arithmetic expressions: joining terms in the order of operations, checking an
-expression's working against limits, how deeply its groups nest as written, and the rules every
-drawn expression keeps, over many real draws.
+expression's working against limits, how deeply its groups nest as written, giving up on a shape
+that can't be filled, and the rules every drawn expression keeps, over many real draws.
 """
 
 from decimal import Decimal
@@ -12,9 +12,11 @@ import pytest
 from core.arithmetic_expressions.data import Calculation, Expression, Grouping, Number
 from core.arithmetic_expressions.evaluation import value
 from core.arithmetic_expressions.random_expressions import (
+    FILL_BUDGET,
     ExpressionLimits,
     NumberKind,
     combine,
+    fill,
     numbers_in,
     random_expression,
     random_shape,
@@ -24,6 +26,7 @@ from core.arithmetic_expressions.random_expressions import (
 )
 from core.arithmetic_expressions.representation import parse
 from core.basic_operations.data import Operation
+from tests.helpers import randint_returns_low
 
 ADD, SUBTRACT, MULTIPLY, DIVIDE = Operation
 WHOLE, DECIMAL, FRACTION = NumberKind
@@ -137,6 +140,19 @@ def test_a_shape_needs_an_operation_per_level_and_one_outside() -> None:
     """Two levels of grouping take three operations, so two aren't enough."""
     with pytest.raises(ValueError, match="2 levels of grouping need 3 operations"):
         random_shape(ExpressionLimits(2, range(2, 3)))
+
+
+def test_a_shape_that_cant_be_filled_is_given_up(monkeypatch: pytest.MonkeyPatch) -> None:
+    """
+    With 1 the largest number, nothing below 1 can be taken from it, so each try at 1 - 1 draws
+    its first number and fails. Each of the 4 levels tries 6 times, so this shape would draw
+    6 x 6 x 6 x 6 numbers; instead its tries stop at ``FILL_BUDGET`` parts, each drawing at most
+    one.
+    """
+    draws = randint_returns_low(monkeypatch)
+    limits = ExpressionLimits(0, range(1, 5), largest_number=1)
+    filled = fill(parse("(((0 - 0) + 0) + 0) + 0"), limits)
+    assert (filled, len(draws) <= FILL_BUDGET) == (None, True)
 
 
 @pytest.mark.parametrize(

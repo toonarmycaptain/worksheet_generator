@@ -45,6 +45,9 @@ IMPLIED_BESIDE_GROUP = 1 / 2  # the chance a x beside a group is left out: 3(25 
 IMPLIED_BESIDE_NUMBER = 1 / 5  # the chance a x between two numbers is left out: 4(3)
 SHAPE_TRIES = 400  # shapes drawn for an expression before giving up
 FILL_TRIES = 6  # ways tried to fill each part with numbers before giving up on it
+# parts tried for one shape before giving up on it, so another is drawn: a part that can't be
+# filled is tried again at each level above it, so without a limit the tries multiply with depth
+FILL_BUDGET = 150
 LARGEST_VALUE = 9_999  # no value in the working is larger, by default
 _PLACEHOLDER = Number(0)  # a number in a shape, before the numbers are drawn
 
@@ -131,9 +134,9 @@ def fill(
 ) -> Expression | None:
     """
     Return ``shape`` with numbers drawn within ``limits``, as the module describes, so that its
-    value is ``target`` if given; ``None`` if the numbers drawn didn't fit. In a fraction
-    expression, the fraction is a number with no division above it, so it's only added to,
-    subtracted from or multiplied by.
+    value is ``target`` if given; ``None`` if the numbers drawn didn't fit, or none were found
+    in ``FILL_BUDGET`` tries at its parts. In a fraction expression, the fraction is a number
+    with no division above it, so it's only added to, subtracted from or multiplied by.
     """
     fraction_at = None
     if limits.numbers is NumberKind.FRACTION:
@@ -241,20 +244,29 @@ def with_numbers(shape: Expression, numbers: Sequence[NumberValue]) -> Expressio
     return placed(shape)
 
 
-@dataclass(frozen=True)
+@dataclass
 class _Filling:
-    """Drawing an expression's numbers within ``limits``, any fraction at ``fraction_at``."""
+    """
+    Drawing an expression's numbers within ``limits``, any fraction at ``fraction_at``, with
+    ``left`` more tries at its parts. Once they're spent, every part fails at once, so each
+    retry above it ends without going deeper.
+    """
 
     limits: ExpressionLimits
     fraction_at: Path | None
+    left: int = FILL_BUDGET
 
     def part(
         self, shape: Expression, path: Path, target: NumberValue | None
     ) -> tuple[Expression, NumberValue] | None:
         """
         Return the part of the expression at ``path``, ``shape`` with numbers drawn, and its
-        value, ``target`` if given; ``None`` if no numbers that fit were found.
+        value, ``target`` if given; ``None`` if no numbers that fit were found, or no tries are
+        left.
         """
+        if self.left == 0:
+            return None
+        self.left -= 1
         if isinstance(shape, Number):
             number = target if target is not None else self.draw(path, 1, self.most(path))
             if number is None or not self.number_fits(_tidy(number), path):
