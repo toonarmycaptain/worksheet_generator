@@ -704,20 +704,21 @@ ADD = BasicOperationQuestionData(
             None,
         ),
         (
-            # Within 3 every addition adds 1, 2 and 3, and multiplying them gives the same answer,
-            # so none has fair equations to choose from, and with 2 groups of 2 every
-            # multiplication repeats a number; raising any of the three to 4 is enough.
+            # Within 3 every addition adds 1, 2 and 3 in some order, 6 to a shape, each with fair
+            # equations to choose from, and with 2 groups of 2 every multiplication repeats a
+            # number, so only the two shapes of addition are drawn: 12, split evenly.
             "/api/worksheets/word_problems.pdf?representation=equation&response=multiple_choice"
             "&steps=two&operations=add&operations=multiply&max_number=3&max_groups=2"
-            "&max_group_size=2&problems=2",
+            "&max_group_size=2&problems=13",
             [],
             [],
             [],
             422,
             refused(
-                "problems: none possible for that largest number, largest number of groups and "
-                "largest group size. Raise the largest number to 4, or raise the largest number "
-                "of groups to 4, or raise the largest group size to 4."
+                "problems: at most 12 without repeats for that largest number, largest number of "
+                "groups and largest group size. Lower problems to 12, or raise the largest number "
+                "to 4, or raise the largest number of groups to 4, or raise the largest group size "
+                "to 4."
             ),
             None,
             None,
@@ -940,12 +941,14 @@ ADD = BasicOperationQuestionData(
         (
             # Equation multiple choice, with its title, since none is given. Addition and
             # subtraction are split evenly, one each, then the sheet is shuffled, and subtraction
-            # is worded with its comparison. The hints are on, but it has none.
+            # is worded with its comparison. The hints are on, but it has none. Each problem's
+            # wrong equations take the last pair of mistakes and its last set, for the request and
+            # again for the expected PDF.
             "/api/worksheets/word_problems.pdf?representation=equation&response=multiple_choice"
             "&problems=2&answer_key=true&sheet=1ab2c3",
             [],
             [40, 150, 47, 25],
-            [("card", "cards"), ("card", "cards")],
+            [("card", "cards"), ("card", "cards"), *[LAST] * 8],
             200,
             None,
             {
@@ -973,14 +976,21 @@ ADD = BasicOperationQuestionData(
             "word_problems-sheet-a.pdf",
         ),
         (
-            # All four ticked, one of each: 4 shared into 2 is redrawn, as 4 - 2 is 2 too, and the
-            # largest number caps the subtraction and addition, but not 6 groups of 20.
+            # All four ticked, one of each: 1 + 1 is redrawn, as it has no fair set of wrong
+            # equations, and the largest number caps the subtraction and addition, but not 6
+            # groups of 20.
             "/api/worksheets/word_problems.pdf?representation=equation&response=multiple_choice"
             "&operations=add&operations=subtract&operations=multiply&operations=divide&problems=4"
             "&max_number=100&sheet=1ab2c3",
             [],
-            [2, 2, 3, 4, 6, 20, 40, 90, 47, 25],
-            [("card", "cards"), ("card", "cards"), ("card", "cards"), ("card", "cards")],
+            [3, 4, 6, 20, 40, 90, 1, 1, 47, 25],
+            [
+                ("card", "cards"),
+                ("card", "cards"),
+                ("card", "cards"),
+                ("card", "cards"),
+                *[LAST] * 16,
+            ],
             200,
             None,
             {
@@ -1401,7 +1411,7 @@ ADD = BasicOperationQuestionData(
             "&operations=multiply&max_groups=32&max_group_size=28&problems=1&sheet=1ab2c3",
             [],
             [32, 28],
-            [("card", "cards")],
+            [("card", "cards"), *[LAST] * 4],
             200,
             None,
             {
@@ -1693,19 +1703,20 @@ ADD = BasicOperationQuestionData(
             None,
             None,
         ),
-        # Mixed answering, two steps of addition alone: equations to choose from need a number
-        # whose digits reversed make another, the smallest 12, so within 3 the half answered by
-        # choosing has none, though the written half has some.
+        # Mixed answering, two steps of addition alone: within 3 every problem adds 1, 2 and 3 in
+        # some order, 6 to a shape, each with fair equations to choose from, so the half
+        # answered by choosing allows as many as the written half.
         (
             "/api/worksheets/word_problems.pdf?representation=mixed&response=mixed&steps=two"
             "&representation_mix=strip&representation_mix=none&representation_mix=equation"
-            "&operations=add&max_number=3&problems=2",
+            "&operations=add&max_number=3&problems=7",
             [],
             [],
             [],
             422,
             refused(
-                "problems: none possible for that largest number. Raise the largest number to 12."
+                "problems: at most 6 without repeats for that largest number. Lower problems to 6, "
+                "or raise the largest number to 4."
             ),
             None,
             None,

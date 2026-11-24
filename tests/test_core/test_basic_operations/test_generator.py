@@ -2568,6 +2568,7 @@ def test_strip_choice_sheet_errors(
         "largest_number",
         "largest_groups",
         "largest_size",
+        "sheet_operations",
         "drawn",
         "bounds",
         "expected",
@@ -2582,6 +2583,7 @@ def test_strip_choice_sheet_errors(
             999,
             6,
             20,
+            None,
             [3, 4, 3, 4, 47, 9, 47, 5],
             [(2, 6), (2, 20), (2, 6), (2, 20), (1, 999), (1, 999), (1, 999), (1, 999)],
             [
@@ -2613,58 +2615,50 @@ def test_strip_choice_sheet_errors(
                 ),
             ],
         ),
-        # 2 groups of 2 is 4, as 2 + 2 is, and 4 - 2 is 2, as 4 ÷ 2 is, so both are redrawn
+        # 2 groups of 2 and 4 - 2 stand: a wrong equation with the answer, as 2 + 2 or 4 ÷ 2 would
+        # be, is never in a fair set
         (
             2,
             [Operation.SUBTRACT, Operation.MULTIPLY],
             999,
             6,
             20,
-            [2, 2, 2, 3, 4, 2, 4, 3],
-            [(2, 6), (2, 20), (2, 6), (2, 20), (1, 999), (1, 999), (1, 999), (1, 999)],
+            None,
+            [2, 2, 4, 2],
+            [(2, 6), (2, 20), (1, 999), (1, 999)],
             [
                 BasicOperationQuestionData(
                     Operation.MULTIPLY,
-                    (2, 3),
-                    6,
-                    "2 friends each have 3 cards. How many cards do they have together?",
+                    (2, 2),
+                    4,
+                    "2 friends each have 2 cards. How many cards do they have together?",
                 ),
                 BasicOperationQuestionData(
                     Operation.SUBTRACT,
-                    (4, 3),
-                    1,
-                    "Maria has 4 cards and Jamal has 3 cards. "
+                    (4, 2),
+                    2,
+                    "Maria has 4 cards and Jamal has 2 cards. "
                     "How many more cards does Maria have than Jamal?",
                 ),
             ],
         ),
-        # 4 shared into 2 and 2 + 2 are redrawn too, and so is 4 + 2, though none of its wrong
-        # equations is 6. 2 + 4 isn't left out.
+        # With + and -, 5 + 5 has no fair set of wrong equations, so it's redrawn: 2 + 4.
         (
             2,
-            [Operation.ADD, Operation.DIVIDE],
+            [Operation.ADD, Operation.SUBTRACT],
             999,
             6,
             20,
-            [2, 2, 2, 3, 2, 2, 4, 2, 2, 4],
-            [
-                (2, 6),
-                (2, 20),
-                (2, 6),
-                (2, 20),
-                (1, 999),
-                (1, 999),
-                (1, 999),
-                (1, 999),
-                (1, 999),
-                (1, 999),
-            ],
+            None,
+            [47, 9, 5, 5, 2, 4],
+            [(1, 999), (1, 999), (1, 999), (1, 999), (1, 999), (1, 999)],
             [
                 BasicOperationQuestionData(
-                    Operation.DIVIDE,
-                    (6, 2),
-                    3,
-                    "Maria divides 6 cards into 2 equal piles. How many cards are in each pile?",
+                    Operation.SUBTRACT,
+                    (47, 9),
+                    38,
+                    "Maria has 47 cards and Jamal has 9 cards. "
+                    "How many more cards does Maria have than Jamal?",
                 ),
                 BasicOperationQuestionData(
                     Operation.ADD,
@@ -2683,6 +2677,7 @@ def test_strip_choice_sheet_errors(
             10,
             6,
             20,
+            None,
             [6, 20, 7, 6],
             [(2, 6), (2, 20), (1, 10), (1, 10)],
             [
@@ -2709,6 +2704,7 @@ def test_strip_choice_sheet_errors(
             999,
             6,
             20,
+            None,
             [47, 9, 60, 12, 47, 5],
             [(1, 999), (1, 999), (1, 999), (1, 999), (1, 999), (1, 999)],
             [
@@ -2743,6 +2739,7 @@ def test_strip_choice_sheet_errors(
             100,
             32,
             28,
+            None,
             [32, 28],
             [(2, 32), (2, 28)],
             [
@@ -2754,6 +2751,27 @@ def test_strip_choice_sheet_errors(
                 ),
             ],
         ),
+        # On a mixed sheet, drawn one operation at a time, the choices take the sheet's
+        # operations: with all four, the last set is the other three operations.
+        (
+            1,
+            [Operation.ADD],
+            999,
+            6,
+            20,
+            list(Operation),
+            [47, 25],
+            [(1, 999), (1, 999)],
+            [
+                BasicOperationQuestionData(
+                    Operation.ADD,
+                    (47, 25),
+                    72,
+                    "A basket held 47 cards. Maria added 25 more. "
+                    "How many cards are in the basket now?",
+                ),
+            ],
+        ),
     ],
 )
 def test_equation_choice_problems_from_scripted_draws(
@@ -2762,6 +2780,7 @@ def test_equation_choice_problems_from_scripted_draws(
     largest_number: int,
     largest_groups: int,
     largest_size: int,
+    sheet_operations: list[Operation] | None,
     drawn: list[int],
     bounds: list[tuple[int, int]],
     expected: list[BasicOperationQuestionData],
@@ -2769,15 +2788,16 @@ def test_equation_choice_problems_from_scripted_draws(
 ) -> None:
     """
     The operations are split evenly, then the sheet is shuffled. Each problem's numbers are
-    drawn, and redrawn until they meet the limits and aren't left out: an addition's or
-    subtraction's numbers at most the largest number, its answer not capped, and no operands of
-    2 and 2, or 4 and 2.
+    drawn, and redrawn until they meet the limits and the problem has a fair set of wrong
+    equations: an addition's or subtraction's numbers at most the largest number, its answer not
+    capped.
 
     ``sample`` keeps the operations' order, so any extra problems go to the last, and ``shuffle``
     reverses the sheet and each problem's choices. The wording takes the first two names, the last
     object and each operation's templates from the last, comparisons included. Every scripted draw
-    must be made, within ``bounds``. Each problem's choices are those of ``equation_choices``,
-    tested in ``test_representation``.
+    must be made, within ``bounds``. Each problem's choices are those of ``equation_choices`` for
+    the sheet's operations, ``operations`` unless ``sheet_operations`` are given, tested in
+    ``test_representation``.
     """
     drawn_from = randint_returns(monkeypatch, drawn)
     sample_first(monkeypatch)
@@ -2790,21 +2810,24 @@ def test_equation_choice_problems_from_scripted_draws(
         largest_number=largest_number,
         largest_groups=largest_groups,
         largest_size=largest_size,
+        sheet_operations=sheet_operations,
     )
 
+    signs = sheet_operations or operations
     assert drawn_from == bounds
-    assert questions == [Question(data, equation_choices(data)) for data in expected]
+    assert questions == [Question(data, equation_choices(data, signs)) for data in expected]
 
 
 @pytest.mark.parametrize(
     ("operations", "count", "largest_number"),
     [
-        # every multiplication but 2 groups of 2 and 4 groups of 2
-        ([Operation.MULTIPLY], 93, 999),
-        # every division but 4 shared into 2
-        ([Operation.DIVIDE], 94, 999),
-        # the sums 2 to 4, with 2 + 2 left out
-        ([Operation.ADD], 3, 4),
+        # every multiplication of 2 to 6 groups of 2 to 20
+        ([Operation.MULTIPLY], 95, 999),
+        # and every division
+        ([Operation.DIVIDE], 95, 999),
+        # the sums 2 to 8 of numbers up to 4, though 1 + 1 to 4 + 4 have no fair set with
+        # addition alone
+        ([Operation.ADD], 7, 4),
         # the most problems allowed, 20, with the defaults
         ([Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE], 20, 999),
     ],
@@ -2824,12 +2847,12 @@ def test_random_equation_choice_sheets_can_always_be_finished(
         # the defaults: the sums from 1 + 1 to 999 + 999, and the differences from 1 to 998
         ([Operation.ADD], 2000, 999, 6, 20, 1997),
         ([Operation.SUBTRACT], 1000, 999, 6, 20, 998),
-        # 2 to 6 groups of 2 to 20, but 2 groups of 2 and 4 groups of 2
-        ([Operation.MULTIPLY], 1000, 999, 6, 20, 93),
-        # every one of those shared, but 4 shared into 2
-        ([Operation.DIVIDE], 1000, 999, 6, 20, 94),
+        # 2 to 6 groups of 2 to 20, each with a fair set of wrong equations
+        ([Operation.MULTIPLY], 1000, 999, 6, 20, 95),
+        # every one of those shared
+        ([Operation.DIVIDE], 1000, 999, 6, 20, 95),
         # the largest number doesn't cap a product
-        ([Operation.MULTIPLY], 1000, 10, 6, 20, 93),
+        ([Operation.MULTIPLY], 1000, 10, 6, 20, 95),
         # the sums from 1 + 1 to 10 + 10
         ([Operation.ADD], 1000, 10, 6, 20, 19),
         # Split evenly, each operation needs only its share: addition's 5 sums of numbers up to
@@ -2841,7 +2864,7 @@ def test_random_equation_choice_sheets_can_always_be_finished(
             999,
             6,
             20,
-            372,
+            380,
         ),
         # capped
         (
@@ -2852,11 +2875,11 @@ def test_random_equation_choice_sheets_can_always_be_finished(
             20,
             20,
         ),
-        # 2 to 32 groups of 2 to 28, but 2 groups of 2 and 4 groups of 2
-        ([Operation.MULTIPLY], 1000, 999, 32, 28, 835),
-        # 2 groups of 3 only, as 2 groups of 2 is left out; and 6 shared into 2, as 4 is
-        ([Operation.MULTIPLY], 1000, 999, 2, 3, 1),
-        ([Operation.DIVIDE], 1000, 999, 2, 3, 1),
+        # 2 to 32 groups of 2 to 28
+        ([Operation.MULTIPLY], 1000, 999, 32, 28, 837),
+        # 2 groups of 2 and of 3, and 4 and 6 shared into 2
+        ([Operation.MULTIPLY], 1000, 999, 2, 3, 2),
+        ([Operation.DIVIDE], 1000, 999, 2, 3, 2),
     ],
 )
 def test_count_possible_equation_choice_problems(
@@ -2868,9 +2891,9 @@ def test_count_possible_equation_choice_problems(
     expected: int,
 ) -> None:
     """
-    Each operation counts as on word problems, except that 2 groups of 2, 4 groups of 2 and 4
-    shared into 2 are left out. Split evenly, the count is the least of the operations' for each
-    operation.
+    Each operation counts as on word problems, of only the problems with a fair set of wrong
+    equations, though an addition or subtraction without one leaves its answer to another pair.
+    Split evenly, the count is the least of the operations' for each operation.
     """
     possible = count_possible_equation_choice_problems(
         operations,
@@ -2887,9 +2910,9 @@ def test_count_possible_equation_choice_problems(
     [
         (
             [Operation.MULTIPLY],
-            94,
+            96,
             999,
-            "Cannot make 94 different problems: only 93 possible.",
+            "Cannot make 96 different problems: only 95 possible.",
         ),
         (
             [Operation.ADD],
@@ -4626,20 +4649,18 @@ def test_two_step_problems_repeat_no_problem_taken(
         ([Operation.ADD, Operation.SUBTRACT], 20, 999, 6, 20, 20),
         # one operation, with its own mistakes
         ([Operation.SUBTRACT], 20, 999, 6, 20, 20),
-        # Multiplication alone, with the signs changed to + if no number can be reversed. Only
-        # the numbers given keep the limits, so the first product may pass them. c x (a x b) has
-        # the fewest: c and a from 2 to 6 groups and b from 2 to 20, all different, 340, of which
-        # 334 have fair equations. Split evenly, 668.
-        ([Operation.MULTIPLY], 999, 999, 6, 20, 668),
-        # Within 6 the only (a - b) ÷ c, (5 - 1) ÷ 2, has none: (5 - 1) - 2 is 2 too, and moving
-        # the brackets gives 1 ÷ 2, ruled out at a glance. So that shape isn't drawn, and of the
-        # six left, c ÷ (a ÷ b) has the fewest, 1: 6 ÷ (4 ÷ 2), since in 4 ÷ (6 ÷ 3) 4 ÷ 2 and
-        # 4 - 2 are both 2. Split evenly, 6.
-        ([Operation.SUBTRACT, Operation.DIVIDE], 99, 6, 6, 20, 6),
-        # Within 3 every addition adds 1, 2 and 3 in some order, and multiplying them gives the
-        # same answer, 6, so none has fair equations; with at most 2 groups of 2, every
-        # multiplication repeats a number.
-        ([Operation.ADD, Operation.MULTIPLY], 99, 3, 2, 2, 0),
+        # Multiplication alone, with its wrong sign +. Only the numbers given keep the limits, so
+        # the first product may pass them. c x (a x b) has the fewest: c and a from 2 to 6 groups
+        # and b from 2 to 20, all different, 340, every one with fair equations. Split evenly,
+        # 680.
+        ([Operation.MULTIPLY], 999, 999, 6, 20, 680),
+        # Within 6 there's no (a ÷ b) ÷ c, so that shape isn't drawn, and of the seven left, the
+        # only (a - b) ÷ c, (5 - 1) ÷ 2, makes the fewest, 1. Split evenly, 7.
+        ([Operation.SUBTRACT, Operation.DIVIDE], 99, 6, 6, 20, 7),
+        # Within 3 every addition adds 1, 2 and 3 in some order, 6 to a shape, each with fair
+        # equations; with at most 2 groups of 2, every multiplication repeats a number, so only
+        # the two shapes of addition are drawn. Split evenly, 12.
+        ([Operation.ADD, Operation.MULTIPLY], 99, 3, 2, 2, 12),
     ],
 )
 def test_count_possible_two_step_equation_choice_problems(
@@ -4772,19 +4793,19 @@ def test_random_two_step_equation_choice_sheets_can_always_be_finished(
         # as counted above
         (
             [Operation.MULTIPLY],
-            669,
+            681,
             999,
             6,
             20,
-            "Cannot make 669 different problems: only 668 possible.",
+            "Cannot make 681 different problems: only 680 possible.",
         ),
         (
             [Operation.ADD, Operation.MULTIPLY],
-            2,
+            13,
             3,
             2,
             2,
-            "Cannot make 2 different problems: only 0 possible.",
+            "Cannot make 13 different problems: only 12 possible.",
         ),
     ],
 )
@@ -4888,8 +4909,9 @@ TWO_STEP_KINDS: list[WordProblemKind] = [
             2000,
             19,
         ),
-        # Within 3 no two-step addition has fair equations to choose from, as every one adds 1, 2
-        # and 3, so the half answered by choosing has none, though the written half has some.
+        # Within 3 every two-step addition adds 1, 2 and 3 in some order, 6 to a shape, each with
+        # fair equations to choose from, so the half answered by choosing allows as many as the
+        # written half.
         (
             [Operation.ADD],
             [
@@ -4900,10 +4922,10 @@ TWO_STEP_KINDS: list[WordProblemKind] = [
             False,
             3,
             999,
-            0,
+            6,
         ),
-        # Multiplication alone: c x (a x b) has the fewest, 340 written, and of those 334 with
-        # fair equations to choose from.
+        # Multiplication alone: c x (a x b) has the fewest, 340, every one with fair equations to
+        # choose from.
         (
             [Operation.MULTIPLY],
             [
@@ -4914,7 +4936,7 @@ TWO_STEP_KINDS: list[WordProblemKind] = [
             False,
             999,
             999,
-            334,
+            340,
         ),
     ],
 )

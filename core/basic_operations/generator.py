@@ -81,10 +81,6 @@ STRIP_CHOICE_LARGEST_NUMBER = 100  # a strip-choice sheet's default largest numb
 STRIP_CHOICE_LARGEST_GROUPS = 12
 # 2 + 2 and 2 groups of 2 draw the same strip, so a strip-choice sheet leaves them out
 STRIP_CHOICE_EXCLUDED_OPERANDS = frozenset({(2, 2)})
-# Operands that give a wrong equation with the problem's answer: 2 + 2 and 2 x 2 are both 4, and
-# 4 - 2 and 4 ÷ 2 are both 2. An equation-choice sheet leaves them out, for every operation, so
-# 4 + 2 and 4 groups of 2 go too.
-EQUATION_CHOICE_EXCLUDED_OPERANDS = frozenset({(2, 2), (4, 2)})
 # A multiplication-models sheet's smallest factor, and its default and most for the largest
 # factor. Its largest product is TEKS 3.4(K)'s "within 100" by default, and at most the largest
 # factor squared, as no fact has a larger one.
@@ -550,21 +546,22 @@ def count_possible_word_problems(
     largest_size: int = WORD_PROBLEM_GROUP_SIZES[1],
     largest_whole: int | None = None,
     excluded_operands: Collection[tuple[int, int]] = (),
+    keep: Callable[[BasicOperationQuestionData], bool] | None = None,
     split_evenly: bool = False,
     larger_first: bool = False,
 ) -> int:
     """
     Count the word problems ``generate_word_problems`` can produce for ``operations``, with its
-    limits, ``excluded_operands`` and ``larger_first``.
+    limits, ``excluded_operands``, ``keep`` and ``larger_first``.
 
     As in ``count_possible_sheet_questions``, any one operation may be drawn for every problem, so
     the count is the smallest that any one operation allows by itself: its distinct answers with
     ``distinct_answers``, and otherwise its distinct problems. Addition and subtraction count their
     answers either way, which are fewer than their problems: every sum and every difference from the
     smallest to the largest the limits allow, the largest sum being at most ``largest_number`` only
-    if that is given. An excluded pair is taken to leave its answer to another pair, as 2 + 2 leaves
-    4 to 1 + 3. Multiplication and division leave out the excluded pairs, and stop counting at
-    ``up_to``.
+    if that is given. An excluded pair, or one ``keep`` is false of, is taken to leave its answer to
+    another pair, as 2 + 2 leaves 4 to 1 + 3. Multiplication and division leave out the excluded
+    pairs and those ``keep`` is false of, and stop counting at ``up_to``.
 
 
     With ``split_evenly`` and without ``distinct_answers``, each operation needs only enough for
@@ -595,7 +592,7 @@ def count_possible_word_problems(
                 for data in _all_equal_groups(
                     operation, largest_groups, largest_size, largest_whole
                 ):
-                    if data.operands in excluded_operands:
+                    if data.operands in excluded_operands or (keep is not None and not keep(data)):
                         continue
                     problems += 1
                     answers.add(data.answer)
@@ -623,6 +620,7 @@ def generate_word_problems(
     largest_size: int = WORD_PROBLEM_GROUP_SIZES[1],
     largest_whole: int | None = None,
     excluded_operands: Collection[tuple[int, int]] = (),
+    keep: Callable[[BasicOperationQuestionData], bool] | None = None,
     split_evenly: bool = False,
     larger_first: bool = False,
     taken: Collection[BasicOperationQuestionData] = (),
@@ -649,7 +647,8 @@ def generate_word_problems(
     No two problems of the same operation have the same operands, and with ``distinct_answers``
     no two problems share an answer either: a problem that breaks either rule is drawn again.
     Neither does any problem have operands in ``excluded_operands``, for a representation that
-    can't tell them apart. Nor does any repeat the operation and operands of a problem in
+    can't tell them apart, or is it one ``keep`` is false of, such as one with no fair equations
+    to choose from. Nor does any repeat the operation and operands of a problem in
     ``taken``, those already on the sheet, or with ``distinct_answers`` share its answer: the
     caller checks first that enough are left, as ``generate_mixed_word_problems`` does.
 
@@ -667,6 +666,7 @@ def generate_word_problems(
         largest_size=largest_size,
         largest_whole=largest_whole,
         excluded_operands=excluded_operands,
+        keep=keep,
         split_evenly=split_evenly,
         larger_first=larger_first,
     )
@@ -697,6 +697,7 @@ def generate_word_problems(
         data = draw()
         while (
             data.operands in excluded_operands
+            or (keep is not None and not keep(data))
             or (operation, data.operands) in seen
             or (distinct_answers and data.answer in answers)
         ):
@@ -777,10 +778,11 @@ def count_possible_equation_choice_problems(
     largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
     largest_groups: int = WORD_PROBLEM_GROUPS[1],
     largest_size: int = WORD_PROBLEM_GROUP_SIZES[1],
+    sheet_operations: Collection[Operation] | None = None,
 ) -> int:
     """
     Count the problems ``generate_equation_choice_problems`` can produce, as
-    ``count_possible_word_problems`` counts them.
+    ``count_possible_word_problems`` counts them, with ``sheet_operations`` as there.
     """
     return count_possible_word_problems(
         operations,
@@ -789,7 +791,7 @@ def count_possible_equation_choice_problems(
         largest_operand=largest_number,
         largest_groups=largest_groups,
         largest_size=largest_size,
-        excluded_operands=EQUATION_CHOICE_EXCLUDED_OPERANDS,
+        keep=partial(has_fair_equation_choices, operations=sheet_operations or operations),
         split_evenly=True,
     )
 
@@ -801,17 +803,20 @@ def generate_equation_choice_problems(
     largest_number: int = LARGEST_WORD_PROBLEM_NUMBER,
     largest_groups: int = WORD_PROBLEM_GROUPS[1],
     largest_size: int = WORD_PROBLEM_GROUP_SIZES[1],
+    sheet_operations: Collection[Operation] | None = None,
     taken: Collection[BasicOperationQuestionData] = (),
 ) -> list[EquationChoiceQuestion]:
     """
     Generate ``count`` word problems as ``generate_word_problems`` does, comparisons included,
-    each with its equation to choose from those of ``equation_choices``. The operations are split
-    evenly, and the limits are those of any word problem: ``largest_number`` caps the numbers an
-    addition or subtraction gives, not its answer, and ``largest_groups`` and ``largest_size`` a
-    multiplication's or division's equal groups. No problem's operands are in
-    ``EQUATION_CHOICE_EXCLUDED_OPERANDS``, or repeats one in ``taken``, as in
-    ``generate_word_problems``.
+    each with its equation to choose from those of ``equation_choices`` for a sheet of
+    ``sheet_operations``, ``operations`` unless given, as when a mixed sheet draws one operation
+    at a time. Only problems with a fair set of wrong equations are drawn
+    (``has_fair_equation_choices``). The operations are split evenly, and the limits are those of
+    any word problem: ``largest_number`` caps the numbers an addition or subtraction gives, not
+    its answer, and ``largest_groups`` and ``largest_size`` a multiplication's or division's
+    equal groups. No problem repeats one in ``taken``, as in ``generate_word_problems``.
     """
+    signs = sheet_operations or operations
     problems = generate_word_problems(
         count,
         operations,
@@ -820,11 +825,11 @@ def generate_equation_choice_problems(
         largest_operand=largest_number,
         largest_groups=largest_groups,
         largest_size=largest_size,
-        excluded_operands=EQUATION_CHOICE_EXCLUDED_OPERANDS,
+        keep=partial(has_fair_equation_choices, operations=signs),
         split_evenly=True,
         taken=taken,
     )
-    return [Question(problem.data, equation_choices(problem.data)) for problem in problems]
+    return [Question(problem.data, equation_choices(problem.data, signs)) for problem in problems]
 
 
 def count_possible_number_line_choice_problems(
@@ -1351,7 +1356,7 @@ def _worded_together(
         elif choices and representation is Representation.NUMBER_LINE:
             question = Question(data, number_line_choices(data))
         elif choices:
-            question = Question(data, equation_choices(data))
+            question = Question(data, equation_choices(data, operations))
         else:
             question = Question(data, FreeResponse())
         worded.append((representation, question))
@@ -1455,6 +1460,7 @@ def _count_kind_problems(
                 largest_number=largest_number,
                 largest_groups=largest_groups,
                 largest_size=largest_size,
+                sheet_operations=operations,
             )
         case _:
             return count_possible_word_problems(
@@ -1521,6 +1527,7 @@ def _kind_problems(
                 largest_number=largest_number,
                 largest_groups=largest_groups,
                 largest_size=largest_size,
+                sheet_operations=operations,
                 taken=taken_one,
             )
         case _:

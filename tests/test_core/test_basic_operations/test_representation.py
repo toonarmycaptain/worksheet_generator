@@ -5,6 +5,7 @@ number lines and the strip diagrams a problem's own is chosen from, two-step str
 included, and what each problem shows."""
 
 from collections.abc import Callable
+from functools import partial
 
 import pytest
 
@@ -469,25 +470,32 @@ def test_two_step_strip_errors(
 
 
 @pytest.mark.parametrize(
-    ("data", "expected"),
+    ("data", "operations", "picks", "groups", "expected"),
     [
-        # Addition: the wrong equations subtract, multiply and divide its numbers, with the
-        # smaller number as the groups. Subtracting and dividing put the larger number first.
+        # With all four operations, the other three on the problem's numbers are one set to draw
+        # from: subtracting and dividing put the larger number first, and multiplying keeps the
+        # story's order.
         (
             BasicOperationQuestionData(Operation.ADD, (9, 4), 13),
+            list(Operation),
+            [3, 0],
+            4,
             MultipleChoice(
                 (
                     f"9 \N{DIVISION SIGN} 4 = {BLANK}",
-                    f"4 \N{MULTIPLICATION SIGN} 9 = {BLANK}",
+                    f"9 \N{MULTIPLICATION SIGN} 4 = {BLANK}",
                     f"9 \N{MINUS SIGN} 4 = {BLANK}",
                     f"9 + 4 = {BLANK}",
                 ),
                 frozenset({3}),
             ),
         ),
-        # adding keeps the numbers' order, and the smaller is the groups when it's first too
+        # adding keeps the numbers' order
         (
             BasicOperationQuestionData(Operation.ADD, (4, 9), 13),
+            list(Operation),
+            [3, 0],
+            4,
             MultipleChoice(
                 (
                     f"9 \N{DIVISION SIGN} 4 = {BLANK}",
@@ -500,19 +508,25 @@ def test_two_step_strip_errors(
         ),
         (
             BasicOperationQuestionData(Operation.SUBTRACT, (13, 4), 9),
+            list(Operation),
+            [3, 0],
+            4,
             MultipleChoice(
                 (
                     f"13 \N{DIVISION SIGN} 4 = {BLANK}",
-                    f"4 \N{MULTIPLICATION SIGN} 13 = {BLANK}",
+                    f"13 \N{MULTIPLICATION SIGN} 4 = {BLANK}",
                     f"13 + 4 = {BLANK}",
                     f"13 \N{MINUS SIGN} 4 = {BLANK}",
                 ),
                 frozenset({3}),
             ),
         ),
-        # multiplication's groups are its own, its first operand, and 4 ÷ 3 needn't be even
+        # 4 ÷ 3 needn't be even
         (
             MULTIPLY,
+            list(Operation),
+            [3, 0],
+            4,
             MultipleChoice(
                 (
                     f"4 \N{DIVISION SIGN} 3 = {BLANK}",
@@ -523,13 +537,16 @@ def test_two_step_strip_errors(
                 frozenset({3}),
             ),
         ),
-        # Even when its first operand is the larger: dividing shares 2 into 5 groups, as on the
-        # strip. Subtracting still takes the smaller from the larger.
+        # Even when its first number is the larger, dividing puts the larger first: 2 ÷ 5 would be
+        # ruled out at a glance.
         (
             BasicOperationQuestionData(Operation.MULTIPLY, (5, 2), 10),
+            list(Operation),
+            [3, 0],
+            4,
             MultipleChoice(
                 (
-                    f"2 \N{DIVISION SIGN} 5 = {BLANK}",
+                    f"5 \N{DIVISION SIGN} 2 = {BLANK}",
                     f"5 \N{MINUS SIGN} 2 = {BLANK}",
                     f"5 + 2 = {BLANK}",
                     f"5 \N{MULTIPLICATION SIGN} 2 = {BLANK}",
@@ -537,12 +554,14 @@ def test_two_step_strip_errors(
                 frozenset({3}),
             ),
         ),
-        # division's groups are its own, its second operand
         (
             DIVIDE,
+            list(Operation),
+            [3, 0],
+            4,
             MultipleChoice(
                 (
-                    f"3 \N{MULTIPLICATION SIGN} 12 = {BLANK}",
+                    f"12 \N{MULTIPLICATION SIGN} 3 = {BLANK}",
                     f"12 \N{MINUS SIGN} 3 = {BLANK}",
                     f"12 + 3 = {BLANK}",
                     f"12 \N{DIVISION SIGN} 3 = {BLANK}",
@@ -550,19 +569,145 @@ def test_two_step_strip_errors(
                 frozenset({3}),
             ),
         ),
+        # With + and - only: the sign changed to -, crossed with 47 one less
+        (
+            ADD,
+            [Operation.ADD, Operation.SUBTRACT],
+            [0, 0],
+            2,
+            MultipleChoice(
+                (
+                    f"46 \N{MINUS SIGN} 25 = {BLANK}",
+                    f"46 + 25 = {BLANK}",
+                    f"47 \N{MINUS SIGN} 25 = {BLANK}",
+                    f"47 + 25 = {BLANK}",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # 47 one less, crossed with what to find swapped with 47, which stands alone on the right
+        (
+            ADD,
+            [Operation.ADD, Operation.SUBTRACT],
+            [1, 0],
+            2,
+            MultipleChoice(
+                (
+                    f"{BLANK} + 25 = 46",
+                    f"{BLANK} + 25 = 47",
+                    f"46 + 25 = {BLANK}",
+                    f"47 + 25 = {BLANK}",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # The sign changed, crossed with what to find swapped: changed to -, both would give
+        # □ - 25 = 47, whose □ is the answer, so the first fair change is to x.
+        (
+            ADD,
+            list(Operation),
+            [1, 0],
+            4,
+            MultipleChoice(
+                (
+                    f"{BLANK} \N{MULTIPLICATION SIGN} 25 = 47",
+                    f"{BLANK} + 25 = 47",
+                    f"47 \N{MULTIPLICATION SIGN} 25 = {BLANK}",
+                    f"47 + 25 = {BLANK}",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # What to find takes 72's place: in 25's, 72 - □ = 25 would work out to the answer.
+        (
+            SUBTRACT,
+            [Operation.ADD, Operation.SUBTRACT],
+            [1, 0],
+            2,
+            MultipleChoice(
+                (
+                    f"{BLANK} \N{MINUS SIGN} 25 = 71",
+                    f"{BLANK} \N{MINUS SIGN} 25 = 72",
+                    f"71 \N{MINUS SIGN} 25 = {BLANK}",
+                    f"72 \N{MINUS SIGN} 25 = {BLANK}",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # Multiplication alone: + is its wrong sign, crossed here with 3 one less.
+        (
+            MULTIPLY,
+            [Operation.MULTIPLY],
+            [0, 0],
+            3,
+            MultipleChoice(
+                (
+                    f"2 + 4 = {BLANK}",
+                    f"2 \N{MULTIPLICATION SIGN} 4 = {BLANK}",
+                    f"3 + 4 = {BLANK}",
+                    f"3 \N{MULTIPLICATION SIGN} 4 = {BLANK}",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # Division alone: 12 one less, crossed with what to find swapped with 12. Its wrong sign, x,
+        # gives no fair set with the swap: □ x 3 = 12 works out to the answer.
+        (
+            DIVIDE,
+            [Operation.DIVIDE],
+            [1, 0],
+            2,
+            MultipleChoice(
+                (
+                    f"{BLANK} \N{DIVISION SIGN} 3 = 11",
+                    f"{BLANK} \N{DIVISION SIGN} 3 = 12",
+                    f"11 \N{DIVISION SIGN} 3 = {BLANK}",
+                    f"12 \N{DIVISION SIGN} 3 = {BLANK}",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # 25 + 25 with + and -: 25 - 25 is ruled out at a glance, and □ + 25 = 25 works out to 0,
+        # so only the second tier is left, both numbers off: 25 one less, and 25 with its digits
+        # swapped.
+        (
+            BasicOperationQuestionData(Operation.ADD, (25, 25), 50),
+            [Operation.ADD, Operation.SUBTRACT],
+            [0, 0],
+            1,
+            MultipleChoice(
+                (
+                    f"24 + 52 = {BLANK}",
+                    f"25 + 52 = {BLANK}",
+                    f"24 + 25 = {BLANK}",
+                    f"25 + 25 = {BLANK}",
+                ),
+                frozenset({3}),
+            ),
+        ),
     ],
 )
 def test_equation_choices(
-    data: BasicOperationQuestionData, expected: MultipleChoice[str], monkeypatch: pytest.MonkeyPatch
+    data: BasicOperationQuestionData,
+    operations: list[Operation],
+    picks: list[int],
+    groups: int,
+    expected: MultipleChoice[str],
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """
-    A problem's own equation is one choice, and the equations of the other three operations on its
-    numbers are the wrong ones, each the equation of that operation's strip in ``strip_choices``.
-    ``shuffle`` reverses, so the wrong equations come in the reverse of ``Operation``'s order, and
-    the problem's own is last.
+    The wrong equations cross two kinds of mistake: one wrong equation with each, and one with
+    both, or with all four operations ticked they can be the other three operations. ``choice``
+    picks the pair of kinds among the ``groups`` with a fair set, a kind at different places
+    counting as one, and then a set, and ``shuffle`` reverses, so the choices come both mistakes,
+    the second, the first, then the right one, or the other operations in the reverse of
+    ``Operation``'s order. A changed sign is the next ticked one in ``Operation``'s order that
+    gives a fair set, and a number off is first one less.
     """
+    offered = choice_indexes(monkeypatch, picks)
     reverse_shuffle(monkeypatch)
-    assert equation_choices(data) == expected
+    assert equation_choices(data, operations) == expected
+    assert len(offered[0]) == groups
 
 
 # (24 - 6) + 5, and 4 shared into (12 shared into 6 groups) groups
@@ -627,15 +772,14 @@ MULTIPLY_INTO_MULTIPLY = TwoStepQuestionData(
 
 
 @pytest.mark.parametrize(
-    ("data", "operations", "picks", "mistake_pairs", "expected"),
+    ("data", "operations", "picks", "groups", "expected"),
     [
-        # Taking away, then sharing: each mistake pair has fair sets. The first sign and the
-        # brackets here, with + as the first sign.
+        # Taking away, then sharing: the first sign changed to +, crossed with the brackets moved
         (
             SUBTRACT_DIVIDE,
             list(Operation),
-            [1, 0],
-            3,
+            [2, 0],
+            12,
             MultipleChoice(
                 (
                     "24 + (6 \N{DIVISION SIGN} 3) = s",
@@ -646,12 +790,12 @@ MULTIPLY_INTO_MULTIPLY = TwoStepQuestionData(
                 frozenset({3}),
             ),
         ),
-        # both signs, the first + and the second +
+        # both signs, the first changed to + and the second to +
         (
             SUBTRACT_DIVIDE,
             list(Operation),
             [0, 0],
-            3,
+            12,
             MultipleChoice(
                 (
                     "(24 + 6) + 3 = s",
@@ -662,29 +806,60 @@ MULTIPLY_INTO_MULTIPLY = TwoStepQuestionData(
                 frozenset({3}),
             ),
         ),
-        # only the ticked operations' signs: the second sign and the brackets
+        # only the ticked operations' signs: the first changed to ÷, and the brackets moved
         (
             SUBTRACT_DIVIDE,
             [Operation.SUBTRACT, Operation.DIVIDE],
             [2, 0],
-            3,
+            12,
             MultipleChoice(
                 (
-                    "24 \N{MINUS SIGN} (6 \N{MINUS SIGN} 3) = s",
+                    "24 \N{DIVISION SIGN} (6 \N{DIVISION SIGN} 3) = s",
                     "24 \N{MINUS SIGN} (6 \N{DIVISION SIGN} 3) = s",
-                    "(24 \N{MINUS SIGN} 6) \N{MINUS SIGN} 3 = s",
+                    "(24 \N{DIVISION SIGN} 6) \N{DIVISION SIGN} 3 = s",
                     "(24 \N{MINUS SIGN} 6) \N{DIVISION SIGN} 3 = s",
                 ),
                 frozenset({3}),
             ),
         ),
-        # Only the signs: moving the brackets with a sign changed gives two wrong equations of the
-        # same value, (24 + 6) + 5 and 24 + (6 + 5), or (24 - 6) - 5 and 24 - (6 + 5).
+        # the first sign changed to +, crossed with 24 one less
+        (
+            SUBTRACT_DIVIDE,
+            list(Operation),
+            [1, 0],
+            12,
+            MultipleChoice(
+                (
+                    "(23 + 6) \N{DIVISION SIGN} 3 = s",
+                    "(23 \N{MINUS SIGN} 6) \N{DIVISION SIGN} 3 = s",
+                    "(24 + 6) \N{DIVISION SIGN} 3 = s",
+                    "(24 \N{MINUS SIGN} 6) \N{DIVISION SIGN} 3 = s",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # 24 one less, crossed with what to find swapped with 24, which stands alone on the right
+        (
+            SUBTRACT_DIVIDE,
+            list(Operation),
+            [8, 0],
+            12,
+            MultipleChoice(
+                (
+                    "(s \N{MINUS SIGN} 6) \N{DIVISION SIGN} 3 = 23",
+                    "(s \N{MINUS SIGN} 6) \N{DIVISION SIGN} 3 = 24",
+                    "(23 \N{MINUS SIGN} 6) \N{DIVISION SIGN} 3 = s",
+                    "(24 \N{MINUS SIGN} 6) \N{DIVISION SIGN} 3 = s",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # With + and - only, each sign has one other, so both signs changed are one set
         (
             SUBTRACT_ADD,
             [Operation.ADD, Operation.SUBTRACT],
             [0, 0],
-            1,
+            10,
             MultipleChoice(
                 (
                     "(24 + 6) \N{MINUS SIGN} 5 = s",
@@ -695,29 +870,29 @@ MULTIPLY_INTO_MULTIPLY = TwoStepQuestionData(
                 frozenset({3}),
             ),
         ),
-        # In the story's order 4 - 6 is ruled out at a glance, and moving the brackets gives the
-        # answer, so every choice has 6 + 4 the other way round.
+        # the second sign changed to -, crossed with 4 one less: the first changed would give
+        # 4 - 6, ruled out at a glance
         (
             ADD_ADD,
             [Operation.ADD, Operation.SUBTRACT],
             [0, 0],
-            1,
+            3,
             MultipleChoice(
                 (
-                    "(6 \N{MINUS SIGN} 4) \N{MINUS SIGN} 7 = s",
-                    "(6 + 4) \N{MINUS SIGN} 7 = s",
-                    "(6 \N{MINUS SIGN} 4) + 7 = s",
-                    "(6 + 4) + 7 = s",
+                    "(3 + 6) \N{MINUS SIGN} 7 = s",
+                    "(3 + 6) + 7 = s",
+                    "(4 + 6) \N{MINUS SIGN} 7 = s",
+                    "(4 + 6) + 7 = s",
                 ),
                 frozenset({3}),
             ),
         ),
-        # with multiplication ticked, 4 x 6 keeps the story's order; the brackets still can't move
+        # with multiplication ticked, both signs; the brackets can't move, as that keeps the value
         (
             ADD_ADD,
             [Operation.ADD, Operation.MULTIPLY],
             [0, 0],
-            1,
+            6,
             MultipleChoice(
                 (
                     "(4 \N{MULTIPLICATION SIGN} 6) \N{MULTIPLICATION SIGN} 7 = s",
@@ -728,13 +903,13 @@ MULTIPLY_INTO_MULTIPLY = TwoStepQuestionData(
                 frozenset({3}),
             ),
         ),
-        # Taking away equal groups, with the brackets on the last two numbers: moving them puts
-        # them on the first two.
+        # Taking away equal groups, with the brackets on the last two numbers: moving them puts them
+        # on the first two.
         (
             MULTIPLY_SUBTRACT,
             list(Operation),
-            [1, 0],
-            3,
+            [2, 0],
+            13,
             MultipleChoice(
                 (
                     "(45 + 3) \N{MULTIPLICATION SIGN} 5 = s",
@@ -745,31 +920,28 @@ MULTIPLY_INTO_MULTIPLY = TwoStepQuestionData(
                 frozenset({3}),
             ),
         ),
-        # With only - and x, 3 - 5 is ruled out at a glance, so every choice has 5 x 3 the other
-        # way round. Changing the first sign as well as moving the brackets gives two wrong
-        # equations of the same value, 45 x (5 x 3) and (45 x 5) x 3.
+        # with only - and x, the first sign changed to x, crossed with 45 one less
         (
             MULTIPLY_SUBTRACT,
             [Operation.SUBTRACT, Operation.MULTIPLY],
-            [1, 0],
-            2,
+            [0, 0],
+            10,
             MultipleChoice(
                 (
-                    "(45 \N{MINUS SIGN} 5) \N{MINUS SIGN} 3 = s",
-                    "(45 \N{MINUS SIGN} 5) \N{MULTIPLICATION SIGN} 3 = s",
-                    "45 \N{MINUS SIGN} (5 \N{MINUS SIGN} 3) = s",
-                    "45 \N{MINUS SIGN} (5 \N{MULTIPLICATION SIGN} 3) = s",
+                    "44 \N{MULTIPLICATION SIGN} (3 \N{MULTIPLICATION SIGN} 5) = s",
+                    "44 \N{MINUS SIGN} (3 \N{MULTIPLICATION SIGN} 5) = s",
+                    "45 \N{MULTIPLICATION SIGN} (3 \N{MULTIPLICATION SIGN} 5) = s",
+                    "45 \N{MINUS SIGN} (3 \N{MULTIPLICATION SIGN} 5) = s",
                 ),
                 frozenset({3}),
             ),
         ),
-        # 4 ÷ 2 and 4 - 2 are both 2, so the first sign can't be -, and moving the brackets gives
-        # 4 ÷ 12, ruled out at a glance: only the signs
+        # 4 ÷ 2 and 4 - 2 are both 2, so the first sign isn't -: here both signs changed to +
         (
             DIVIDE_INTO_DIVIDE,
             list(Operation),
             [0, 0],
-            1,
+            6,
             MultipleChoice(
                 (
                     "4 + (12 + 6) = s",
@@ -780,12 +952,12 @@ MULTIPLY_INTO_MULTIPLY = TwoStepQuestionData(
                 frozenset({3}),
             ),
         ),
-        # Subtraction alone: the brackets moved, and the step outside them the other way round.
+        # Subtraction alone: the brackets moved, and the step outside them the other way round
         (
             SUBTRACT_TWICE,
             [Operation.SUBTRACT],
-            [0, 0],
-            1,
+            [8, 0],
+            10,
             MultipleChoice(
                 (
                     "(12 \N{MINUS SIGN} 8) \N{MINUS SIGN} 45 = s",
@@ -800,8 +972,8 @@ MULTIPLY_INTO_MULTIPLY = TwoStepQuestionData(
         (
             DIVIDE_TWICE,
             [Operation.DIVIDE],
-            [0, 0],
-            1,
+            [8, 0],
+            10,
             MultipleChoice(
                 (
                     "(5 \N{DIVISION SIGN} 3) \N{DIVISION SIGN} 30 = s",
@@ -812,13 +984,13 @@ MULTIPLY_INTO_MULTIPLY = TwoStepQuestionData(
                 frozenset({3}),
             ),
         ),
-        # Addition alone: 12 copied as 21, and a step left out. Only 12 can be reversed, so the
-        # step left can only be 12 + 8: left with 8 + 5, both mistakes would look like one.
+        # Addition alone: 12 with its digits swapped, crossed with a step left out. Left with 8 + 5,
+        # both mistakes would look like one.
         (
             ADD_TWICE,
             [Operation.ADD],
-            [0, 0],
-            1,
+            [3, 2],
+            4,
             MultipleChoice(
                 (
                     "21 + 8 = s",
@@ -829,13 +1001,28 @@ MULTIPLY_INTO_MULTIPLY = TwoStepQuestionData(
                 frozenset({3}),
             ),
         ),
-        # And multiplication alone, where only 16 can be reversed, so the step left is 3 x 16. The
-        # signs changed to + aren't offered, as these give a fair set.
+        # its wrong sign, -, crossed with a step left out
+        (
+            ADD_TWICE,
+            [Operation.ADD],
+            [1, 0],
+            4,
+            MultipleChoice(
+                (
+                    "12 \N{MINUS SIGN} 8 = s",
+                    "12 + 8 = s",
+                    "(12 \N{MINUS SIGN} 8) + 5 = s",
+                    "(12 + 8) + 5 = s",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # And multiplication alone: 16 with its digits swapped, and the step left 3 x 16
         (
             MULTIPLY_TWICE,
             [Operation.MULTIPLY],
-            [0, 0],
-            1,
+            [4, 4],
+            5,
             MultipleChoice(
                 (
                     "3 \N{MULTIPLICATION SIGN} 61 = s",
@@ -846,17 +1033,33 @@ MULTIPLY_INTO_MULTIPLY = TwoStepQuestionData(
                 frozenset({3}),
             ),
         ),
-        # With no number to reverse, multiplication alone changes the first sign and the second
-        # to +.
+        # its wrong sign, +, crossed with what to find swapped with 16
+        (
+            MULTIPLY_TWICE,
+            [Operation.MULTIPLY],
+            [1, 0],
+            5,
+            MultipleChoice(
+                (
+                    "(2 + 3) \N{MULTIPLICATION SIGN} s = 16",
+                    "(2 \N{MULTIPLICATION SIGN} 3) \N{MULTIPLICATION SIGN} s = 16",
+                    "(2 + 3) \N{MULTIPLICATION SIGN} 16 = s",
+                    "(2 \N{MULTIPLICATION SIGN} 3) \N{MULTIPLICATION SIGN} 16 = s",
+                ),
+                frozenset({3}),
+            ),
+        ),
+        # the first sign changed to +, crossed with the equals moved between 3 and 2. Both signs
+        # changed to + are only a fallback: a choice with + is never right on this sheet.
         (
             MULTIPLY_INTO_MULTIPLY,
             [Operation.MULTIPLY],
-            [0, 0],
-            1,
+            [1, 0],
+            5,
             MultipleChoice(
                 (
-                    "5 + (3 + 2) = s",
-                    "5 \N{MULTIPLICATION SIGN} (3 + 2) = s",
+                    "5 + 3 = 2 \N{MULTIPLICATION SIGN} s",
+                    "5 \N{MULTIPLICATION SIGN} 3 = 2 \N{MULTIPLICATION SIGN} s",
                     "5 + (3 \N{MULTIPLICATION SIGN} 2) = s",
                     "5 \N{MULTIPLICATION SIGN} (3 \N{MULTIPLICATION SIGN} 2) = s",
                 ),
@@ -869,55 +1072,107 @@ def test_two_step_equation_choices(
     data: TwoStepQuestionData,
     operations: list[Operation],
     picks: list[int],
-    mistake_pairs: int,
+    groups: int,
     expected: MultipleChoice[str],
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """
-    The wrong equations cross two mistakes: the right one, one with each mistake, and one with
-    both. ``choice`` picks the pair of mistakes, among the ``mistake_pairs`` with a fair set (with
-    two or more operations ticked, the first sign and the second, the first sign and the
-    brackets, the second sign and the brackets; with one, its only pair, or with multiplication
-    alone, the signs changed to + if its digit reversed and step left out give none), and then a
-    set, and
-    ``shuffle`` reverses, so the choices come both mistakes, the second, the first, then the
-    right one. A changed sign is the next of the ticked operations in ``Operation``'s order.
+    The wrong equations cross two kinds of mistake: the right one, one with each mistake, and one
+    with both. ``choice`` picks the pair of kinds among the ``groups`` with a fair set, a kind at
+    different places counting as one, and then a set, and ``shuffle`` reverses, so the choices
+    come both mistakes, the second, the first, then the right one. A changed sign is the next of
+    the ticked operations in ``Operation``'s order that gives a fair set, or with one operation
+    alone its wrong sign, and a number off is first one less.
     """
     offered = choice_indexes(monkeypatch, picks)
     reverse_shuffle(monkeypatch)
     assert two_step_equation_choices(data, "s", operations) == expected
-    assert len(offered[0]) == mistake_pairs
+    assert len(offered[0]) == groups
 
 
 @pytest.mark.parametrize(
-    ("data", "operations", "message"),
+    ("make", "data", "operations", "message"),
     [
-        # 4 ÷ 2 and 4 - 2 are both 2, and 4 ÷ 12 is ruled out at a glance
+        # 5 - 5 is ruled out at a glance, □ + 5 = 5 works out to 0, and 5 one less or more in both
+        # places gives the answer, 4 + 6, or two alike, 4 + 5 and 5 + 4
         (
-            DIVIDE_INTO_DIVIDE,
-            [Operation.SUBTRACT, Operation.DIVIDE],
-            "No fair wrong equations for 4 \N{DIVISION SIGN} (12 \N{DIVISION SIGN} 6).",
+            equation_choices,
+            BasicOperationQuestionData(Operation.ADD, (5, 5), 10),
+            [Operation.ADD, Operation.SUBTRACT],
+            "No fair wrong equations for 5 + 5.",
         ),
-        # subtraction alone: both its mistakes move the brackets, which gives 5 - 8, ruled out at
-        # a glance
+        # one group of 2
         (
-            SUBTRACT_SUBTRACT,
-            [Operation.SUBTRACT],
-            "No fair wrong equations for (25 \N{MINUS SIGN} 5) \N{MINUS SIGN} 8.",
+            equation_choices,
+            BasicOperationQuestionData(Operation.MULTIPLY, (1, 2), 2),
+            [Operation.MULTIPLY],
+            "No fair wrong equations for 1 \N{MULTIPLICATION SIGN} 2.",
         ),
-        # division alone: likewise 4 ÷ 12
+        # Groups of 1 leave two steps nothing fair either.
         (
-            DIVIDE_INTO_DIVIDE,
-            [Operation.DIVIDE],
-            "No fair wrong equations for 4 \N{DIVISION SIGN} (12 \N{DIVISION SIGN} 6).",
+            partial(two_step_equation_choices, unknown="s"),
+            TwoStepQuestionData(
+                (
+                    BasicOperationQuestionData(Operation.DIVIDE, (2, 1), 2),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (2, 1), 2),
+                ),
+                Unknown.FIRST,
+                2,
+            ),
+            [Operation.MULTIPLY, Operation.DIVIDE],
+            "No fair wrong equations for (2 \N{DIVISION SIGN} 1) \N{MULTIPLICATION SIGN} 1.",
         ),
-        # addition alone: no number to reverse, in either order of 4 + 6
         (
-            ADD_ADD,
-            [Operation.ADD],
-            "No fair wrong equations for (4 + 6) + 7.",
+            partial(two_step_equation_choices, unknown="s"),
+            TwoStepQuestionData(
+                (
+                    BasicOperationQuestionData(Operation.MULTIPLY, (1, 1), 1),
+                    BasicOperationQuestionData(Operation.ADD, (1, 1), 2),
+                ),
+                Unknown.FIRST,
+                2,
+            ),
+            [Operation.ADD, Operation.MULTIPLY],
+            "No fair wrong equations for (1 \N{MULTIPLICATION SIGN} 1) + 1.",
         ),
-        # nor when reversing a number copies another: 12 and 21
+        (
+            partial(two_step_equation_choices, unknown="s"),
+            TwoStepQuestionData(
+                (
+                    BasicOperationQuestionData(Operation.MULTIPLY, (1, 2), 2),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (1, 2), 2),
+                ),
+                Unknown.SECOND,
+                2,
+            ),
+            [Operation.MULTIPLY],
+            "No fair wrong equations for 1 \N{MULTIPLICATION SIGN} (1 \N{MULTIPLICATION SIGN} 2).",
+        ),
+    ],
+)
+def test_equation_choices_errors(
+    make: Callable[..., MultipleChoice[str]],
+    data: BasicOperationQuestionData | TwoStepQuestionData,
+    operations: list[Operation],
+    message: str,
+) -> None:
+    with pytest.raises(ValueError) as error:
+        make(data, operations=operations)
+    assert str(error.value) == message
+
+
+@pytest.mark.parametrize(
+    ("data", "operations", "expected"),
+    [
+        (SUBTRACT_DIVIDE, [Operation.SUBTRACT, Operation.DIVIDE], True),
+        # one operation: its wrong sign, numbers off and the shape changed give fair sets
+        (SUBTRACT_SUBTRACT, [Operation.SUBTRACT], True),
+        (SUBTRACT_TWICE, [Operation.SUBTRACT], True),
+        (ADD_ADD, [Operation.ADD], True),
+        (MULTIPLY_TWICE, [Operation.MULTIPLY], True),
+        (MULTIPLY_INTO_MULTIPLY, [Operation.MULTIPLY], True),
+        (DIVIDE_INTO_DIVIDE, [Operation.DIVIDE], True),
+        # 12 with its digits swapped copies 21, but other slips don't
         (
             TwoStepQuestionData(
                 (
@@ -928,37 +1183,42 @@ def test_two_step_equation_choices(
                 38,
             ),
             [Operation.ADD],
-            "No fair wrong equations for (12 + 21) + 5.",
+            True,
+        ),
+        (DIVIDE_INTO_DIVIDE, [Operation.SUBTRACT, Operation.DIVIDE], True),
+        (DIVIDE_INTO_DIVIDE, list(Operation), True),
+        (ADD_ADD, [Operation.ADD, Operation.SUBTRACT], True),
+        # one step: 5 + 5 has none with + and -, as above, and with x ticked 5 x 5 gives one
+        (
+            BasicOperationQuestionData(Operation.ADD, (5, 5), 10),
+            [Operation.ADD, Operation.SUBTRACT],
+            False,
+        ),
+        (BasicOperationQuestionData(Operation.ADD, (5, 5), 10), list(Operation), True),
+        # 25 + 25 only in the second tier, both numbers off
+        (
+            BasicOperationQuestionData(Operation.ADD, (25, 25), 50),
+            [Operation.ADD, Operation.SUBTRACT],
+            True,
+        ),
+        (
+            TwoStepQuestionData(
+                (
+                    BasicOperationQuestionData(Operation.DIVIDE, (2, 1), 2),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (2, 1), 2),
+                ),
+                Unknown.FIRST,
+                2,
+            ),
+            [Operation.MULTIPLY, Operation.DIVIDE],
+            False,
         ),
     ],
 )
-def test_two_step_equation_choices_errors(
-    data: TwoStepQuestionData, operations: list[Operation], message: str
-) -> None:
-    with pytest.raises(ValueError) as error:
-        two_step_equation_choices(data, "s", operations)
-    assert str(error.value) == message
-
-
-@pytest.mark.parametrize(
-    ("data", "operations", "expected"),
-    [
-        (SUBTRACT_DIVIDE, [Operation.SUBTRACT, Operation.DIVIDE], True),
-        # one operation, as above
-        (SUBTRACT_SUBTRACT, [Operation.SUBTRACT], False),
-        (SUBTRACT_TWICE, [Operation.SUBTRACT], True),
-        (ADD_ADD, [Operation.ADD], False),
-        (MULTIPLY_TWICE, [Operation.MULTIPLY], True),
-        (MULTIPLY_INTO_MULTIPLY, [Operation.MULTIPLY], True),
-        # with only - and ÷ there's none, as above, and with all four there is
-        (DIVIDE_INTO_DIVIDE, [Operation.SUBTRACT, Operation.DIVIDE], False),
-        (DIVIDE_INTO_DIVIDE, list(Operation), True),
-        # only with 6 + 4 the other way round
-        (ADD_ADD, [Operation.ADD, Operation.SUBTRACT], True),
-    ],
-)
 def test_has_fair_equation_choices(
-    data: TwoStepQuestionData, operations: list[Operation], expected: bool
+    data: BasicOperationQuestionData | TwoStepQuestionData,
+    operations: list[Operation],
+    expected: bool,
 ) -> None:
     assert has_fair_equation_choices(data, operations) is expected
 

@@ -6039,7 +6039,7 @@ BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 82 606 Tm (A\) 47 \367 25 = ) Tj T* ET
 n 162.948 601.1 19.6 19.6 re S
 BT 1 0 0 1 182.548 606 Tm  T* ET
-BT 1 0 0 1 320 606 Tm (B\) 25 \327 47 = ) Tj T* ET
+BT 1 0 0 1 320 606 Tm (B\) 47 \327 25 = ) Tj T* ET
 n 400.948 601.1 19.6 19.6 re S
 BT 1 0 0 1 420.548 606 Tm  T* ET
 BT 1 0 0 1 82 580 Tm (C\) 47 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = ) Tj T* ET
@@ -6058,7 +6058,7 @@ BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 82 524 Tm (A\) 72 \367 25 = ) Tj T* ET
 n 162.948 519.1 19.6 19.6 re S
 BT 1 0 0 1 182.548 524 Tm  T* ET
-BT 1 0 0 1 320 524 Tm (B\) 25 \327 72 = ) Tj T* ET
+BT 1 0 0 1 320 524 Tm (B\) 72 \327 25 = ) Tj T* ET
 n 400.948 519.1 19.6 19.6 re S
 BT 1 0 0 1 420.548 524 Tm  T* ET
 BT 1 0 0 1 82 498 Tm (C\) 72 + 25 = ) Tj T* ET
@@ -6095,7 +6095,7 @@ BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 320 Tm (A\) 3 \327 12 = ) Tj T* ET
+BT 1 0 0 1 82 320 Tm (A\) 12 \327 3 = ) Tj T* ET
 n 155.164 315.1 19.6 19.6 re S
 BT 1 0 0 1 174.764 320 Tm  T* ET
 BT 1 0 0 1 320 320 Tm (B\) 12 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 3 = ) Tj T* ET
@@ -6158,15 +6158,15 @@ BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 606 Tm (A\) 25 \367 11 = ) Tj T* ET
-n 162.948 601.1 19.6 19.6 re S
-BT 1 0 0 1 182.548 606 Tm  T* ET
-BT 1 0 0 1 320 606 Tm (B\) 11 \327 25 = ) Tj T* ET
-n 400.948 601.1 19.6 19.6 re S
-BT 1 0 0 1 420.548 606 Tm  T* ET
-BT 1 0 0 1 82 580 Tm (C\) 25 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 11 = ) Tj T* ET
-n 163.228 575.1 19.6 19.6 re S
-BT 1 0 0 1 182.828 580 Tm  T* ET
+BT 1 0 0 1 82 606 Tm (A\) 11 + ) Tj T* ET
+n 131.42 601.1 19.6 19.6 re S
+BT 1 0 0 1 151.02 606 Tm ( = 35) Tj T* ET
+BT 1 0 0 1 320 606 Tm (B\) 11 + ) Tj T* ET
+n 369.42 601.1 19.6 19.6 re S
+BT 1 0 0 1 389.02 606 Tm ( = 25) Tj T* ET
+BT 1 0 0 1 82 580 Tm (C\) 11 + 35 = ) Tj T* ET
+n 163.718 575.1 19.6 19.6 re S
+BT 1 0 0 1 183.318 580 Tm  T* ET
 BT 1 0 0 1 320 580 Tm (D\) 11 + 25 = ) Tj T* ET
 n 401.718 575.1 19.6 19.6 re S
 BT 1 0 0 1 421.318 580 Tm  T* ET
@@ -6178,15 +6178,15 @@ BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 504 Tm (A\) 25 \367 22 = ) Tj T* ET
-n 162.948 499.1 19.6 19.6 re S
-BT 1 0 0 1 182.548 504 Tm  T* ET
-BT 1 0 0 1 320 504 Tm (B\) 22 \327 25 = ) Tj T* ET
-n 400.948 499.1 19.6 19.6 re S
-BT 1 0 0 1 420.548 504 Tm  T* ET
-BT 1 0 0 1 82 478 Tm (C\) 25 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 22 = ) Tj T* ET
-n 163.228 473.1 19.6 19.6 re S
-BT 1 0 0 1 182.828 478 Tm  T* ET
+BT 1 0 0 1 82 504 Tm (A\) 22 + ) Tj T* ET
+n 131.42 499.1 19.6 19.6 re S
+BT 1 0 0 1 151.02 504 Tm ( = 35) Tj T* ET
+BT 1 0 0 1 320 504 Tm (B\) 22 + ) Tj T* ET
+n 369.42 499.1 19.6 19.6 re S
+BT 1 0 0 1 389.02 504 Tm ( = 25) Tj T* ET
+BT 1 0 0 1 82 478 Tm (C\) 22 + 35 = ) Tj T* ET
+n 163.718 473.1 19.6 19.6 re S
+BT 1 0 0 1 183.318 478 Tm  T* ET
 BT 1 0 0 1 320 478 Tm (D\) 22 + 25 = ) Tj T* ET
 n 401.718 473.1 19.6 19.6 re S
 BT 1 0 0 1 421.318 478 Tm  T* ET
@@ -6198,15 +6198,15 @@ BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 402 Tm (A\) 33 \367 25 = ) Tj T* ET
-n 162.948 397.1 19.6 19.6 re S
-BT 1 0 0 1 182.548 402 Tm  T* ET
-BT 1 0 0 1 320 402 Tm (B\) 25 \327 33 = ) Tj T* ET
-n 400.948 397.1 19.6 19.6 re S
-BT 1 0 0 1 420.548 402 Tm  T* ET
-BT 1 0 0 1 82 376 Tm (C\) 33 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = ) Tj T* ET
-n 163.228 371.1 19.6 19.6 re S
-BT 1 0 0 1 182.828 376 Tm  T* ET
+BT 1 0 0 1 82 402 Tm (A\) ) Tj T* ET
+n 99.892 397.1 19.6 19.6 re S
+BT 1 0 0 1 119.492 402 Tm ( + 15 = 33) Tj T* ET
+BT 1 0 0 1 320 402 Tm (B\) ) Tj T* ET
+n 337.892 397.1 19.6 19.6 re S
+BT 1 0 0 1 357.492 402 Tm ( + 25 = 33) Tj T* ET
+BT 1 0 0 1 82 376 Tm (C\) 33 + 15 = ) Tj T* ET
+n 163.718 371.1 19.6 19.6 re S
+BT 1 0 0 1 183.318 376 Tm  T* ET
 BT 1 0 0 1 320 376 Tm (D\) 33 + 25 = ) Tj T* ET
 n 401.718 371.1 19.6 19.6 re S
 BT 1 0 0 1 421.318 376 Tm  T* ET
@@ -6218,15 +6218,15 @@ BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 300 Tm (A\) 44 \367 25 = ) Tj T* ET
-n 162.948 295.1 19.6 19.6 re S
-BT 1 0 0 1 182.548 300 Tm  T* ET
-BT 1 0 0 1 320 300 Tm (B\) 25 \327 44 = ) Tj T* ET
-n 400.948 295.1 19.6 19.6 re S
-BT 1 0 0 1 420.548 300 Tm  T* ET
-BT 1 0 0 1 82 274 Tm (C\) 44 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = ) Tj T* ET
-n 163.228 269.1 19.6 19.6 re S
-BT 1 0 0 1 182.828 274 Tm  T* ET
+BT 1 0 0 1 82 300 Tm (A\) ) Tj T* ET
+n 99.892 295.1 19.6 19.6 re S
+BT 1 0 0 1 119.492 300 Tm ( + 35 = 44) Tj T* ET
+BT 1 0 0 1 320 300 Tm (B\) ) Tj T* ET
+n 337.892 295.1 19.6 19.6 re S
+BT 1 0 0 1 357.492 300 Tm ( + 25 = 44) Tj T* ET
+BT 1 0 0 1 82 274 Tm (C\) 44 + 35 = ) Tj T* ET
+n 163.718 269.1 19.6 19.6 re S
+BT 1 0 0 1 183.318 274 Tm  T* ET
 BT 1 0 0 1 320 274 Tm (D\) 44 + 25 = ) Tj T* ET
 n 401.718 269.1 19.6 19.6 re S
 BT 1 0 0 1 421.318 274 Tm  T* ET
@@ -6238,15 +6238,15 @@ BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 198 Tm (A\) 55 \367 25 = ) Tj T* ET
-n 162.948 193.1 19.6 19.6 re S
-BT 1 0 0 1 182.548 198 Tm  T* ET
-BT 1 0 0 1 320 198 Tm (B\) 25 \327 55 = ) Tj T* ET
-n 400.948 193.1 19.6 19.6 re S
-BT 1 0 0 1 420.548 198 Tm  T* ET
-BT 1 0 0 1 82 172 Tm (C\) 55 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = ) Tj T* ET
-n 163.228 167.1 19.6 19.6 re S
-BT 1 0 0 1 182.828 172 Tm  T* ET
+BT 1 0 0 1 82 198 Tm (A\) ) Tj T* ET
+n 99.892 193.1 19.6 19.6 re S
+BT 1 0 0 1 119.492 198 Tm ( + 35 = 55) Tj T* ET
+BT 1 0 0 1 320 198 Tm (B\) ) Tj T* ET
+n 337.892 193.1 19.6 19.6 re S
+BT 1 0 0 1 357.492 198 Tm ( + 25 = 55) Tj T* ET
+BT 1 0 0 1 82 172 Tm (C\) 55 + 35 = ) Tj T* ET
+n 163.718 167.1 19.6 19.6 re S
+BT 1 0 0 1 183.318 172 Tm  T* ET
 BT 1 0 0 1 320 172 Tm (D\) 55 + 25 = ) Tj T* ET
 n 401.718 167.1 19.6 19.6 re S
 BT 1 0 0 1 421.318 172 Tm  T* ET
@@ -6258,15 +6258,15 @@ BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 96 Tm (A\) 66 \367 25 = ) Tj T* ET
-n 162.948 91.1 19.6 19.6 re S
-BT 1 0 0 1 182.548 96 Tm  T* ET
-BT 1 0 0 1 320 96 Tm (B\) 25 \327 66 = ) Tj T* ET
-n 400.948 91.1 19.6 19.6 re S
-BT 1 0 0 1 420.548 96 Tm  T* ET
-BT 1 0 0 1 82 70 Tm (C\) 66 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = ) Tj T* ET
-n 163.228 65.1 19.6 19.6 re S
-BT 1 0 0 1 182.828 70 Tm  T* ET
+BT 1 0 0 1 82 96 Tm (A\) ) Tj T* ET
+n 99.892 91.1 19.6 19.6 re S
+BT 1 0 0 1 119.492 96 Tm ( + 35 = 66) Tj T* ET
+BT 1 0 0 1 320 96 Tm (B\) ) Tj T* ET
+n 337.892 91.1 19.6 19.6 re S
+BT 1 0 0 1 357.492 96 Tm ( + 25 = 66) Tj T* ET
+BT 1 0 0 1 82 70 Tm (C\) 66 + 35 = ) Tj T* ET
+n 163.718 65.1 19.6 19.6 re S
+BT 1 0 0 1 183.318 70 Tm  T* ET
 BT 1 0 0 1 320 70 Tm (D\) 66 + 25 = ) Tj T* ET
 n 401.718 65.1 19.6 19.6 re S
 BT 1 0 0 1 421.318 70 Tm  T* ET
@@ -6291,15 +6291,15 @@ BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 632 Tm (A\) 77 \367 25 = ) Tj T* ET
-n 162.948 627.1 19.6 19.6 re S
-BT 1 0 0 1 182.548 632 Tm  T* ET
-BT 1 0 0 1 320 632 Tm (B\) 25 \327 77 = ) Tj T* ET
-n 400.948 627.1 19.6 19.6 re S
-BT 1 0 0 1 420.548 632 Tm  T* ET
-BT 1 0 0 1 82 606 Tm (C\) 77 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = ) Tj T* ET
-n 163.228 601.1 19.6 19.6 re S
-BT 1 0 0 1 182.828 606 Tm  T* ET
+BT 1 0 0 1 82 632 Tm (A\) ) Tj T* ET
+n 99.892 627.1 19.6 19.6 re S
+BT 1 0 0 1 119.492 632 Tm ( + 35 = 77) Tj T* ET
+BT 1 0 0 1 320 632 Tm (B\) ) Tj T* ET
+n 337.892 627.1 19.6 19.6 re S
+BT 1 0 0 1 357.492 632 Tm ( + 25 = 77) Tj T* ET
+BT 1 0 0 1 82 606 Tm (C\) 77 + 35 = ) Tj T* ET
+n 163.718 601.1 19.6 19.6 re S
+BT 1 0 0 1 183.318 606 Tm  T* ET
 BT 1 0 0 1 320 606 Tm (D\) 77 + 25 = ) Tj T* ET
 n 401.718 601.1 19.6 19.6 re S
 BT 1 0 0 1 421.318 606 Tm  T* ET
@@ -9467,9 +9467,9 @@ BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 606 Tm (A\) \(14 \327 26\) \367 9 = m) Tj T* ET
-BT 1 0 0 1 320 606 Tm (B\) \(14 + 26\) \367 9 = m) Tj T* ET
-BT 1 0 0 1 82 580 Tm (C\) \(14 \327 26\) + 9 = m) Tj T* ET
+BT 1 0 0 1 82 606 Tm (A\) 26 + 10 = m) Tj T* ET
+BT 1 0 0 1 320 606 Tm (B\) 26 + 9 = m) Tj T* ET
+BT 1 0 0 1 82 580 Tm (C\) \(14 + 26\) + 10 = m) Tj T* ET
 BT 1 0 0 1 320 580 Tm (D\) \(14 + 26\) + 9 = m) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 550 Tm (2.) Tj T* ET
@@ -9479,9 +9479,9 @@ BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 504 Tm (A\) \(64 \367 15\) \367 23 = c) Tj T* ET
-BT 1 0 0 1 320 504 Tm (B\) \(64 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 15\) \367 23 = c) Tj T* ET
-BT 1 0 0 1 82 478 Tm (C\) \(64 \367 15\) ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 23 = c) Tj T* ET
+BT 1 0 0 1 82 504 Tm (A\) 64 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = c) Tj T* ET
+BT 1 0 0 1 320 504 Tm (B\) 64 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 15 = c) Tj T* ET
+BT 1 0 0 1 82 478 Tm (C\) \(64 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25\) ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 23 = c) Tj T* ET
 BT 1 0 0 1 320 478 Tm (D\) \(64 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 15\) ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 23 = c) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 448 Tm (3.) Tj T* ET
@@ -9491,9 +9491,9 @@ BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 402 Tm (A\) 38 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( \(8 \327 5\) = s) Tj T* ET
-BT 1 0 0 1 320 402 Tm (B\) 38 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( \(8 \367 5\) = s) Tj T* ET
-BT 1 0 0 1 82 376 Tm (C\) \(38 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 8\) \327 5 = s) Tj T* ET
+BT 1 0 0 1 82 402 Tm (A\) s ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( \(8 \367 5\) = 38) Tj T* ET
+BT 1 0 0 1 320 402 Tm (B\) \(s ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 8\) \367 5 = 38) Tj T* ET
+BT 1 0 0 1 82 376 Tm (C\) 38 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( \(8 \367 5\) = s) Tj T* ET
 BT 1 0 0 1 320 376 Tm (D\) \(38 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 8\) \367 5 = s) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 346 Tm (4.) Tj T* ET
@@ -9503,9 +9503,9 @@ BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 300 Tm (A\) \(4 + 6\) \367 7 = a) Tj T* ET
-BT 1 0 0 1 320 300 Tm (B\) \(4 \327 6\) \367 7 = a) Tj T* ET
-BT 1 0 0 1 82 274 Tm (C\) \(4 + 6\) + 7 = a) Tj T* ET
+BT 1 0 0 1 82 300 Tm (A\) 6 + 8 = a) Tj T* ET
+BT 1 0 0 1 320 300 Tm (B\) 6 + 7 = a) Tj T* ET
+BT 1 0 0 1 82 274 Tm (C\) \(4 \327 6\) + 8 = a) Tj T* ET
 BT 1 0 0 1 320 274 Tm (D\) \(4 \327 6\) + 7 = a) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 244 Tm (5.) Tj T* ET
@@ -9515,9 +9515,9 @@ BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 198 Tm (A\) \(90 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 6\) + 12 = p) Tj T* ET
-BT 1 0 0 1 320 198 Tm (B\) \(90 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 6\) \327 12 = p) Tj T* ET
-BT 1 0 0 1 82 172 Tm (C\) 90 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( \(6 + 12\) = p) Tj T* ET
+BT 1 0 0 1 82 198 Tm (A\) \(90 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( p\) \327 12 = 6) Tj T* ET
+BT 1 0 0 1 320 198 Tm (B\) 90 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( \(p \327 12\) = 6) Tj T* ET
+BT 1 0 0 1 82 172 Tm (C\) \(90 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 6\) \327 12 = p) Tj T* ET
 BT 1 0 0 1 320 172 Tm (D\) 90 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( \(6 \327 12\) = p) Tj T* ET
 --- stream 2
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
@@ -9571,9 +9571,9 @@ BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 606 Tm (A\) 999 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( \(879 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 6\) = b) Tj T* ET
-BT 1 0 0 1 320 606 Tm (B\) 999 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( \(879 \367 6\) = b) Tj T* ET
-BT 1 0 0 1 82 580 Tm (C\) \(999 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 879\) ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 6 = b) Tj T* ET
+BT 1 0 0 1 82 606 Tm (A\) b ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( \(879 \367 6\) = 999) Tj T* ET
+BT 1 0 0 1 320 606 Tm (B\) \(b ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 879\) \367 6 = 999) Tj T* ET
+BT 1 0 0 1 82 580 Tm (C\) 999 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( \(879 \367 6\) = b) Tj T* ET
 BT 1 0 0 1 320 580 Tm (D\) \(999 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 879\) \367 6 = b) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 550 Tm (2.) Tj T* ET
@@ -9583,10 +9583,10 @@ BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 504 Tm (A\) \(2 \367 1\) \367 996 = b) Tj T* ET
-BT 1 0 0 1 320 504 Tm (B\) \(2 + 1\) \367 996 = b) Tj T* ET
-BT 1 0 0 1 82 478 Tm (C\) \(2 \367 1\) + 996 = b) Tj T* ET
-BT 1 0 0 1 320 478 Tm (D\) \(2 + 1\) + 996 = b) Tj T* ET
+BT 1 0 0 1 82 504 Tm (A\) 2 + 1,006 = b) Tj T* ET
+BT 1 0 0 1 320 504 Tm (B\) 2 + 996 = b) Tj T* ET
+BT 1 0 0 1 82 478 Tm (C\) \(1 + 2\) + 1,006 = b) Tj T* ET
+BT 1 0 0 1 320 478 Tm (D\) \(1 + 2\) + 996 = b) Tj T* ET
 
 === mixed_representations_and_responses ===
 title: Word Problems
@@ -9948,7 +9948,7 @@ BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 481 Tm (A\) 3 \327 12 = ) Tj T* ET
+BT 1 0 0 1 82 481 Tm (A\) 12 \327 3 = ) Tj T* ET
 n 155.164 476.1 19.6 19.6 re S
 BT 1 0 0 1 174.764 481 Tm  T* ET
 BT 1 0 0 1 320 481 Tm (B\) 12 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 3 = ) Tj T* ET

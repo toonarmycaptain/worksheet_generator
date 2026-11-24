@@ -420,8 +420,8 @@ def render_word_problems(
     """
     Render the word problems sheet, each question free response, with no wrong answers, or with
     ``choices`` multiple choice, its number lines made by ``number_line_choices`` or its equations
-    by ``equation_choices``, or for a two-step question ``two_step_equation_choices``, with its
-    wording's letter and the operations of the sheet's steps as those ticked. A list of
+    by ``equation_choices``, or for a two-step question ``two_step_equation_choices`` with its
+    wording's letter, either with the operations of the sheet's steps as those ticked. A list of
     representations, or of choices, gives each question its own, as on a mixed sheet.
     """
     out = BytesIO()
@@ -474,7 +474,7 @@ def _word_problem(
         )
     if representation is Representation.NUMBER_LINE:
         return Question(data, number_line_choices(data))
-    return Question(data, equation_choices(data))
+    return Question(data, equation_choices(data, operations))
 
 
 def render_strip_choice(

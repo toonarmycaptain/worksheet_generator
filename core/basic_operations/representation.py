@@ -10,7 +10,7 @@ diagrams included, with what each problem shows.
 import random
 from collections.abc import Callable, Collection, Iterable, Iterator, Sequence
 from dataclasses import dataclass, replace
-from enum import StrEnum
+from enum import Enum, StrEnum
 from fractions import Fraction
 from functools import partial
 from itertools import combinations, product
@@ -75,7 +75,7 @@ def _equation_stem(data: BasicOperationQuestionData | TwoStepQuestionData) -> st
     """
     if isinstance(data, BasicOperationQuestionData):
         return f"{equation(data)} = ?"
-    return f"{_written_text(_written_steps(data))} = ?"
+    return f"{_term_text(_two_step_side(data), BLANK)} = ?"
 
 
 def solved_equation(data: BasicOperationQuestionData) -> str:
@@ -499,271 +499,333 @@ type WordProblemQuestion = (
 )
 
 
-def equation_choices(data: BasicOperationQuestionData) -> MultipleChoice[str]:
+def equation_choices(
+    data: BasicOperationQuestionData, operations: Collection[Operation]
+) -> MultipleChoice[str]:
     """
-    Return the equations to choose from for a word problem: its own, and as the wrong choices the
-    equations of the other three operations on its numbers. Each has a ``BLANK`` for what to
-    find, as in 47 + 25 = □, and is the equation of the strip ``strip_choices`` gives for its
-    operation.
+    Return the equations to choose from for a word problem on a sheet of ``operations``: its own,
+    with a ``BLANK`` for what to find, as in 47 + 25 = □, and three wrong ones that cross two
+    kinds of mistake, as ``two_step_equation_choices`` describes for two steps. A one-step
+    equation's mistakes are its sign changed (47 - 25 = □), a number a little off
+    (47 + 26 = □), and what to find swapped with a number (□ + 25 = 47). With all four
+    operations, the other three on its numbers (47 - 25, 47 x 25 and 47 ÷ 25, each = □) are one
+    more set to draw from.
 
-    Operands of 2 and 2 give a wrong equation with the problem's answer (2 + 2 and 2 x 2 are
-    both 4), and so does a subtraction or division of 4 by 2 (4 - 2 and 4 ÷ 2 are both 2), so a
-    sheet of these choices leaves them out.
+    Raises ``ValueError`` if no set is fair.
     """
-    wrong = tuple(
-        _operation_equation(operation, data)
-        for operation in Operation
-        if operation is not data.operation
+    right, wrong = _chosen_set(data, operations)
+    return multiple_choice(
+        (_equation_text(right, BLANK),),
+        tuple(_equation_text(equation, BLANK) for equation in wrong),
     )
-    return multiple_choice((_operation_equation(data.operation, data),), wrong)
 
 
-def _operation_equation(operation: Operation, data: BasicOperationQuestionData) -> str:
-    """
-    Return the equation of ``operation`` on the question's numbers, with a ``BLANK`` for what to
-    find, which is the question's own equation when ``operation`` is its operation.
+# A written equation's term: a number, the letter for what to find, or two terms joined by a sign
+type _Term = int | _Letter | _Joined
 
-    Adding keeps presentation order, and subtracting takes the smaller number from the larger.
-    Multiplying is the number of groups times the other number, and dividing is the other number
-    divided by the number of groups, with the numbers ``_groups_and_other`` gives.
-    """
-    first, second = data.operands
-    smaller, larger = sorted(data.operands)
-    groups, other = _groups_and_other(data)
-    match operation:
-        case Operation.ADD:
-            numbers = first, second
-        case Operation.SUBTRACT:
-            numbers = larger, smaller
-        case Operation.MULTIPLY:
-            numbers = groups, other
-        case Operation.DIVIDE:
-            numbers = other, groups
-        case _:
-            assert_never(operation)
-    return f"{numbers[0]:,} {SYMBOLS[operation]} {numbers[1]:,} = {BLANK}"
+
+class _Letter(Enum):
+    """What to find in a written equation, written as a problem's letter or as a ``BLANK``."""
+
+    LETTER = "letter"
+
+
+_LETTER = _Letter.LETTER
 
 
 @dataclass(frozen=True)
-class _WrittenSteps:
+class _Joined:
     """
-    A two-step equation's left side as written: ``numbers`` and the two signs between them, left
-    to right, with the brackets around the first two numbers if ``brackets_first``, or else the
-    last two. (24 - 6) ÷ 3 is ``((24, 6, 3), SUBTRACT, DIVIDE, True)``, and 45 - (5 x 3) is
-    ``((45, 5, 3), SUBTRACT, MULTIPLY, False)``.
+    Two terms of a written equation joined by a sign, left to right: 24 - 6 is
+    ``_Joined(SUBTRACT, 24, 6)``. Joined terms inside another are written in brackets.
     """
 
-    numbers: tuple[int, int, int]
-    first_sign: Operation
-    second_sign: Operation
-    brackets_first: bool
-
-
-@dataclass(frozen=True)
-class _WrittenStep:
-    """
-    A one-step equation's left side as written, as a two-step equation stopped after one step
-    gives it: 12 + 8 is ``((12, 8), ADD)``.
-    """
-
-    numbers: tuple[int, int]
     sign: Operation
+    left: _Term
+    right: _Term
 
 
-# an equation's left side to choose, the right one or a wrong one
-type _Written = _WrittenSteps | _WrittenStep
+@dataclass(frozen=True)
+class _Equation:
+    """
+    A written equation's two sides: (24 - 6) ÷ 3 = s is
+    ``_Equation(_Joined(DIVIDE, _Joined(SUBTRACT, 24, 6), 3), _LETTER)``, and 3 x 19 = 16 x e
+    is ``_Equation(_Joined(MULTIPLY, 3, 19), _Joined(MULTIPLY, 16, _LETTER))``.
+    """
+
+    left: _Term
+    right: _Term
 
 
-def _written_steps(data: TwoStepQuestionData) -> _WrittenSteps:
-    """Return the two-step question's equation as written, with its first step in brackets."""
+def _two_step_side(data: TwoStepQuestionData) -> _Joined:
+    """
+    Return the two-step question's equation as written, without what it equals: its first step
+    in brackets, as in (24 - 6) ÷ 3 or 45 - (5 x 3).
+    """
     first, second = data.steps
+    first_step = _Joined(first.operation, *first.operands)
     if data.carried is Unknown.FIRST:  # (a ○ b) ● c
-        numbers = (*first.operands, second.operands[1])
-        return _WrittenSteps(numbers, first.operation, second.operation, brackets_first=True)
-    numbers = (second.operands[0], *first.operands)  # c ● (a ○ b)
-    return _WrittenSteps(numbers, second.operation, first.operation, brackets_first=False)
+        return _Joined(second.operation, first_step, second.operands[1])
+    return _Joined(second.operation, second.operands[0], first_step)  # c ● (a ○ b)
 
 
-def _written_text(written: _Written) -> str:
-    """Return the written equation's left side, as in (24 - 6) ÷ 3, with a comma in 1,000 and up."""
-    if isinstance(written, _WrittenStep):
-        left, right = written.numbers
-        return f"{left:,} {SYMBOLS[written.sign]} {right:,}"
-    first, second, third = (f"{number:,}" for number in written.numbers)
-    first_sign, second_sign = SYMBOLS[written.first_sign], SYMBOLS[written.second_sign]
-    if written.brackets_first:
-        return f"({first} {first_sign} {second}) {second_sign} {third}"
-    return f"{first} {first_sign} ({second} {second_sign} {third})"
+def _term_text(term: _Term, letter: str, *, inner: bool = False) -> str:
+    """
+    Return the term as written, with ``letter`` for what to find and a comma in 1,000 and up. A
+    joined term is in brackets if it's ``inner``, inside another.
+    """
+    match term:
+        case _Letter.LETTER:
+            return letter
+        case _Joined(sign, left, right):
+            left_text = _term_text(left, letter, inner=True)
+            text = f"{left_text} {SYMBOLS[sign]} {_term_text(right, letter, inner=True)}"
+            return f"({text})" if inner else text
+        case int():
+            return f"{term:,}"
+        case _:
+            assert_never(term)
+
+
+def _equation_text(equation: _Equation, letter: str) -> str:
+    """Return the written equation, as in (24 - 6) ÷ 3 = s, with ``letter`` for what to find."""
+    return f"{_term_text(equation.left, letter)} = {_term_text(equation.right, letter)}"
 
 
 def two_step_equation_choices(
     data: TwoStepQuestionData, unknown: str, operations: Collection[Operation]
 ) -> MultipleChoice[str]:
     """
-    Return the equations to choose from for a two-step word problem: its own, with its first step
-    in brackets and ``unknown`` for what to find, as in (24 - 6) ÷ 3 = s, and three wrong ones.
+    Return the equations to choose from for a two-step word problem on a sheet of
+    ``operations``: its own, with its first step in brackets and ``unknown`` for what to find, as
+    in (24 - 6) ÷ 3 = s, and three wrong ones.
 
-    The wrong equations cross two mistakes: one wrong equation has one mistake, one the other, and
-    one both, so each change is in exactly two of the four choices, and no choice is the one most
-    like the others. The mistakes depend on ``operations``, the sheet's, as ``_mistake_pairs``
-    gives them:
+    The wrong equations cross two kinds of mistake: one wrong equation has one, one the other,
+    and one both, so each change is in exactly two of the four choices, and no choice is the one
+    most like the others. The kinds, as ``_mistake_pairs`` pairs them:
 
-    - With two or more operations, two of three: the first sign written changed, the second sign
-      written changed, and the brackets moved to the other pair of numbers. For (24 - 6) ÷ 3 they
-      can be (24 + 6) ÷ 3, 24 - (6 ÷ 3) and 24 + (6 ÷ 3). A changed sign is one of
-      ``operations``: a sign that no problem on the sheet has in its own equation would rule a
-      choice out. The brackets can go on either pair, since for any two operations the
-      word-problem bank has stories with each.
-    - With subtraction or division alone, the brackets moved, and the step outside them written
-      the other way round. For (45 - 12) - 8 they are 45 - (12 - 8), 8 - (45 - 12) and
-      (12 - 8) - 45.
-    - With addition or multiplication alone, where neither of those changes the value, a number
-      copied with its digits the other way round, and the equation stopped after one step. For
-      (12 + 8) + 5 they can be (21 + 8) + 5, 12 + 8 and 21 + 8.
-    - With multiplication alone, when those give no fair set, as with no number of two digits to
-      reverse, the first sign and the second changed to +. For 5 x (3 x 2) they are
-      5 + (3 x 2), 5 x (3 + 2) and 5 + (3 + 2). A student who knows the sheet is multiplication
-      alone can rule out a + choice, but nothing else changes the value of three numbers
-      multiplied, and few problems have a number to reverse.
+    - the first sign written changed, or the second, each its own kind, to another of the signs
+      ``_mistaken_signs`` gives: (24 + 6) ÷ 3 = s;
+    - a number a little off, as ``_slips`` gives it: (24 - 7) ÷ 3 = s;
+    - the brackets moved to the other pair of numbers: 24 - (6 ÷ 3) = s;
 
-    Which two mistakes, and which ways of making them, are drawn at random among those that make
-    a fair set. Every choice has the problem's numbers in the same order: the story's, unless that
-    gives no fair set with those mistakes and the brackets add or multiply, when the two numbers in
-    them go the other way round, so 3 and then 5 more, and then 2 more, can be (5 + 3) + 2,
-    (5 - 3) + 2, (5 + 3) - 2 and (5 - 3) - 2.
+    and, made last because they change the equation's shape:
 
-    A set is fair when no wrong equation has the problem's answer, as moving the brackets in
-    (5 + 3) + 2 would, and none can be ruled out without working it out: its brackets never take
-    a number from one no larger, or divide a number by a larger one, as 3 - 5 or 3 ÷ 5 would. A
-    wrong equation that works out uneven or below zero is allowed, as (25 + 5) ÷ 4 is.
+    - the step outside the brackets written the other way round: 3 ÷ (24 - 6) = s;
+    - what to find swapped with a number, which stands alone on the other side:
+      (24 - s) ÷ 3 = 6;
+    - the equals sign moved between the second number and the third: 24 - 6 = 3 ÷ s;
+    - a step left out: 24 - 6 = s, or 6 ÷ 3 = s.
+
+    Which two kinds, and which ways of making them, are drawn at random among those that make a
+    fair set. The right equation has the problem's numbers in the story's order.
+
+    A set is fair, as ``_is_fair`` checks, when what to find in each wrong equation works out
+    differently from the answer and from the others', and none can be ruled out without working
+    it out. Working out to an uneven number or one below zero is allowed, as in (25 + 5) ÷ 4.
 
     Raises ``ValueError`` if no set is fair.
     """
-    for pairs, right in product(_mistake_pairs(operations), _written_orders(data)):
-        fair_by_mistakes: dict[int, list[tuple[_Written, _Written, _Written]]] = {}
-        for mistakes, wrong in _fair_sets(right, pairs):
-            fair_by_mistakes.setdefault(mistakes, []).append(wrong)
-        if fair_by_mistakes:
-            break
-    else:
-        raise ValueError(f"No fair wrong equations for {_written_text(_written_steps(data))}.")
-    wrong = random.choice(random.choice(list(fair_by_mistakes.values())))
+    right, wrong = _chosen_set(data, operations)
     return multiple_choice(
-        (f"{_written_text(right)} = {unknown}",),
-        tuple(f"{_written_text(written)} = {unknown}" for written in wrong),
+        (_equation_text(right, unknown),),
+        tuple(_equation_text(equation, unknown) for equation in wrong),
     )
 
 
-def has_fair_equation_choices(data: TwoStepQuestionData, operations: Collection[Operation]) -> bool:
+def has_fair_equation_choices(
+    data: BasicOperationQuestionData | TwoStepQuestionData, operations: Collection[Operation]
+) -> bool:
     """
-    Return whether ``two_step_equation_choices`` can give the two-step word problem a fair set of
-    wrong equations for a sheet of ``operations``.
+    Return whether ``equation_choices``, or ``two_step_equation_choices`` for a two-step word
+    problem, can give the problem a fair set of wrong equations on a sheet of ``operations``.
     """
-    return any(
-        next(_fair_sets(right, pairs), None) is not None
-        for pairs, right in product(_mistake_pairs(operations), _written_orders(data))
-    )
+    return next(_fair_sets(data, operations), None) is not None
 
 
-def _written_orders(data: TwoStepQuestionData) -> list[_WrittenSteps]:
+def _chosen_set(
+    data: BasicOperationQuestionData | TwoStepQuestionData, operations: Collection[Operation]
+) -> tuple[_Equation, tuple[_Equation, ...]]:
     """
-    Return the ways to write the two-step question's equation that ``two_step_equation_choices``
-    tries, in turn: the story's order, and then, if its brackets add or multiply, the same with
-    the two numbers in them the other way round.
+    Return the question's right equation and a fair set of wrong ones, drawn at random: first a
+    pair of kinds of mistake among those of the earliest tier with a fair set, a kind made at
+    different places counting as one, then one of its sets.
+
+    Raises ``ValueError`` if no set is fair.
     """
-    story_order = _written_steps(data)
-    if _bracketed(story_order)[0] in (Operation.ADD, Operation.MULTIPLY):
-        return [story_order, _swapped(story_order)]
-    return [story_order]
+    right = _right_equation(data)
+    chosen: int | None = None
+    sets: dict[tuple[str, ...], list[tuple[_Equation, ...]]] = {}
+    for tier, mistakes, wrong in _fair_sets(data, operations):
+        if chosen is not None and tier != chosen:
+            break
+        chosen = tier
+        sets.setdefault(mistakes, []).append(wrong)
+    if chosen is None:
+        raise ValueError(f"No fair wrong equations for {_term_text(right.left, '?')}.")
+    return right, random.choice(random.choice(list(sets.values())))
 
 
-# A mistake in a written two-step equation: it returns the equation with each way of making it
-type _Mistake = Callable[[_WrittenSteps], list[_WrittenSteps]]
-# A mistake that may leave a step out, so its equations take no further mistake: crossed with
-# another, it's made second
-type _LastMistake = Callable[[_WrittenSteps], Sequence[_Written]]
-# two mistakes for wrong choices to cross, the second made last
-type _MistakePair = tuple[_Mistake, _LastMistake]
+def _right_equation(data: BasicOperationQuestionData | TwoStepQuestionData) -> _Equation:
+    """
+    Return the question's own equation as written, with what to find alone on its right: one
+    step in the story's order, or two with the first in brackets.
+    """
+    if isinstance(data, BasicOperationQuestionData):
+        return _Equation(_Joined(data.operation, *data.operands), _LETTER)
+    return _Equation(_two_step_side(data), _LETTER)
+
+
+# A change to a written equation, one way of making a mistake. It makes the same change in any
+# equation of the shape it was made for, so two kinds of mistake can be made together.
+type _Edit = Callable[[_Equation], _Equation]
+# A kind of mistake: it returns the ways of making it in an equation
+type _Mistake = Callable[[_Equation], list[_Edit]]
+# A kind of mistake, named, as the same name for the kind made at each place, with its ways
+type _Kind = tuple[str, _Mistake]
+# two kinds of mistake for wrong choices to cross, the second made last
+type _MistakePair = tuple[_Kind, _Kind]
 
 
 def _fair_sets(
-    right: _WrittenSteps, pairs: Sequence[_MistakePair]
-) -> Iterator[tuple[int, tuple[_Written, _Written, _Written]]]:
+    data: BasicOperationQuestionData | TwoStepQuestionData, operations: Collection[Operation]
+) -> Iterator[tuple[int, tuple[str, ...], tuple[_Equation, ...]]]:
     """
-    Yield every fair set of three wrong equations for ``right`` that crosses one of ``pairs`` of
-    mistakes, each with the index of its pair.
+    Yield every fair set of three wrong equations for the question on a sheet of
+    ``operations``, each with the tier of its pair of kinds of mistake, as ``_mistake_pairs``
+    gives them, and the names of the kinds, in order of tier. With one step and all four
+    operations, the other three operations on its numbers are one more set, in the first tier.
     """
-    answer = _value(right)
-    for mistakes, (one, other) in enumerate(pairs):
-        for wrong in _crossed_mistakes(right, one, other):
-            if _is_fair(answer, wrong):
-                yield mistakes, wrong
+    right = _right_equation(data)
+    answer = _solved(right)
+    for tier, pairs in enumerate(_mistake_pairs(right, operations)):
+        for (one_name, one), (other_name, other) in pairs:
+            for wrong in _crossed_mistakes(right, one, other):
+                if _is_fair(answer, wrong):
+                    yield tier, (one_name, other_name), wrong
+        if tier == 0 and len(_numbers_of(right)) == 2 and set(operations) >= set(Operation):
+            others = _other_operations(right)
+            if _is_fair(answer, others):
+                yield tier, ("other operations",), others
 
 
-def _first_signs_changed(
-    written: _WrittenSteps, signs: Collection[Operation]
-) -> list[_WrittenSteps]:
+def _crossed_mistakes(
+    right: _Equation, one: _Mistake, other: _Mistake
+) -> Iterator[tuple[_Equation, _Equation, _Equation]]:
     """
-    Return the written equation with each other first sign of ``signs``, in ``Operation``'s
-    order.
+    Yield every set of three wrong equations that crosses the mistakes ``one`` and ``other`` in
+    ``right``: a way of making the first, a way of making the second, and both at once.
     """
+    seconds = other(right)
+    for first in one(right):
+        once = first(right)
+        for second in seconds:
+            yield once, second(right), second(once)
+
+
+def _mistake_pairs(right: _Equation, operations: Collection[Operation]) -> list[list[_MistakePair]]:
+    """
+    Return the pairs of kinds of mistake a right equation's wrong choices can cross, on a sheet
+    of ``operations``: any two that keep its shape (the sign changed and a number a little off,
+    each place its own kind, and with two steps the brackets moved), or one of those and one
+    made last that changes the shape (what to find swapped with a number, and with two steps the
+    step outside the brackets the other way round, the equals moved and a step left out).
+
+    They come in two tiers, the second used only when no pair of the first gives a fair set. The
+    second holds two places of one kind, whose wrong choices one check rules out: a number that
+    isn't the story's, or a sign that no problem on the sheet has. Signs on a sheet of two or
+    more operations stay in the first, as any of them can be right.
+    """
+    signs = _mistaken_signs(operations)
+    keep_shape: list[_Kind] = [
+        *(
+            ("sign", partial(_signs_changed, place=place, signs=signs))
+            for place in range(len(_signs_of(right)))
+        ),
+        *(
+            ("number", partial(_numbers_off, place=place))
+            for place in range(len(_numbers_of(right)))
+        ),
+    ]
+    change_shape: list[_Kind] = [("letter", _letters_swapped)]
+    if len(_numbers_of(right)) == 3:
+        keep_shape.append(("brackets", _brackets_moved))
+        change_shape = [
+            ("order", _order_swapped),
+            ("letter", _letters_swapped),
+            ("equals", _equals_moved),
+            ("step", _steps_left_out),
+        ]
+    pairs = [*combinations(keep_shape, 2), *product(keep_shape, change_shape)]
+    several = len(set(operations)) > 1
+    one_check = [
+        (one, other)
+        for one, other in pairs
+        if one[0] == other[0] and not (several and one[0] == "sign")
+    ]
+    return [[pair for pair in pairs if pair not in one_check], one_check]
+
+
+# The sign written by mistake for each operation, on a sheet of that operation alone
+_MISTAKEN_SIGNS = {
+    Operation.ADD: Operation.SUBTRACT,
+    Operation.SUBTRACT: Operation.ADD,
+    Operation.MULTIPLY: Operation.ADD,
+    Operation.DIVIDE: Operation.MULTIPLY,
+}
+
+
+def _mistaken_signs(operations: Collection[Operation]) -> frozenset[Operation]:
+    """
+    Return the signs a wrong equation can have on a sheet of ``operations``: the sheet's own, as
+    a sign that no problem on the sheet has in its own equation would rule a choice out, or with
+    one operation alone, it and the sign ``_MISTAKEN_SIGNS`` gives for it.
+    """
+    signs = frozenset(operations)
+    if len(signs) == 1:
+        (sign,) = signs
+        return signs | {_MISTAKEN_SIGNS[sign]}
+    return signs
+
+
+def _signs_changed(right: _Equation, place: int, signs: Collection[Operation]) -> list[_Edit]:
+    """
+    Return the ways of changing the sign at ``place``, counting from 0 left to right, to another
+    of ``signs``, in ``Operation``'s order.
+    """
+    current = _signs_of(right)[place]
     return [
-        replace(written, first_sign=sign)
+        partial(_with_sign, place=place, sign=sign)
         for sign in Operation
-        if sign in signs and sign is not written.first_sign
+        if sign in signs and sign is not current
     ]
 
 
-def _second_signs_changed(
-    written: _WrittenSteps, signs: Collection[Operation]
-) -> list[_WrittenSteps]:
+def _numbers_off(right: _Equation, place: int) -> list[_Edit]:
     """
-    Return the written equation with each other second sign of ``signs``, in ``Operation``'s
-    order.
+    Return the ways of writing the equation's number at ``place``, counting from 0 left to
+    right, a little off, as ``_slips`` gives them. A slip that's another of its numbers is left
+    out.
     """
+    numbers = _numbers_of(right)
     return [
-        replace(written, second_sign=sign)
-        for sign in Operation
-        if sign in signs and sign is not written.second_sign
+        partial(_with_number, place=place, number=slip)
+        for slip in _slips(numbers[place])
+        if slip not in numbers
     ]
 
 
-def _brackets_moved(written: _WrittenSteps) -> list[_WrittenSteps]:
-    """Return the written equation with its brackets around the other pair of numbers."""
-    return [replace(written, brackets_first=not written.brackets_first)]
-
-
-def _order_swapped(written: _WrittenSteps) -> list[_WrittenSteps]:
+def _slips(number: int) -> list[int]:
     """
-    Return the written equation with the step outside its brackets written the other way round:
-    the brackets and the number outside them swap places, so (45 - 12) - 8 is 8 - (45 - 12).
+    Return what ``number`` might be written as by mistake, a little off: one less, one more, its
+    digits the other way round (21 for 12, as ``_reversed_digits`` gives it), and for a number of
+    two digits or more, ten less and ten more. Only numbers from 2 up, as 1 x (3 x 8) reads as no
+    mistake anyone makes, and other than ``number``.
     """
-    first, second, third = written.numbers
-    if written.brackets_first:
-        numbers, brackets_first = (third, first, second), False
-    else:
-        numbers, brackets_first = (second, third, first), True
-    return [_WrittenSteps(numbers, written.second_sign, written.first_sign, brackets_first)]
-
-
-def _digits_reversed(written: _WrittenSteps) -> list[_WrittenSteps]:
-    """
-    Return the written equation with each of its numbers in turn, left to right, copied with its
-    digits the other way round, as 21 for 12. A number has no such copy if it reads the same
-    either way, as 44 and 7 do, if the copy would start with 0, as 30's would, or if the copy is
-    another of the equation's numbers.
-    """
-    first, second, third = written.numbers
-    copies = (
-        (_reversed_digits(first), second, third),
-        (first, _reversed_digits(second), third),
-        (first, second, _reversed_digits(third)),
-    )
-    return [
-        replace(written, numbers=numbers)
-        for numbers in copies
-        if numbers != written.numbers and len(set(numbers)) == len(numbers)
-    ]
+    slips = [number - 1, number + 1, _reversed_digits(number)]
+    if number >= 10:
+        slips += [number - 10, number + 10]
+    return [slip for slip in dict.fromkeys(slips) if 1 < slip != number]
 
 
 def _reversed_digits(number: int) -> int:
@@ -774,122 +836,317 @@ def _reversed_digits(number: int) -> int:
     return number if number % 10 == 0 else int(str(number)[::-1])
 
 
-def _step_left_out(written: _WrittenSteps) -> list[_WrittenStep]:
-    """
-    Return the written equation stopped after one step: its first two numbers with its first
-    sign, then its last two with its second, as either step can come first in adding or
-    multiplying three numbers. (12 + 8) + 5 gives 12 + 8 and 8 + 5.
-    """
-    first, second, third = written.numbers
-    return [
-        _WrittenStep((first, second), written.first_sign),
-        _WrittenStep((second, third), written.second_sign),
-    ]
+def _brackets_moved(right: _Equation) -> list[_Edit]:
+    """Return the way of moving a two-step equation's brackets to the other pair of numbers."""
+    return [_regrouped]
 
 
-def _mistake_pairs(signs: Collection[Operation]) -> Sequence[Sequence[_MistakePair]]:
-    """
-    Return the pairs of mistakes a two-step equation's wrong choices can cross, on a sheet of the
-    operations ``signs``, in tiers: a tier's pairs are used only when no pair of an earlier tier
-    gives a fair set. Each mistake changes a part of the equation that the other leaves alone.
+def _regrouped(equation: _Equation) -> _Equation:
+    """Return the two-step equation with its brackets around the other pair of numbers."""
+    match equation.left:
+        case _Joined(outer, _Joined(inner, first, second), int() as third):
+            return replace(equation, left=_Joined(inner, first, _Joined(outer, second, third)))
+        case _Joined(outer, int() as first, _Joined(inner, second, third)):
+            return replace(equation, left=_Joined(inner, _Joined(outer, first, second), third))
+        case _:
+            raise ValueError(f"Not a two-step equation: {_equation_text(equation, '?')}.")
 
-    With two or more operations, any two of: the first sign or the second changed to another of
-    ``signs``, and the brackets moved. With subtraction or division alone: the brackets moved,
-    and the step outside them written the other way round. With addition or multiplication
-    alone, where neither of those changes the value: a number with its digits reversed, and a
-    step left out; with multiplication alone, failing those, the first sign and the second
-    changed to +.
+
+def _order_swapped(right: _Equation) -> list[_Edit]:
     """
-    if len(set(signs)) > 1:
-        mistakes: tuple[_Mistake, ...] = (
-            partial(_first_signs_changed, signs=signs),
-            partial(_second_signs_changed, signs=signs),
-            _brackets_moved,
+    Return the way of writing the step outside a two-step equation's brackets the other way
+    round: the brackets and the number outside them swap places, so (45 - 12) - 8 is
+    8 - (45 - 12).
+    """
+    return [_outer_swapped]
+
+
+def _outer_swapped(equation: _Equation) -> _Equation:
+    """Return the equation with the two terms of its left side's outer step swapped."""
+    side = equation.left
+    if not isinstance(side, _Joined):
+        raise ValueError(f"Not a two-step equation: {_equation_text(equation, '?')}.")
+    return replace(equation, left=_Joined(side.sign, side.right, side.left))
+
+
+def _letters_swapped(right: _Equation) -> list[_Edit]:
+    """
+    Return the ways of swapping what to find with one of the equation's numbers, left to right:
+    the letter takes the number's place, and the number stands alone on the other side, so
+    47 + 25 = □ gives □ + 25 = 47 and 47 + □ = 25.
+    """
+    return [partial(_letter_swapped, place=place) for place in range(len(_numbers_of(right)))]
+
+
+def _letter_swapped(equation: _Equation, place: int) -> _Equation:
+    """
+    Return the equation, which has what to find alone on its right, with the letter in place of
+    the number at ``place`` and that number on the right.
+    """
+    numbers: list[_Term] = [*_numbers_of(equation)]
+    number = numbers[place]
+    numbers[place] = _LETTER
+    return _Equation(_rebuilt(equation.left, iter(numbers), iter(_signs_of(equation))), number)
+
+
+def _equals_moved(right: _Equation) -> list[_Edit]:
+    """
+    Return the way of moving a two-step equation's equals sign between its second number and its
+    third, so (3 x 19) x 16 = e is 3 x 19 = 16 x e.
+    """
+    return [_split]
+
+
+def _split(equation: _Equation) -> _Equation:
+    """Return the two-step equation split after its second number, as ``_equals_moved`` says."""
+    first, second, third = _numbers_of(equation)
+    first_sign, second_sign = _signs_of(equation)
+    return _Equation(_Joined(first_sign, first, second), _Joined(second_sign, third, _LETTER))
+
+
+def _steps_left_out(right: _Equation) -> list[_Edit]:
+    """
+    Return the ways of stopping a two-step equation after one step: its first two numbers with
+    its first sign, then its last two with its second, as either step can come first in adding
+    or multiplying three numbers. (12 + 8) + 5 gives 12 + 8 and 8 + 5.
+    """
+    return [partial(_step_kept, first=True), partial(_step_kept, first=False)]
+
+
+def _step_kept(equation: _Equation, first: bool) -> _Equation:
+    """Return the two-step equation stopped after one step, as ``_steps_left_out`` says."""
+    numbers = _numbers_of(equation)
+    first_sign, second_sign = _signs_of(equation)
+    if first:
+        return _Equation(_Joined(first_sign, numbers[0], numbers[1]), _LETTER)
+    return _Equation(_Joined(second_sign, numbers[1], numbers[2]), _LETTER)
+
+
+_ORDERED = frozenset({Operation.SUBTRACT, Operation.DIVIDE})  # the larger number written first
+
+
+def _other_operations(right: _Equation) -> tuple[_Equation, _Equation, _Equation]:
+    """
+    Return the other three operations on a one-step equation's numbers, each with what to find
+    alone on its right: in the story's order to add or multiply, and the larger number first to
+    subtract or divide.
+    """
+    first, second = _numbers_of(right)
+    (own,) = _signs_of(right)
+    larger, smaller = max(first, second), min(first, second)
+    first_other, second_other, third_other = (
+        _Equation(
+            _Joined(sign, *((larger, smaller) if sign in _ORDERED else (first, second))), _LETTER
         )
-        return [list(combinations(mistakes, 2))]
-    if set(signs) <= {Operation.SUBTRACT, Operation.DIVIDE}:
-        return [[(_brackets_moved, _order_swapped)]]
-    tiers: list[list[_MistakePair]] = [[(_digits_reversed, _step_left_out)]]
-    if Operation.MULTIPLY in signs:
-        with_add = {Operation.ADD, Operation.MULTIPLY}
-        signs_changed = (
-            partial(_first_signs_changed, signs=with_add),
-            partial(_second_signs_changed, signs=with_add),
-        )
-        tiers.append([signs_changed])
-    return tiers
+        for sign in Operation
+        if sign is not own
+    )
+    return first_other, second_other, third_other
 
 
-def _crossed_mistakes(
-    right: _WrittenSteps, one: _Mistake, other: _LastMistake
-) -> Iterator[tuple[_Written, _Written, _Written]]:
-    """
-    Yield every set of three wrong equations that crosses the mistakes ``one`` and ``other`` in
-    ``right``: a way of making the first, a way of making the second, and both at once.
-    """
-    for first in one(right):
-        # ``other`` changes a part ``one`` leaves alone, so it gives ``first`` its ways of being
-        # made in the same order as ``right``'s
-        for index, second in enumerate(other(right)):
-            yield first, second, other(first)[index]
+def _numbers_of(equation: _Equation) -> list[int]:
+    """Return the equation's numbers, left to right."""
+    return [*_term_numbers(equation.left), *_term_numbers(equation.right)]
 
 
-def _is_fair(answer: Fraction, wrong: Sequence[_Written]) -> bool:
+def _term_numbers(term: _Term) -> Iterator[int]:
+    """Yield the term's numbers, left to right."""
+    match term:
+        case _Joined(_, left, right):
+            yield from _term_numbers(left)
+            yield from _term_numbers(right)
+        case int():
+            yield term
+
+
+def _signs_of(equation: _Equation) -> list[Operation]:
+    """Return the equation's signs, left to right, without its equals sign."""
+    return [*_term_signs(equation.left), *_term_signs(equation.right)]
+
+
+def _term_signs(term: _Term) -> Iterator[Operation]:
+    """Yield the term's signs, left to right."""
+    if isinstance(term, _Joined):
+        yield from _term_signs(term.left)
+        yield term.sign
+        yield from _term_signs(term.right)
+
+
+def _with_number(equation: _Equation, place: int, number: int) -> _Equation:
+    """Return the equation with ``number`` in place of its number at ``place``, from 0."""
+    numbers: list[_Term] = [*_numbers_of(equation)]
+    numbers[place] = number
+    return _rebuilt_equation(equation, numbers, _signs_of(equation))
+
+
+def _with_sign(equation: _Equation, place: int, sign: Operation) -> _Equation:
+    """Return the equation with ``sign`` in place of its sign at ``place``, from 0."""
+    signs = _signs_of(equation)
+    signs[place] = sign
+    return _rebuilt_equation(equation, [*_numbers_of(equation)], signs)
+
+
+def _rebuilt_equation(
+    equation: _Equation, numbers: Sequence[_Term], signs: Sequence[Operation]
+) -> _Equation:
+    """Return the equation with its numbers and signs, left to right, replaced in turn."""
+    number_terms, sign_terms = iter(numbers), iter(signs)
+    left = _rebuilt(equation.left, number_terms, sign_terms)
+    return _Equation(left, _rebuilt(equation.right, number_terms, sign_terms))
+
+
+def _rebuilt(term: _Term, numbers: Iterator[_Term], signs: Iterator[Operation]) -> _Term:
     """
-    Return whether every equation of ``wrong`` needs working out to rule out, and no two of them
-    or ``answer`` share a value: a wrong equation with the answer's value would be a second right
-    one, and two with the same value, as (5 + 3) + 2 and 5 + (3 + 2), would rule each other out.
+    Return the term with its numbers and signs, left to right, taken in turn from ``numbers`` and
+    ``signs``. The letter for what to find stays.
     """
-    # Checked first: a number taken from itself would leave 0 to divide by.
-    if any(_ruled_out_at_a_glance(written) for written in wrong):
+    match term:
+        case _Joined(_, left, right):
+            new_left = _rebuilt(left, numbers, signs)
+            sign = next(signs)
+            return _Joined(sign, new_left, _rebuilt(right, numbers, signs))
+        case int():
+            return next(numbers)
+        case _:
+            return term
+
+
+def _is_fair(answer: Fraction | None, wrong: Sequence[_Equation]) -> bool:
+    """
+    Return whether every equation of ``wrong`` needs working out to rule out, and what to find in
+    each works out differently from ``answer`` and from the others: a wrong equation with the
+    answer would be a second right one, and two with the same value, as (5 + 3) + 2 and
+    5 + (3 + 2), would rule each other out. An equation that can't be worked out, dividing by 0,
+    isn't fair.
+    """
+    values: list[Fraction] = []
+    for equation in wrong:
+        value = _solved(equation)
+        if value is None or _ruled_out_at_a_glance(equation, value):
+            return False
+        values.append(value)
+    return len({answer, *values}) == len(wrong) + 1
+
+
+def _ruled_out_at_a_glance(equation: _Equation, value: Fraction) -> bool:
+    """
+    Return whether the wrong equation, in which what to find works out to ``value``, can be ruled
+    out without working it out: two numbers side by side in it take a number from one no larger
+    or divide a number by a larger one, as 3 - 5 and 3 ÷ 5 do, or what to find shares its side
+    with a number and works out below 1, as in (3 x 19) x e = 16.
+    """
+    if _LETTER not in (equation.left, equation.right) and value < 1:
+        return True
+    return any(
+        _pair_ruled_out(joined)
+        for side in (equation.left, equation.right)
+        for joined in _joined_terms(side)
+    )
+
+
+def _pair_ruled_out(joined: _Joined) -> bool:
+    """
+    Return whether the joined term is two numbers that take a number from one no larger, or
+    divide a number by a larger one, as 3 - 5 and 3 ÷ 5 do.
+    """
+    if not (isinstance(joined.left, int) and isinstance(joined.right, int)):
         return False
-    return len({answer, *(_value(written) for written in wrong)}) == len(wrong) + 1
-
-
-def _bracketed(written: _WrittenSteps) -> tuple[Operation, int, int]:
-    """Return the sign in the written equation's brackets and the numbers either side of it."""
-    first, second, third = written.numbers
-    if written.brackets_first:
-        return written.first_sign, first, second
-    return written.second_sign, second, third
-
-
-def _swapped(written: _WrittenSteps) -> _WrittenSteps:
-    """Return the written equation with the two numbers in its brackets the other way round."""
-    first, second, third = written.numbers
-    numbers = (second, first, third) if written.brackets_first else (first, third, second)
-    return replace(written, numbers=numbers)
-
-
-def _ruled_out_at_a_glance(written: _Written) -> bool:
-    """
-    Return whether the written equation's brackets, or its one step, take a number from one no
-    larger, or divide a number by a larger one, as in 3 - 5 or 3 ÷ 5.
-    """
-    if isinstance(written, _WrittenStep):
-        sign, (left, right) = written.sign, written.numbers
-    else:
-        sign, left, right = _bracketed(written)
-    match sign:
+    match joined.sign:
         case Operation.SUBTRACT:
-            return left <= right
+            return joined.left <= joined.right
         case Operation.DIVIDE:
-            return left < right
+            return joined.left < joined.right
         case Operation.ADD | Operation.MULTIPLY:
             return False
+        case _:
+            assert_never(joined.sign)
+
+
+def _joined_terms(term: _Term) -> Iterator[_Joined]:
+    """Yield the joined terms in ``term``, itself included, outer ones first."""
+    if isinstance(term, _Joined):
+        yield term
+        yield from _joined_terms(term.left)
+        yield from _joined_terms(term.right)
+
+
+def _solved(equation: _Equation) -> Fraction | None:
+    """
+    Return what the letter stands for in the written equation, worked out exactly, or ``None``
+    if working it out divides by 0.
+    """
+    if _holds_letter(equation.left):
+        return _solved_for(equation.left, _evaluated(equation.right))
+    return _solved_for(equation.right, _evaluated(equation.left))
+
+
+def _solved_for(term: _Term, value: Fraction | None) -> Fraction | None:
+    """
+    Return what the letter stands for when ``term``, which holds it, works out to ``value``, or
+    ``None`` if either can't be worked out.
+    """
+    if value is None or not isinstance(term, _Joined):
+        return value
+    if _holds_letter(term.left):
+        known = _evaluated(term.right)
+        return _solved_for(term.left, _undone(term.sign, value, known, letter_first=True))
+    known = _evaluated(term.left)
+    return _solved_for(term.right, _undone(term.sign, value, known, letter_first=False))
+
+
+def _undone(
+    sign: Operation, value: Fraction, known: Fraction | None, *, letter_first: bool
+) -> Fraction | None:
+    """
+    Return what the term holding the letter must work out to, joined by ``sign`` with ``known``,
+    after it if ``letter_first`` and before it otherwise, to give ``value``. ``None`` if
+    ``known`` can't be worked out or the answer divides by 0.
+    """
+    if known is None:
+        return None
+    match sign:
+        case Operation.ADD:
+            return value - known
+        case Operation.SUBTRACT:
+            return value + known if letter_first else known - value
+        case Operation.MULTIPLY:
+            return None if known == 0 else value / known
+        case Operation.DIVIDE:
+            if letter_first:
+                return value * known
+            return None if value == 0 else known / value
         case _:
             assert_never(sign)
 
 
-def _value(written: _Written) -> Fraction:
-    """Return the written equation's value, worked out exactly."""
-    if isinstance(written, _WrittenStep):
-        left, right = written.numbers
-        return _worked(written.sign, Fraction(left), Fraction(right))
-    first, second, third = (Fraction(number) for number in written.numbers)
-    if written.brackets_first:
-        return _worked(written.second_sign, _worked(written.first_sign, first, second), third)
-    return _worked(written.first_sign, first, _worked(written.second_sign, second, third))
+def _holds_letter(term: _Term) -> bool:
+    """Return whether the term holds the letter for what to find."""
+    match term:
+        case _Joined(_, left, right):
+            return _holds_letter(left) or _holds_letter(right)
+        case int():
+            return False
+        case _:
+            return True
+
+
+def _evaluated(term: _Term) -> Fraction | None:
+    """
+    Return the term, which doesn't hold the letter, worked out exactly, or ``None`` if working
+    it out divides by 0.
+    """
+    match term:
+        case _Joined(sign, left, right):
+            left_value, right_value = _evaluated(left), _evaluated(right)
+            if left_value is None or right_value is None:
+                return None
+            if sign is Operation.DIVIDE and right_value == 0:
+                return None
+            return _worked(sign, left_value, right_value)
+        case int():
+            return Fraction(term)
+        case _:
+            raise ValueError("A term holding the letter can't be worked out on its own.")
 
 
 def _worked(operation: Operation, left: Fraction, right: Fraction) -> Fraction:
