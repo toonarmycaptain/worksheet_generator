@@ -7,15 +7,16 @@ each way it's answered, and if any problem is drawn with base-ten blocks, a key 
 problem has its number and wording, a hint if the representation has one and hints aren't turned
 off, the representation, and an answer line. A text-only problem's representation is a box to show
 the work in, unless the boxes are left out, and an equation's is a line to write it on. A number
-line's last box is its answer, so it has no answer line. A multiple-choice problem, whose
-representation is chosen, has no hint, and has its lettered equations or number lines instead, in
-rows of two. A two-step problem is shown only with strip diagrams, as one bar under its whole, as
-text only, or with its equation. A sheet for the self-check tiles case has no answer lines, and ends
-with a page for the answer bank and pattern.
+line's last box is its answer, so it has no answer line. A multiple-choice problem whose
+representation is chosen has no hint, and has its lettered equations or number lines instead, in
+rows of two. One whose answer is chosen has its representation, but an equation's line, and four
+lettered numbers in a row in place of the answer line. A two-step problem is shown only with strip
+diagrams, as one bar under its whole, as text only, or with its equation. A sheet for the
+self-check tiles case has no answer lines, and ends with a page for the answer bank and pattern.
 """
 
 from collections.abc import Sequence
-from typing import BinaryIO, assert_never
+from typing import BinaryIO, TypeIs, assert_never
 
 from reportlab.lib.colors import HexColor, gray
 from reportlab.pdfbase.pdfmetrics import stringWidth
@@ -24,9 +25,11 @@ from reportlab.pdfgen.canvas import Canvas
 from core.base_ten_blocks import blocks_diagram
 from core.basic_operations.data import BasicOperationQuestionData, TwoStepQuestionData
 from core.basic_operations.representation import (
+    CHOOSE_NUMBER_WHERE_GIVEN,
     REPRESENTATION_NAMES,
     TWO_STEP_REPRESENTATIONS,
     Representation,
+    Response,
     TwoJumpLine,
     WordProblemQuestion,
     basic_operation_tile_question,
@@ -40,7 +43,7 @@ from core.basic_operations.representation import (
     two_step_strip,
     two_step_tile_question,
 )
-from core.question import FreeResponse, MultipleChoice
+from core.question import MultipleChoice
 from core.self_check_tiles import TileQuestion
 from render.pdf.diagrams import (
     BLOCKS_KEY_HEIGHT,
@@ -84,10 +87,15 @@ from render.pdf.tiles import draw_tiles_page, tile_solutions
 HINT_SIZE = 11
 HINT_LINE_HEIGHT = 15
 REPRESENTATION_RAISE = 6  # a representation's top is this far above the next text baseline
-ANSWER_DROP = 26  # from the bottom of the representation down to the answer line, room to write
+# With nothing drawn, from the representation's top down to the baseline of what follows the text:
+# an answer or equation line, the numbers to choose from, or the first row of lettered choices
+CHOICE_DROP = 12
+# from a drawing's bottom down to the baseline of the answer line or the numbers to choose from
+DRAWING_GAP = 22
+ANSWER_DROP = 26  # from the equation line down to the answer line, room to write the equation
 ANSWER_LABEL = "Answer: "
 ANSWER_LINE_LENGTH = 120
-PROBLEM_GAP = 22  # from the answer line, or the representation, down to the next problem's baseline
+PROBLEM_GAP = 22  # from a problem's bottom down to the next problem's baseline
 # Text only: the box to show the work in, as wide as the text, with a label in its top-left corner
 WORK_BOX_HEIGHT = 60
 WORK_BOX_CORNER_RADIUS = 4
@@ -99,13 +107,15 @@ WORK_BOX_LABEL_INSET = 5  # from the box's left edge to the label
 WORK_BOX_LABEL_DROP = 12  # from the box's top down to the label's baseline
 # Equations, written: a labelled line, like the answer line
 EQUATION_LABEL = "Equation: "
-EQUATION_DROP = ANSWER_DROP  # from the representation's top down to the line
+EQUATION_DROP = CHOICE_DROP  # from the representation's top down to the line
 EQUATION_LINE_LENGTH = 300
 # Equations or number lines to choose from, in rows below the problem's text
 CHOICE_COLUMNS = 2
-CHOICE_DROP = 12  # from the representation's top down to the first row's baseline
+NUMBER_CHOICE_COLUMNS = 4  # a row of the four numbers to choose an answer from
 CHOICE_ROW_HEIGHT = 26  # from one row's baseline to the next
-CHOICE_DESCENT = 8  # the squares reach below the baseline, so the last row ends this far below it
+# The squares reach below the baseline, so the last row ends this far below it, and so does a
+# problem ending with a line or a row of numbers, so problems are evenly spaced
+CHOICE_DESCENT = 8
 LINE_CHOICE_LETTER_WIDTH = 26  # room for "A)" left of each number line
 LINE_CHOICE_GAP = 24  # between a number line and the next choice's letter
 # each number line's width
@@ -133,9 +143,11 @@ def render_word_problems_worksheet(
     Each problem's hint is left out when ``hints`` is False, and so is the note beside base-ten
     blocks saying how many to cross out. Base-ten blocks are grey when ``black_and_white`` is
     set. Text-only problems have no box to show the work in when ``work_box`` is False. A problem
-    that would run past the bottom margin starts on the next page. A multiple-choice problem has
-    its lettered options instead of its representation and an answer line, and no hint; on a
-    sheet of them, the instruction says to choose. A two-step problem needs its representation to
+    that would run past the bottom margin starts on the next page. A multiple-choice problem whose
+    representation is chosen has its lettered options instead of its representation and an answer
+    line, and no hint; on a sheet of them, the instruction says to choose. One whose answer is
+    chosen from numbers has them in a row in place of the answer line, and an equation's has no
+    line to write it on. A two-step problem needs its representation to
     be strip diagrams, text only or equations, or raises ``ValueError``. The answer key gives each
     problem's equation and answer (each step's, for a two-step problem), and a multiple-choice
     problem's correct letter.
@@ -170,7 +182,7 @@ def render_word_problems_worksheet(
         lines = wrap(stem(question.data), TEXT_SIZE, TEXT_WIDTH)
         hint_text = (
             hint(question.data, representation)
-            if hints and isinstance(question.response, FreeResponse)
+            if hints and _response(question) is not Response.MULTIPLE_CHOICE
             else None
         )
         hint_lines = wrap(hint_text, HINT_SIZE, TEXT_WIDTH) if hint_text is not None else []
@@ -213,18 +225,29 @@ def _instructions(
 ) -> str:
     """
     Return the sheet's instruction: a line for each representation in ``drawn`` and each way it's
-    answered, written first, in the order of ``Representation``, each for the operations of its
-    own problems, and whether they have two steps. ``work_box`` is as in ``instruction``.
+    answered, in the order of ``Representation``, then of ``Response``, each for the operations of
+    its own problems, and whether they have two steps. A representation answered both in writing
+    and by choosing from numbers has one line for both, ending with ``CHOOSE_NUMBER_WHERE_GIVEN``,
+    but equations, whose written answers have a line for the equation, have two. ``work_box`` is
+    as in ``instruction``.
     """
     lines = []
     for representation in Representation:
-        for choices in (False, True):
-            questions = [
+        answered = {
+            response: [
                 question
                 for each, question in drawn
-                if each is representation
-                and isinstance(question.response, MultipleChoice) is choices
+                if each is representation and _response(question) is response
             ]
+            for response in Response
+        }
+        # one line for both, as the help drawn is the same, but an equation's line
+        together = representation is not Representation.EQUATION and all(
+            answered[response] for response in (Response.FREE_RESPONSE, Response.NUMBER_CHOICE)
+        )
+        if together:
+            answered[Response.FREE_RESPONSE] += answered.pop(Response.NUMBER_CHOICE)
+        for response, questions in answered.items():
             if questions:
                 operations = {
                     step.operation for question in questions for step in _steps(question.data)
@@ -232,8 +255,32 @@ def _instructions(
                 two_steps = any(
                     isinstance(question.data, TwoStepQuestionData) for question in questions
                 )
-                lines.append(instruction(representation, operations, work_box, choices, two_steps))
+                choices = response is Response.MULTIPLE_CHOICE
+                numbers = response is Response.NUMBER_CHOICE
+                line = instruction(
+                    representation, operations, work_box, choices, two_steps, numbers
+                )
+                if together and response is Response.FREE_RESPONSE:
+                    line = f"{line} {CHOOSE_NUMBER_WHERE_GIVEN}"
+                lines.append(line)
     return "\n".join(lines)
+
+
+def _response(question: WordProblemQuestion) -> Response:
+    """
+    Return how the problem is answered: in writing, by choosing its representation, or by
+    choosing its answer from numbers.
+    """
+    if _chooses_number(question.response):
+        return Response.NUMBER_CHOICE
+    if isinstance(question.response, MultipleChoice):
+        return Response.MULTIPLE_CHOICE
+    return Response.FREE_RESPONSE
+
+
+def _chooses_number(response: object) -> TypeIs[MultipleChoice[int]]:
+    """Return whether ``response`` is an answer to choose from numbers."""
+    return isinstance(response, MultipleChoice) and isinstance(response.options[0], int)
 
 
 def _steps(
@@ -271,17 +318,26 @@ def _body_height(
     answer_line: bool,
 ) -> float:
     """
-    Return the height of the problem below its text: its lettered options, if it has them, or
-    else its representation and its answer line, if ``answer_line`` is set.
+    Return the height of the problem below its text: its lettered options, if its representation
+    is chosen, or else its representation and its answer line, if ``answer_line`` is set, or the
+    numbers to choose its answer from in the line's place.
     """
+    if _response(question) is Response.NUMBER_CHOICE:
+        shown, box = _help(representation, work_box)
+        height = _representation_height(question.data, shown, box)
+        return height + _line_drop(shown, height) + CHOICE_DESCENT
     if isinstance(question.response, MultipleChoice):
         options = question.response.options
         last_row = (len(options) - 1) // CHOICE_COLUMNS
         if isinstance(options[0], TwoJumpLine):
             return last_row * LINE_CHOICE_ROW_HEIGHT + TWO_JUMP_LINE_HEIGHT
         return CHOICE_DROP + last_row * CHOICE_ROW_HEIGHT + CHOICE_DESCENT
-    answer_drop = ANSWER_DROP if answer_line else 0
-    return _representation_height(question.data, representation, work_box) + answer_drop
+    height = _representation_height(question.data, representation, work_box)
+    if answer_line:
+        return height + _line_drop(representation, height) + CHOICE_DESCENT
+    if representation is Representation.EQUATION:  # its line ends the problem
+        return height + CHOICE_DESCENT
+    return height
 
 
 def _draw_problem(
@@ -298,8 +354,9 @@ def _draw_problem(
     y: float,
 ) -> float:
     """
-    Draw one problem, from its number down to its lettered options if it has them, or else to its
-    representation and an answer line if ``answer_line`` is set, and return the y below it.
+    Draw one problem, from its number down to its lettered options if its representation is
+    chosen, or else to its representation and an answer line if ``answer_line`` is set, or the
+    numbers to choose its answer from in the line's place, and return the y below it.
 
     ``hints`` and ``colours`` are for base-ten blocks: whether to write the note saying how many
     to cross out, and the blocks' colours. ``work_box`` is for text only: whether to draw the box
@@ -314,17 +371,60 @@ def _draw_problem(
     pdf.setFillColor("black")
 
     top = y + REPRESENTATION_RAISE
-    if isinstance(question.response, MultipleChoice):
-        return _draw_choices(pdf, question.response.options, top) - PROBLEM_GAP
+    response = question.response
+    numbers = _chooses_number(response)
+    if isinstance(response, MultipleChoice) and not _chooses_number(response):
+        return _draw_choices(pdf, response.options, top) - PROBLEM_GAP
+    if numbers:
+        representation, work_box = _help(representation, work_box)
     _draw_representation(
         pdf, question.data, representation, MARGIN + TEXT_INDENT, top, hints, colours, work_box
     )
 
-    bottom = top - _representation_height(question.data, representation, work_box)
-    if answer_line:
-        bottom -= ANSWER_DROP
+    height = _representation_height(question.data, representation, work_box)
+    bottom = top - height
+    if _chooses_number(response):
+        bottom -= _line_drop(representation, height)
+        _draw_number_choices(pdf, response.options, bottom)
+    elif answer_line:
+        bottom -= _line_drop(representation, height)
         _draw_labelled_line(pdf, MARGIN + TEXT_INDENT, bottom, ANSWER_LABEL, ANSWER_LINE_LENGTH)
+    if numbers or answer_line or representation is Representation.EQUATION:
+        bottom -= CHOICE_DESCENT  # as below lettered equations
     return bottom - PROBLEM_GAP
+
+
+def _help(representation: Representation, work_box: bool) -> tuple[Representation, bool]:
+    """
+    Return what's drawn to help solve a problem whose answer is chosen from numbers, and whether
+    it has a box to show the work in: its representation, but text only without a box for an
+    equation, which has no line to write it on.
+    """
+    if representation is Representation.EQUATION:
+        return Representation.NONE, False
+    return representation, work_box
+
+
+def _line_drop(representation: Representation, height: float) -> float:
+    """
+    Return how far below the bottom of ``representation``, drawn ``height`` high, the answer line
+    or the numbers to choose an answer from have their baseline: ``CHOICE_DROP`` with nothing
+    drawn, as lettered choices; ``ANSWER_DROP`` below an equation's line, room to write the
+    equation; or else ``DRAWING_GAP``.
+    """
+    if height == 0:
+        return CHOICE_DROP
+    if representation is Representation.EQUATION:
+        return ANSWER_DROP
+    return DRAWING_GAP
+
+
+def _draw_number_choices(pdf: Canvas, options: Sequence[int], baseline: float) -> None:
+    """Draw the numbers to choose an answer from in a row on ``baseline``, each after its letter."""
+    pdf.setFont(FONT, TEXT_SIZE)
+    for index, option in enumerate(options):
+        x = MARGIN + TEXT_INDENT + index * TEXT_WIDTH / NUMBER_CHOICE_COLUMNS
+        draw_text(pdf, x, baseline, f"{choice_label(index)} {option:,}", TEXT_SIZE)
 
 
 def _draw_labelled_line(pdf: Canvas, x: float, baseline: float, label: str, length: float) -> None:

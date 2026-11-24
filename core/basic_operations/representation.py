@@ -3,8 +3,8 @@ Wording of basic-operation questions: each operation's symbol and name, the equa
 questions' steps, and the questions as the self-check tiles sheet shows them. Also the
 representations drawn with, or chosen for, word problems, with their sheet titles, instructions,
 hints and diagram descriptions, the equations and number lines a problem's own is chosen from,
-and the strip diagrams a problem's own is chosen from, two-step problems' equations and strip
-diagrams included, with what each problem shows.
+the numbers its answer is chosen from, and the strip diagrams a problem's own is chosen from,
+two-step problems' equations and strip diagrams included, with what each problem shows.
 """
 
 import random
@@ -13,7 +13,7 @@ from dataclasses import dataclass, replace
 from enum import Enum, StrEnum
 from fractions import Fraction
 from functools import partial
-from itertools import combinations, product
+from itertools import combinations, combinations_with_replacement, product
 from typing import assert_never
 
 from core.basic_operations.data import (
@@ -186,6 +186,9 @@ class Response(StrEnum):
 
     FREE_RESPONSE = "free_response"  # written, beside or under its representation
     MULTIPLE_CHOICE = "multiple_choice"  # its representation chosen from lettered ones
+    NUMBER_CHOICE = (
+        "number_choice"  # its answer chosen from lettered numbers, under its representation
+    )
 
 
 # A kind of word problem on a sheet that mixes them: its representation, and how it's answered
@@ -200,9 +203,9 @@ def word_problem_kinds(
     """
     Return the kinds of word problem a sheet mixing ``representations`` and ``responses`` can
     draw, in the order of ``Representation``, then of ``Response``: each representation answered
-    each way it can be. Only a representation in ``CHOICE_NAMES`` is chosen, and with
-    ``two_steps`` only one in ``TWO_STEP_REPRESENTATIONS`` is drawn, and only equations are
-    chosen.
+    each way it can be. Only a representation in ``CHOICE_NAMES`` is chosen, any can have its
+    answer chosen from numbers, and with ``two_steps`` only one in ``TWO_STEP_REPRESENTATIONS``
+    is drawn, and only equations are chosen.
     """
     return [
         (representation, response)
@@ -212,7 +215,7 @@ def word_problem_kinds(
         for response in Response
         if response in responses
         and (
-            response is Response.FREE_RESPONSE
+            response is not Response.MULTIPLE_CHOICE
             or (
                 representation in CHOICE_NAMES
                 and (not two_steps or representation is Representation.EQUATION)
@@ -488,15 +491,240 @@ def _groups_and_other(data: BasicOperationQuestionData) -> tuple[int, int]:
 type EquationChoiceQuestion = Question[BasicOperationQuestionData, MultipleChoice[str]]
 # A two-step word problem as presented: its equation chosen from lettered equations
 type TwoStepEquationChoiceQuestion = Question[TwoStepQuestionData, MultipleChoice[str]]
+# A word problem as presented, with one step or two: its answer chosen from lettered numbers
+type NumberChoiceQuestion = Question[
+    BasicOperationQuestionData | TwoStepQuestionData, MultipleChoice[int]
+]
 # A word problem as presented: answered in writing, with one step or two, or its equation, with
-# one step or two, or number line chosen
+# one step or two, or number line chosen, or its answer chosen from numbers
 type WordProblemQuestion = (
     Question[BasicOperationQuestionData, FreeResponse]
     | Question[TwoStepQuestionData, FreeResponse]
     | EquationChoiceQuestion
     | TwoStepEquationChoiceQuestion
     | NumberLineChoiceQuestion
+    | NumberChoiceQuestion
 )
+
+
+def number_choices(
+    data: BasicOperationQuestionData | TwoStepQuestionData, operations: Collection[Operation]
+) -> MultipleChoice[int]:
+    """
+    Return the numbers to choose a word problem's answer from, on a sheet of ``operations``: its
+    answer and three wrong numbers, each what a mistake in working it out comes to, as
+    ``_mistaken_answers`` gives them, shuffled together. The three are drawn at random among the
+    sets from the most kinds of mistake, three where they can be. Only when the mistakes come to
+    fewer than three numbers does the answer slipped in its last step (``_answer_slips``) join
+    the numbers a little off. The wrong numbers are whole, from 0 up, and none is the answer or
+    another's.
+    """
+    kinds = _mistaken_answers(data, operations)
+    if len(set().union(*kinds.values())) < 3:
+        kinds = {**kinds, "number": kinds.get("number", set()) | _answer_slips(data.answer)}
+    sets = _wrong_number_sets(kinds)
+    most = max(kinds_used for kinds_used, _ in sets)
+    candidates = random.choice([lists for kinds_used, lists in sets if kinds_used == most])
+    wrong = _distinct_pick([random.sample(each, len(each)) for each in candidates])
+    assert wrong is not None  # each of ``sets`` has a pick
+    return multiple_choice((data.answer,), wrong)
+
+
+def _wrong_number_sets(kinds: dict[str, set[int]]) -> list[tuple[int, list[list[int]]]]:
+    """
+    Return the ways of choosing three wrong numbers from the numbers of ``kinds``, a kind used
+    once or more, each as how many kinds it uses and the numbers each of the three can be. Only
+    ways that give three different numbers.
+    """
+    names = sorted(kinds)
+    ways = []
+    for chosen in combinations_with_replacement(names, 3):
+        lists = [sorted(kinds[name]) for name in chosen]
+        if _distinct_pick(lists) is not None:
+            ways.append((len(set(chosen)), lists))
+    return ways
+
+
+def _distinct_pick(lists: Sequence[Sequence[int]]) -> tuple[int, ...] | None:
+    """
+    Return the first numbers, one from each of ``lists`` in turn, that are all different, or
+    ``None`` if there are none.
+    """
+    return next((each for each in product(*lists) if len(set(each)) == len(each)), None)
+
+
+def _mistaken_answers(
+    data: BasicOperationQuestionData | TwoStepQuestionData, operations: Collection[Operation]
+) -> dict[str, set[int]]:
+    """
+    Return what mistakes in working out the word problem come to, by kind, on a sheet of
+    ``operations``, leaving out the answer and any that aren't whole or are below 0. The kinds:
+
+    - "sign": a sign changed to another that ``_mistaken_signs`` gives: 52 - 38 → 90;
+    - "number": a number a little off, as ``_answer_slips_of`` gives it: 3 x 19 x 16 → 855;
+    - "regrouping": a column slip in adding or subtracting, as ``_step_slips`` gives it:
+      345 + 278 → 513, 52 - 38 → 26 or 24;
+    - "quotient": a division one or two off: 42 ÷ 7 → 5 or 7, 4 or 8;
+
+    and with two steps, where a slip in the first step is carried into the second:
+
+    - "brackets": the steps worked in the wrong order: (24 - 6) ÷ 3 → 24 - (6 ÷ 3) = 22;
+    - "step": a step left out: 18 or 2;
+    - "every sign": every sign + or x, where it's one of those ``_mistaken_signs`` gives:
+      (31 + 41) x 8 → 80.
+
+    A kind with nothing to give is left out.
+    """
+    right = _right_equation(data)
+    signs = _mistaken_signs(operations)
+    worked: dict[str, list[Fraction | None]] = {
+        "sign": [
+            _solved(edit(right))
+            for place in range(len(_signs_of(right)))
+            for edit in _signs_changed(right, place, signs)
+        ],
+        "number": [
+            _solved(_with_number(right, place, slip))
+            for place, number in enumerate(_numbers_of(right))
+            for slip in _answer_slips_of(number)
+            if slip not in _numbers_of(right)
+        ],
+    }
+    for kind, values in _working_slips(data).items():
+        worked[kind] = list(values)
+    if isinstance(data, TwoStepQuestionData):
+        numbers: list[_Term] = [*_numbers_of(right)]
+        worked["brackets"] = [_solved(_regrouped(right))]
+        worked["step"] = [_solved(_step_kept(right, first)) for first in (True, False)]
+        worked["every sign"] = [
+            _solved(_rebuilt_equation(right, numbers, [sign, sign]))
+            for sign in (Operation.ADD, Operation.MULTIPLY)
+            if sign in signs and _signs_of(right) != [sign, sign]
+        ]
+    answers = {
+        kind: {
+            int(value)
+            for value in values
+            if value is not None and value.denominator == 1 and 0 <= value != data.answer
+        }
+        for kind, values in worked.items()
+    }
+    return {kind: values for kind, values in answers.items() if values}
+
+
+def _answer_slips_of(number: int) -> list[int]:
+    """
+    Return what ``number`` might be written as by mistake in working out an answer: what
+    ``_slips`` gives, and two less or more, so a wrong answer near the right one isn't always
+    odd where it's even: 52 - 38 = 14 gives 13 and 15 one off, but 12 and 16 two off.
+    """
+    slips = _slips(number)
+    return [*slips, *(slip for slip in (number - 2, number + 2) if slip > 1 and slip not in slips)]
+
+
+def _working_slips(
+    data: BasicOperationQuestionData | TwoStepQuestionData,
+) -> dict[str, list[Fraction | None]]:
+    """
+    Return what slips in working out the problem's steps come to, by kind, as ``_step_slips``
+    gives them: with two steps, a slip in the first is carried into the second, whose own slips
+    follow. ``None`` where carrying a slip divides by 0.
+    """
+    if isinstance(data, BasicOperationQuestionData):
+        return {
+            kind: [Fraction(each) for each in slips] for kind, slips in _step_slips(data).items()
+        }
+    first, second = data.steps
+    worked: dict[str, list[Fraction | None]] = {}
+    for kind, slips in _step_slips(first).items():
+        for slip in slips:
+            left, right = second.operands
+            if data.carried is Unknown.FIRST:
+                left = slip
+            else:
+                right = slip
+            divides_by_0 = second.operation is Operation.DIVIDE and right == 0
+            value = (
+                None if divides_by_0 else _worked(second.operation, Fraction(left), Fraction(right))
+            )
+            worked.setdefault(kind, []).append(value)
+    for kind, slips in _step_slips(second).items():
+        worked.setdefault(kind, []).extend(Fraction(each) for each in slips)
+    return worked
+
+
+def _step_slips(step: BasicOperationQuestionData) -> dict[str, list[int]]:
+    """
+    Return what slips in working out the step come to, by kind: in adding, the carrying
+    forgotten (``_carries_dropped``); in subtracting a smaller number, the smaller digit taken
+    from the larger in each column (``_smaller_digits_taken``) or the ten borrowed but not taken
+    from the next column (``_borrows_kept``), both "regrouping"; in dividing, one or two less or
+    more ("quotient"). A slip may come to the step's own answer, where there's nothing to regroup.
+    """
+    first, second = step.operands
+    match step.operation:
+        case Operation.ADD:
+            return {"regrouping": [_carries_dropped(first, second)]}
+        case Operation.SUBTRACT:
+            if first < second:
+                return {}
+            return {
+                "regrouping": [_smaller_digits_taken(first, second), _borrows_kept(first, second)]
+            }
+        case Operation.MULTIPLY:
+            return {}
+        case Operation.DIVIDE:
+            return {"quotient": [step.answer + off for off in (-2, -1, 1, 2)]}
+        case _:
+            assert_never(step.operation)
+
+
+def _carries_dropped(first: int, second: int) -> int:
+    """
+    Return ``first`` + ``second`` added column by column with nothing carried, the last column
+    written whole: 345 + 278 → 513, and 852 + 461 → 1,213.
+    """
+    total, place = 0, 1
+    while first >= 10 or second >= 10:
+        total += (first % 10 + second % 10) % 10 * place
+        first, second, place = first // 10, second // 10, place * 10
+    return total + (first + second) * place
+
+
+def _smaller_digits_taken(first: int, second: int) -> int:
+    """
+    Return ``first`` - ``second`` taken column by column, the smaller digit from the larger in
+    each: 52 - 38 → 26, and 400 - 123 → 323.
+    """
+    total, place = 0, 1
+    while first or second:
+        total += abs(first % 10 - second % 10) * place
+        first, second, place = first // 10, second // 10, place * 10
+    return total
+
+
+def _borrows_kept(first: int, second: int) -> int:
+    """
+    Return ``first`` - ``second`` taken column by column, a column with too small a digit given
+    ten from the next, which isn't made one less: 52 - 38 → 24, and 400 - 123 → 387.
+    """
+    total, place = 0, 1
+    while first or second:
+        top, bottom = first % 10, second % 10
+        total += (top + 10 - bottom if top < bottom else top - bottom) * place
+        first, second, place = first // 10, second // 10, place * 10
+    return total
+
+
+def _answer_slips(answer: int) -> set[int]:
+    """
+    Return ``answer`` slipped in its last step: 1 or 2 less or more, 10 less or more, or its
+    digits the other way round, as ``_reversed_digits`` gives them, from 0 up and other than the
+    answer.
+    """
+    slips = {answer - 2, answer - 1, answer + 1, answer + 2, answer - 10, answer + 10}
+    slips.add(_reversed_digits(answer))
+    return {slip for slip in slips if 0 <= slip != answer}
 
 
 def equation_choices(
@@ -1358,20 +1586,34 @@ _BLOCKS_HINTS = {
 }
 
 
+# How to answer a problem whose answer is chosen from numbers, after the representation's
+# instruction; and on a representation's problems answered both in writing and that way
+CHOOSE_NUMBER = "Circle the correct answer."
+CHOOSE_NUMBER_WHERE_GIVEN = "Where there are choices, circle the correct answer."
+
+
 def instruction(
     representation: Representation,
     operations: Collection[Operation],
     work_box: bool,
     choices: bool = False,
     two_steps: bool = False,
+    number_choices: bool = False,
 ) -> str:
     """
     Return the instruction printed under a word-problem sheet's header, for its representation and
     the operations of its problems. ``work_box`` is for text only: whether each problem has a box
     to show the work in. ``choices`` is for number lines and equations: whether each problem's is
     chosen from lettered ones. ``two_steps`` is for equations to choose from: whether the problems
-    have two steps, whose equations have a letter for what to find.
+    have two steps, whose equations have a letter for what to find. With ``number_choices``, each
+    problem's answer is chosen from lettered numbers: the instruction for writing it, followed by
+    ``CHOOSE_NUMBER``, and for equations, which have no line to write one on then, text only's
+    without a box.
     """
+    if number_choices:
+        if representation is Representation.EQUATION:
+            return f"{instruction(Representation.NONE, operations, False)} {CHOOSE_NUMBER}"
+        return f"{instruction(representation, operations, work_box)} {CHOOSE_NUMBER}"
     match representation:
         case Representation.STRIP:
             parts = not {Operation.ADD, Operation.SUBTRACT}.isdisjoint(operations)

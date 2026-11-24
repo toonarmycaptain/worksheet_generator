@@ -45,34 +45,34 @@ BT 1 0 0 1 192.828 562 Tm (47) Tj T* ET
 BT 1 0 0 1 372.828 562 Tm (25) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 523 Tm (Answer: ) Tj T* ET
-n 141.122 523 m 261.122 523 l S
+BT 1 0 0 1 82 527 Tm (Answer: ) Tj T* ET
+n 141.122 527 m 261.122 527 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 501 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 501 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT 1 0 0 1 54 497 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 497 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
-BT 1 0 0 1 82 481 Tm (The whole and one part are shown. Subtract to find the missing part.) Tj T* ET
+BT 1 0 0 1 82 477 Tm (The whole and one part are shown. Subtract to find the missing part.) Tj T* ET
 0 0 0 rg
 q
 0 0 0 rg
 BT /F2 11 Tf 13.2 TL ET
-BT 1 0 0 1 236.9365 464 Tm (whole: 72) Tj T* ET
+BT 1 0 0 1 236.9365 460 Tm (whole: 72) Tj T* ET
 .443137 .501961 .588235 RG
 1 w
-n 82 460 m 442 460 l S
-n 82 460 m 82 456 l S
-n 442 460 m 442 456 l S
+n 82 456 m 442 456 l S
+n 82 456 m 82 452 l S
+n 442 456 m 442 452 l S
 .176471 .215686 .282353 RG
 1.2 w
 .811765 .890196 .968627 rg
-n 82 418 125 34 re B*
+n 82 414 125 34 re B*
 .996078 .952941 .780392 rg
-n 207 418 235 34 re B*
+n 207 414 235 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 137.828 431 Tm (25) Tj T* ET
-BT 1 0 0 1 320.834 431 Tm (?) Tj T* ET
+BT 1 0 0 1 137.828 427 Tm (25) Tj T* ET
+BT 1 0 0 1 320.834 427 Tm (?) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 82 392 Tm (Answer: ) Tj T* ET
@@ -124,33 +124,33 @@ BT 1 0 0 1 192.828 577 Tm (47) Tj T* ET
 BT 1 0 0 1 372.828 577 Tm (25) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 538 Tm (Answer: ) Tj T* ET
-n 141.122 538 m 261.122 538 l S
+BT 1 0 0 1 82 542 Tm (Answer: ) Tj T* ET
+n 141.122 542 m 261.122 542 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 516 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 516 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT 1 0 0 1 54 512 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 512 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 q
 0 0 0 rg
 BT /F2 11 Tf 13.2 TL ET
-BT 1 0 0 1 236.9365 494 Tm (whole: 72) Tj T* ET
+BT 1 0 0 1 236.9365 490 Tm (whole: 72) Tj T* ET
 .443137 .501961 .588235 RG
 1 w
-n 82 490 m 442 490 l S
-n 82 490 m 82 486 l S
-n 442 490 m 442 486 l S
+n 82 486 m 442 486 l S
+n 82 486 m 82 482 l S
+n 442 486 m 442 482 l S
 .176471 .215686 .282353 RG
 1.2 w
 .811765 .890196 .968627 rg
-n 82 448 125 34 re B*
+n 82 444 125 34 re B*
 .996078 .952941 .780392 rg
-n 207 448 235 34 re B*
+n 207 444 235 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 137.828 461 Tm (25) Tj T* ET
-BT 1 0 0 1 320.834 461 Tm (?) Tj T* ET
+BT 1 0 0 1 137.828 457 Tm (25) Tj T* ET
+BT 1 0 0 1 320.834 457 Tm (?) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 82 422 Tm (Answer: ) Tj T* ET
@@ -219,34 +219,34 @@ BT 1 0 0 1 132.928 562 Tm (12) Tj T* ET
 BT 1 0 0 1 309.592 562 Tm (900) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 523 Tm (Answer: ) Tj T* ET
-n 141.122 523 m 261.122 523 l S
+BT 1 0 0 1 82 527 Tm (Answer: ) Tj T* ET
+n 141.122 527 m 261.122 527 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 501 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 501 Tm (Sam had 89 apples and used 74. How many apples are left?) Tj T* ET
+BT 1 0 0 1 54 497 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 497 Tm (Sam had 89 apples and used 74. How many apples are left?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
-BT 1 0 0 1 82 481 Tm (The whole and one part are shown. Subtract to find the missing part.) Tj T* ET
+BT 1 0 0 1 82 477 Tm (The whole and one part are shown. Subtract to find the missing part.) Tj T* ET
 0 0 0 rg
 q
 0 0 0 rg
 BT /F2 11 Tf 13.2 TL ET
-BT 1 0 0 1 236.9365 464 Tm (whole: 89) Tj T* ET
+BT 1 0 0 1 236.9365 460 Tm (whole: 89) Tj T* ET
 .443137 .501961 .588235 RG
 1 w
-n 82 460 m 442 460 l S
-n 82 460 m 82 456 l S
-n 442 460 m 442 456 l S
+n 82 456 m 442 456 l S
+n 82 456 m 82 452 l S
+n 442 456 m 442 452 l S
 .176471 .215686 .282353 RG
 1.2 w
 .811765 .890196 .968627 rg
-n 82 418 244.8 34 re B*
+n 82 414 244.8 34 re B*
 .996078 .952941 .780392 rg
-n 326.8 418 115.2 34 re B*
+n 326.8 414 115.2 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 197.728 431 Tm (74) Tj T* ET
-BT 1 0 0 1 380.734 431 Tm (?) Tj T* ET
+BT 1 0 0 1 197.728 427 Tm (74) Tj T* ET
+BT 1 0 0 1 380.734 427 Tm (?) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 82 392 Tm (Answer: ) Tj T* ET
@@ -299,101 +299,101 @@ BT 1 0 0 1 132.928 562 Tm (11) Tj T* ET
 BT 1 0 0 1 312.928 562 Tm (25) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 523 Tm (Answer: ) Tj T* ET
-n 141.122 523 m 261.122 523 l S
+BT 1 0 0 1 82 527 Tm (Answer: ) Tj T* ET
+n 141.122 527 m 261.122 527 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 501 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 501 Tm (Maria collected 22 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
-BT 1 0 0 1 82 481 Tm (did they collect altogether?) Tj T* ET
+BT 1 0 0 1 54 497 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 497 Tm (Maria collected 22 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 477 Tm (did they collect altogether?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
-BT 1 0 0 1 82 461 Tm (Both parts are shown. Add the parts to find the whole.) Tj T* ET
+BT 1 0 0 1 82 457 Tm (Both parts are shown. Add the parts to find the whole.) Tj T* ET
 0 0 0 rg
 q
 0 0 0 rg
 BT /F2 11 Tf 13.2 TL ET
-BT 1 0 0 1 239.692 444 Tm (whole: ?) Tj T* ET
+BT 1 0 0 1 239.692 440 Tm (whole: ?) Tj T* ET
 .443137 .501961 .588235 RG
 1 w
-n 82 440 m 442 440 l S
-n 82 440 m 82 436 l S
-n 442 440 m 442 436 l S
+n 82 436 m 442 436 l S
+n 82 436 m 82 432 l S
+n 442 436 m 442 432 l S
 .176471 .215686 .282353 RG
 1.2 w
 .811765 .890196 .968627 rg
-n 82 398 168.5106 34 re B*
+n 82 394 168.5106 34 re B*
 .811765 .890196 .968627 rg
-n 250.5106 398 191.4894 34 re B*
+n 250.5106 394 191.4894 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 159.5833 411 Tm (22) Tj T* ET
-BT 1 0 0 1 339.5833 411 Tm (25) Tj T* ET
+BT 1 0 0 1 159.5833 407 Tm (22) Tj T* ET
+BT 1 0 0 1 339.5833 407 Tm (25) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 82 372 Tm (Answer: ) Tj T* ET
 n 141.122 372 m 261.122 372 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 350 Tm (3.) Tj T* ET
-BT 1 0 0 1 82 350 Tm (Maria collected 33 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
-BT 1 0 0 1 82 330 Tm (did they collect altogether?) Tj T* ET
+BT 1 0 0 1 54 342 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 342 Tm (Maria collected 33 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 322 Tm (did they collect altogether?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
-BT 1 0 0 1 82 310 Tm (Both parts are shown. Add the parts to find the whole.) Tj T* ET
+BT 1 0 0 1 82 302 Tm (Both parts are shown. Add the parts to find the whole.) Tj T* ET
 0 0 0 rg
 q
 0 0 0 rg
 BT /F2 11 Tf 13.2 TL ET
-BT 1 0 0 1 239.692 293 Tm (whole: ?) Tj T* ET
+BT 1 0 0 1 239.692 285 Tm (whole: ?) Tj T* ET
 .443137 .501961 .588235 RG
 1 w
-n 82 289 m 442 289 l S
-n 82 289 m 82 285 l S
-n 442 289 m 442 285 l S
+n 82 281 m 442 281 l S
+n 82 281 m 82 277 l S
+n 442 281 m 442 277 l S
 .176471 .215686 .282353 RG
 1.2 w
 .811765 .890196 .968627 rg
-n 82 247 204.8276 34 re B*
+n 82 239 204.8276 34 re B*
 .811765 .890196 .968627 rg
-n 286.8276 247 155.1724 34 re B*
+n 286.8276 239 155.1724 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 177.7418 260 Tm (33) Tj T* ET
-BT 1 0 0 1 357.7418 260 Tm (25) Tj T* ET
+BT 1 0 0 1 177.7418 252 Tm (33) Tj T* ET
+BT 1 0 0 1 357.7418 252 Tm (25) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 221 Tm (Answer: ) Tj T* ET
-n 141.122 221 m 261.122 221 l S
+BT 1 0 0 1 82 217 Tm (Answer: ) Tj T* ET
+n 141.122 217 m 261.122 217 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 199 Tm (4.) Tj T* ET
-BT 1 0 0 1 82 199 Tm (Maria collected 44 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
-BT 1 0 0 1 82 179 Tm (did they collect altogether?) Tj T* ET
+BT 1 0 0 1 54 187 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 187 Tm (Maria collected 44 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 167 Tm (did they collect altogether?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
-BT 1 0 0 1 82 159 Tm (Both parts are shown. Add the parts to find the whole.) Tj T* ET
+BT 1 0 0 1 82 147 Tm (Both parts are shown. Add the parts to find the whole.) Tj T* ET
 0 0 0 rg
 q
 0 0 0 rg
 BT /F2 11 Tf 13.2 TL ET
-BT 1 0 0 1 239.692 142 Tm (whole: ?) Tj T* ET
+BT 1 0 0 1 239.692 130 Tm (whole: ?) Tj T* ET
 .443137 .501961 .588235 RG
 1 w
-n 82 138 m 442 138 l S
-n 82 138 m 82 134 l S
-n 442 138 m 442 134 l S
+n 82 126 m 442 126 l S
+n 82 126 m 82 122 l S
+n 442 126 m 442 122 l S
 .176471 .215686 .282353 RG
 1.2 w
 .811765 .890196 .968627 rg
-n 82 96 229.5652 34 re B*
+n 82 84 229.5652 34 re B*
 .811765 .890196 .968627 rg
-n 311.5652 96 130.4348 34 re B*
+n 311.5652 84 130.4348 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 190.1106 109 Tm (44) Tj T* ET
-BT 1 0 0 1 370.1106 109 Tm (25) Tj T* ET
+BT 1 0 0 1 190.1106 97 Tm (44) Tj T* ET
+BT 1 0 0 1 370.1106 97 Tm (25) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 70 Tm (Answer: ) Tj T* ET
-n 141.122 70 m 261.122 70 l S
+BT 1 0 0 1 82 62 Tm (Answer: ) Tj T* ET
+n 141.122 62 m 261.122 62 l S
 --- stream 2
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 0 0 0 rg
@@ -436,8 +436,8 @@ BT 1 0 0 1 197.728 588 Tm (55) Tj T* ET
 BT 1 0 0 1 377.728 588 Tm (25) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 549 Tm (Answer: ) Tj T* ET
-n 141.122 549 m 261.122 549 l S
+BT 1 0 0 1 82 553 Tm (Answer: ) Tj T* ET
+n 141.122 553 m 261.122 553 l S
 
 === self_check_tiles_answer_key ===
 title: Word Problems \204 Strip Diagrams
@@ -763,34 +763,34 @@ BT 1 0 0 1 192.828 562 Tm (47) Tj T* ET
 BT 1 0 0 1 372.828 562 Tm (25) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 523 Tm (Answer: ) Tj T* ET
-n 141.122 523 m 261.122 523 l S
+BT 1 0 0 1 82 527 Tm (Answer: ) Tj T* ET
+n 141.122 527 m 261.122 527 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 501 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 501 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT 1 0 0 1 54 497 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 497 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
-BT 1 0 0 1 82 481 Tm (The whole and one part are shown. Subtract to find the missing part.) Tj T* ET
+BT 1 0 0 1 82 477 Tm (The whole and one part are shown. Subtract to find the missing part.) Tj T* ET
 0 0 0 rg
 q
 0 0 0 rg
 BT /F2 11 Tf 13.2 TL ET
-BT 1 0 0 1 236.9365 464 Tm (whole: 72) Tj T* ET
+BT 1 0 0 1 236.9365 460 Tm (whole: 72) Tj T* ET
 .443137 .501961 .588235 RG
 1 w
-n 82 460 m 442 460 l S
-n 82 460 m 82 456 l S
-n 442 460 m 442 456 l S
+n 82 456 m 442 456 l S
+n 82 456 m 82 452 l S
+n 442 456 m 442 452 l S
 .176471 .215686 .282353 RG
 1.2 w
 .811765 .890196 .968627 rg
-n 82 418 125 34 re B*
+n 82 414 125 34 re B*
 .996078 .952941 .780392 rg
-n 207 418 235 34 re B*
+n 207 414 235 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 137.828 431 Tm (25) Tj T* ET
-BT 1 0 0 1 320.834 431 Tm (?) Tj T* ET
+BT 1 0 0 1 137.828 427 Tm (25) Tj T* ET
+BT 1 0 0 1 320.834 427 Tm (?) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 82 392 Tm (Answer: ) Tj T* ET
@@ -844,36 +844,36 @@ BT 1 0 0 1 258.664 562 Tm (4) Tj T* ET
 BT 1 0 0 1 378.664 562 Tm (4) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 523 Tm (Answer: ) Tj T* ET
-n 141.122 523 m 261.122 523 l S
+BT 1 0 0 1 82 527 Tm (Answer: ) Tj T* ET
+n 141.122 527 m 261.122 527 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 501 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 501 Tm (Jamal shares 12 marbles equally among 3 friends. How many marbles does) Tj T* ET
-BT 1 0 0 1 82 481 Tm (each friend get?) Tj T* ET
+BT 1 0 0 1 54 497 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 497 Tm (Jamal shares 12 marbles equally among 3 friends. How many marbles does) Tj T* ET
+BT 1 0 0 1 82 477 Tm (each friend get?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
-BT 1 0 0 1 82 461 Tm (The whole is split into equal groups. Divide to find the amount in each group.) Tj T* ET
+BT 1 0 0 1 82 457 Tm (The whole is split into equal groups. Divide to find the amount in each group.) Tj T* ET
 0 0 0 rg
 q
 0 0 0 rg
 BT /F2 11 Tf 13.2 TL ET
-BT 1 0 0 1 236.9365 444 Tm (whole: 12) Tj T* ET
+BT 1 0 0 1 236.9365 440 Tm (whole: 12) Tj T* ET
 .443137 .501961 .588235 RG
 1 w
-n 82 440 m 442 440 l S
-n 82 440 m 82 436 l S
-n 442 440 m 442 436 l S
+n 82 436 m 442 436 l S
+n 82 436 m 82 432 l S
+n 442 436 m 442 432 l S
 .176471 .215686 .282353 RG
 1.2 w
 .996078 .952941 .780392 rg
-n 82 398 120 34 re B*
-n 202 398 120 34 re B*
-n 322 398 120 34 re B*
+n 82 394 120 34 re B*
+n 202 394 120 34 re B*
+n 322 394 120 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 138.334 411 Tm (?) Tj T* ET
-BT 1 0 0 1 258.334 411 Tm (?) Tj T* ET
-BT 1 0 0 1 378.334 411 Tm (?) Tj T* ET
+BT 1 0 0 1 138.334 407 Tm (?) Tj T* ET
+BT 1 0 0 1 258.334 407 Tm (?) Tj T* ET
+BT 1 0 0 1 378.334 407 Tm (?) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 82 372 Tm (Answer: ) Tj T* ET
@@ -933,33 +933,33 @@ BT 1 0 0 1 345.328 562 Tm (20) Tj T* ET
 BT 1 0 0 1 405.328 562 Tm (20) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 523 Tm (Answer: ) Tj T* ET
-n 141.122 523 m 261.122 523 l S
+BT 1 0 0 1 82 527 Tm (Answer: ) Tj T* ET
+n 141.122 527 m 261.122 527 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 501 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 501 Tm (4 beads are put into 2 equal groups. How many beads are in each group?) Tj T* ET
+BT 1 0 0 1 54 497 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 497 Tm (4 beads are put into 2 equal groups. How many beads are in each group?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
-BT 1 0 0 1 82 481 Tm (The whole is split into equal groups. Divide to find the amount in each group.) Tj T* ET
+BT 1 0 0 1 82 477 Tm (The whole is split into equal groups. Divide to find the amount in each group.) Tj T* ET
 0 0 0 rg
 q
 0 0 0 rg
 BT /F2 11 Tf 13.2 TL ET
-BT 1 0 0 1 239.9945 464 Tm (whole: 4) Tj T* ET
+BT 1 0 0 1 239.9945 460 Tm (whole: 4) Tj T* ET
 .443137 .501961 .588235 RG
 1 w
-n 82 460 m 442 460 l S
-n 82 460 m 82 456 l S
-n 442 460 m 442 456 l S
+n 82 456 m 442 456 l S
+n 82 456 m 82 452 l S
+n 442 456 m 442 452 l S
 .176471 .215686 .282353 RG
 1.2 w
 .996078 .952941 .780392 rg
-n 82 418 180 34 re B*
-n 262 418 180 34 re B*
+n 82 414 180 34 re B*
+n 262 414 180 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 168.334 431 Tm (?) Tj T* ET
-BT 1 0 0 1 348.334 431 Tm (?) Tj T* ET
+BT 1 0 0 1 168.334 427 Tm (?) Tj T* ET
+BT 1 0 0 1 348.334 427 Tm (?) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 82 392 Tm (Answer: ) Tj T* ET
@@ -1013,102 +1013,102 @@ BT 1 0 0 1 192.828 546 Tm (47) Tj T* ET
 BT 1 0 0 1 372.828 546 Tm (25) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 507 Tm (Answer: ) Tj T* ET
-n 141.122 507 m 261.122 507 l S
+BT 1 0 0 1 82 511 Tm (Answer: ) Tj T* ET
+n 141.122 511 m 261.122 511 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 485 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 485 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT 1 0 0 1 54 481 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 481 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
-BT 1 0 0 1 82 465 Tm (The whole and one part are shown. Subtract to find the missing part.) Tj T* ET
+BT 1 0 0 1 82 461 Tm (The whole and one part are shown. Subtract to find the missing part.) Tj T* ET
 0 0 0 rg
 q
 0 0 0 rg
 BT /F2 11 Tf 13.2 TL ET
-BT 1 0 0 1 236.9365 448 Tm (whole: 72) Tj T* ET
+BT 1 0 0 1 236.9365 444 Tm (whole: 72) Tj T* ET
 .443137 .501961 .588235 RG
 1 w
-n 82 444 m 442 444 l S
-n 82 444 m 82 440 l S
-n 442 444 m 442 440 l S
+n 82 440 m 442 440 l S
+n 82 440 m 82 436 l S
+n 442 440 m 442 436 l S
 .176471 .215686 .282353 RG
 1.2 w
 .811765 .890196 .968627 rg
-n 82 402 125 34 re B*
+n 82 398 125 34 re B*
 .996078 .952941 .780392 rg
-n 207 402 235 34 re B*
+n 207 398 235 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 137.828 415 Tm (25) Tj T* ET
-BT 1 0 0 1 320.834 415 Tm (?) Tj T* ET
+BT 1 0 0 1 137.828 411 Tm (25) Tj T* ET
+BT 1 0 0 1 320.834 411 Tm (?) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 82 376 Tm (Answer: ) Tj T* ET
 n 141.122 376 m 261.122 376 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 354 Tm (3.) Tj T* ET
-BT 1 0 0 1 82 354 Tm (Maria has 3 bags with 4 stickers in each bag. How many stickers are there in) Tj T* ET
-BT 1 0 0 1 82 334 Tm (all?) Tj T* ET
+BT 1 0 0 1 54 346 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 346 Tm (Maria has 3 bags with 4 stickers in each bag. How many stickers are there in) Tj T* ET
+BT 1 0 0 1 82 326 Tm (all?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
-BT 1 0 0 1 82 314 Tm (Equal groups are shown. Multiply the group size by the number of groups.) Tj T* ET
+BT 1 0 0 1 82 306 Tm (Equal groups are shown. Multiply the group size by the number of groups.) Tj T* ET
 0 0 0 rg
 q
 0 0 0 rg
 BT /F2 11 Tf 13.2 TL ET
-BT 1 0 0 1 239.692 297 Tm (whole: ?) Tj T* ET
+BT 1 0 0 1 239.692 289 Tm (whole: ?) Tj T* ET
 .443137 .501961 .588235 RG
 1 w
-n 82 293 m 442 293 l S
-n 82 293 m 82 289 l S
-n 442 293 m 442 289 l S
+n 82 285 m 442 285 l S
+n 82 285 m 82 281 l S
+n 442 285 m 442 281 l S
 .176471 .215686 .282353 RG
 1.2 w
 .811765 .890196 .968627 rg
-n 82 251 120 34 re B*
-n 202 251 120 34 re B*
-n 322 251 120 34 re B*
+n 82 243 120 34 re B*
+n 202 243 120 34 re B*
+n 322 243 120 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 138.664 264 Tm (4) Tj T* ET
-BT 1 0 0 1 258.664 264 Tm (4) Tj T* ET
-BT 1 0 0 1 378.664 264 Tm (4) Tj T* ET
+BT 1 0 0 1 138.664 256 Tm (4) Tj T* ET
+BT 1 0 0 1 258.664 256 Tm (4) Tj T* ET
+BT 1 0 0 1 378.664 256 Tm (4) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 225 Tm (Answer: ) Tj T* ET
-n 141.122 225 m 261.122 225 l S
+BT 1 0 0 1 82 221 Tm (Answer: ) Tj T* ET
+n 141.122 221 m 261.122 221 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 203 Tm (4.) Tj T* ET
-BT 1 0 0 1 82 203 Tm (Jamal shares 12 marbles equally among 3 friends. How many marbles does) Tj T* ET
-BT 1 0 0 1 82 183 Tm (each friend get?) Tj T* ET
+BT 1 0 0 1 54 191 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 191 Tm (Jamal shares 12 marbles equally among 3 friends. How many marbles does) Tj T* ET
+BT 1 0 0 1 82 171 Tm (each friend get?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
-BT 1 0 0 1 82 163 Tm (The whole is split into equal groups. Divide to find the amount in each group.) Tj T* ET
+BT 1 0 0 1 82 151 Tm (The whole is split into equal groups. Divide to find the amount in each group.) Tj T* ET
 0 0 0 rg
 q
 0 0 0 rg
 BT /F2 11 Tf 13.2 TL ET
-BT 1 0 0 1 236.9365 146 Tm (whole: 12) Tj T* ET
+BT 1 0 0 1 236.9365 134 Tm (whole: 12) Tj T* ET
 .443137 .501961 .588235 RG
 1 w
-n 82 142 m 442 142 l S
-n 82 142 m 82 138 l S
-n 442 142 m 442 138 l S
+n 82 130 m 442 130 l S
+n 82 130 m 82 126 l S
+n 442 130 m 442 126 l S
 .176471 .215686 .282353 RG
 1.2 w
 .996078 .952941 .780392 rg
-n 82 100 120 34 re B*
-n 202 100 120 34 re B*
-n 322 100 120 34 re B*
+n 82 88 120 34 re B*
+n 202 88 120 34 re B*
+n 322 88 120 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 138.334 113 Tm (?) Tj T* ET
-BT 1 0 0 1 258.334 113 Tm (?) Tj T* ET
-BT 1 0 0 1 378.334 113 Tm (?) Tj T* ET
+BT 1 0 0 1 138.334 101 Tm (?) Tj T* ET
+BT 1 0 0 1 258.334 101 Tm (?) Tj T* ET
+BT 1 0 0 1 378.334 101 Tm (?) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 74 Tm (Answer: ) Tj T* ET
-n 141.122 74 m 261.122 74 l S
+BT 1 0 0 1 82 66 Tm (Answer: ) Tj T* ET
+n 141.122 66 m 261.122 66 l S
 --- stream 2
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 0 0 0 rg
@@ -1177,11 +1177,11 @@ BT /F3 9 Tf 10.8 TL ET
 BT 1 0 0 1 87 606 Tm (Show your work) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 532 Tm (Answer: ) Tj T* ET
-n 141.122 532 m 261.122 532 l S
+BT 1 0 0 1 82 536 Tm (Answer: ) Tj T* ET
+n 141.122 536 m 261.122 536 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 510 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 510 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT 1 0 0 1 54 506 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 506 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
@@ -1189,28 +1189,28 @@ q
 .796078 .835294 .878431 RG
 1 w
 n
-86 436 m
-554 436 l
-556.2112 436 558 437.7888 558 440 c
-558 492 l
-558 494.2112 556.2112 496 554 496 c
-86 496 l
-83.7888 496 82 494.2112 82 492 c
-82 440 l
-82 437.7888 83.7888 436 86 436 c
+86 432 m
+554 432 l
+556.2112 432 558 433.7888 558 436 c
+558 488 l
+558 490.2112 556.2112 492 554 492 c
+86 492 l
+83.7888 492 82 490.2112 82 488 c
+82 436 l
+82 433.7888 83.7888 432 86 432 c
 h
 S
 BT /F3 9 Tf 10.8 TL ET
 .627451 .682353 .752941 rg
-BT 1 0 0 1 87 484 Tm (Show your work) Tj T* ET
+BT 1 0 0 1 87 480 Tm (Show your work) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 82 410 Tm (Answer: ) Tj T* ET
 n 141.122 410 m 261.122 410 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 388 Tm (3.) Tj T* ET
-BT 1 0 0 1 82 388 Tm (Maria has 3 bags with 4 stickers in each bag. How many stickers are there in) Tj T* ET
-BT 1 0 0 1 82 368 Tm (all?) Tj T* ET
+BT 1 0 0 1 54 380 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 380 Tm (Maria has 3 bags with 4 stickers in each bag. How many stickers are there in) Tj T* ET
+BT 1 0 0 1 82 360 Tm (all?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
@@ -1218,28 +1218,28 @@ q
 .796078 .835294 .878431 RG
 1 w
 n
-86 294 m
-554 294 l
-556.2112 294 558 295.7888 558 298 c
-558 350 l
-558 352.2112 556.2112 354 554 354 c
-86 354 l
-83.7888 354 82 352.2112 82 350 c
-82 298 l
-82 295.7888 83.7888 294 86 294 c
+86 286 m
+554 286 l
+556.2112 286 558 287.7888 558 290 c
+558 342 l
+558 344.2112 556.2112 346 554 346 c
+86 346 l
+83.7888 346 82 344.2112 82 342 c
+82 290 l
+82 287.7888 83.7888 286 86 286 c
 h
 S
 BT /F3 9 Tf 10.8 TL ET
 .627451 .682353 .752941 rg
-BT 1 0 0 1 87 342 Tm (Show your work) Tj T* ET
+BT 1 0 0 1 87 334 Tm (Show your work) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 268 Tm (Answer: ) Tj T* ET
-n 141.122 268 m 261.122 268 l S
+BT 1 0 0 1 82 264 Tm (Answer: ) Tj T* ET
+n 141.122 264 m 261.122 264 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 246 Tm (4.) Tj T* ET
-BT 1 0 0 1 82 246 Tm (Jamal shares 12 marbles equally among 3 friends. How many marbles does) Tj T* ET
-BT 1 0 0 1 82 226 Tm (each friend get?) Tj T* ET
+BT 1 0 0 1 54 234 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 234 Tm (Jamal shares 12 marbles equally among 3 friends. How many marbles does) Tj T* ET
+BT 1 0 0 1 82 214 Tm (each friend get?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
@@ -1247,24 +1247,24 @@ q
 .796078 .835294 .878431 RG
 1 w
 n
-86 152 m
-554 152 l
-556.2112 152 558 153.7888 558 156 c
-558 208 l
-558 210.2112 556.2112 212 554 212 c
-86 212 l
-83.7888 212 82 210.2112 82 208 c
-82 156 l
-82 153.7888 83.7888 152 86 152 c
+86 140 m
+554 140 l
+556.2112 140 558 141.7888 558 144 c
+558 196 l
+558 198.2112 556.2112 200 554 200 c
+86 200 l
+83.7888 200 82 198.2112 82 196 c
+82 144 l
+82 141.7888 83.7888 140 86 140 c
 h
 S
 BT /F3 9 Tf 10.8 TL ET
 .627451 .682353 .752941 rg
-BT 1 0 0 1 87 200 Tm (Show your work) Tj T* ET
+BT 1 0 0 1 87 188 Tm (Show your work) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 126 Tm (Answer: ) Tj T* ET
-n 141.122 126 m 261.122 126 l S
+BT 1 0 0 1 82 118 Tm (Answer: ) Tj T* ET
+n 141.122 118 m 261.122 118 l S
 --- stream 2
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 0 0 0 rg
@@ -1333,12 +1333,12 @@ BT /F3 9 Tf 10.8 TL ET
 BT 1 0 0 1 87 606 Tm (Show your work) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 532 Tm (Answer: ) Tj T* ET
-n 141.122 532 m 261.122 532 l S
+BT 1 0 0 1 82 536 Tm (Answer: ) Tj T* ET
+n 141.122 536 m 261.122 536 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 510 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 510 Tm (Maria collected 22 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
-BT 1 0 0 1 82 490 Tm (did they collect altogether?) Tj T* ET
+BT 1 0 0 1 54 506 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 506 Tm (Maria collected 22 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 486 Tm (did they collect altogether?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
@@ -1346,28 +1346,28 @@ q
 .796078 .835294 .878431 RG
 1 w
 n
-86 416 m
-554 416 l
-556.2112 416 558 417.7888 558 420 c
-558 472 l
-558 474.2112 556.2112 476 554 476 c
-86 476 l
-83.7888 476 82 474.2112 82 472 c
-82 420 l
-82 417.7888 83.7888 416 86 416 c
+86 412 m
+554 412 l
+556.2112 412 558 413.7888 558 416 c
+558 468 l
+558 470.2112 556.2112 472 554 472 c
+86 472 l
+83.7888 472 82 470.2112 82 468 c
+82 416 l
+82 413.7888 83.7888 412 86 412 c
 h
 S
 BT /F3 9 Tf 10.8 TL ET
 .627451 .682353 .752941 rg
-BT 1 0 0 1 87 464 Tm (Show your work) Tj T* ET
+BT 1 0 0 1 87 460 Tm (Show your work) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 82 390 Tm (Answer: ) Tj T* ET
 n 141.122 390 m 261.122 390 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 368 Tm (3.) Tj T* ET
-BT 1 0 0 1 82 368 Tm (Maria collected 33 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
-BT 1 0 0 1 82 348 Tm (did they collect altogether?) Tj T* ET
+BT 1 0 0 1 54 360 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 360 Tm (Maria collected 33 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 340 Tm (did they collect altogether?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
@@ -1375,28 +1375,28 @@ q
 .796078 .835294 .878431 RG
 1 w
 n
-86 274 m
-554 274 l
-556.2112 274 558 275.7888 558 278 c
-558 330 l
-558 332.2112 556.2112 334 554 334 c
-86 334 l
-83.7888 334 82 332.2112 82 330 c
-82 278 l
-82 275.7888 83.7888 274 86 274 c
+86 266 m
+554 266 l
+556.2112 266 558 267.7888 558 270 c
+558 322 l
+558 324.2112 556.2112 326 554 326 c
+86 326 l
+83.7888 326 82 324.2112 82 322 c
+82 270 l
+82 267.7888 83.7888 266 86 266 c
 h
 S
 BT /F3 9 Tf 10.8 TL ET
 .627451 .682353 .752941 rg
-BT 1 0 0 1 87 322 Tm (Show your work) Tj T* ET
+BT 1 0 0 1 87 314 Tm (Show your work) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 248 Tm (Answer: ) Tj T* ET
-n 141.122 248 m 261.122 248 l S
+BT 1 0 0 1 82 244 Tm (Answer: ) Tj T* ET
+n 141.122 244 m 261.122 244 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 226 Tm (4.) Tj T* ET
-BT 1 0 0 1 82 226 Tm (Maria collected 44 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
-BT 1 0 0 1 82 206 Tm (did they collect altogether?) Tj T* ET
+BT 1 0 0 1 54 214 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 214 Tm (Maria collected 44 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 194 Tm (did they collect altogether?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
@@ -1404,24 +1404,24 @@ q
 .796078 .835294 .878431 RG
 1 w
 n
-86 132 m
-554 132 l
-556.2112 132 558 133.7888 558 136 c
-558 188 l
-558 190.2112 556.2112 192 554 192 c
-86 192 l
-83.7888 192 82 190.2112 82 188 c
-82 136 l
-82 133.7888 83.7888 132 86 132 c
+86 120 m
+554 120 l
+556.2112 120 558 121.7888 558 124 c
+558 176 l
+558 178.2112 556.2112 180 554 180 c
+86 180 l
+83.7888 180 82 178.2112 82 176 c
+82 124 l
+82 121.7888 83.7888 120 86 120 c
 h
 S
 BT /F3 9 Tf 10.8 TL ET
 .627451 .682353 .752941 rg
-BT 1 0 0 1 87 180 Tm (Show your work) Tj T* ET
+BT 1 0 0 1 87 168 Tm (Show your work) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 106 Tm (Answer: ) Tj T* ET
-n 141.122 106 m 261.122 106 l S
+BT 1 0 0 1 82 98 Tm (Answer: ) Tj T* ET
+n 141.122 98 m 261.122 98 l S
 --- stream 2
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 0 0 0 rg
@@ -1462,8 +1462,8 @@ BT /F3 9 Tf 10.8 TL ET
 BT 1 0 0 1 87 632 Tm (Show your work) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 558 Tm (Answer: ) Tj T* ET
-n 141.122 558 m 261.122 558 l S
+BT 1 0 0 1 82 562 Tm (Answer: ) Tj T* ET
+n 141.122 562 m 261.122 562 l S
 
 === text_only_self_check_tiles_answer_key ===
 title: Word Problems
@@ -3103,109 +3103,109 @@ BT /F2 18 Tf 21.6 TL ET
 BT 1 0 0 1 56 415.5 Tm (+) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 368 Tm (Answer: ) Tj T* ET
-n 141.122 368 m 261.122 368 l S
+BT 1 0 0 1 82 372 Tm (Answer: ) Tj T* ET
+n 141.122 372 m 261.122 372 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 346 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 346 Tm (There were 304 cards on the shelf. 128 of them were sold. How many cards) Tj T* ET
-BT 1 0 0 1 82 326 Tm (are left?) Tj T* ET
+BT 1 0 0 1 54 342 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 342 Tm (There were 304 cards on the shelf. 128 of them were sold. How many cards) Tj T* ET
+BT 1 0 0 1 82 322 Tm (are left?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
-BT 1 0 0 1 82 306 Tm (Cross out 128 to subtract.) Tj T* ET
+BT 1 0 0 1 82 302 Tm (Cross out 128 to subtract.) Tj T* ET
 0 0 0 rg
 q
 .811765 .890196 .968627 rg
 .168627 .423529 .690196 RG
 1 w
-n 82 242 55 55 re B*
+n 82 238 55 55 re B*
 .4 w
-n 87.5 242 m 87.5 297 l S
-n 93 242 m 93 297 l S
-n 98.5 242 m 98.5 297 l S
-n 104 242 m 104 297 l S
-n 109.5 242 m 109.5 297 l S
-n 115 242 m 115 297 l S
-n 120.5 242 m 120.5 297 l S
-n 126 242 m 126 297 l S
-n 131.5 242 m 131.5 297 l S
-n 82 247.5 m 137 247.5 l S
-n 82 253 m 137 253 l S
-n 82 258.5 m 137 258.5 l S
-n 82 264 m 137 264 l S
-n 82 269.5 m 137 269.5 l S
-n 82 275 m 137 275 l S
-n 82 280.5 m 137 280.5 l S
-n 82 286 m 137 286 l S
-n 82 291.5 m 137 291.5 l S
+n 87.5 238 m 87.5 293 l S
+n 93 238 m 93 293 l S
+n 98.5 238 m 98.5 293 l S
+n 104 238 m 104 293 l S
+n 109.5 238 m 109.5 293 l S
+n 115 238 m 115 293 l S
+n 120.5 238 m 120.5 293 l S
+n 126 238 m 126 293 l S
+n 131.5 238 m 131.5 293 l S
+n 82 243.5 m 137 243.5 l S
+n 82 249 m 137 249 l S
+n 82 254.5 m 137 254.5 l S
+n 82 260 m 137 260 l S
+n 82 265.5 m 137 265.5 l S
+n 82 271 m 137 271 l S
+n 82 276.5 m 137 276.5 l S
+n 82 282 m 137 282 l S
+n 82 287.5 m 137 287.5 l S
 .811765 .890196 .968627 rg
 .168627 .423529 .690196 RG
 1 w
-n 139.75 242 55 55 re B*
+n 139.75 238 55 55 re B*
 .4 w
-n 145.25 242 m 145.25 297 l S
-n 150.75 242 m 150.75 297 l S
-n 156.25 242 m 156.25 297 l S
-n 161.75 242 m 161.75 297 l S
-n 167.25 242 m 167.25 297 l S
-n 172.75 242 m 172.75 297 l S
-n 178.25 242 m 178.25 297 l S
-n 183.75 242 m 183.75 297 l S
-n 189.25 242 m 189.25 297 l S
-n 139.75 247.5 m 194.75 247.5 l S
-n 139.75 253 m 194.75 253 l S
-n 139.75 258.5 m 194.75 258.5 l S
-n 139.75 264 m 194.75 264 l S
-n 139.75 269.5 m 194.75 269.5 l S
-n 139.75 275 m 194.75 275 l S
-n 139.75 280.5 m 194.75 280.5 l S
-n 139.75 286 m 194.75 286 l S
-n 139.75 291.5 m 194.75 291.5 l S
+n 145.25 238 m 145.25 293 l S
+n 150.75 238 m 150.75 293 l S
+n 156.25 238 m 156.25 293 l S
+n 161.75 238 m 161.75 293 l S
+n 167.25 238 m 167.25 293 l S
+n 172.75 238 m 172.75 293 l S
+n 178.25 238 m 178.25 293 l S
+n 183.75 238 m 183.75 293 l S
+n 189.25 238 m 189.25 293 l S
+n 139.75 243.5 m 194.75 243.5 l S
+n 139.75 249 m 194.75 249 l S
+n 139.75 254.5 m 194.75 254.5 l S
+n 139.75 260 m 194.75 260 l S
+n 139.75 265.5 m 194.75 265.5 l S
+n 139.75 271 m 194.75 271 l S
+n 139.75 276.5 m 194.75 276.5 l S
+n 139.75 282 m 194.75 282 l S
+n 139.75 287.5 m 194.75 287.5 l S
 .811765 .890196 .968627 rg
 .168627 .423529 .690196 RG
 1 w
-n 197.5 242 55 55 re B*
+n 197.5 238 55 55 re B*
 .4 w
-n 203 242 m 203 297 l S
-n 208.5 242 m 208.5 297 l S
-n 214 242 m 214 297 l S
-n 219.5 242 m 219.5 297 l S
-n 225 242 m 225 297 l S
-n 230.5 242 m 230.5 297 l S
-n 236 242 m 236 297 l S
-n 241.5 242 m 241.5 297 l S
-n 247 242 m 247 297 l S
-n 197.5 247.5 m 252.5 247.5 l S
-n 197.5 253 m 252.5 253 l S
-n 197.5 258.5 m 252.5 258.5 l S
-n 197.5 264 m 252.5 264 l S
-n 197.5 269.5 m 252.5 269.5 l S
-n 197.5 275 m 252.5 275 l S
-n 197.5 280.5 m 252.5 280.5 l S
-n 197.5 286 m 252.5 286 l S
-n 197.5 291.5 m 252.5 291.5 l S
+n 203 238 m 203 293 l S
+n 208.5 238 m 208.5 293 l S
+n 214 238 m 214 293 l S
+n 219.5 238 m 219.5 293 l S
+n 225 238 m 225 293 l S
+n 230.5 238 m 230.5 293 l S
+n 236 238 m 236 293 l S
+n 241.5 238 m 241.5 293 l S
+n 247 238 m 247 293 l S
+n 197.5 243.5 m 252.5 243.5 l S
+n 197.5 249 m 252.5 249 l S
+n 197.5 254.5 m 252.5 254.5 l S
+n 197.5 260 m 252.5 260 l S
+n 197.5 265.5 m 252.5 265.5 l S
+n 197.5 271 m 252.5 271 l S
+n 197.5 276.5 m 252.5 276.5 l S
+n 197.5 282 m 252.5 282 l S
+n 197.5 287.5 m 252.5 287.5 l S
 .992157 .890196 .784314 rg
 .752941 .337255 .129412 RG
 1 w
-n 264.6 242 5.5 5.5 re B*
-.4 w
-.992157 .890196 .784314 rg
-.752941 .337255 .129412 RG
-1 w
-n 272.85 242 5.5 5.5 re B*
+n 264.6 238 5.5 5.5 re B*
 .4 w
 .992157 .890196 .784314 rg
 .752941 .337255 .129412 RG
 1 w
-n 281.1 242 5.5 5.5 re B*
+n 272.85 238 5.5 5.5 re B*
 .4 w
 .992157 .890196 .784314 rg
 .752941 .337255 .129412 RG
 1 w
-n 289.35 242 5.5 5.5 re B*
+n 281.1 238 5.5 5.5 re B*
+.4 w
+.992157 .890196 .784314 rg
+.752941 .337255 .129412 RG
+1 w
+n 289.35 238 5.5 5.5 re B*
 .4 w
 .290196 .333333 .407843 rg
 BT /F1 12 Tf 14.4 TL ET
-BT 1 0 0 1 306.85 265.5 Tm (\(cross out 128\)) Tj T* ET
+BT 1 0 0 1 306.85 261.5 Tm (\(cross out 128\)) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 82 216 Tm (Answer: ) Tj T* ET
@@ -3465,12 +3465,12 @@ BT /F2 18 Tf 21.6 TL ET
 BT 1 0 0 1 56 430.5 Tm (+) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 383 Tm (Answer: ) Tj T* ET
-n 141.122 383 m 261.122 383 l S
+BT 1 0 0 1 82 387 Tm (Answer: ) Tj T* ET
+n 141.122 387 m 261.122 387 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 361 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 361 Tm (There were 304 cards on the shelf. 128 of them were sold. How many cards) Tj T* ET
-BT 1 0 0 1 82 341 Tm (are left?) Tj T* ET
+BT 1 0 0 1 54 357 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 357 Tm (There were 304 cards on the shelf. 128 of them were sold. How many cards) Tj T* ET
+BT 1 0 0 1 82 337 Tm (are left?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
@@ -3478,91 +3478,91 @@ q
 .811765 .890196 .968627 rg
 .168627 .423529 .690196 RG
 1 w
-n 82 272 55 55 re B*
+n 82 268 55 55 re B*
 .4 w
-n 87.5 272 m 87.5 327 l S
-n 93 272 m 93 327 l S
-n 98.5 272 m 98.5 327 l S
-n 104 272 m 104 327 l S
-n 109.5 272 m 109.5 327 l S
-n 115 272 m 115 327 l S
-n 120.5 272 m 120.5 327 l S
-n 126 272 m 126 327 l S
-n 131.5 272 m 131.5 327 l S
-n 82 277.5 m 137 277.5 l S
-n 82 283 m 137 283 l S
-n 82 288.5 m 137 288.5 l S
-n 82 294 m 137 294 l S
-n 82 299.5 m 137 299.5 l S
-n 82 305 m 137 305 l S
-n 82 310.5 m 137 310.5 l S
-n 82 316 m 137 316 l S
-n 82 321.5 m 137 321.5 l S
+n 87.5 268 m 87.5 323 l S
+n 93 268 m 93 323 l S
+n 98.5 268 m 98.5 323 l S
+n 104 268 m 104 323 l S
+n 109.5 268 m 109.5 323 l S
+n 115 268 m 115 323 l S
+n 120.5 268 m 120.5 323 l S
+n 126 268 m 126 323 l S
+n 131.5 268 m 131.5 323 l S
+n 82 273.5 m 137 273.5 l S
+n 82 279 m 137 279 l S
+n 82 284.5 m 137 284.5 l S
+n 82 290 m 137 290 l S
+n 82 295.5 m 137 295.5 l S
+n 82 301 m 137 301 l S
+n 82 306.5 m 137 306.5 l S
+n 82 312 m 137 312 l S
+n 82 317.5 m 137 317.5 l S
 .811765 .890196 .968627 rg
 .168627 .423529 .690196 RG
 1 w
-n 139.75 272 55 55 re B*
+n 139.75 268 55 55 re B*
 .4 w
-n 145.25 272 m 145.25 327 l S
-n 150.75 272 m 150.75 327 l S
-n 156.25 272 m 156.25 327 l S
-n 161.75 272 m 161.75 327 l S
-n 167.25 272 m 167.25 327 l S
-n 172.75 272 m 172.75 327 l S
-n 178.25 272 m 178.25 327 l S
-n 183.75 272 m 183.75 327 l S
-n 189.25 272 m 189.25 327 l S
-n 139.75 277.5 m 194.75 277.5 l S
-n 139.75 283 m 194.75 283 l S
-n 139.75 288.5 m 194.75 288.5 l S
-n 139.75 294 m 194.75 294 l S
-n 139.75 299.5 m 194.75 299.5 l S
-n 139.75 305 m 194.75 305 l S
-n 139.75 310.5 m 194.75 310.5 l S
-n 139.75 316 m 194.75 316 l S
-n 139.75 321.5 m 194.75 321.5 l S
+n 145.25 268 m 145.25 323 l S
+n 150.75 268 m 150.75 323 l S
+n 156.25 268 m 156.25 323 l S
+n 161.75 268 m 161.75 323 l S
+n 167.25 268 m 167.25 323 l S
+n 172.75 268 m 172.75 323 l S
+n 178.25 268 m 178.25 323 l S
+n 183.75 268 m 183.75 323 l S
+n 189.25 268 m 189.25 323 l S
+n 139.75 273.5 m 194.75 273.5 l S
+n 139.75 279 m 194.75 279 l S
+n 139.75 284.5 m 194.75 284.5 l S
+n 139.75 290 m 194.75 290 l S
+n 139.75 295.5 m 194.75 295.5 l S
+n 139.75 301 m 194.75 301 l S
+n 139.75 306.5 m 194.75 306.5 l S
+n 139.75 312 m 194.75 312 l S
+n 139.75 317.5 m 194.75 317.5 l S
 .811765 .890196 .968627 rg
 .168627 .423529 .690196 RG
 1 w
-n 197.5 272 55 55 re B*
+n 197.5 268 55 55 re B*
 .4 w
-n 203 272 m 203 327 l S
-n 208.5 272 m 208.5 327 l S
-n 214 272 m 214 327 l S
-n 219.5 272 m 219.5 327 l S
-n 225 272 m 225 327 l S
-n 230.5 272 m 230.5 327 l S
-n 236 272 m 236 327 l S
-n 241.5 272 m 241.5 327 l S
-n 247 272 m 247 327 l S
-n 197.5 277.5 m 252.5 277.5 l S
-n 197.5 283 m 252.5 283 l S
-n 197.5 288.5 m 252.5 288.5 l S
-n 197.5 294 m 252.5 294 l S
-n 197.5 299.5 m 252.5 299.5 l S
-n 197.5 305 m 252.5 305 l S
-n 197.5 310.5 m 252.5 310.5 l S
-n 197.5 316 m 252.5 316 l S
-n 197.5 321.5 m 252.5 321.5 l S
+n 203 268 m 203 323 l S
+n 208.5 268 m 208.5 323 l S
+n 214 268 m 214 323 l S
+n 219.5 268 m 219.5 323 l S
+n 225 268 m 225 323 l S
+n 230.5 268 m 230.5 323 l S
+n 236 268 m 236 323 l S
+n 241.5 268 m 241.5 323 l S
+n 247 268 m 247 323 l S
+n 197.5 273.5 m 252.5 273.5 l S
+n 197.5 279 m 252.5 279 l S
+n 197.5 284.5 m 252.5 284.5 l S
+n 197.5 290 m 252.5 290 l S
+n 197.5 295.5 m 252.5 295.5 l S
+n 197.5 301 m 252.5 301 l S
+n 197.5 306.5 m 252.5 306.5 l S
+n 197.5 312 m 252.5 312 l S
+n 197.5 317.5 m 252.5 317.5 l S
 .992157 .890196 .784314 rg
 .752941 .337255 .129412 RG
 1 w
-n 264.6 272 5.5 5.5 re B*
-.4 w
-.992157 .890196 .784314 rg
-.752941 .337255 .129412 RG
-1 w
-n 272.85 272 5.5 5.5 re B*
+n 264.6 268 5.5 5.5 re B*
 .4 w
 .992157 .890196 .784314 rg
 .752941 .337255 .129412 RG
 1 w
-n 281.1 272 5.5 5.5 re B*
+n 272.85 268 5.5 5.5 re B*
 .4 w
 .992157 .890196 .784314 rg
 .752941 .337255 .129412 RG
 1 w
-n 289.35 272 5.5 5.5 re B*
+n 281.1 268 5.5 5.5 re B*
+.4 w
+.992157 .890196 .784314 rg
+.752941 .337255 .129412 RG
+1 w
+n 289.35 268 5.5 5.5 re B*
 .4 w
 Q
 BT /F2 14 Tf 16.8 TL ET
@@ -3840,109 +3840,109 @@ BT /F2 18 Tf 21.6 TL ET
 BT 1 0 0 1 56 415.5 Tm (+) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 368 Tm (Answer: ) Tj T* ET
-n 141.122 368 m 261.122 368 l S
+BT 1 0 0 1 82 372 Tm (Answer: ) Tj T* ET
+n 141.122 372 m 261.122 372 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 346 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 346 Tm (There were 304 cards on the shelf. 128 of them were sold. How many cards) Tj T* ET
-BT 1 0 0 1 82 326 Tm (are left?) Tj T* ET
+BT 1 0 0 1 54 342 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 342 Tm (There were 304 cards on the shelf. 128 of them were sold. How many cards) Tj T* ET
+BT 1 0 0 1 82 322 Tm (are left?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
-BT 1 0 0 1 82 306 Tm (Cross out 128 to subtract.) Tj T* ET
+BT 1 0 0 1 82 302 Tm (Cross out 128 to subtract.) Tj T* ET
 0 0 0 rg
 q
 .909804 .909804 .909804 rg
 .266667 .266667 .266667 RG
 1 w
-n 82 242 55 55 re B*
+n 82 238 55 55 re B*
 .4 w
-n 87.5 242 m 87.5 297 l S
-n 93 242 m 93 297 l S
-n 98.5 242 m 98.5 297 l S
-n 104 242 m 104 297 l S
-n 109.5 242 m 109.5 297 l S
-n 115 242 m 115 297 l S
-n 120.5 242 m 120.5 297 l S
-n 126 242 m 126 297 l S
-n 131.5 242 m 131.5 297 l S
-n 82 247.5 m 137 247.5 l S
-n 82 253 m 137 253 l S
-n 82 258.5 m 137 258.5 l S
-n 82 264 m 137 264 l S
-n 82 269.5 m 137 269.5 l S
-n 82 275 m 137 275 l S
-n 82 280.5 m 137 280.5 l S
-n 82 286 m 137 286 l S
-n 82 291.5 m 137 291.5 l S
+n 87.5 238 m 87.5 293 l S
+n 93 238 m 93 293 l S
+n 98.5 238 m 98.5 293 l S
+n 104 238 m 104 293 l S
+n 109.5 238 m 109.5 293 l S
+n 115 238 m 115 293 l S
+n 120.5 238 m 120.5 293 l S
+n 126 238 m 126 293 l S
+n 131.5 238 m 131.5 293 l S
+n 82 243.5 m 137 243.5 l S
+n 82 249 m 137 249 l S
+n 82 254.5 m 137 254.5 l S
+n 82 260 m 137 260 l S
+n 82 265.5 m 137 265.5 l S
+n 82 271 m 137 271 l S
+n 82 276.5 m 137 276.5 l S
+n 82 282 m 137 282 l S
+n 82 287.5 m 137 287.5 l S
 .909804 .909804 .909804 rg
 .266667 .266667 .266667 RG
 1 w
-n 139.75 242 55 55 re B*
+n 139.75 238 55 55 re B*
 .4 w
-n 145.25 242 m 145.25 297 l S
-n 150.75 242 m 150.75 297 l S
-n 156.25 242 m 156.25 297 l S
-n 161.75 242 m 161.75 297 l S
-n 167.25 242 m 167.25 297 l S
-n 172.75 242 m 172.75 297 l S
-n 178.25 242 m 178.25 297 l S
-n 183.75 242 m 183.75 297 l S
-n 189.25 242 m 189.25 297 l S
-n 139.75 247.5 m 194.75 247.5 l S
-n 139.75 253 m 194.75 253 l S
-n 139.75 258.5 m 194.75 258.5 l S
-n 139.75 264 m 194.75 264 l S
-n 139.75 269.5 m 194.75 269.5 l S
-n 139.75 275 m 194.75 275 l S
-n 139.75 280.5 m 194.75 280.5 l S
-n 139.75 286 m 194.75 286 l S
-n 139.75 291.5 m 194.75 291.5 l S
+n 145.25 238 m 145.25 293 l S
+n 150.75 238 m 150.75 293 l S
+n 156.25 238 m 156.25 293 l S
+n 161.75 238 m 161.75 293 l S
+n 167.25 238 m 167.25 293 l S
+n 172.75 238 m 172.75 293 l S
+n 178.25 238 m 178.25 293 l S
+n 183.75 238 m 183.75 293 l S
+n 189.25 238 m 189.25 293 l S
+n 139.75 243.5 m 194.75 243.5 l S
+n 139.75 249 m 194.75 249 l S
+n 139.75 254.5 m 194.75 254.5 l S
+n 139.75 260 m 194.75 260 l S
+n 139.75 265.5 m 194.75 265.5 l S
+n 139.75 271 m 194.75 271 l S
+n 139.75 276.5 m 194.75 276.5 l S
+n 139.75 282 m 194.75 282 l S
+n 139.75 287.5 m 194.75 287.5 l S
 .909804 .909804 .909804 rg
 .266667 .266667 .266667 RG
 1 w
-n 197.5 242 55 55 re B*
+n 197.5 238 55 55 re B*
 .4 w
-n 203 242 m 203 297 l S
-n 208.5 242 m 208.5 297 l S
-n 214 242 m 214 297 l S
-n 219.5 242 m 219.5 297 l S
-n 225 242 m 225 297 l S
-n 230.5 242 m 230.5 297 l S
-n 236 242 m 236 297 l S
-n 241.5 242 m 241.5 297 l S
-n 247 242 m 247 297 l S
-n 197.5 247.5 m 252.5 247.5 l S
-n 197.5 253 m 252.5 253 l S
-n 197.5 258.5 m 252.5 258.5 l S
-n 197.5 264 m 252.5 264 l S
-n 197.5 269.5 m 252.5 269.5 l S
-n 197.5 275 m 252.5 275 l S
-n 197.5 280.5 m 252.5 280.5 l S
-n 197.5 286 m 252.5 286 l S
-n 197.5 291.5 m 252.5 291.5 l S
+n 203 238 m 203 293 l S
+n 208.5 238 m 208.5 293 l S
+n 214 238 m 214 293 l S
+n 219.5 238 m 219.5 293 l S
+n 225 238 m 225 293 l S
+n 230.5 238 m 230.5 293 l S
+n 236 238 m 236 293 l S
+n 241.5 238 m 241.5 293 l S
+n 247 238 m 247 293 l S
+n 197.5 243.5 m 252.5 243.5 l S
+n 197.5 249 m 252.5 249 l S
+n 197.5 254.5 m 252.5 254.5 l S
+n 197.5 260 m 252.5 260 l S
+n 197.5 265.5 m 252.5 265.5 l S
+n 197.5 271 m 252.5 271 l S
+n 197.5 276.5 m 252.5 276.5 l S
+n 197.5 282 m 252.5 282 l S
+n 197.5 287.5 m 252.5 287.5 l S
 1 1 1 rg
 .266667 .266667 .266667 RG
 1 w
-n 264.6 242 5.5 5.5 re B*
-.4 w
-1 1 1 rg
-.266667 .266667 .266667 RG
-1 w
-n 272.85 242 5.5 5.5 re B*
+n 264.6 238 5.5 5.5 re B*
 .4 w
 1 1 1 rg
 .266667 .266667 .266667 RG
 1 w
-n 281.1 242 5.5 5.5 re B*
+n 272.85 238 5.5 5.5 re B*
 .4 w
 1 1 1 rg
 .266667 .266667 .266667 RG
 1 w
-n 289.35 242 5.5 5.5 re B*
+n 281.1 238 5.5 5.5 re B*
+.4 w
+1 1 1 rg
+.266667 .266667 .266667 RG
+1 w
+n 289.35 238 5.5 5.5 re B*
 .4 w
 .290196 .333333 .407843 rg
 BT /F1 12 Tf 14.4 TL ET
-BT 1 0 0 1 306.85 265.5 Tm (\(cross out 128\)) Tj T* ET
+BT 1 0 0 1 306.85 261.5 Tm (\(cross out 128\)) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 82 216 Tm (Answer: ) Tj T* ET
@@ -4321,29 +4321,29 @@ BT /F1 12 Tf 14.4 TL ET
 BT 1 0 0 1 514.2 506.5 Tm (\(cross out 1\)) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 457 Tm (Answer: ) Tj T* ET
-n 141.122 457 m 261.122 457 l S
+BT 1 0 0 1 82 461 Tm (Answer: ) Tj T* ET
+n 141.122 461 m 261.122 461 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 435 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 435 Tm (Maria had 1 card and found 1 more. How many cards does Maria have now?) Tj T* ET
+BT 1 0 0 1 54 431 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 431 Tm (Maria had 1 card and found 1 more. How many cards does Maria have now?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
-BT 1 0 0 1 82 415 Tm (Combine the blocks to find the total.) Tj T* ET
+BT 1 0 0 1 82 411 Tm (Combine the blocks to find the total.) Tj T* ET
 0 0 0 rg
 q
 .992157 .890196 .784314 rg
 .752941 .337255 .129412 RG
 1 w
-n 82 400.5 5.5 5.5 re B*
+n 82 396.5 5.5 5.5 re B*
 .4 w
 .992157 .890196 .784314 rg
 .752941 .337255 .129412 RG
 1 w
-n 82 381 5.5 5.5 re B*
+n 82 377 5.5 5.5 re B*
 .4 w
 .176471 .215686 .282353 rg
 BT /F2 18 Tf 21.6 TL ET
-BT 1 0 0 1 56 377.75 Tm (+) Tj T* ET
+BT 1 0 0 1 56 373.75 Tm (+) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 82 355 Tm (Answer: ) Tj T* ET
@@ -4509,111 +4509,111 @@ BT /F2 18 Tf 21.6 TL ET
 BT 1 0 0 1 56 415.5 Tm (+) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 368 Tm (Answer: ) Tj T* ET
-n 141.122 368 m 261.122 368 l S
+BT 1 0 0 1 82 372 Tm (Answer: ) Tj T* ET
+n 141.122 372 m 261.122 372 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 346 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 346 Tm (Maria collected 22 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
-BT 1 0 0 1 82 326 Tm (did they collect altogether?) Tj T* ET
+BT 1 0 0 1 54 342 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 342 Tm (Maria collected 22 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 322 Tm (did they collect altogether?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
-BT 1 0 0 1 82 306 Tm (Combine the blocks to find the total.) Tj T* ET
+BT 1 0 0 1 82 302 Tm (Combine the blocks to find the total.) Tj T* ET
 0 0 0 rg
 q
 .839216 .937255 .839216 rg
 .184314 .521569 .352941 RG
 1 w
-n 82 242 5.5 55 re B*
+n 82 238 5.5 55 re B*
 .4 w
-n 82 247.5 m 87.5 247.5 l S
-n 82 253 m 87.5 253 l S
-n 82 258.5 m 87.5 258.5 l S
-n 82 264 m 87.5 264 l S
-n 82 269.5 m 87.5 269.5 l S
-n 82 275 m 87.5 275 l S
-n 82 280.5 m 87.5 280.5 l S
-n 82 286 m 87.5 286 l S
-n 82 291.5 m 87.5 291.5 l S
+n 82 243.5 m 87.5 243.5 l S
+n 82 249 m 87.5 249 l S
+n 82 254.5 m 87.5 254.5 l S
+n 82 260 m 87.5 260 l S
+n 82 265.5 m 87.5 265.5 l S
+n 82 271 m 87.5 271 l S
+n 82 276.5 m 87.5 276.5 l S
+n 82 282 m 87.5 282 l S
+n 82 287.5 m 87.5 287.5 l S
 .839216 .937255 .839216 rg
 .184314 .521569 .352941 RG
 1 w
-n 90.25 242 5.5 55 re B*
+n 90.25 238 5.5 55 re B*
 .4 w
-n 90.25 247.5 m 95.75 247.5 l S
-n 90.25 253 m 95.75 253 l S
-n 90.25 258.5 m 95.75 258.5 l S
-n 90.25 264 m 95.75 264 l S
-n 90.25 269.5 m 95.75 269.5 l S
-n 90.25 275 m 95.75 275 l S
-n 90.25 280.5 m 95.75 280.5 l S
-n 90.25 286 m 95.75 286 l S
-n 90.25 291.5 m 95.75 291.5 l S
+n 90.25 243.5 m 95.75 243.5 l S
+n 90.25 249 m 95.75 249 l S
+n 90.25 254.5 m 95.75 254.5 l S
+n 90.25 260 m 95.75 260 l S
+n 90.25 265.5 m 95.75 265.5 l S
+n 90.25 271 m 95.75 271 l S
+n 90.25 276.5 m 95.75 276.5 l S
+n 90.25 282 m 95.75 282 l S
+n 90.25 287.5 m 95.75 287.5 l S
 .992157 .890196 .784314 rg
 .752941 .337255 .129412 RG
 1 w
-n 107.85 242 5.5 5.5 re B*
+n 107.85 238 5.5 5.5 re B*
 .4 w
 .992157 .890196 .784314 rg
 .752941 .337255 .129412 RG
 1 w
-n 116.1 242 5.5 5.5 re B*
+n 116.1 238 5.5 5.5 re B*
 .4 w
 .839216 .937255 .839216 rg
 .184314 .521569 .352941 RG
 1 w
-n 82 173 5.5 55 re B*
+n 82 169 5.5 55 re B*
 .4 w
-n 82 178.5 m 87.5 178.5 l S
-n 82 184 m 87.5 184 l S
-n 82 189.5 m 87.5 189.5 l S
-n 82 195 m 87.5 195 l S
-n 82 200.5 m 87.5 200.5 l S
-n 82 206 m 87.5 206 l S
-n 82 211.5 m 87.5 211.5 l S
-n 82 217 m 87.5 217 l S
-n 82 222.5 m 87.5 222.5 l S
+n 82 174.5 m 87.5 174.5 l S
+n 82 180 m 87.5 180 l S
+n 82 185.5 m 87.5 185.5 l S
+n 82 191 m 87.5 191 l S
+n 82 196.5 m 87.5 196.5 l S
+n 82 202 m 87.5 202 l S
+n 82 207.5 m 87.5 207.5 l S
+n 82 213 m 87.5 213 l S
+n 82 218.5 m 87.5 218.5 l S
 .839216 .937255 .839216 rg
 .184314 .521569 .352941 RG
 1 w
-n 90.25 173 5.5 55 re B*
+n 90.25 169 5.5 55 re B*
 .4 w
-n 90.25 178.5 m 95.75 178.5 l S
-n 90.25 184 m 95.75 184 l S
-n 90.25 189.5 m 95.75 189.5 l S
-n 90.25 195 m 95.75 195 l S
-n 90.25 200.5 m 95.75 200.5 l S
-n 90.25 206 m 95.75 206 l S
-n 90.25 211.5 m 95.75 211.5 l S
-n 90.25 217 m 95.75 217 l S
-n 90.25 222.5 m 95.75 222.5 l S
+n 90.25 174.5 m 95.75 174.5 l S
+n 90.25 180 m 95.75 180 l S
+n 90.25 185.5 m 95.75 185.5 l S
+n 90.25 191 m 95.75 191 l S
+n 90.25 196.5 m 95.75 196.5 l S
+n 90.25 202 m 95.75 202 l S
+n 90.25 207.5 m 95.75 207.5 l S
+n 90.25 213 m 95.75 213 l S
+n 90.25 218.5 m 95.75 218.5 l S
 .992157 .890196 .784314 rg
 .752941 .337255 .129412 RG
 1 w
-n 107.85 173 5.5 5.5 re B*
-.4 w
-.992157 .890196 .784314 rg
-.752941 .337255 .129412 RG
-1 w
-n 116.1 173 5.5 5.5 re B*
+n 107.85 169 5.5 5.5 re B*
 .4 w
 .992157 .890196 .784314 rg
 .752941 .337255 .129412 RG
 1 w
-n 124.35 173 5.5 5.5 re B*
+n 116.1 169 5.5 5.5 re B*
 .4 w
 .992157 .890196 .784314 rg
 .752941 .337255 .129412 RG
 1 w
-n 132.6 173 5.5 5.5 re B*
+n 124.35 169 5.5 5.5 re B*
 .4 w
 .992157 .890196 .784314 rg
 .752941 .337255 .129412 RG
 1 w
-n 140.85 173 5.5 5.5 re B*
+n 132.6 169 5.5 5.5 re B*
+.4 w
+.992157 .890196 .784314 rg
+.752941 .337255 .129412 RG
+1 w
+n 140.85 169 5.5 5.5 re B*
 .4 w
 .176471 .215686 .282353 rg
 BT /F2 18 Tf 21.6 TL ET
-BT 1 0 0 1 56 194.5 Tm (+) Tj T* ET
+BT 1 0 0 1 56 190.5 Tm (+) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 82 147 Tm (Answer: ) Tj T* ET
@@ -4755,149 +4755,149 @@ BT /F2 18 Tf 21.6 TL ET
 BT 1 0 0 1 56 526.5 Tm (+) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 479 Tm (Answer: ) Tj T* ET
-n 141.122 479 m 261.122 479 l S
+BT 1 0 0 1 82 483 Tm (Answer: ) Tj T* ET
+n 141.122 483 m 261.122 483 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 457 Tm (4.) Tj T* ET
-BT 1 0 0 1 82 457 Tm (Maria collected 44 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
-BT 1 0 0 1 82 437 Tm (did they collect altogether?) Tj T* ET
+BT 1 0 0 1 54 453 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 453 Tm (Maria collected 44 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 433 Tm (did they collect altogether?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
-BT 1 0 0 1 82 417 Tm (Combine the blocks to find the total.) Tj T* ET
+BT 1 0 0 1 82 413 Tm (Combine the blocks to find the total.) Tj T* ET
 0 0 0 rg
 q
 .839216 .937255 .839216 rg
 .184314 .521569 .352941 RG
 1 w
-n 82 353 5.5 55 re B*
+n 82 349 5.5 55 re B*
 .4 w
-n 82 358.5 m 87.5 358.5 l S
-n 82 364 m 87.5 364 l S
-n 82 369.5 m 87.5 369.5 l S
-n 82 375 m 87.5 375 l S
-n 82 380.5 m 87.5 380.5 l S
-n 82 386 m 87.5 386 l S
-n 82 391.5 m 87.5 391.5 l S
-n 82 397 m 87.5 397 l S
-n 82 402.5 m 87.5 402.5 l S
+n 82 354.5 m 87.5 354.5 l S
+n 82 360 m 87.5 360 l S
+n 82 365.5 m 87.5 365.5 l S
+n 82 371 m 87.5 371 l S
+n 82 376.5 m 87.5 376.5 l S
+n 82 382 m 87.5 382 l S
+n 82 387.5 m 87.5 387.5 l S
+n 82 393 m 87.5 393 l S
+n 82 398.5 m 87.5 398.5 l S
 .839216 .937255 .839216 rg
 .184314 .521569 .352941 RG
 1 w
-n 90.25 353 5.5 55 re B*
+n 90.25 349 5.5 55 re B*
 .4 w
-n 90.25 358.5 m 95.75 358.5 l S
-n 90.25 364 m 95.75 364 l S
-n 90.25 369.5 m 95.75 369.5 l S
-n 90.25 375 m 95.75 375 l S
-n 90.25 380.5 m 95.75 380.5 l S
-n 90.25 386 m 95.75 386 l S
-n 90.25 391.5 m 95.75 391.5 l S
-n 90.25 397 m 95.75 397 l S
-n 90.25 402.5 m 95.75 402.5 l S
+n 90.25 354.5 m 95.75 354.5 l S
+n 90.25 360 m 95.75 360 l S
+n 90.25 365.5 m 95.75 365.5 l S
+n 90.25 371 m 95.75 371 l S
+n 90.25 376.5 m 95.75 376.5 l S
+n 90.25 382 m 95.75 382 l S
+n 90.25 387.5 m 95.75 387.5 l S
+n 90.25 393 m 95.75 393 l S
+n 90.25 398.5 m 95.75 398.5 l S
 .839216 .937255 .839216 rg
 .184314 .521569 .352941 RG
 1 w
-n 98.5 353 5.5 55 re B*
+n 98.5 349 5.5 55 re B*
 .4 w
-n 98.5 358.5 m 104 358.5 l S
-n 98.5 364 m 104 364 l S
-n 98.5 369.5 m 104 369.5 l S
-n 98.5 375 m 104 375 l S
-n 98.5 380.5 m 104 380.5 l S
-n 98.5 386 m 104 386 l S
-n 98.5 391.5 m 104 391.5 l S
-n 98.5 397 m 104 397 l S
-n 98.5 402.5 m 104 402.5 l S
+n 98.5 354.5 m 104 354.5 l S
+n 98.5 360 m 104 360 l S
+n 98.5 365.5 m 104 365.5 l S
+n 98.5 371 m 104 371 l S
+n 98.5 376.5 m 104 376.5 l S
+n 98.5 382 m 104 382 l S
+n 98.5 387.5 m 104 387.5 l S
+n 98.5 393 m 104 393 l S
+n 98.5 398.5 m 104 398.5 l S
 .839216 .937255 .839216 rg
 .184314 .521569 .352941 RG
 1 w
-n 106.75 353 5.5 55 re B*
+n 106.75 349 5.5 55 re B*
 .4 w
-n 106.75 358.5 m 112.25 358.5 l S
-n 106.75 364 m 112.25 364 l S
-n 106.75 369.5 m 112.25 369.5 l S
-n 106.75 375 m 112.25 375 l S
-n 106.75 380.5 m 112.25 380.5 l S
-n 106.75 386 m 112.25 386 l S
-n 106.75 391.5 m 112.25 391.5 l S
-n 106.75 397 m 112.25 397 l S
-n 106.75 402.5 m 112.25 402.5 l S
+n 106.75 354.5 m 112.25 354.5 l S
+n 106.75 360 m 112.25 360 l S
+n 106.75 365.5 m 112.25 365.5 l S
+n 106.75 371 m 112.25 371 l S
+n 106.75 376.5 m 112.25 376.5 l S
+n 106.75 382 m 112.25 382 l S
+n 106.75 387.5 m 112.25 387.5 l S
+n 106.75 393 m 112.25 393 l S
+n 106.75 398.5 m 112.25 398.5 l S
 .992157 .890196 .784314 rg
 .752941 .337255 .129412 RG
 1 w
-n 124.35 353 5.5 5.5 re B*
-.4 w
-.992157 .890196 .784314 rg
-.752941 .337255 .129412 RG
-1 w
-n 132.6 353 5.5 5.5 re B*
+n 124.35 349 5.5 5.5 re B*
 .4 w
 .992157 .890196 .784314 rg
 .752941 .337255 .129412 RG
 1 w
-n 140.85 353 5.5 5.5 re B*
+n 132.6 349 5.5 5.5 re B*
 .4 w
 .992157 .890196 .784314 rg
 .752941 .337255 .129412 RG
 1 w
-n 149.1 353 5.5 5.5 re B*
+n 140.85 349 5.5 5.5 re B*
+.4 w
+.992157 .890196 .784314 rg
+.752941 .337255 .129412 RG
+1 w
+n 149.1 349 5.5 5.5 re B*
 .4 w
 .839216 .937255 .839216 rg
 .184314 .521569 .352941 RG
 1 w
-n 82 284 5.5 55 re B*
+n 82 280 5.5 55 re B*
 .4 w
-n 82 289.5 m 87.5 289.5 l S
-n 82 295 m 87.5 295 l S
-n 82 300.5 m 87.5 300.5 l S
-n 82 306 m 87.5 306 l S
-n 82 311.5 m 87.5 311.5 l S
-n 82 317 m 87.5 317 l S
-n 82 322.5 m 87.5 322.5 l S
-n 82 328 m 87.5 328 l S
-n 82 333.5 m 87.5 333.5 l S
+n 82 285.5 m 87.5 285.5 l S
+n 82 291 m 87.5 291 l S
+n 82 296.5 m 87.5 296.5 l S
+n 82 302 m 87.5 302 l S
+n 82 307.5 m 87.5 307.5 l S
+n 82 313 m 87.5 313 l S
+n 82 318.5 m 87.5 318.5 l S
+n 82 324 m 87.5 324 l S
+n 82 329.5 m 87.5 329.5 l S
 .839216 .937255 .839216 rg
 .184314 .521569 .352941 RG
 1 w
-n 90.25 284 5.5 55 re B*
+n 90.25 280 5.5 55 re B*
 .4 w
-n 90.25 289.5 m 95.75 289.5 l S
-n 90.25 295 m 95.75 295 l S
-n 90.25 300.5 m 95.75 300.5 l S
-n 90.25 306 m 95.75 306 l S
-n 90.25 311.5 m 95.75 311.5 l S
-n 90.25 317 m 95.75 317 l S
-n 90.25 322.5 m 95.75 322.5 l S
-n 90.25 328 m 95.75 328 l S
-n 90.25 333.5 m 95.75 333.5 l S
+n 90.25 285.5 m 95.75 285.5 l S
+n 90.25 291 m 95.75 291 l S
+n 90.25 296.5 m 95.75 296.5 l S
+n 90.25 302 m 95.75 302 l S
+n 90.25 307.5 m 95.75 307.5 l S
+n 90.25 313 m 95.75 313 l S
+n 90.25 318.5 m 95.75 318.5 l S
+n 90.25 324 m 95.75 324 l S
+n 90.25 329.5 m 95.75 329.5 l S
 .992157 .890196 .784314 rg
 .752941 .337255 .129412 RG
 1 w
-n 107.85 284 5.5 5.5 re B*
-.4 w
-.992157 .890196 .784314 rg
-.752941 .337255 .129412 RG
-1 w
-n 116.1 284 5.5 5.5 re B*
+n 107.85 280 5.5 5.5 re B*
 .4 w
 .992157 .890196 .784314 rg
 .752941 .337255 .129412 RG
 1 w
-n 124.35 284 5.5 5.5 re B*
+n 116.1 280 5.5 5.5 re B*
 .4 w
 .992157 .890196 .784314 rg
 .752941 .337255 .129412 RG
 1 w
-n 132.6 284 5.5 5.5 re B*
+n 124.35 280 5.5 5.5 re B*
 .4 w
 .992157 .890196 .784314 rg
 .752941 .337255 .129412 RG
 1 w
-n 140.85 284 5.5 5.5 re B*
+n 132.6 280 5.5 5.5 re B*
+.4 w
+.992157 .890196 .784314 rg
+.752941 .337255 .129412 RG
+1 w
+n 140.85 280 5.5 5.5 re B*
 .4 w
 .176471 .215686 .282353 rg
 BT /F2 18 Tf 21.6 TL ET
-BT 1 0 0 1 56 305.5 Tm (+) Tj T* ET
+BT 1 0 0 1 56 301.5 Tm (+) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 82 258 Tm (Answer: ) Tj T* ET
@@ -5077,8 +5077,8 @@ BT /F2 18 Tf 21.6 TL ET
 BT 1 0 0 1 56 526.5 Tm (+) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 479 Tm (Answer: ) Tj T* ET
-n 141.122 479 m 261.122 479 l S
+BT 1 0 0 1 82 483 Tm (Answer: ) Tj T* ET
+n 141.122 483 m 261.122 483 l S
 
 === blocks_self_check_tiles_answer_key ===
 title: Word Problems \204 Base-Ten Blocks
@@ -5666,37 +5666,37 @@ BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 592 Tm (Answer: ) Tj T* ET
-n 141.122 592 m 261.122 592 l S
+BT 1 0 0 1 82 606 Tm (Answer: ) Tj T* ET
+n 141.122 606 m 261.122 606 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 570 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 570 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT 1 0 0 1 54 576 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 576 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 530 Tm (Answer: ) Tj T* ET
-n 141.122 530 m 261.122 530 l S
+BT 1 0 0 1 82 550 Tm (Answer: ) Tj T* ET
+n 141.122 550 m 261.122 550 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 508 Tm (3.) Tj T* ET
-BT 1 0 0 1 82 508 Tm (Maria has 3 bags with 4 stickers in each bag. How many stickers are there in) Tj T* ET
-BT 1 0 0 1 82 488 Tm (all?) Tj T* ET
+BT 1 0 0 1 54 520 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 520 Tm (Maria has 3 bags with 4 stickers in each bag. How many stickers are there in) Tj T* ET
+BT 1 0 0 1 82 500 Tm (all?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 448 Tm (Answer: ) Tj T* ET
-n 141.122 448 m 261.122 448 l S
+BT 1 0 0 1 82 474 Tm (Answer: ) Tj T* ET
+n 141.122 474 m 261.122 474 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 426 Tm (4.) Tj T* ET
-BT 1 0 0 1 82 426 Tm (Jamal shares 12 marbles equally among 3 friends. How many marbles does) Tj T* ET
-BT 1 0 0 1 82 406 Tm (each friend get?) Tj T* ET
+BT 1 0 0 1 54 444 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 444 Tm (Jamal shares 12 marbles equally among 3 friends. How many marbles does) Tj T* ET
+BT 1 0 0 1 82 424 Tm (each friend get?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 366 Tm (Answer: ) Tj T* ET
-n 141.122 366 m 261.122 366 l S
+BT 1 0 0 1 82 398 Tm (Answer: ) Tj T* ET
+n 141.122 398 m 261.122 398 l S
 --- stream 2
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 0 0 0 rg
@@ -5746,48 +5746,48 @@ BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 592 Tm (Answer: ) Tj T* ET
-n 141.122 592 m 261.122 592 l S
+BT 1 0 0 1 82 606 Tm (Answer: ) Tj T* ET
+n 141.122 606 m 261.122 606 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 570 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 570 Tm (Maria collected 22 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
-BT 1 0 0 1 82 550 Tm (did they collect altogether?) Tj T* ET
+BT 1 0 0 1 54 576 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 576 Tm (Maria collected 22 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 556 Tm (did they collect altogether?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 510 Tm (Answer: ) Tj T* ET
-n 141.122 510 m 261.122 510 l S
+BT 1 0 0 1 82 530 Tm (Answer: ) Tj T* ET
+n 141.122 530 m 261.122 530 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 488 Tm (3.) Tj T* ET
-BT 1 0 0 1 82 488 Tm (Maria collected 33 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
-BT 1 0 0 1 82 468 Tm (did they collect altogether?) Tj T* ET
+BT 1 0 0 1 54 500 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 500 Tm (Maria collected 33 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 480 Tm (did they collect altogether?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 428 Tm (Answer: ) Tj T* ET
-n 141.122 428 m 261.122 428 l S
+BT 1 0 0 1 82 454 Tm (Answer: ) Tj T* ET
+n 141.122 454 m 261.122 454 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 406 Tm (4.) Tj T* ET
-BT 1 0 0 1 82 406 Tm (Maria collected 44 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
-BT 1 0 0 1 82 386 Tm (did they collect altogether?) Tj T* ET
+BT 1 0 0 1 54 424 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 424 Tm (Maria collected 44 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 404 Tm (did they collect altogether?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 346 Tm (Answer: ) Tj T* ET
-n 141.122 346 m 261.122 346 l S
+BT 1 0 0 1 82 378 Tm (Answer: ) Tj T* ET
+n 141.122 378 m 261.122 378 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 324 Tm (5.) Tj T* ET
-BT 1 0 0 1 82 324 Tm (Maria collected 55 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
-BT 1 0 0 1 82 304 Tm (did they collect altogether?) Tj T* ET
+BT 1 0 0 1 54 348 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 348 Tm (Maria collected 55 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 328 Tm (did they collect altogether?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 264 Tm (Answer: ) Tj T* ET
-n 141.122 264 m 261.122 264 l S
+BT 1 0 0 1 82 302 Tm (Answer: ) Tj T* ET
+n 141.122 302 m 261.122 302 l S
 
 === text_only_no_work_boxes_self_check_tiles ===
 title: Word Problems
@@ -6356,138 +6356,93 @@ BT /F2 12 Tf 14.4 TL ET
 BT 1 0 0 1 405.6028 546 Tm (9) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 507 Tm (Answer: ) Tj T* ET
-n 141.122 507 m 261.122 507 l S
+BT 1 0 0 1 82 511 Tm (Answer: ) Tj T* ET
+n 141.122 511 m 261.122 511 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 485 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 485 Tm (A box held 64 crayons. Priya took out 15, and then Leo took out 23. How) Tj T* ET
-BT 1 0 0 1 82 465 Tm (many crayons are left in the box?) Tj T* ET
+BT 1 0 0 1 54 481 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 481 Tm (A box held 64 crayons. Priya took out 15, and then Leo took out 23. How) Tj T* ET
+BT 1 0 0 1 82 461 Tm (many crayons are left in the box?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
-BT 1 0 0 1 82 445 Tm (The whole and two parts are shown. Subtract both parts to find the missing part.) Tj T* ET
+BT 1 0 0 1 82 441 Tm (The whole and two parts are shown. Subtract both parts to find the missing part.) Tj T* ET
 0 0 0 rg
 q
 .176471 .215686 .282353 RG
 1.2 w
 1 1 1 rg
-n 82 416 360 20 re B*
+n 82 412 360 20 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 255.328 422 Tm (64) Tj T* ET
+BT 1 0 0 1 255.328 418 Tm (64) Tj T* ET
 .811765 .890196 .968627 rg
-n 82 382 84.375 34 re B*
+n 82 378 84.375 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 117.5155 395 Tm (15) Tj T* ET
+BT 1 0 0 1 117.5155 391 Tm (15) Tj T* ET
 .811765 .890196 .968627 rg
-n 166.375 382 129.375 34 re B*
+n 166.375 378 129.375 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 224.3905 395 Tm (23) Tj T* ET
+BT 1 0 0 1 224.3905 391 Tm (23) Tj T* ET
 .996078 .952941 .780392 rg
-n 295.75 382 146.25 34 re B*
+n 295.75 378 146.25 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 365.209 395 Tm (?) Tj T* ET
+BT 1 0 0 1 365.209 391 Tm (?) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 82 356 Tm (Answer: ) Tj T* ET
 n 141.122 356 m 261.122 356 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 334 Tm (3.) Tj T* ET
-BT 1 0 0 1 82 334 Tm (Sofia has 38 stickers. 8 are in a box, and the rest are in 5 bags with the) Tj T* ET
-BT 1 0 0 1 82 314 Tm (same number in each bag. How many stickers are in each bag?) Tj T* ET
+BT 1 0 0 1 54 326 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 326 Tm (Sofia has 38 stickers. 8 are in a box, and the rest are in 5 bags with the) Tj T* ET
+BT 1 0 0 1 82 306 Tm (same number in each bag. How many stickers are in each bag?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
-BT 1 0 0 1 82 294 Tm (Subtract the part that's shown from the whole, then divide the rest into the equal parts.) Tj T* ET
+BT 1 0 0 1 82 286 Tm (Subtract the part that's shown from the whole, then divide the rest into the equal parts.) Tj T* ET
 0 0 0 rg
 q
 .176471 .215686 .282353 RG
 1.2 w
 1 1 1 rg
-n 82 265 360 20 re B*
+n 82 257 360 20 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 255.328 271 Tm (38) Tj T* ET
+BT 1 0 0 1 255.328 263 Tm (38) Tj T* ET
 .811765 .890196 .968627 rg
-n 82 231 75.78947 34 re B*
+n 82 223 75.78947 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 116.5587 244 Tm (8) Tj T* ET
+BT 1 0 0 1 116.5587 236 Tm (8) Tj T* ET
 .996078 .952941 .780392 rg
-n 157.7895 231 56.84211 34 re B*
+n 157.7895 223 56.84211 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 182.5445 244 Tm (?) Tj T* ET
+BT 1 0 0 1 182.5445 236 Tm (?) Tj T* ET
 .996078 .952941 .780392 rg
-n 214.6316 231 56.84211 34 re B*
+n 214.6316 223 56.84211 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 239.3866 244 Tm (?) Tj T* ET
+BT 1 0 0 1 239.3866 236 Tm (?) Tj T* ET
 .996078 .952941 .780392 rg
-n 271.4737 231 56.84211 34 re B*
+n 271.4737 223 56.84211 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 296.2287 244 Tm (?) Tj T* ET
+BT 1 0 0 1 296.2287 236 Tm (?) Tj T* ET
 .996078 .952941 .780392 rg
-n 328.3158 231 56.84211 34 re B*
+n 328.3158 223 56.84211 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 353.0708 244 Tm (?) Tj T* ET
+BT 1 0 0 1 353.0708 236 Tm (?) Tj T* ET
 .996078 .952941 .780392 rg
-n 385.1579 231 56.84211 34 re B*
+n 385.1579 223 56.84211 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 409.9129 244 Tm (?) Tj T* ET
+BT 1 0 0 1 409.9129 236 Tm (?) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 205 Tm (Answer: ) Tj T* ET
-n 141.122 205 m 261.122 205 l S
-BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 183 Tm (4.) Tj T* ET
-BT 1 0 0 1 82 183 Tm (There are 4 boxes with 6 apples in each box. Kai brings 7 more. How many) Tj T* ET
-BT 1 0 0 1 82 163 Tm (apples are there now?) Tj T* ET
-BT /F3 11 Tf 13.2 TL ET
-.501961 .501961 .501961 rg
-BT 1 0 0 1 82 143 Tm (Multiply to find the equal parts together, then add the other part to find the whole.) Tj T* ET
-0 0 0 rg
-q
-.176471 .215686 .282353 RG
-1.2 w
-.996078 .952941 .780392 rg
-n 82 114 360 20 re B*
-0 0 0 rg
-BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 258.334 120 Tm (?) Tj T* ET
-.811765 .890196 .968627 rg
-n 82 80 69.67742 34 re B*
-0 0 0 rg
-BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 113.5027 93 Tm (6) Tj T* ET
-.811765 .890196 .968627 rg
-n 151.6774 80 69.67742 34 re B*
-0 0 0 rg
-BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 183.1801 93 Tm (6) Tj T* ET
-.811765 .890196 .968627 rg
-n 221.3548 80 69.67742 34 re B*
-0 0 0 rg
-BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 252.8575 93 Tm (6) Tj T* ET
-.811765 .890196 .968627 rg
-n 291.0323 80 69.67742 34 re B*
-0 0 0 rg
-BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 322.535 93 Tm (6) Tj T* ET
-.811765 .890196 .968627 rg
-n 360.7097 80 81.29032 34 re B*
-0 0 0 rg
-BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 398.0188 93 Tm (7) Tj T* ET
-Q
-BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 54 Tm (Answer: ) Tj T* ET
-n 141.122 54 m 261.122 54 l S
+BT 1 0 0 1 82 201 Tm (Answer: ) Tj T* ET
+n 141.122 201 m 261.122 201 l S
 --- stream 2
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 0 0 0 rg
@@ -6502,61 +6457,106 @@ BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
 BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 678 Tm (5.) Tj T* ET
-BT 1 0 0 1 82 678 Tm (A store had 90 pencils. It sold 6 packs with 12 pencils in each pack. How) Tj T* ET
-BT 1 0 0 1 82 658 Tm (many pencils does the store have left?) Tj T* ET
+BT 1 0 0 1 54 678 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (There are 4 boxes with 6 apples in each box. Kai brings 7 more. How many) Tj T* ET
+BT 1 0 0 1 82 658 Tm (apples are there now?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
-BT 1 0 0 1 82 638 Tm (Multiply to find the equal parts together, then subtract them from the whole to find the missing) Tj T* ET
-BT 1 0 0 1 82 623 Tm (part.) Tj T* ET
+BT 1 0 0 1 82 638 Tm (Multiply to find the equal parts together, then add the other part to find the whole.) Tj T* ET
+0 0 0 rg
+q
+.176471 .215686 .282353 RG
+1.2 w
+.996078 .952941 .780392 rg
+n 82 609 360 20 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 258.334 615 Tm (?) Tj T* ET
+.811765 .890196 .968627 rg
+n 82 575 69.67742 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 113.5027 588 Tm (6) Tj T* ET
+.811765 .890196 .968627 rg
+n 151.6774 575 69.67742 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 183.1801 588 Tm (6) Tj T* ET
+.811765 .890196 .968627 rg
+n 221.3548 575 69.67742 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 252.8575 588 Tm (6) Tj T* ET
+.811765 .890196 .968627 rg
+n 291.0323 575 69.67742 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 322.535 588 Tm (6) Tj T* ET
+.811765 .890196 .968627 rg
+n 360.7097 575 81.29032 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 398.0188 588 Tm (7) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 553 Tm (Answer: ) Tj T* ET
+n 141.122 553 m 261.122 553 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 523 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 523 Tm (A store had 90 pencils. It sold 6 packs with 12 pencils in each pack. How) Tj T* ET
+BT 1 0 0 1 82 503 Tm (many pencils does the store have left?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 483 Tm (Multiply to find the equal parts together, then subtract them from the whole to find the missing) Tj T* ET
+BT 1 0 0 1 82 468 Tm (part.) Tj T* ET
 0 0 0 rg
 q
 .176471 .215686 .282353 RG
 1.2 w
 1 1 1 rg
-n 82 594 360 20 re B*
+n 82 439 360 20 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 255.328 600 Tm (90) Tj T* ET
+BT 1 0 0 1 255.328 445 Tm (90) Tj T* ET
 .811765 .890196 .968627 rg
-n 82 560 48 34 re B*
+n 82 405 48 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 99.328 573 Tm (12) Tj T* ET
+BT 1 0 0 1 99.328 418 Tm (12) Tj T* ET
 .811765 .890196 .968627 rg
-n 130 560 48 34 re B*
+n 130 405 48 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 147.328 573 Tm (12) Tj T* ET
+BT 1 0 0 1 147.328 418 Tm (12) Tj T* ET
 .811765 .890196 .968627 rg
-n 178 560 48 34 re B*
+n 178 405 48 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 195.328 573 Tm (12) Tj T* ET
+BT 1 0 0 1 195.328 418 Tm (12) Tj T* ET
 .811765 .890196 .968627 rg
-n 226 560 48 34 re B*
+n 226 405 48 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 243.328 573 Tm (12) Tj T* ET
+BT 1 0 0 1 243.328 418 Tm (12) Tj T* ET
 .811765 .890196 .968627 rg
-n 274 560 48 34 re B*
+n 274 405 48 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 291.328 573 Tm (12) Tj T* ET
+BT 1 0 0 1 291.328 418 Tm (12) Tj T* ET
 .811765 .890196 .968627 rg
-n 322 560 48 34 re B*
+n 322 405 48 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 339.328 573 Tm (12) Tj T* ET
+BT 1 0 0 1 339.328 418 Tm (12) Tj T* ET
 .996078 .952941 .780392 rg
-n 370 560 72 34 re B*
+n 370 405 72 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 402.334 573 Tm (?) Tj T* ET
+BT 1 0 0 1 402.334 418 Tm (?) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 534 Tm (Answer: ) Tj T* ET
-n 141.122 534 m 261.122 534 l S
+BT 1 0 0 1 82 383 Tm (Answer: ) Tj T* ET
+n 141.122 383 m 261.122 383 l S
 --- stream 3
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 0 0 0 rg
@@ -6654,12 +6654,12 @@ BT /F2 12 Tf 14.4 TL ET
 BT 1 0 0 1 426.334 561 Tm (?) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 522 Tm (Answer: ) Tj T* ET
-n 141.122 522 m 261.122 522 l S
+BT 1 0 0 1 82 526 Tm (Answer: ) Tj T* ET
+n 141.122 526 m 261.122 526 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 500 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 500 Tm (A jar held 1 bead. Sam added 2 more, and then Ivy added 996 more. How) Tj T* ET
-BT 1 0 0 1 82 480 Tm (many beads are in the jar now?) Tj T* ET
+BT 1 0 0 1 54 496 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 496 Tm (A jar held 1 bead. Sam added 2 more, and then Ivy added 996 more. How) Tj T* ET
+BT 1 0 0 1 82 476 Tm (many beads are in the jar now?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
@@ -6667,25 +6667,25 @@ q
 .176471 .215686 .282353 RG
 1.2 w
 .996078 .952941 .780392 rg
-n 82 446 360 20 re B*
+n 82 442 360 20 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 258.334 452 Tm (?) Tj T* ET
+BT 1 0 0 1 258.334 448 Tm (?) Tj T* ET
 .811765 .890196 .968627 rg
-n 82 412 24 34 re B*
+n 82 408 24 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 90.664 425 Tm (1) Tj T* ET
+BT 1 0 0 1 90.664 421 Tm (1) Tj T* ET
 .811765 .890196 .968627 rg
-n 106 412 24 34 re B*
+n 106 408 24 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 114.664 425 Tm (2) Tj T* ET
+BT 1 0 0 1 114.664 421 Tm (2) Tj T* ET
 .811765 .890196 .968627 rg
-n 130 412 312 34 re B*
+n 130 408 312 34 re B*
 0 0 0 rg
 BT /F2 12 Tf 14.4 TL ET
-BT 1 0 0 1 275.992 425 Tm (996) Tj T* ET
+BT 1 0 0 1 275.992 421 Tm (996) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 82 386 Tm (Answer: ) Tj T* ET
@@ -7095,49 +7095,49 @@ BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 592 Tm (Equation: ) Tj T* ET
-n 150.446 592 m 450.446 592 l S
+BT 1 0 0 1 82 606 Tm (Equation: ) Tj T* ET
+n 150.446 606 m 450.446 606 l S
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 566 Tm (Answer: ) Tj T* ET
-n 141.122 566 m 261.122 566 l S
+BT 1 0 0 1 82 580 Tm (Answer: ) Tj T* ET
+n 141.122 580 m 261.122 580 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 544 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 544 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT 1 0 0 1 54 550 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 550 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 504 Tm (Equation: ) Tj T* ET
-n 150.446 504 m 450.446 504 l S
+BT 1 0 0 1 82 524 Tm (Equation: ) Tj T* ET
+n 150.446 524 m 450.446 524 l S
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 478 Tm (Answer: ) Tj T* ET
-n 141.122 478 m 261.122 478 l S
+BT 1 0 0 1 82 498 Tm (Answer: ) Tj T* ET
+n 141.122 498 m 261.122 498 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 456 Tm (3.) Tj T* ET
-BT 1 0 0 1 82 456 Tm (Maria has 3 bags with 4 stickers in each bag. How many stickers are there in) Tj T* ET
-BT 1 0 0 1 82 436 Tm (all?) Tj T* ET
+BT 1 0 0 1 54 468 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 468 Tm (Maria has 3 bags with 4 stickers in each bag. How many stickers are there in) Tj T* ET
+BT 1 0 0 1 82 448 Tm (all?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 396 Tm (Equation: ) Tj T* ET
-n 150.446 396 m 450.446 396 l S
+BT 1 0 0 1 82 422 Tm (Equation: ) Tj T* ET
+n 150.446 422 m 450.446 422 l S
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 370 Tm (Answer: ) Tj T* ET
-n 141.122 370 m 261.122 370 l S
+BT 1 0 0 1 82 396 Tm (Answer: ) Tj T* ET
+n 141.122 396 m 261.122 396 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 348 Tm (4.) Tj T* ET
-BT 1 0 0 1 82 348 Tm (Jamal shares 12 marbles equally among 3 friends. How many marbles does) Tj T* ET
-BT 1 0 0 1 82 328 Tm (each friend get?) Tj T* ET
+BT 1 0 0 1 54 366 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 366 Tm (Jamal shares 12 marbles equally among 3 friends. How many marbles does) Tj T* ET
+BT 1 0 0 1 82 346 Tm (each friend get?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 288 Tm (Equation: ) Tj T* ET
-n 150.446 288 m 450.446 288 l S
+BT 1 0 0 1 82 320 Tm (Equation: ) Tj T* ET
+n 150.446 320 m 450.446 320 l S
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 262 Tm (Answer: ) Tj T* ET
-n 141.122 262 m 261.122 262 l S
+BT 1 0 0 1 82 294 Tm (Answer: ) Tj T* ET
+n 141.122 294 m 261.122 294 l S
 --- stream 2
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 0 0 0 rg
@@ -7189,63 +7189,76 @@ BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 592 Tm (Equation: ) Tj T* ET
-n 150.446 592 m 450.446 592 l S
+BT 1 0 0 1 82 606 Tm (Equation: ) Tj T* ET
+n 150.446 606 m 450.446 606 l S
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 566 Tm (Answer: ) Tj T* ET
-n 141.122 566 m 261.122 566 l S
+BT 1 0 0 1 82 580 Tm (Answer: ) Tj T* ET
+n 141.122 580 m 261.122 580 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 544 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 544 Tm (Maria collected 22 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
-BT 1 0 0 1 82 524 Tm (did they collect altogether?) Tj T* ET
+BT 1 0 0 1 54 550 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 550 Tm (Maria collected 22 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 530 Tm (did they collect altogether?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 484 Tm (Equation: ) Tj T* ET
-n 150.446 484 m 450.446 484 l S
+BT 1 0 0 1 82 504 Tm (Equation: ) Tj T* ET
+n 150.446 504 m 450.446 504 l S
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 458 Tm (Answer: ) Tj T* ET
-n 141.122 458 m 261.122 458 l S
+BT 1 0 0 1 82 478 Tm (Answer: ) Tj T* ET
+n 141.122 478 m 261.122 478 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 436 Tm (3.) Tj T* ET
-BT 1 0 0 1 82 436 Tm (Maria collected 33 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
-BT 1 0 0 1 82 416 Tm (did they collect altogether?) Tj T* ET
+BT 1 0 0 1 54 448 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 448 Tm (Maria collected 33 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 428 Tm (did they collect altogether?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 376 Tm (Equation: ) Tj T* ET
-n 150.446 376 m 450.446 376 l S
+BT 1 0 0 1 82 402 Tm (Equation: ) Tj T* ET
+n 150.446 402 m 450.446 402 l S
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 350 Tm (Answer: ) Tj T* ET
-n 141.122 350 m 261.122 350 l S
+BT 1 0 0 1 82 376 Tm (Answer: ) Tj T* ET
+n 141.122 376 m 261.122 376 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 328 Tm (4.) Tj T* ET
-BT 1 0 0 1 82 328 Tm (Maria collected 44 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
-BT 1 0 0 1 82 308 Tm (did they collect altogether?) Tj T* ET
+BT 1 0 0 1 54 346 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 346 Tm (Maria collected 44 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 326 Tm (did they collect altogether?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 268 Tm (Equation: ) Tj T* ET
-n 150.446 268 m 450.446 268 l S
+BT 1 0 0 1 82 300 Tm (Equation: ) Tj T* ET
+n 150.446 300 m 450.446 300 l S
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 242 Tm (Answer: ) Tj T* ET
-n 141.122 242 m 261.122 242 l S
+BT 1 0 0 1 82 274 Tm (Answer: ) Tj T* ET
+n 141.122 274 m 261.122 274 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 220 Tm (5.) Tj T* ET
-BT 1 0 0 1 82 220 Tm (Maria collected 55 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
-BT 1 0 0 1 82 200 Tm (did they collect altogether?) Tj T* ET
+BT 1 0 0 1 54 244 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 244 Tm (Maria collected 55 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 224 Tm (did they collect altogether?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 160 Tm (Equation: ) Tj T* ET
-n 150.446 160 m 450.446 160 l S
+BT 1 0 0 1 82 198 Tm (Equation: ) Tj T* ET
+n 150.446 198 m 450.446 198 l S
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 134 Tm (Answer: ) Tj T* ET
-n 141.122 134 m 261.122 134 l S
+BT 1 0 0 1 82 172 Tm (Answer: ) Tj T* ET
+n 141.122 172 m 261.122 172 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 142 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 142 Tm (Maria collected 66 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 122 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 96 Tm (Equation: ) Tj T* ET
+n 150.446 96 m 450.446 96 l S
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 70 Tm (Answer: ) Tj T* ET
+n 141.122 70 m 261.122 70 l S
 --- stream 2
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 0 0 0 rg
@@ -7260,31 +7273,18 @@ BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
 BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 678 Tm (6.) Tj T* ET
-BT 1 0 0 1 82 678 Tm (Maria collected 66 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 54 678 Tm (7.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Maria collected 77 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
 BT 1 0 0 1 82 658 Tm (did they collect altogether?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 618 Tm (Equation: ) Tj T* ET
-n 150.446 618 m 450.446 618 l S
+BT 1 0 0 1 82 632 Tm (Equation: ) Tj T* ET
+n 150.446 632 m 450.446 632 l S
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 592 Tm (Answer: ) Tj T* ET
-n 141.122 592 m 261.122 592 l S
-BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 570 Tm (7.) Tj T* ET
-BT 1 0 0 1 82 570 Tm (Maria collected 77 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
-BT 1 0 0 1 82 550 Tm (did they collect altogether?) Tj T* ET
-BT /F3 11 Tf 13.2 TL ET
-.501961 .501961 .501961 rg
-0 0 0 rg
-BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 510 Tm (Equation: ) Tj T* ET
-n 150.446 510 m 450.446 510 l S
-BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 484 Tm (Answer: ) Tj T* ET
-n 141.122 484 m 261.122 484 l S
+BT 1 0 0 1 82 606 Tm (Answer: ) Tj T* ET
+n 141.122 606 m 261.122 606 l S
 
 === equation_self_check_tiles_answer_key ===
 title: Word Problems \204 Equations
@@ -7314,37 +7314,37 @@ BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 592 Tm (Equation: ) Tj T* ET
-n 150.446 592 m 450.446 592 l S
+BT 1 0 0 1 82 606 Tm (Equation: ) Tj T* ET
+n 150.446 606 m 450.446 606 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 570 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 570 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT 1 0 0 1 54 576 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 576 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 530 Tm (Equation: ) Tj T* ET
-n 150.446 530 m 450.446 530 l S
+BT 1 0 0 1 82 550 Tm (Equation: ) Tj T* ET
+n 150.446 550 m 450.446 550 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 508 Tm (3.) Tj T* ET
-BT 1 0 0 1 82 508 Tm (Maria has 3 bags with 4 stickers in each bag. How many stickers are there in) Tj T* ET
-BT 1 0 0 1 82 488 Tm (all?) Tj T* ET
+BT 1 0 0 1 54 520 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 520 Tm (Maria has 3 bags with 4 stickers in each bag. How many stickers are there in) Tj T* ET
+BT 1 0 0 1 82 500 Tm (all?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 448 Tm (Equation: ) Tj T* ET
-n 150.446 448 m 450.446 448 l S
+BT 1 0 0 1 82 474 Tm (Equation: ) Tj T* ET
+n 150.446 474 m 450.446 474 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 426 Tm (4.) Tj T* ET
-BT 1 0 0 1 82 426 Tm (Jamal shares 12 marbles equally among 3 friends. How many marbles does) Tj T* ET
-BT 1 0 0 1 82 406 Tm (each friend get?) Tj T* ET
+BT 1 0 0 1 54 444 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 444 Tm (Jamal shares 12 marbles equally among 3 friends. How many marbles does) Tj T* ET
+BT 1 0 0 1 82 424 Tm (each friend get?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 366 Tm (Equation: ) Tj T* ET
-n 150.446 366 m 450.446 366 l S
+BT 1 0 0 1 82 398 Tm (Equation: ) Tj T* ET
+n 150.446 398 m 450.446 398 l S
 --- stream 2
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 0 0 0 rg
@@ -9358,63 +9358,63 @@ BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 592 Tm (Equation: ) Tj T* ET
-n 150.446 592 m 450.446 592 l S
+BT 1 0 0 1 82 606 Tm (Equation: ) Tj T* ET
+n 150.446 606 m 450.446 606 l S
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 566 Tm (Answer: ) Tj T* ET
-n 141.122 566 m 261.122 566 l S
+BT 1 0 0 1 82 580 Tm (Answer: ) Tj T* ET
+n 141.122 580 m 261.122 580 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 544 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 544 Tm (A box held 64 crayons. Priya took out 15, and then Leo took out 23. How) Tj T* ET
-BT 1 0 0 1 82 524 Tm (many crayons are left in the box?) Tj T* ET
+BT 1 0 0 1 54 550 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 550 Tm (A box held 64 crayons. Priya took out 15, and then Leo took out 23. How) Tj T* ET
+BT 1 0 0 1 82 530 Tm (many crayons are left in the box?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 484 Tm (Equation: ) Tj T* ET
-n 150.446 484 m 450.446 484 l S
+BT 1 0 0 1 82 504 Tm (Equation: ) Tj T* ET
+n 150.446 504 m 450.446 504 l S
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 458 Tm (Answer: ) Tj T* ET
-n 141.122 458 m 261.122 458 l S
+BT 1 0 0 1 82 478 Tm (Answer: ) Tj T* ET
+n 141.122 478 m 261.122 478 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 436 Tm (3.) Tj T* ET
-BT 1 0 0 1 82 436 Tm (Sofia has 38 stickers. 8 are in a box, and the rest are in 5 bags with the) Tj T* ET
-BT 1 0 0 1 82 416 Tm (same number in each bag. How many stickers are in each bag?) Tj T* ET
+BT 1 0 0 1 54 448 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 448 Tm (Sofia has 38 stickers. 8 are in a box, and the rest are in 5 bags with the) Tj T* ET
+BT 1 0 0 1 82 428 Tm (same number in each bag. How many stickers are in each bag?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 376 Tm (Equation: ) Tj T* ET
-n 150.446 376 m 450.446 376 l S
+BT 1 0 0 1 82 402 Tm (Equation: ) Tj T* ET
+n 150.446 402 m 450.446 402 l S
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 350 Tm (Answer: ) Tj T* ET
-n 141.122 350 m 261.122 350 l S
+BT 1 0 0 1 82 376 Tm (Answer: ) Tj T* ET
+n 141.122 376 m 261.122 376 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 328 Tm (4.) Tj T* ET
-BT 1 0 0 1 82 328 Tm (There are 4 boxes with 6 apples in each box. Kai brings 7 more. How many) Tj T* ET
-BT 1 0 0 1 82 308 Tm (apples are there now?) Tj T* ET
+BT 1 0 0 1 54 346 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 346 Tm (There are 4 boxes with 6 apples in each box. Kai brings 7 more. How many) Tj T* ET
+BT 1 0 0 1 82 326 Tm (apples are there now?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 268 Tm (Equation: ) Tj T* ET
-n 150.446 268 m 450.446 268 l S
+BT 1 0 0 1 82 300 Tm (Equation: ) Tj T* ET
+n 150.446 300 m 450.446 300 l S
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 242 Tm (Answer: ) Tj T* ET
-n 141.122 242 m 261.122 242 l S
+BT 1 0 0 1 82 274 Tm (Answer: ) Tj T* ET
+n 141.122 274 m 261.122 274 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 220 Tm (5.) Tj T* ET
-BT 1 0 0 1 82 220 Tm (A store had 90 pencils. It sold 6 packs with 12 pencils in each pack. How) Tj T* ET
-BT 1 0 0 1 82 200 Tm (many pencils does the store have left?) Tj T* ET
+BT 1 0 0 1 54 244 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 244 Tm (A store had 90 pencils. It sold 6 packs with 12 pencils in each pack. How) Tj T* ET
+BT 1 0 0 1 82 224 Tm (many pencils does the store have left?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 160 Tm (Equation: ) Tj T* ET
-n 150.446 160 m 450.446 160 l S
+BT 1 0 0 1 82 198 Tm (Equation: ) Tj T* ET
+n 150.446 198 m 450.446 198 l S
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 134 Tm (Answer: ) Tj T* ET
-n 141.122 134 m 261.122 134 l S
+BT 1 0 0 1 82 172 Tm (Answer: ) Tj T* ET
+n 141.122 172 m 261.122 172 l S
 --- stream 2
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 0 0 0 rg
@@ -9827,73 +9827,73 @@ BT /F2 18 Tf 21.6 TL ET
 BT 1 0 0 1 56 335.5 Tm (+) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 288 Tm (Answer: ) Tj T* ET
-n 141.122 288 m 261.122 288 l S
+BT 1 0 0 1 82 292 Tm (Answer: ) Tj T* ET
+n 141.122 292 m 261.122 292 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 266 Tm (2.) Tj T* ET
-BT 1 0 0 1 82 266 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT 1 0 0 1 54 262 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 262 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
-BT 1 0 0 1 82 246 Tm (Jump backward to subtract. Fill in each box; the last box is your answer.) Tj T* ET
+BT 1 0 0 1 82 242 Tm (Jump backward to subtract. Fill in each box; the last box is your answer.) Tj T* ET
 0 0 0 rg
 q
 .176471 .215686 .282353 RG
 .176471 .215686 .282353 rg
 1.2 w
-n 89 199 m 551 199 l S
-n 82 199 m 89 203 l 89 195 l h
+n 89 195 m 551 195 l S
+n 82 195 m 89 199 l 89 191 l h
 f*
-n 558 199 m 551 203 l 551 195 l h
+n 558 195 m 551 199 l 551 191 l h
 f*
-n 543 195 m 543 203 l S
-n 320 195 m 320 203 l S
-n 97 195 m 97 203 l S
+n 543 191 m 543 199 l S
+n 320 191 m 320 199 l S
+n 97 191 m 97 199 l S
 0 0 0 rg
 BT /F2 11 Tf 13.2 TL ET
-BT 1 0 0 1 536.884 182 Tm (72) Tj T* ET
+BT 1 0 0 1 536.884 178 Tm (72) Tj T* ET
 .290196 .333333 .407843 RG
 1 w
 n
-301 172 m
-339 172 l
-340.6584 172 342 173.3416 342 175 c
-342 187 l
-342 188.6584 340.6584 190 339 190 c
-301 190 l
-299.3416 190 298 188.6584 298 187 c
-298 175 l
-298 173.3416 299.3416 172 301 172 c
+301 168 m
+339 168 l
+340.6584 168 342 169.3416 342 171 c
+342 183 l
+342 184.6584 340.6584 186 339 186 c
+301 186 l
+299.3416 186 298 184.6584 298 183 c
+298 171 l
+298 169.3416 299.3416 168 301 168 c
 h
 S
 n
-78 172 m
-116 172 l
-117.6584 172 119 173.3416 119 175 c
-119 187 l
-119 188.6584 117.6584 190 116 190 c
-78 190 l
-76.3416 190 75 188.6584 75 187 c
-75 175 l
-75 173.3416 76.3416 172 78 172 c
+78 168 m
+116 168 l
+117.6584 168 119 169.3416 119 171 c
+119 183 l
+119 184.6584 117.6584 186 116 186 c
+78 186 l
+76.3416 186 75 184.6584 75 183 c
+75 171 l
+75 169.3416 76.3416 168 78 168 c
 h
 S
 BT /F3 8 Tf 9.6 TL ET
 .443137 .501961 .588235 rg
-BT 1 0 0 1 84.108 163 Tm (answer) Tj T* ET
+BT 1 0 0 1 84.108 159 Tm (answer) Tj T* ET
 .168627 .423529 .690196 RG
 .168627 .423529 .690196 rg
 1.3 w
 BT /F2 10 Tf 12 TL ET
-n 543 199 m 487.25 225 375.75 225 327.2503 202.3813 c
+n 543 195 m 487.25 221 375.75 221 327.2503 198.3813 c
 S
-n 320 199 m 328.7296 199.2093 l 325.771 205.5533 l h
+n 320 195 m 328.7296 195.2093 l 325.771 201.5533 l h
 f*
-BT 1 0 0 1 421.805 228 Tm /F4 10 Tf 12 TL (-) Tj /F2 10 Tf 12 TL ( 20) Tj T* ET
-n 320 199 m 264.25 225 152.75 225 104.2503 202.3813 c
+BT 1 0 0 1 421.805 224 Tm /F4 10 Tf 12 TL (-) Tj /F2 10 Tf 12 TL ( 20) Tj T* ET
+n 320 195 m 264.25 221 152.75 221 104.2503 198.3813 c
 S
-n 97 199 m 105.7296 199.2093 l 102.771 205.5533 l h
+n 97 195 m 105.7296 195.2093 l 102.771 201.5533 l h
 f*
-BT 1 0 0 1 201.585 228 Tm /F4 10 Tf 12 TL (-) Tj /F2 10 Tf 12 TL ( 5) Tj T* ET
+BT 1 0 0 1 201.585 224 Tm /F4 10 Tf 12 TL (-) Tj /F2 10 Tf 12 TL ( 5) Tj T* ET
 Q
 --- stream 2
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
@@ -9938,32 +9938,32 @@ BT 1 0 0 1 258.664 588 Tm (4) Tj T* ET
 BT 1 0 0 1 378.664 588 Tm (4) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 549 Tm (Answer: ) Tj T* ET
-n 141.122 549 m 261.122 549 l S
+BT 1 0 0 1 82 553 Tm (Answer: ) Tj T* ET
+n 141.122 553 m 261.122 553 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 527 Tm (4.) Tj T* ET
-BT 1 0 0 1 82 527 Tm (Jamal shares 12 marbles equally among 3 friends. How many marbles does) Tj T* ET
-BT 1 0 0 1 82 507 Tm (each friend get?) Tj T* ET
+BT 1 0 0 1 54 523 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 523 Tm (Jamal shares 12 marbles equally among 3 friends. How many marbles does) Tj T* ET
+BT 1 0 0 1 82 503 Tm (each friend get?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 481 Tm (A\) 12 \327 3 = ) Tj T* ET
-n 155.164 476.1 19.6 19.6 re S
-BT 1 0 0 1 174.764 481 Tm  T* ET
-BT 1 0 0 1 320 481 Tm (B\) 12 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 3 = ) Tj T* ET
-n 392.674 476.1 19.6 19.6 re S
-BT 1 0 0 1 412.274 481 Tm  T* ET
-BT 1 0 0 1 82 455 Tm (C\) 12 + 3 = ) Tj T* ET
-n 155.934 450.1 19.6 19.6 re S
-BT 1 0 0 1 175.534 455 Tm  T* ET
-BT 1 0 0 1 320 455 Tm (D\) 12 \367 3 = ) Tj T* ET
-n 393.934 450.1 19.6 19.6 re S
-BT 1 0 0 1 413.534 455 Tm  T* ET
+BT 1 0 0 1 82 477 Tm (A\) 12 \327 3 = ) Tj T* ET
+n 155.164 472.1 19.6 19.6 re S
+BT 1 0 0 1 174.764 477 Tm  T* ET
+BT 1 0 0 1 320 477 Tm (B\) 12 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 3 = ) Tj T* ET
+n 392.674 472.1 19.6 19.6 re S
+BT 1 0 0 1 412.274 477 Tm  T* ET
+BT 1 0 0 1 82 451 Tm (C\) 12 + 3 = ) Tj T* ET
+n 155.934 446.1 19.6 19.6 re S
+BT 1 0 0 1 175.534 451 Tm  T* ET
+BT 1 0 0 1 320 451 Tm (D\) 12 \367 3 = ) Tj T* ET
+n 393.934 446.1 19.6 19.6 re S
+BT 1 0 0 1 413.534 451 Tm  T* ET
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 425 Tm (5.) Tj T* ET
-BT 1 0 0 1 82 425 Tm (Maria collected 47 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
-BT 1 0 0 1 82 405 Tm (did they collect altogether?) Tj T* ET
+BT 1 0 0 1 54 421 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 421 Tm (Maria collected 47 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 401 Tm (did they collect altogether?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
@@ -9971,161 +9971,161 @@ q
 .796078 .835294 .878431 RG
 1 w
 n
-86 331 m
-554 331 l
-556.2112 331 558 332.7888 558 335 c
-558 387 l
-558 389.2112 556.2112 391 554 391 c
-86 391 l
-83.7888 391 82 389.2112 82 387 c
-82 335 l
-82 332.7888 83.7888 331 86 331 c
+86 327 m
+554 327 l
+556.2112 327 558 328.7888 558 331 c
+558 383 l
+558 385.2112 556.2112 387 554 387 c
+86 387 l
+83.7888 387 82 385.2112 82 383 c
+82 331 l
+82 328.7888 83.7888 327 86 327 c
 h
 S
 BT /F3 9 Tf 10.8 TL ET
 .627451 .682353 .752941 rg
-BT 1 0 0 1 87 379 Tm (Show your work) Tj T* ET
+BT 1 0 0 1 87 375 Tm (Show your work) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
 BT 1 0 0 1 82 305 Tm (Answer: ) Tj T* ET
 n 141.122 305 m 261.122 305 l S
 BT /F1 14 Tf 16.8 TL ET
-BT 1 0 0 1 54 283 Tm (6.) Tj T* ET
-BT 1 0 0 1 82 283 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT 1 0 0 1 54 275 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 275 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
 BT /F3 11 Tf 13.2 TL ET
 .501961 .501961 .501961 rg
 0 0 0 rg
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 224 Tm (A\)) Tj T* ET
+BT 1 0 0 1 82 216 Tm (A\)) Tj T* ET
 q
 .176471 .215686 .282353 RG
 .176471 .215686 .282353 rg
 1.2 w
-n 115 229 m 301 229 l S
-n 108 229 m 115 233 l 115 225 l h
+n 115 221 m 301 221 l S
+n 108 221 m 115 225 l 115 217 l h
 f*
-n 308 229 m 301 233 l 301 225 l h
+n 308 221 m 301 225 l 301 217 l h
 f*
-n 123 225 m 123 233 l S
-n 208 225 m 208 233 l S
-n 293 225 m 293 233 l S
+n 123 217 m 123 225 l S
+n 208 217 m 208 225 l S
+n 293 217 m 293 225 l S
 0 0 0 rg
 BT /F2 9 Tf 10.8 TL ET
-BT 1 0 0 1 120.498 216 Tm (0) Tj T* ET
-BT 1 0 0 1 202.996 216 Tm (20) Tj T* ET
-BT 1 0 0 1 287.996 216 Tm (72) Tj T* ET
+BT 1 0 0 1 120.498 208 Tm (0) Tj T* ET
+BT 1 0 0 1 202.996 208 Tm (20) Tj T* ET
+BT 1 0 0 1 287.996 208 Tm (72) Tj T* ET
 .168627 .423529 .690196 RG
 .168627 .423529 .690196 rg
 1.3 w
-n 123 229 m 165.5 269 250.5 269 287.1744 234.4829 c
+n 123 221 m 165.5 261 250.5 261 287.1744 226.4829 c
 S
-n 293 229 m 289.5732 237.0316 l 284.7756 231.9342 l h
+n 293 221 m 289.5732 229.0316 l 284.7756 223.9342 l h
 f*
-BT 1 0 0 1 199.117 262 Tm (+ 72) Tj T* ET
-n 293 229 m 271.75 239 229.25 239 215.2385 232.4064 c
+BT 1 0 0 1 199.117 254 Tm (+ 72) Tj T* ET
+n 293 221 m 271.75 231 229.25 231 215.2385 224.4064 c
 S
-n 208 229 m 216.7288 229.2395 l 213.7483 235.5732 l h
+n 208 221 m 216.7288 221.2395 l 213.7483 227.5732 l h
 f*
-BT 1 0 0 1 241.7745 239.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 52) Tj T* ET
+BT 1 0 0 1 241.7745 231.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 52) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 332 224 Tm (B\)) Tj T* ET
+BT 1 0 0 1 332 216 Tm (B\)) Tj T* ET
 q
 .176471 .215686 .282353 RG
 .176471 .215686 .282353 rg
 1.2 w
-n 365 229 m 551 229 l S
-n 358 229 m 365 233 l 365 225 l h
+n 365 221 m 551 221 l S
+n 358 221 m 365 225 l 365 217 l h
 f*
-n 558 229 m 551 233 l 551 225 l h
+n 558 221 m 551 225 l 551 217 l h
 f*
-n 373 225 m 373 233 l S
-n 458 225 m 458 233 l S
-n 543 225 m 543 233 l S
+n 373 217 m 373 225 l S
+n 458 217 m 458 225 l S
+n 543 217 m 543 225 l S
 0 0 0 rg
 BT /F2 9 Tf 10.8 TL ET
-BT 1 0 0 1 370.498 216 Tm (0) Tj T* ET
-BT 1 0 0 1 452.996 216 Tm (37) Tj T* ET
-BT 1 0 0 1 537.996 216 Tm (72) Tj T* ET
+BT 1 0 0 1 370.498 208 Tm (0) Tj T* ET
+BT 1 0 0 1 452.996 208 Tm (37) Tj T* ET
+BT 1 0 0 1 537.996 208 Tm (72) Tj T* ET
 .168627 .423529 .690196 RG
 .168627 .423529 .690196 rg
 1.3 w
-n 373 229 m 415.5 269 500.5 269 537.1744 234.4829 c
+n 373 221 m 415.5 261 500.5 261 537.1744 226.4829 c
 S
-n 543 229 m 539.5732 237.0316 l 534.7756 231.9342 l h
+n 543 221 m 539.5732 229.0316 l 534.7756 223.9342 l h
 f*
-BT 1 0 0 1 449.117 262 Tm (+ 72) Tj T* ET
-n 543 229 m 521.75 239 479.25 239 465.2385 232.4064 c
+BT 1 0 0 1 449.117 254 Tm (+ 72) Tj T* ET
+n 543 221 m 521.75 231 479.25 231 465.2385 224.4064 c
 S
-n 458 229 m 466.7288 229.2395 l 463.7483 235.5732 l h
+n 458 221 m 466.7288 221.2395 l 463.7483 227.5732 l h
 f*
-BT 1 0 0 1 491.7745 239.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 25) Tj T* ET
+BT 1 0 0 1 491.7745 231.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 25) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 82 160 Tm (C\)) Tj T* ET
+BT 1 0 0 1 82 152 Tm (C\)) Tj T* ET
 q
 .176471 .215686 .282353 RG
 .176471 .215686 .282353 rg
 1.2 w
-n 115 165 m 301 165 l S
-n 108 165 m 115 169 l 115 161 l h
+n 115 157 m 301 157 l S
+n 108 157 m 115 161 l 115 153 l h
 f*
-n 308 165 m 301 169 l 301 161 l h
+n 308 157 m 301 161 l 301 153 l h
 f*
-n 123 161 m 123 169 l S
-n 208 161 m 208 169 l S
-n 293 161 m 293 169 l S
+n 123 153 m 123 161 l S
+n 208 153 m 208 161 l S
+n 293 153 m 293 161 l S
 0 0 0 rg
 BT /F2 9 Tf 10.8 TL ET
-BT 1 0 0 1 120.498 152 Tm (0) Tj T* ET
-BT 1 0 0 1 202.996 152 Tm (72) Tj T* ET
-BT 1 0 0 1 287.996 152 Tm (97) Tj T* ET
+BT 1 0 0 1 120.498 144 Tm (0) Tj T* ET
+BT 1 0 0 1 202.996 144 Tm (72) Tj T* ET
+BT 1 0 0 1 287.996 144 Tm (97) Tj T* ET
 .168627 .423529 .690196 RG
 .168627 .423529 .690196 rg
 1.3 w
-n 123 165 m 144.25 175 186.75 175 200.7615 168.4064 c
+n 123 157 m 144.25 167 186.75 167 200.7615 160.4064 c
 S
-n 208 165 m 202.2517 171.5732 l 199.2712 165.2395 l h
+n 208 157 m 202.2517 163.5732 l 199.2712 157.2395 l h
 f*
-BT 1 0 0 1 156.617 175.5 Tm (+ 72) Tj T* ET
-n 208 165 m 229.25 175 271.75 175 285.7615 168.4064 c
+BT 1 0 0 1 156.617 167.5 Tm (+ 72) Tj T* ET
+n 208 157 m 229.25 167 271.75 167 285.7615 160.4064 c
 S
-n 293 165 m 287.2517 171.5732 l 284.2712 165.2395 l h
+n 293 157 m 287.2517 163.5732 l 284.2712 157.2395 l h
 f*
-BT 1 0 0 1 241.617 175.5 Tm (+ 25) Tj T* ET
+BT 1 0 0 1 241.617 167.5 Tm (+ 25) Tj T* ET
 Q
 BT /F2 14 Tf 16.8 TL ET
-BT 1 0 0 1 332 160 Tm (D\)) Tj T* ET
+BT 1 0 0 1 332 152 Tm (D\)) Tj T* ET
 q
 .176471 .215686 .282353 RG
 .176471 .215686 .282353 rg
 1.2 w
-n 365 165 m 551 165 l S
-n 358 165 m 365 169 l 365 161 l h
+n 365 157 m 551 157 l S
+n 358 157 m 365 161 l 365 153 l h
 f*
-n 558 165 m 551 169 l 551 161 l h
+n 558 157 m 551 161 l 551 153 l h
 f*
-n 373 161 m 373 169 l S
-n 458 161 m 458 169 l S
-n 543 161 m 543 169 l S
+n 373 153 m 373 161 l S
+n 458 153 m 458 161 l S
+n 543 153 m 543 161 l S
 0 0 0 rg
 BT /F2 9 Tf 10.8 TL ET
-BT 1 0 0 1 370.498 152 Tm (0) Tj T* ET
-BT 1 0 0 1 452.996 152 Tm (47) Tj T* ET
-BT 1 0 0 1 537.996 152 Tm (72) Tj T* ET
+BT 1 0 0 1 370.498 144 Tm (0) Tj T* ET
+BT 1 0 0 1 452.996 144 Tm (47) Tj T* ET
+BT 1 0 0 1 537.996 144 Tm (72) Tj T* ET
 .168627 .423529 .690196 RG
 .168627 .423529 .690196 rg
 1.3 w
-n 373 165 m 415.5 205 500.5 205 537.1744 170.4829 c
+n 373 157 m 415.5 197 500.5 197 537.1744 162.4829 c
 S
-n 543 165 m 539.5732 173.0316 l 534.7756 167.9342 l h
+n 543 157 m 539.5732 165.0316 l 534.7756 159.9342 l h
 f*
-BT 1 0 0 1 449.117 198 Tm (+ 72) Tj T* ET
-n 543 165 m 521.75 175 479.25 175 465.2385 168.4064 c
+BT 1 0 0 1 449.117 190 Tm (+ 72) Tj T* ET
+n 543 157 m 521.75 167 479.25 167 465.2385 160.4064 c
 S
-n 458 165 m 466.7288 165.2395 l 463.7483 171.5732 l h
+n 458 157 m 466.7288 157.2395 l 463.7483 163.5732 l h
 f*
-BT 1 0 0 1 491.7745 175.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 25) Tj T* ET
+BT 1 0 0 1 491.7745 167.5 Tm /F4 9 Tf 10.8 TL (-) Tj /F2 9 Tf 10.8 TL ( 25) Tj T* ET
 Q
 --- stream 3
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
@@ -10155,4 +10155,512 @@ BT 1 0 0 1 82 628 Tm (47 + 25 = 72) Tj T* ET
 BT /F1 14 Tf 16.8 TL ET
 BT 1 0 0 1 54 608 Tm (6.) Tj T* ET
 BT 1 0 0 1 82 608 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47    \(D\)) Tj T* ET
+
+=== number_choices_answer_key ===
+title: Word Problems
+media boxes: 0 0 612 792; 0 0 612 792; 0 0 612 792; 0 0 612 792
+--- stream 1
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+BT /F1 12 Tf 14.4 TL ET
+BT 1 0 0 1 54 678 Tm (Use the strip diagram \(bar model\): parts or equal groups make a whole. The ? shows what to) Tj T* ET
+BT 1 0 0 1 54 662 Tm (find. Where there are choices, circle the correct answer.) Tj T* ET
+BT 1 0 0 1 54 646 Tm (Read each problem. Show your work in the box. Where there are choices, circle the correct) Tj T* ET
+BT 1 0 0 1 54 630 Tm (answer.) Tj T* ET
+BT 1 0 0 1 54 614 Tm (Use the number line. Start at the first number and jump by hundreds, tens, and ones. Circle) Tj T* ET
+BT 1 0 0 1 54 598 Tm (the correct answer.) Tj T* ET
+BT 1 0 0 1 54 582 Tm (Use the base-ten blocks to help you solve each problem. Circle the correct answer.) Tj T* ET
+BT 1 0 0 1 54 566 Tm (Read each problem and solve it. Circle the correct answer.) Tj T* ET
+q
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 515.5 Tm (Key:) Tj T* ET
+.811765 .890196 .968627 rg
+.168627 .423529 .690196 RG
+1 w
+n 84 491 55 55 re B*
+.4 w
+n 89.5 491 m 89.5 546 l S
+n 95 491 m 95 546 l S
+n 100.5 491 m 100.5 546 l S
+n 106 491 m 106 546 l S
+n 111.5 491 m 111.5 546 l S
+n 117 491 m 117 546 l S
+n 122.5 491 m 122.5 546 l S
+n 128 491 m 128 546 l S
+n 133.5 491 m 133.5 546 l S
+n 84 496.5 m 139 496.5 l S
+n 84 502 m 139 502 l S
+n 84 507.5 m 139 507.5 l S
+n 84 513 m 139 513 l S
+n 84 518.5 m 139 518.5 l S
+n 84 524 m 139 524 l S
+n 84 529.5 m 139 529.5 l S
+n 84 535 m 139 535 l S
+n 84 540.5 m 139 540.5 l S
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 90.79 480 Tm (flat = 100) Tj T* ET
+.839216 .937255 .839216 rg
+.184314 .521569 .352941 RG
+1 w
+n 189 491 5.5 55 re B*
+.4 w
+n 189 496.5 m 194.5 496.5 l S
+n 189 502 m 194.5 502 l S
+n 189 507.5 m 194.5 507.5 l S
+n 189 513 m 194.5 513 l S
+n 189 518.5 m 194.5 518.5 l S
+n 189 524 m 194.5 524 l S
+n 189 529.5 m 194.5 529.5 l S
+n 189 535 m 194.5 535 l S
+n 189 540.5 m 194.5 540.5 l S
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 173.265 480 Tm (rod = 10) Tj T* ET
+.992157 .890196 .784314 rg
+.752941 .337255 .129412 RG
+1 w
+n 244.5 491 5.5 5.5 re B*
+.4 w
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 230.71 480 Tm (unit = 1) Tj T* ET
+Q
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 455 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 455 Tm (Maria collected 47 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 435 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 415 Tm (Combine the blocks to find the total.) Tj T* ET
+0 0 0 rg
+q
+.839216 .937255 .839216 rg
+.184314 .521569 .352941 RG
+1 w
+n 82 351 5.5 55 re B*
+.4 w
+n 82 356.5 m 87.5 356.5 l S
+n 82 362 m 87.5 362 l S
+n 82 367.5 m 87.5 367.5 l S
+n 82 373 m 87.5 373 l S
+n 82 378.5 m 87.5 378.5 l S
+n 82 384 m 87.5 384 l S
+n 82 389.5 m 87.5 389.5 l S
+n 82 395 m 87.5 395 l S
+n 82 400.5 m 87.5 400.5 l S
+.839216 .937255 .839216 rg
+.184314 .521569 .352941 RG
+1 w
+n 90.25 351 5.5 55 re B*
+.4 w
+n 90.25 356.5 m 95.75 356.5 l S
+n 90.25 362 m 95.75 362 l S
+n 90.25 367.5 m 95.75 367.5 l S
+n 90.25 373 m 95.75 373 l S
+n 90.25 378.5 m 95.75 378.5 l S
+n 90.25 384 m 95.75 384 l S
+n 90.25 389.5 m 95.75 389.5 l S
+n 90.25 395 m 95.75 395 l S
+n 90.25 400.5 m 95.75 400.5 l S
+.839216 .937255 .839216 rg
+.184314 .521569 .352941 RG
+1 w
+n 98.5 351 5.5 55 re B*
+.4 w
+n 98.5 356.5 m 104 356.5 l S
+n 98.5 362 m 104 362 l S
+n 98.5 367.5 m 104 367.5 l S
+n 98.5 373 m 104 373 l S
+n 98.5 378.5 m 104 378.5 l S
+n 98.5 384 m 104 384 l S
+n 98.5 389.5 m 104 389.5 l S
+n 98.5 395 m 104 395 l S
+n 98.5 400.5 m 104 400.5 l S
+.839216 .937255 .839216 rg
+.184314 .521569 .352941 RG
+1 w
+n 106.75 351 5.5 55 re B*
+.4 w
+n 106.75 356.5 m 112.25 356.5 l S
+n 106.75 362 m 112.25 362 l S
+n 106.75 367.5 m 112.25 367.5 l S
+n 106.75 373 m 112.25 373 l S
+n 106.75 378.5 m 112.25 378.5 l S
+n 106.75 384 m 112.25 384 l S
+n 106.75 389.5 m 112.25 389.5 l S
+n 106.75 395 m 112.25 395 l S
+n 106.75 400.5 m 112.25 400.5 l S
+.992157 .890196 .784314 rg
+.752941 .337255 .129412 RG
+1 w
+n 124.35 351 5.5 5.5 re B*
+.4 w
+.992157 .890196 .784314 rg
+.752941 .337255 .129412 RG
+1 w
+n 132.6 351 5.5 5.5 re B*
+.4 w
+.992157 .890196 .784314 rg
+.752941 .337255 .129412 RG
+1 w
+n 140.85 351 5.5 5.5 re B*
+.4 w
+.992157 .890196 .784314 rg
+.752941 .337255 .129412 RG
+1 w
+n 149.1 351 5.5 5.5 re B*
+.4 w
+.992157 .890196 .784314 rg
+.752941 .337255 .129412 RG
+1 w
+n 157.35 351 5.5 5.5 re B*
+.4 w
+.992157 .890196 .784314 rg
+.752941 .337255 .129412 RG
+1 w
+n 124.35 359.25 5.5 5.5 re B*
+.4 w
+.992157 .890196 .784314 rg
+.752941 .337255 .129412 RG
+1 w
+n 132.6 359.25 5.5 5.5 re B*
+.4 w
+.839216 .937255 .839216 rg
+.184314 .521569 .352941 RG
+1 w
+n 82 282 5.5 55 re B*
+.4 w
+n 82 287.5 m 87.5 287.5 l S
+n 82 293 m 87.5 293 l S
+n 82 298.5 m 87.5 298.5 l S
+n 82 304 m 87.5 304 l S
+n 82 309.5 m 87.5 309.5 l S
+n 82 315 m 87.5 315 l S
+n 82 320.5 m 87.5 320.5 l S
+n 82 326 m 87.5 326 l S
+n 82 331.5 m 87.5 331.5 l S
+.839216 .937255 .839216 rg
+.184314 .521569 .352941 RG
+1 w
+n 90.25 282 5.5 55 re B*
+.4 w
+n 90.25 287.5 m 95.75 287.5 l S
+n 90.25 293 m 95.75 293 l S
+n 90.25 298.5 m 95.75 298.5 l S
+n 90.25 304 m 95.75 304 l S
+n 90.25 309.5 m 95.75 309.5 l S
+n 90.25 315 m 95.75 315 l S
+n 90.25 320.5 m 95.75 320.5 l S
+n 90.25 326 m 95.75 326 l S
+n 90.25 331.5 m 95.75 331.5 l S
+.992157 .890196 .784314 rg
+.752941 .337255 .129412 RG
+1 w
+n 107.85 282 5.5 5.5 re B*
+.4 w
+.992157 .890196 .784314 rg
+.752941 .337255 .129412 RG
+1 w
+n 116.1 282 5.5 5.5 re B*
+.4 w
+.992157 .890196 .784314 rg
+.752941 .337255 .129412 RG
+1 w
+n 124.35 282 5.5 5.5 re B*
+.4 w
+.992157 .890196 .784314 rg
+.752941 .337255 .129412 RG
+1 w
+n 132.6 282 5.5 5.5 re B*
+.4 w
+.992157 .890196 .784314 rg
+.752941 .337255 .129412 RG
+1 w
+n 140.85 282 5.5 5.5 re B*
+.4 w
+.176471 .215686 .282353 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 56 303.5 Tm (+) Tj T* ET
+Q
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 260 Tm (A\) 22) Tj T* ET
+BT 1 0 0 1 201 260 Tm (B\) 62) Tj T* ET
+BT 1 0 0 1 320 260 Tm (C\) 70) Tj T* ET
+BT 1 0 0 1 439 260 Tm (D\) 72) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 230 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 230 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 210 Tm (Jump backward to subtract. Fill in each box; the last box is your answer.) Tj T* ET
+0 0 0 rg
+q
+.176471 .215686 .282353 RG
+.176471 .215686 .282353 rg
+1.2 w
+n 89 163 m 551 163 l S
+n 82 163 m 89 167 l 89 159 l h
+f*
+n 558 163 m 551 167 l 551 159 l h
+f*
+n 543 159 m 543 167 l S
+n 320 159 m 320 167 l S
+n 97 159 m 97 167 l S
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 536.884 146 Tm (72) Tj T* ET
+.290196 .333333 .407843 RG
+1 w
+n
+301 136 m
+339 136 l
+340.6584 136 342 137.3416 342 139 c
+342 151 l
+342 152.6584 340.6584 154 339 154 c
+301 154 l
+299.3416 154 298 152.6584 298 151 c
+298 139 l
+298 137.3416 299.3416 136 301 136 c
+h
+S
+n
+78 136 m
+116 136 l
+117.6584 136 119 137.3416 119 139 c
+119 151 l
+119 152.6584 117.6584 154 116 154 c
+78 154 l
+76.3416 154 75 152.6584 75 151 c
+75 139 l
+75 137.3416 76.3416 136 78 136 c
+h
+S
+BT /F3 8 Tf 9.6 TL ET
+.443137 .501961 .588235 rg
+BT 1 0 0 1 84.108 127 Tm (answer) Tj T* ET
+.168627 .423529 .690196 RG
+.168627 .423529 .690196 rg
+1.3 w
+BT /F2 10 Tf 12 TL ET
+n 543 163 m 487.25 189 375.75 189 327.2503 166.3813 c
+S
+n 320 163 m 328.7296 163.2093 l 325.771 169.5533 l h
+f*
+BT 1 0 0 1 421.805 192 Tm /F4 10 Tf 12 TL (-) Tj /F2 10 Tf 12 TL ( 20) Tj T* ET
+n 320 163 m 264.25 189 152.75 189 104.2503 166.3813 c
+S
+n 97 163 m 105.7296 163.2093 l 102.771 169.5533 l h
+f*
+BT 1 0 0 1 201.585 192 Tm /F4 10 Tf 12 TL (-) Tj /F2 10 Tf 12 TL ( 5) Tj T* ET
+Q
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 105 Tm (A\) 97) Tj T* ET
+BT 1 0 0 1 201 105 Tm (B\) 53) Tj T* ET
+BT 1 0 0 1 320 105 Tm (C\) 2) Tj T* ET
+BT 1 0 0 1 439 105 Tm (D\) 47) Tj T* ET
+--- stream 2
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (Maria has 3 bags with 4 stickers in each bag. How many stickers are there in) Tj T* ET
+BT 1 0 0 1 82 658 Tm (all?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 638 Tm (Equal groups are shown. Multiply the group size by the number of groups.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 239.692 621 Tm (whole: ?) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 617 m 442 617 l S
+n 82 617 m 82 613 l S
+n 442 617 m 442 613 l S
+.176471 .215686 .282353 RG
+1.2 w
+.811765 .890196 .968627 rg
+n 82 575 120 34 re B*
+n 202 575 120 34 re B*
+n 322 575 120 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 138.664 588 Tm (4) Tj T* ET
+BT 1 0 0 1 258.664 588 Tm (4) Tj T* ET
+BT 1 0 0 1 378.664 588 Tm (4) Tj T* ET
+Q
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 553 Tm (A\) 7) Tj T* ET
+BT 1 0 0 1 201 553 Tm (B\) 8) Tj T* ET
+BT 1 0 0 1 320 553 Tm (C\) 6) Tj T* ET
+BT 1 0 0 1 439 553 Tm (D\) 12) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 523 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 523 Tm (Jamal shares 12 marbles equally among 3 friends. How many marbles does) Tj T* ET
+BT 1 0 0 1 82 503 Tm (each friend get?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 477 Tm (A\) 9) Tj T* ET
+BT 1 0 0 1 201 477 Tm (B\) 2) Tj T* ET
+BT 1 0 0 1 320 477 Tm (C\) 3) Tj T* ET
+BT 1 0 0 1 439 477 Tm (D\) 4) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 447 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 447 Tm (Maria collected 47 stickers. Jamal collected 25 stickers. How many stickers) Tj T* ET
+BT 1 0 0 1 82 427 Tm (did they collect altogether?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+q
+.796078 .835294 .878431 RG
+1 w
+n
+86 353 m
+554 353 l
+556.2112 353 558 354.7888 558 357 c
+558 409 l
+558 411.2112 556.2112 413 554 413 c
+86 413 l
+83.7888 413 82 411.2112 82 409 c
+82 357 l
+82 354.7888 83.7888 353 86 353 c
+h
+S
+BT /F3 9 Tf 10.8 TL ET
+.627451 .682353 .752941 rg
+BT 1 0 0 1 87 401 Tm (Show your work) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 331 Tm (Answer: ) Tj T* ET
+n 141.122 331 m 261.122 331 l S
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 301 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 301 Tm (Priya had 72 marbles and used 25. How many marbles are left?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 82 281 Tm (The whole and one part are shown. Subtract to find the missing part.) Tj T* ET
+0 0 0 rg
+q
+0 0 0 rg
+BT /F2 11 Tf 13.2 TL ET
+BT 1 0 0 1 236.9365 264 Tm (whole: 72) Tj T* ET
+.443137 .501961 .588235 RG
+1 w
+n 82 260 m 442 260 l S
+n 82 260 m 82 256 l S
+n 442 260 m 442 256 l S
+.176471 .215686 .282353 RG
+1.2 w
+.811765 .890196 .968627 rg
+n 82 218 125 34 re B*
+.996078 .952941 .780392 rg
+n 207 218 235 34 re B*
+0 0 0 rg
+BT /F2 12 Tf 14.4 TL ET
+BT 1 0 0 1 137.828 231 Tm (25) Tj T* ET
+BT 1 0 0 1 320.834 231 Tm (?) Tj T* ET
+Q
+BT /F2 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 196 Tm (Answer: ) Tj T* ET
+n 141.122 196 m 261.122 196 l S
+--- stream 3
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (Name: ____________________________) Tj T* ET
+BT 1 0 0 1 346 708 Tm (Date: ________________) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 678 Tm (7.) Tj T* ET
+BT 1 0 0 1 82 678 Tm (A jar held 14 marbles. Maria added 26 more, and then Jamal added 9 more.) Tj T* ET
+BT 1 0 0 1 82 658 Tm (How many marbles are in the jar now?) Tj T* ET
+BT /F3 11 Tf 13.2 TL ET
+.501961 .501961 .501961 rg
+0 0 0 rg
+q
+.796078 .835294 .878431 RG
+1 w
+n
+86 584 m
+554 584 l
+556.2112 584 558 585.7888 558 588 c
+558 640 l
+558 642.2112 556.2112 644 554 644 c
+86 644 l
+83.7888 644 82 642.2112 82 640 c
+82 588 l
+82 585.7888 83.7888 584 86 584 c
+h
+S
+BT /F3 9 Tf 10.8 TL ET
+.627451 .682353 .752941 rg
+BT 1 0 0 1 87 632 Tm (Show your work) Tj T* ET
+Q
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 82 562 Tm (A\) 35) Tj T* ET
+BT 1 0 0 1 201 562 Tm (B\) 31) Tj T* ET
+BT 1 0 0 1 320 562 Tm (C\) 39) Tj T* ET
+BT 1 0 0 1 439 562 Tm (D\) 49) Tj T* ET
+--- stream 4
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+0 0 0 rg
+BT /F2 18 Tf 21.6 TL ET
+BT 1 0 0 1 54 738 Tm (Word Problems: Answer Key) Tj T* ET
+BT /F1 9 Tf 10.8 TL ET
+.501961 .501961 .501961 rg
+BT 1 0 0 1 54 27 Tm (Sheet A) Tj T* ET
+BT 1 0 0 1 440.316 27 Tm (\251 YEAR toonarmycaptain.com) Tj T* ET
+0 0 0 rg
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 708 Tm (1.) Tj T* ET
+BT 1 0 0 1 82 708 Tm (47 + 25 = 72    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 688 Tm (2.) Tj T* ET
+BT 1 0 0 1 82 688 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 668 Tm (3.) Tj T* ET
+BT 1 0 0 1 82 668 Tm (3 \327 4 = 12    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 648 Tm (4.) Tj T* ET
+BT 1 0 0 1 82 648 Tm (12 \367 3 = 4    \(D\)) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 628 Tm (5.) Tj T* ET
+BT 1 0 0 1 82 628 Tm (47 + 25 = 72) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 608 Tm (6.) Tj T* ET
+BT 1 0 0 1 82 608 Tm (72 ) Tj /F4 14 Tf 16.8 TL (-) Tj /F1 14 Tf 16.8 TL ( 25 = 47) Tj T* ET
+BT /F1 14 Tf 16.8 TL ET
+BT 1 0 0 1 54 588 Tm (7.) Tj T* ET
+BT 1 0 0 1 82 588 Tm (14 + 26 = 40,  40 + 9 = 49    \(D\)) Tj T* ET
 

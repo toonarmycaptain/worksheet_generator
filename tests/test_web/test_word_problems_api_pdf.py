@@ -626,6 +626,7 @@ ADD = BasicOperationQuestionData(
             # -, so the last two, as ``sample`` keeps their order, then shuffled. Each has its
             # letter, c for cards, and its wrong equations use + and - only.
             "/api/worksheets/word_problems.pdf?representation=equation&response=multiple_choice"
+            "&answer_types=equation"
             "&steps=two&problems=2&answer_key=true&sheet=1ab2c3",
             [],
             [],
@@ -690,6 +691,7 @@ ADD = BasicOperationQuestionData(
             # groups, both 2, so only (2 x b) x c, with b and c two different numbers from 3 to 5,
             # 6. The largest number caps none of these numbers, so it isn't named.
             "/api/worksheets/word_problems.pdf?representation=equation&response=multiple_choice"
+            "&answer_types=equation"
             "&steps=two&operations=multiply&max_groups=2&max_group_size=5&problems=20",
             [],
             [],
@@ -708,6 +710,7 @@ ADD = BasicOperationQuestionData(
             # equations to choose from, and with 2 groups of 2 every multiplication repeats a
             # number, so only the two shapes of addition are drawn: 12, split evenly.
             "/api/worksheets/word_problems.pdf?representation=equation&response=multiple_choice"
+            "&answer_types=equation"
             "&steps=two&operations=add&operations=multiply&max_number=3&max_groups=2"
             "&max_group_size=2&problems=13",
             [],
@@ -945,6 +948,7 @@ ADD = BasicOperationQuestionData(
             # wrong equations take the last pair of mistakes and its last set, for the request and
             # again for the expected PDF.
             "/api/worksheets/word_problems.pdf?representation=equation&response=multiple_choice"
+            "&answer_types=equation"
             "&problems=2&answer_key=true&sheet=1ab2c3",
             [],
             [40, 150, 47, 25],
@@ -980,6 +984,7 @@ ADD = BasicOperationQuestionData(
             # equations, and the largest number caps the subtraction and addition, but not 6
             # groups of 20.
             "/api/worksheets/word_problems.pdf?representation=equation&response=multiple_choice"
+            "&answer_types=equation"
             "&operations=add&operations=subtract&operations=multiply&operations=divide&problems=4"
             "&max_number=100&sheet=1ab2c3",
             [],
@@ -1046,6 +1051,7 @@ ADD = BasicOperationQuestionData(
             # Split evenly, addition needs 6 of 11 problems, and numbers up to 3 make 5 sums, 2 to
             # 6. Text only would allow 5 problems in all.
             "/api/worksheets/word_problems.pdf?representation=equation&response=multiple_choice"
+            "&answer_types=equation"
             "&operations=add&operations=multiply&problems=11&max_number=3",
             [],
             [],
@@ -1066,6 +1072,7 @@ ADD = BasicOperationQuestionData(
             # tries below the answer first, and the addition's above, for the request and again
             # for the expected PDF.
             "/api/worksheets/word_problems.pdf?representation=number_line"
+            "&answer_types=number_line"
             "&response=multiple_choice&problems=2&answer_key=true&sheet=1ab2c3",
             [],
             [40, 150, 25, 47],
@@ -1138,34 +1145,37 @@ ADD = BasicOperationQuestionData(
             None,
             None,
         ),
-        # only number lines and equations are multiple choice
+        # only number lines and equations are chosen, so other representations need Number
         (
-            "/api/worksheets/word_problems.pdf?representation=strip&response=multiple_choice",
+            "/api/worksheets/word_problems.pdf?representation=strip&response=multiple_choice"
+            "&answer_types=number_line&answer_types=equation",
             [],
             [],
             [],
             422,
-            refused("response: multiple choice not available with Strip Diagrams"),
+            refused("answer_types: none ticked that Strip Diagrams can have"),
             None,
             None,
         ),
         (
-            "/api/worksheets/word_problems.pdf?representation=none&response=multiple_choice",
+            "/api/worksheets/word_problems.pdf?representation=none&response=multiple_choice"
+            "&answer_types=number_line&answer_types=equation",
             [],
             [],
             [],
             422,
-            refused("response: multiple choice not available with Text Only"),
+            refused("answer_types: none ticked that Text Only can have"),
             None,
             None,
         ),
         (
-            "/api/worksheets/word_problems.pdf?representation=blocks&response=multiple_choice",
+            "/api/worksheets/word_problems.pdf?representation=blocks&response=multiple_choice"
+            "&answer_types=number_line&answer_types=equation",
             [],
             [],
             [],
             422,
-            refused("response: multiple choice not available with Base-Ten Blocks"),
+            refused("answer_types: none ticked that Base-Ten Blocks can have"),
             None,
             None,
         ),
@@ -1408,6 +1418,7 @@ ADD = BasicOperationQuestionData(
         (
             # equations draw no strip, so they can have more groups
             "/api/worksheets/word_problems.pdf?representation=equation&response=multiple_choice"
+            "&answer_types=equation"
             "&operations=multiply&max_groups=32&max_group_size=28&problems=1&sheet=1ab2c3",
             [],
             [32, 28],
@@ -1642,6 +1653,97 @@ ADD = BasicOperationQuestionData(
             },
             "word_problems-sheet-a.pdf",
         ),
+        # Strip diagrams with multiple choice: the answer chosen from numbers, the only answer type
+        # a strip offers, so the sheet is made as a mixed one, of one kind, with the strip's title.
+        # The kind, the object twice, then the set of wrong numbers for the request and again for
+        # the expected PDF are scripted.
+        (
+            "/api/worksheets/word_problems.pdf?representation=strip&response=multiple_choice"
+            "&operations=add&problems=1&answer_key=true&sheet=1ab2c3",
+            [Operation.ADD],
+            [47, 25],
+            [
+                (Representation.STRIP, Response.NUMBER_CHOICE),
+                ("card", "cards"),
+                ("card", "cards"),
+                LAST,
+                LAST,
+            ],
+            200,
+            None,
+            {
+                "questions": [ADD],
+                "representation": [Representation.STRIP],
+                "choices": Response.NUMBER_CHOICE,
+                "hints": True,
+                "black_and_white": False,
+                "work_box": False,
+                "slot_of": None,
+                "answer_key": True,
+                "title": "Word Problems — Strip Diagrams",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
+        # Equations with both answer types, split evenly: one equation chosen, one answer chosen
+        # from numbers, reversed by the shuffle and worded again with the sheet, the equation
+        # choice title. Scripted: each problem's kind, the chosen one's object and its pair and set
+        # of mistakes, the other's object, both objects again, then the wrong numbers and the
+        # wrong equations, for the request and again for the expected PDF.
+        (
+            "/api/worksheets/word_problems.pdf?representation=equation&response=multiple_choice"
+            "&operations=add&problems=2&answer_key=true&sheet=1ab2c3",
+            [Operation.ADD],
+            [47, 25, 30, 12],
+            [
+                (Representation.EQUATION, Response.MULTIPLE_CHOICE),
+                (Representation.EQUATION, Response.NUMBER_CHOICE),
+                ("card", "cards"),
+                LAST,
+                LAST,
+                ("card", "cards"),
+                ("card", "cards"),
+                ("card", "cards"),
+                LAST,
+                LAST,
+                LAST,
+                LAST,
+                LAST,
+                LAST,
+            ],
+            200,
+            None,
+            {
+                "questions": [
+                    BasicOperationQuestionData(
+                        Operation.ADD,
+                        (30, 12),
+                        42,
+                        "A basket held 30 cards. Maria added 12 more. "
+                        "How many cards are in the basket now?",
+                    ),
+                    BasicOperationQuestionData(
+                        Operation.ADD,
+                        (47, 25),
+                        72,
+                        "Maria scored 47 points, then scored 25 more points. "
+                        "How many points in all?",
+                    ),
+                ],
+                "representation": [Representation.EQUATION, Representation.EQUATION],
+                "choices": [Response.NUMBER_CHOICE, True],
+                "hints": True,
+                "black_and_white": False,
+                "work_box": False,
+                "slot_of": None,
+                "answer_key": True,
+                "title": "Word Problems — Equation multiple choice",
+                "label": "Sheet A",
+                "name_line": False,
+            },
+            "word_problems-sheet-a.pdf",
+        ),
         # mixed refuses a representation that shows none of the operations, as the page greys
         # it out
         (
@@ -1667,27 +1769,27 @@ ADD = BasicOperationQuestionData(
             None,
             None,
         ),
-        # multiple choice alone needs every representation ticked to have choices
+        # multiple choice alone needs an answer type ticked for every representation ticked
         (
             "/api/worksheets/word_problems.pdf?representation=mixed&response=multiple_choice"
-            "&representation_mix=strip&representation_mix=equation",
+            "&representation_mix=strip&representation_mix=equation&answer_types=equation",
             [],
             [],
             [],
             422,
-            refused("representation_mix: multiple choice not available with Strip Diagrams"),
+            refused("representation_mix: multiple choice needs Number ticked for Strip Diagrams"),
             None,
             None,
         ),
-        # mixed answering needs one of them to
+        # mixed answering needs one of them to have one
         (
             "/api/worksheets/word_problems.pdf?representation=mixed&response=mixed"
-            "&representation_mix=strip&representation_mix=none",
+            "&representation_mix=strip&representation_mix=none&answer_types=equation",
             [],
             [],
             [],
             422,
-            refused("response: multiple choice not available with Strip Diagrams and Text Only"),
+            refused("answer_types: none ticked that Strip Diagrams and Text Only can have"),
             None,
             None,
         ),

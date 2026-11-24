@@ -88,6 +88,9 @@ def test_pages(client: Client) -> None:
                 b"response",  # a radio button for each choice
                 b"response",
                 b"response",
+                b"answer_types",  # a checkbox for each answer type, under the response
+                b"answer_types",
+                b"answer_types",
                 b"work_box",
                 b"answer_key",
                 b"self_check_tiles",
@@ -696,6 +699,19 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
                 (b"number_line", b" checked", b"Number Lines"),
                 (b"blocks", b" checked", b"Base-Ten Blocks"),
                 (b"equation", b" checked", b"Equations"),
+            ],
+            True,
+        ),
+        # every answer type by default for multiple choice on the word problems form, with an All
+        # box
+        (
+            "/worksheets/basic-operations/word-problems/",
+            b"/api/worksheets/word_problems.pdf",
+            "answer_types",
+            [
+                (b"number_line", b" checked", b"Number line"),
+                (b"equation", b" checked", b"Equation"),
+                (b"number", b" checked", b"Number"),
             ],
             True,
         ),

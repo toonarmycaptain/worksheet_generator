@@ -23,7 +23,7 @@ from core.basic_operations.data import (
     TwoStepQuestionData,
     Unknown,
 )
-from core.basic_operations.representation import Representation
+from core.basic_operations.representation import Representation, Response
 from tests.data import REAL_CASE_SLOTS
 from tests.helpers import (
     GOLDENS,
@@ -32,6 +32,7 @@ from tests.helpers import (
     read_sections,
     render_word_problems,
     reverse_shuffle,
+    sample_first,
 )
 
 TITLE = "Word Problems — Strip Diagrams"
@@ -904,13 +905,48 @@ EXPECTED = GOLDENS / "word_problems_worksheet_pdf_expecteds.txt"
             TEXT_ONLY_TITLE,
             "Sheet A",
         ),
+        # Answers chosen from numbers, a row of four under each problem's representation, hints
+        # kept: blocks, a number line, a strip, an equation with no line to write it on, and two
+        # steps in text only, in its box. A strip and a text-only problem are written too, so
+        # each has one instruction line ending "Where there are choices, circle the correct
+        # answer."; the equation's and the others' end "Circle the correct answer.". The key has
+        # each equation, or step, and the letter.
+        (
+            "number_choices_answer_key",
+            ADD_AND_SUBTRACT + MULTIPLY_AND_DIVIDE + ADD_AND_SUBTRACT + TWO_STEPS[:1],
+            [
+                Representation.BLOCKS,
+                Representation.NUMBER_LINE,
+                Representation.STRIP,
+                Representation.EQUATION,
+                Representation.NONE,
+                Representation.STRIP,
+                Representation.NONE,
+            ],
+            [
+                Response.NUMBER_CHOICE,
+                Response.NUMBER_CHOICE,
+                Response.NUMBER_CHOICE,
+                Response.NUMBER_CHOICE,
+                False,
+                False,
+                Response.NUMBER_CHOICE,
+            ],
+            True,
+            False,
+            True,
+            None,
+            True,
+            TEXT_ONLY_TITLE,
+            "Sheet A",
+        ),
     ],
 )
 def test_pdf_draws_the_expected_text(
     case_name: str,
     questions: list[BasicOperationQuestionData | TwoStepQuestionData],
     representation: Representation | list[Representation],
-    choices: bool | list[bool],
+    choices: bool | list[bool | Response],
     hints: bool,
     black_and_white: bool,
     work_box: bool,
@@ -930,6 +966,7 @@ def test_pdf_draws_the_expected_text(
     """
     reverse_shuffle(monkeypatch)
     choose_last(monkeypatch)
+    sample_first(monkeypatch)
     actual = pdf_text(
         render_word_problems(
             questions,

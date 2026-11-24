@@ -32,6 +32,7 @@ from core.basic_operations.representation import (
     instruction,
     missing_number_equation,
     missing_number_tile_question,
+    number_choices,
     number_line_choices,
     number_line_jumps,
     operations_name,
@@ -47,7 +48,7 @@ from core.basic_operations.representation import (
 )
 from core.question import BLANK, MultipleChoice
 from core.self_check_tiles import TileQuestion
-from tests.helpers import choice_indexes, choice_returns, reverse_shuffle
+from tests.helpers import choice_indexes, choice_returns, reverse_shuffle, sample_first
 
 
 @pytest.mark.parametrize(
@@ -1091,6 +1092,118 @@ def test_two_step_equation_choices(
 
 
 @pytest.mark.parametrize(
+    ("data", "operations", "pick", "sets", "expected"),
+    [
+        # Three kinds: a number a little off, 52 - 48 = 4 (the first of 4, 12, 13, 15, 16 and 24,
+        # each a number one, two or ten off, or 25 for 52); a regrouping slip, the borrowed ten
+        # not taken, 24 (26 takes the smaller digit from the larger); and the wrong sign, 90.
+        (
+            BasicOperationQuestionData(Operation.SUBTRACT, (52, 38), 14),
+            [Operation.ADD, Operation.SUBTRACT],
+            0,
+            1,
+            MultipleChoice((90, 24, 4, 14), frozenset({3})),
+        ),
+        # the carrying forgotten, 513; 345 + 268 = 613, a number ten off; and the wrong sign, 67
+        (
+            BasicOperationQuestionData(Operation.ADD, (345, 278), 623),
+            [Operation.ADD, Operation.SUBTRACT],
+            0,
+            1,
+            MultipleChoice((67, 513, 613, 623), frozenset({3})),
+        ),
+        # the carrying forgotten writes the last column whole, 1,213; 258 + 461 = 719, 852 with
+        # its digits the other way round; and addition alone's wrong sign, 391
+        (
+            BasicOperationQuestionData(Operation.ADD, (852, 461), 1313),
+            [Operation.ADD],
+            0,
+            1,
+            MultipleChoice((391, 1213, 719, 1313), frozenset({3})),
+        ),
+        # 42 ÷ 6 = 7, a number one off; a quotient two off, 4, even like 6; and 42 x 7 = 294
+        (
+            BasicOperationQuestionData(Operation.DIVIDE, (42, 7), 6),
+            [Operation.MULTIPLY, Operation.DIVIDE],
+            0,
+            1,
+            MultipleChoice((294, 4, 7, 6), frozenset({3})),
+        ),
+        # Two steps: ten sets of three kinds from the brackets moved, 24 - (6 ÷ 3) = 22, a number
+        # off, a quotient off, the sign changed and a step left out. The fifth: 22, a quotient two
+        # off, 4, and the second step alone, 6 ÷ 3 = 2 (18, the first, is the other).
+        (
+            TwoStepQuestionData(
+                (
+                    BasicOperationQuestionData(Operation.SUBTRACT, (24, 6), 18),
+                    BasicOperationQuestionData(Operation.DIVIDE, (18, 3), 6),
+                ),
+                Unknown.FIRST,
+                6,
+            ),
+            [Operation.SUBTRACT, Operation.DIVIDE],
+            4,
+            10,
+            MultipleChoice((2, 4, 22, 6), frozenset({3})),
+        ),
+        # Multiplication alone: every sign +, 3 + 19 + 16 = 38; a sign changed to +,
+        # (3 x 19) + 16 = 73; and a step left out, 3 x 19 = 57
+        (
+            TwoStepQuestionData(
+                (
+                    BasicOperationQuestionData(Operation.MULTIPLY, (3, 19), 57),
+                    BasicOperationQuestionData(Operation.MULTIPLY, (57, 16), 912),
+                ),
+                Unknown.FIRST,
+                912,
+            ),
+            [Operation.MULTIPLY],
+            2,
+            4,
+            MultipleChoice((57, 73, 38, 912), frozenset({3})),
+        ),
+        # Two kinds only, so two numbers off: 3 x 2 = 6, a number two off, and 2 x 4 = 8, one off,
+        # both even like 12; and multiplication alone's wrong sign, 3 + 4 = 7
+        (
+            BasicOperationQuestionData(Operation.MULTIPLY, (3, 4), 12),
+            [Operation.MULTIPLY],
+            0,
+            1,
+            MultipleChoice((7, 8, 6, 12), frozenset({3})),
+        ),
+        # The mistakes come to only 6 and 8 (2 + 2 is the answer), so the answer slipped joins the
+        # numbers a little off: 2, 3, 5, 6, 8 and 14.
+        (
+            BasicOperationQuestionData(Operation.MULTIPLY, (2, 2), 4),
+            [Operation.MULTIPLY],
+            0,
+            1,
+            MultipleChoice((5, 3, 2, 4), frozenset({3})),
+        ),
+    ],
+)
+def test_number_choices(
+    data: BasicOperationQuestionData | TwoStepQuestionData,
+    operations: list[Operation],
+    pick: int,
+    sets: int,
+    expected: MultipleChoice[int],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """
+    The wrong numbers are what mistakes in working the problem out come to, from as many kinds of
+    mistake as can be. ``choice`` picks among the ``sets`` of kinds that use the most, each with
+    the numbers each wrong one can be in order, ``sample`` keeps that order, so each is the first
+    not already taken, and ``shuffle`` reverses, so the answer comes last.
+    """
+    offered = choice_indexes(monkeypatch, [pick])
+    sample_first(monkeypatch)
+    reverse_shuffle(monkeypatch)
+    assert number_choices(data, operations) == expected
+    assert len(offered[0]) == sets
+
+
+@pytest.mark.parametrize(
     ("make", "data", "operations", "message"),
     [
         # 5 - 5 is ruled out at a glance, □ + 5 = 5 works out to 0, and 5 one less or more in both
@@ -1733,12 +1846,21 @@ def test_hint(
 
 
 @pytest.mark.parametrize(
-    ("representation", "operations", "work_box", "choices", "two_steps", "expected"),
+    (
+        "representation",
+        "operations",
+        "work_box",
+        "choices",
+        "two_steps",
+        "number_choices",
+        "expected",
+    ),
     [
         (
             Representation.STRIP,
             [Operation.ADD, Operation.SUBTRACT],
             True,
+            False,
             False,
             False,
             "Use the strip diagram (bar model): two parts make a whole. The ? shows what to find.",
@@ -1749,6 +1871,7 @@ def test_hint(
             True,
             False,
             False,
+            False,
             "Use the strip diagram (bar model): two parts make a whole. The ? shows what to find.",
         ),
         (
@@ -1757,12 +1880,14 @@ def test_hint(
             True,
             False,
             False,
+            False,
             "Use the strip diagram (bar model): two parts make a whole. The ? shows what to find.",
         ),
         (
             Representation.STRIP,
             [Operation.MULTIPLY, Operation.DIVIDE],
             True,
+            False,
             False,
             False,
             "Use the strip diagram (bar model): equal groups make a whole. "
@@ -1774,6 +1899,7 @@ def test_hint(
             True,
             False,
             False,
+            False,
             "Use the strip diagram (bar model): equal groups make a whole. "
             "The ? shows what to find.",
         ),
@@ -1781,6 +1907,7 @@ def test_hint(
             Representation.STRIP,
             [Operation.DIVIDE],
             True,
+            False,
             False,
             False,
             "Use the strip diagram (bar model): equal groups make a whole. "
@@ -1793,6 +1920,7 @@ def test_hint(
             True,
             False,
             False,
+            False,
             "Use the strip diagram (bar model): parts or equal groups make a whole. "
             "The ? shows what to find.",
         ),
@@ -1800,6 +1928,7 @@ def test_hint(
             Representation.STRIP,
             [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
             True,
+            False,
             False,
             False,
             "Use the strip diagram (bar model): parts or equal groups make a whole. "
@@ -1812,6 +1941,7 @@ def test_hint(
             True,
             False,
             False,
+            False,
             "Read each problem. Show your work in the box.",
         ),
         (
@@ -1820,12 +1950,14 @@ def test_hint(
             True,
             False,
             False,
+            False,
             "Read each problem. Show your work in the box.",
         ),
         # without the work boxes, no box to mention
         (
             Representation.NONE,
             [Operation.ADD, Operation.SUBTRACT],
+            False,
             False,
             False,
             False,
@@ -1838,12 +1970,14 @@ def test_hint(
             True,
             False,
             False,
+            False,
             "Use the number line. Start at the first number and jump by hundreds, tens, and ones.",
         ),
         (
             Representation.NUMBER_LINE,
             [Operation.SUBTRACT],
             True,
+            False,
             False,
             False,
             "Use the number line. Start at the first number and jump by hundreds, tens, and ones.",
@@ -1855,6 +1989,7 @@ def test_hint(
             False,
             True,
             False,
+            False,
             "Each number line starts at 0 and shows both numbers as jumps. Circle the correct one.",
         ),
         (
@@ -1862,6 +1997,7 @@ def test_hint(
             [Operation.SUBTRACT],
             False,
             True,
+            False,
             False,
             "Each number line starts at 0 and shows both numbers as jumps. Circle the correct one.",
         ),
@@ -1872,12 +2008,14 @@ def test_hint(
             True,
             False,
             False,
+            False,
             "Use the base-ten blocks to help you solve each problem.",
         ),
         (
             Representation.BLOCKS,
             [Operation.ADD],
             True,
+            False,
             False,
             False,
             "Use the base-ten blocks to help you solve each problem.",
@@ -1889,6 +2027,7 @@ def test_hint(
             False,
             True,
             False,
+            False,
             f"Choose the equation that matches each problem. The {BLANK} shows what to find.",
         ),
         (
@@ -1896,6 +2035,7 @@ def test_hint(
             [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
             False,
             True,
+            False,
             False,
             f"Choose the equation that matches each problem. The {BLANK} shows what to find.",
         ),
@@ -1906,11 +2046,13 @@ def test_hint(
             False,
             False,
             False,
+            False,
             f"Write an equation for each problem, with a {BLANK} for what to find. Solve it.",
         ),
         (
             Representation.EQUATION,
             [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
+            False,
             False,
             False,
             False,
@@ -1923,6 +2065,7 @@ def test_hint(
             False,
             True,
             True,
+            False,
             "Choose the equation that matches each problem. The letter stands for the number to "
             "find.",
         ),
@@ -1933,7 +2076,48 @@ def test_hint(
             False,
             False,
             True,
+            False,
             f"Write an equation for each problem, with a {BLANK} for what to find. Solve it.",
+        ),
+        # answers chosen from numbers: the written instruction, then to circle one
+        (
+            Representation.STRIP,
+            [Operation.MULTIPLY, Operation.DIVIDE],
+            False,
+            False,
+            False,
+            True,
+            "Use the strip diagram (bar model): equal groups make a whole. "
+            "The ? shows what to find. Circle the correct answer.",
+        ),
+        (
+            Representation.NONE,
+            [Operation.ADD, Operation.SUBTRACT],
+            True,
+            False,
+            False,
+            True,
+            "Read each problem. Show your work in the box. Circle the correct answer.",
+        ),
+        (
+            Representation.NUMBER_LINE,
+            [Operation.ADD, Operation.SUBTRACT],
+            False,
+            False,
+            False,
+            True,
+            "Use the number line. Start at the first number and jump by hundreds, tens, and ones. "
+            "Circle the correct answer.",
+        ),
+        # equations have no line to write one on, so text only's, without the box
+        (
+            Representation.EQUATION,
+            [Operation.ADD, Operation.SUBTRACT],
+            True,
+            False,
+            True,
+            True,
+            "Read each problem and solve it. Circle the correct answer.",
         ),
     ],
 )
@@ -1943,9 +2127,11 @@ def test_instruction(
     work_box: bool,
     choices: bool,
     two_steps: bool,
+    number_choices: bool,
     expected: str,
 ) -> None:
-    assert instruction(representation, operations, work_box, choices, two_steps) == expected
+    actual = instruction(representation, operations, work_box, choices, two_steps, number_choices)
+    assert actual == expected
 
 
 @pytest.mark.parametrize(
@@ -2005,15 +2191,30 @@ def test_word_problems_title(representation: Representation, choices: bool, expe
                 (Representation.EQUATION, Response.MULTIPLE_CHOICE),
             ],
         ),
-        # both ways: each representation written, then chosen where it can be
+        # any representation's answer is chosen from numbers
+        (
+            list(Representation),
+            [Response.NUMBER_CHOICE],
+            False,
+            [
+                (Representation.STRIP, Response.NUMBER_CHOICE),
+                (Representation.NONE, Response.NUMBER_CHOICE),
+                (Representation.NUMBER_LINE, Response.NUMBER_CHOICE),
+                (Representation.BLOCKS, Response.NUMBER_CHOICE),
+                (Representation.EQUATION, Response.NUMBER_CHOICE),
+            ],
+        ),
+        # every way: each representation written, then chosen where it can be, then its answer
         (
             [Representation.NUMBER_LINE, Representation.STRIP],
             list(Response),
             False,
             [
                 (Representation.STRIP, Response.FREE_RESPONSE),
+                (Representation.STRIP, Response.NUMBER_CHOICE),
                 (Representation.NUMBER_LINE, Response.FREE_RESPONSE),
                 (Representation.NUMBER_LINE, Response.MULTIPLE_CHOICE),
+                (Representation.NUMBER_LINE, Response.NUMBER_CHOICE),
             ],
         ),
         # two steps: no number lines or blocks, and only equations chosen
@@ -2023,9 +2224,12 @@ def test_word_problems_title(representation: Representation, choices: bool, expe
             True,
             [
                 (Representation.STRIP, Response.FREE_RESPONSE),
+                (Representation.STRIP, Response.NUMBER_CHOICE),
                 (Representation.NONE, Response.FREE_RESPONSE),
+                (Representation.NONE, Response.NUMBER_CHOICE),
                 (Representation.EQUATION, Response.FREE_RESPONSE),
                 (Representation.EQUATION, Response.MULTIPLE_CHOICE),
+                (Representation.EQUATION, Response.NUMBER_CHOICE),
             ],
         ),
         # none: blocks aren't chosen

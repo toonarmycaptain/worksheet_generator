@@ -34,10 +34,12 @@ from core.basic_operations.multiplication_models import MultiplicationModelsQues
 from core.basic_operations.representation import (
     Prompt,
     Representation,
+    Response,
     StripChoiceQuestion,
     TwoStepStripChoiceQuestion,
     WordProblemQuestion,
     equation_choices,
+    number_choices,
     number_line_choices,
     stem,
     strip_choices,
@@ -407,7 +409,7 @@ def render_tiles[Data: QuestionData[Any]](
 def render_word_problems(
     questions: list[BasicOperationQuestionData | TwoStepQuestionData],
     representation: Representation | list[Representation],
-    choices: bool | list[bool],
+    choices: bool | Response | list[bool | Response],
     hints: bool,
     black_and_white: bool,
     work_box: bool,
@@ -421,8 +423,9 @@ def render_word_problems(
     Render the word problems sheet, each question free response, with no wrong answers, or with
     ``choices`` multiple choice, its number lines made by ``number_line_choices`` or its equations
     by ``equation_choices``, or for a two-step question ``two_step_equation_choices`` with its
-    wording's letter, either with the operations of the sheet's steps as those ticked. A list of
-    representations, or of choices, gives each question its own, as on a mixed sheet.
+    wording's letter, or with ``Response.NUMBER_CHOICE`` its answer chosen from the numbers
+    ``number_choices`` gives, each with the operations of the sheet's steps as those ticked. A
+    list of representations, or of choices, gives each question its own, as on a mixed sheet.
     """
     out = BytesIO()
     operations = [
@@ -462,11 +465,13 @@ def _operations_of(data: BasicOperationQuestionData | TwoStepQuestionData) -> se
 def _word_problem(
     data: BasicOperationQuestionData | TwoStepQuestionData,
     representation: Representation,
-    choices: bool,
+    choices: bool | Response,
     operations: list[Operation],
 ) -> WordProblemQuestion:
     """Pair a word problem with its response, as ``render_word_problems`` describes."""
-    if not choices:
+    if choices is Response.NUMBER_CHOICE:
+        return Question(data, number_choices(data, operations))
+    if not choices or choices is Response.FREE_RESPONSE:
         return Question(data, FreeResponse())
     if isinstance(data, TwoStepQuestionData):
         return Question(

@@ -40,6 +40,7 @@ from core.basic_operations.representation import (
     WordProblemQuestion,
     equation_choices,
     has_fair_equation_choices,
+    number_choices,
     number_line_choices,
     stem,
     strip_choices,
@@ -1249,14 +1250,15 @@ def generate_mixed_word_problems(
     Generate ``count`` word problems of a mix of ``kinds``, as ``word_problem_kinds`` returns
     them, each with the representation it's drawn with, in a shuffled order.
 
-    The ways of answering are dealt out evenly. Each problem's operation, or with ``two_steps``
-    its shape, is then drawn as on a sheet of one kind: at random from those that some kind
-    answered that way can show, or for multiple choice dealt out evenly. Each problem goes to a
-    kind answered that way that can show it, to whichever representation has the fewest problems
-    so far, and those that the fewest kinds can show go first. Each kind's problems are made as on
-    a sheet of that kind alone, with its own limits within the sheet's: ``largest_number`` caps
-    the numbers each problem gives, and base-ten blocks show at most ``LARGEST_BLOCKS_OPERAND``.
-    No problem repeats one already made, and with ``distinct_answers`` no two share an answer.
+    The ways of answering are dealt out as ``_dealt_responses`` deals them. Each problem's
+    operation, or with ``two_steps`` its shape, is then drawn as on a sheet of one kind: at random
+    from those that some kind answered that way can show, or for answers chosen dealt out evenly.
+    Each problem goes to a kind answered that way that can show it, to whichever representation
+    has the fewest problems so far, and those that the fewest kinds can show go first. Each
+    kind's problems are made as on a sheet of that kind alone, with its own limits within the
+    sheet's: ``largest_number`` caps the numbers each problem gives, and base-ten blocks show at
+    most ``LARGEST_BLOCKS_OPERAND``. No problem repeats one already made, and with
+    ``distinct_answers`` no two share an answer.
 
     Raises ``ValueError`` if the kinds allow fewer than ``count`` such problems, as counted by
     ``count_possible_mixed_word_problems``, which also guarantees that every kind has enough left
@@ -1279,7 +1281,7 @@ def generate_mixed_word_problems(
 
     topics = {kind: _kind_topics(kind, operations, two_steps, *limits) for kind in kinds}
     responses = [response for response in Response if any(each is response for _, each in kinds)]
-    dealt = _deal(responses, count, split_evenly=True)
+    dealt = _dealt_responses(responses, count)
     problems: list[tuple[Response, Operation | TwoStepShape]] = []
     for response in responses:
         answered = [kind for kind in kinds if kind[1] is response]
@@ -1288,10 +1290,8 @@ def generate_mixed_word_problems(
             for topic in _topics(operations, two_steps)
             if any(topic in topics[kind] for kind in answered)
         ]
-        multiple_choice = response is Response.MULTIPLE_CHOICE
-        problems += [
-            (response, topic) for topic in _deal(shown, dealt.count(response), multiple_choice)
-        ]
+        chosen = response is not Response.FREE_RESPONSE
+        problems += [(response, topic) for topic in _deal(shown, dealt.count(response), chosen)]
 
     # each problem's kind, those the fewest kinds can show first
     def candidates(problem: tuple[Response, Operation | TwoStepShape]) -> list[WordProblemKind]:
@@ -1316,6 +1316,26 @@ def generate_mixed_word_problems(
     return _worded_together(made, operations)
 
 
+def _dealt_responses(responses: Sequence[Response], count: int) -> list[Response]:
+    """
+    Return how each of ``count`` problems is answered, from ``responses``: written and chosen
+    dealt out evenly, as ``_deal`` deals them, then the chosen dealt out evenly among the ways of
+    choosing, a representation or a number. So a sheet answered in writing, by choosing its
+    equation and by choosing its number has about half its problems written.
+    """
+    chosen = tuple(response for response in responses if response is not Response.FREE_RESPONSE)
+    groups: list[tuple[Response, ...]] = [
+        (response,) for response in responses if response is Response.FREE_RESPONSE
+    ]
+    if chosen:
+        groups.append(chosen)
+    dealt = _deal(groups, count, split_evenly=True)
+    if len(chosen) < 2:
+        return [response for (response, *_) in dealt]
+    ways = iter(_deal(chosen, dealt.count(chosen), split_evenly=True))
+    return [next(ways) if group == chosen else group[0] for group in dealt]
+
+
 def _worded_together(
     made: Sequence[tuple[WordProblemKind, BasicOperationQuestionData | TwoStepQuestionData]],
     operations: Sequence[Operation],
@@ -1326,7 +1346,8 @@ def _worded_together(
     problems were worded apart), and return each with its representation and its response, made
     as its kind makes it. A problem has "how many more than" stories where its representation
     does (``COMPARISON_REPRESENTATIONS``), and two-step equations to choose from have the letter
-    the new wording gives.
+    the new wording gives. A problem whose answer is chosen has the numbers ``number_choices``
+    gives for a sheet of ``operations``.
     """
     one_step = [
         (index, data)
@@ -1348,7 +1369,9 @@ def _worded_together(
         data = replace(unworded, question_text=texts[index])
         choices = response is Response.MULTIPLE_CHOICE
         question: WordProblemQuestion
-        if isinstance(data, TwoStepQuestionData) and choices:
+        if response is Response.NUMBER_CHOICE:
+            question = Question(data, number_choices(data, operations))
+        elif isinstance(data, TwoStepQuestionData) and choices:
             letter = unknown_letter(texts[index])
             question = Question(data, two_step_equation_choices(data, letter, operations))
         elif isinstance(data, TwoStepQuestionData):
@@ -1367,7 +1390,7 @@ def _no_choices_with_distinct_answers(
     kinds: Sequence[WordProblemKind], distinct_answers: bool
 ) -> None:
     """Raise ``ValueError`` with ``distinct_answers`` and a kind answered by multiple choice."""
-    if distinct_answers and any(response is Response.MULTIPLE_CHOICE for _, response in kinds):
+    if distinct_answers and any(response is not Response.FREE_RESPONSE for _, response in kinds):
         raise ValueError("Multiple choice answers are letters, so they can't be distinct answers.")
 
 

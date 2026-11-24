@@ -367,6 +367,7 @@
     const mixes = [...form.querySelectorAll("input[name=representation_mix]")];
     const responses = [...form.querySelectorAll("input[name=response]")];
     const freeResponse = responses.find((radio) => radio.value === "free_response");
+    const answerTypes = [...form.querySelectorAll("input[name=answer_types]")];
     const steps = [...form.querySelectorAll("input[name=steps]")];
     const operations = [...form.querySelectorAll("input[name=operations]")];
     const patterns = [...form.querySelectorAll("input[name=tile_pattern]")];
@@ -385,6 +386,19 @@
     const response = () =>
       responses.find((radio) => radio.checked && !radio.disabled)?.value ?? "free_response";
     const twoSteps = () => steps.some((radio) => radio.checked && !radio.disabled && radio.value === "two");
+    // the representations picked that multiple choice can choose, each its own answer type
+    const choosable = () =>
+      picked().filter(
+        (each) => each in choiceTitles && (!twoSteps() || twoStepRepresentations.includes(each)),
+      );
+    // what multiple choice chooses: the answer types ticked, or while they're hidden, as only the
+    // answer is offered, the answer
+    const chosen = () =>
+      choosable().length > 0
+        ? answerTypes.filter((box) => box.checked && !box.disabled).map((box) => box.value)
+        : ["number"];
+    // whether multiple choice can choose for a representation: its answer from numbers, or itself
+    const answerable = (each) => chosen().includes("number") || chosen().includes(each);
     const ticked = (boxes) => boxes.filter((box) => box.checked && !box.disabled).map((box) => box.value);
     // the page's CSS shows labels as blocks, which would win over the hidden attribute
     const show = (element, visible) => (element.style.display = visible ? "" : "none");
@@ -398,12 +412,11 @@
       show(mixes[0].closest("[role=group]"), mixed());
     }
 
-    // The response radios show only when there's a choice to make: while a representation
-    // offered as multiple choice (one with a choice title) is picked, and tiles, which aren't
-    // available with multiple choice, are unticked. Otherwise they're hidden, and disabled so
-    // they aren't sent, which gives free response.
+    // Every representation can have its answer chosen from numbers, so the response radios show
+    // while tiles, which aren't available with multiple choice, are unticked. Otherwise they're
+    // hidden, and disabled so they aren't sent, which gives free response.
     function showResponses() {
-      const visible = picked().some((each) => each in choiceTitles) && !tiles.checked;
+      const visible = !tiles.checked;
       for (const radio of responses) radio.disabled = !visible;
       // so a representation offered both ways starts at free response
       if (!visible) freeResponse.checked = true;
@@ -418,10 +431,30 @@
       show(steps[0].closest("[role=radiogroup]"), visible);
     }
 
+    // The answer types show under the response radios while multiple choice, alone or mixed, is
+    // picked: the answer, and each representation picked that can be chosen, such as equations.
+    // Those not offered are hidden, and the group hides when the answer is the only one, so
+    // hidden boxes are disabled and aren't sent. The All box shows only beside three.
+    function showAnswerTypes() {
+      const offered = choosable();
+      const visible = response() !== "free_response" && offered.length > 0;
+      for (const box of answerTypes) {
+        const shown = visible && (box.value === "number" || offered.includes(box.value));
+        box.disabled = !shown;
+        show(box.closest("label"), shown);
+      }
+      const group = answerTypes[0].closest("[role=group]");
+      show(group, visible);
+      const all = group.querySelector("input[data-all]");
+      if (all) show(all.closest("label"), offered.length > 1);
+      // setting disabled doesn't fire change, which the checkboxes script listens for
+      answerTypes[0].dispatchEvent(new Event("change"));
+    }
+
     // Mixed greys out a representation that can't be drawn: one that shows none of the ticked
     // operations, such as blocks with only multiplication; one without two steps while two steps
-    // are picked; one without choices while multiple choice is the only response. Greyed out,
-    // it isn't sent, and its tick comes back when it can be drawn again.
+    // are picked; one with no answer type ticked that it offers while multiple choice is the only
+    // response. Greyed out, it isn't sent, and its tick comes back when it can be drawn again.
     function greyOutMixes() {
       if (!mixed()) return;
       const wanted = operations.filter((box) => box.checked).map((box) => box.value);
@@ -429,7 +462,7 @@
         box.disabled =
           (wanted.length > 0 && !wanted.some((each) => shown[box.value].includes(each))) ||
           (twoSteps() && !twoStepRepresentations.includes(box.value)) ||
-          (response() === "multiple_choice" && !(box.value in choiceTitles));
+          (response() === "multiple_choice" && !answerable(box.value));
       }
       // setting disabled doesn't fire change, which the checkboxes script listens for
       mixes[0].dispatchEvent(new Event("change"));
@@ -461,13 +494,13 @@
       for (const radio of patterns) radio.disabled = !available;
     }
 
-    // Text only and equations have no hints, and neither does multiple choice, so the box to
-    // leave them out shows only while a representation with hints is drawn and answered in
-    // writing. Hidden, it's disabled, so it isn't sent.
+    // Text only and equations have no hints, and neither does choosing a representation, so the
+    // box to leave them out shows only while a representation with hints is drawn and answered in
+    // writing or by choosing the answer from numbers. Hidden, it's disabled, so it isn't sent.
     function showNoHints() {
       const visible =
         drawn().some((each) => !["none", "equation"].includes(each)) &&
-        response() !== "multiple_choice";
+        (response() !== "multiple_choice" || chosen().includes("number"));
       form.elements.no_hints.disabled = !visible;
       show(form.elements.no_hints.closest("label"), visible);
     }
@@ -516,6 +549,7 @@
         showMixes();
         showResponses();
         showSteps();
+        showAnswerTypes();
         greyOutMixes();
         greyOutOperations();
         greyOutTiles();
@@ -529,23 +563,24 @@
     }
 
     // The title follows the representation and response, unless it has been changed to something
-    // else: a mixed sheet's, or one answered both ways, is the representation's.
+    // else: a mixed sheet's, one answered both ways, or one choosing only answers, is the
+    // representation's.
     function followTitle() {
       const known = [...Object.values(titles), ...Object.values(choiceTitles)];
       if (known.includes(form.elements.title.value)) {
-        const chosen =
-          response() === "multiple_choice" && representation.value in choiceTitles
-            ? choiceTitles
-            : titles;
-        form.elements.title.value = chosen[representation.value];
+        const choosing =
+          response() === "multiple_choice" &&
+          representation.value in choiceTitles &&
+          chosen().includes(representation.value);
+        form.elements.title.value = (choosing ? choiceTitles : titles)[representation.value];
       }
     }
 
-    for (const control of [representation, tiles, ...mixes, ...responses, ...steps, ...operations]) {
-      control.addEventListener("change", update);
+    const controls = [representation, tiles, ...mixes, ...responses, ...answerTypes, ...steps];
+    for (const control of [...controls, ...operations]) control.addEventListener("change", update);
+    for (const control of [representation, ...responses, ...answerTypes, ...steps]) {
+      control.addEventListener("change", followTitle);
     }
-    representation.addEventListener("change", followTitle);
-    for (const radio of responses) radio.addEventListener("change", followTitle);
     // also when the browser restores the choices, going back to the page
     window.addEventListener("pageshow", update);
     update();

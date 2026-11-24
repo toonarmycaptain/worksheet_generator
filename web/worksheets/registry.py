@@ -280,6 +280,14 @@ RESPONSE_LABELS: dict[str, JsonValue] = {
     "multiple_choice": "Multiple choice",
     "mixed": "Mixed",
 }
+# What multiple choice chooses: a representation in CHOICE_NAMES, by its Representation value, or
+# the answer from numbers
+AnswerTypeChoice = Literal["number_line", "equation", "number"]
+ANSWER_TYPE_LABELS: dict[str, JsonValue] = {
+    Representation.NUMBER_LINE.value: "Number line",
+    Representation.EQUATION.value: "Equation",
+    "number": "Number",
+}
 PromptChoice = Literal["word_problem", "equation", "both"]  # a Prompt value
 # Show radio labels
 PROMPT_LABELS: dict[str, JsonValue] = {
@@ -887,12 +895,24 @@ class WordProblemOptions(HeaderOptions):
         title="Representations",
         json_schema_extra={"labels": REPRESENTATION_LABELS, "under": "representation"},
     )
-    # Multiple choice is for the representations in CHOICE_NAMES: each problem's is chosen from
-    # lettered ones. Mixed answers about half the problems each way.
+    # Multiple choice chooses each problem's answer from lettered numbers, or for the
+    # representations in CHOICE_NAMES its representation from lettered ones, as the answer types
+    # say. Mixed answers about half the problems each way.
     response: ResponseChoice = Field(
         "free_response",
         title="Response",
         json_schema_extra={"input": "radio", "labels": RESPONSE_LABELS},
+    )
+    # What multiple choice chooses, every one ticked to start with, the problems shared evenly
+    # among them: a number line or an equation, while the representations include it, or the
+    # answer from numbers, under any representation. The page shows them under the response radios
+    # while multiple choice, alone or mixed, is picked, only those the representations offer, and
+    # only when that's more than the answer alone (see builder.html).
+    answer_types: list[AnswerTypeChoice] = Field(
+        list(get_args(AnswerTypeChoice)),
+        min_length=1,
+        title="Answer types",
+        json_schema_extra={"labels": ANSWER_TYPE_LABELS, "under": "response"},
     )
     # Strip diagrams, text only and equations: with strip diagrams, two steps draw one bar, the
     # whole over its parts.
@@ -909,8 +929,16 @@ class WordProblemOptions(HeaderOptions):
 
     @property
     def mixed(self) -> bool:
-        """Whether the sheet mixes representations, or ways of answering, or both."""
-        return self.representation == "mixed" or self.response == "mixed"
+        """
+        Whether the sheet is made as one that mixes kinds of problem: it mixes representations or
+        ways of answering, or has answers to choose from numbers, which only a mixed sheet makes.
+        """
+        responses = self.responses
+        return (
+            self.representation == "mixed"
+            or len(responses) > 1
+            or Response.NUMBER_CHOICE in responses
+        )
 
     @property
     def representations(self) -> list[Representation]:
@@ -921,15 +949,36 @@ class WordProblemOptions(HeaderOptions):
 
     @property
     def responses(self) -> list[Response]:
-        """The ways the problems are answered: both for mixed, or the one."""
-        if self.response == "mixed":
-            return list(Response)
-        return [Response(self.response)]
+        """
+        The ways the problems are answered: in writing, by multiple choice, or both for mixed.
+        Multiple choice chooses a representation if a representation it offers is picked and its
+        answer type ticked, and an answer from numbers if that's ticked.
+        """
+        written = [] if self.response == "multiple_choice" else [Response.FREE_RESPONSE]
+        if self.response == "free_response":
+            return written
+        chosen = []
+        if any(
+            each in CHOICE_NAMES and each.value in self.answer_types
+            for each in self.representations
+        ):
+            chosen.append(Response.MULTIPLE_CHOICE)
+        if "number" in self.answer_types:
+            chosen.append(Response.NUMBER_CHOICE)
+        return written + chosen
 
     @property
     def kinds(self) -> list[WordProblemKind]:
-        """The kinds of problem a mixed sheet draws, as ``word_problem_kinds`` returns them."""
-        return word_problem_kinds(self.representations, self.responses, self.steps == "two")
+        """
+        The kinds of problem a mixed sheet draws, as ``word_problem_kinds`` returns them, without
+        a representation chosen whose answer type isn't ticked.
+        """
+        kinds = word_problem_kinds(self.representations, self.responses, self.steps == "two")
+        return [
+            (representation, response)
+            for representation, response in kinds
+            if response is not Response.MULTIPLE_CHOICE or representation.value in self.answer_types
+        ]
 
     @property
     def largest_operand(self) -> int:
@@ -962,34 +1011,45 @@ class WordProblemOptions(HeaderOptions):
 
     @property
     def choices(self) -> bool:
-        """Whether each problem's representation is chosen from lettered ones."""
-        return self.response == "multiple_choice"
+        """Whether every problem's representation is chosen from lettered ones."""
+        return self.responses == [Response.MULTIPLE_CHOICE]
 
     @model_validator(mode="after")
     def _choices_are_available(self) -> Self:
-        # The page hides the response radios for representations without choices, and with
-        # multiple choice alone greys out the representations to mix that have none. Runs before
-        # the title follows the response, which needs a choice title for multiple choice.
-        without = [each for each in self.representations if each not in CHOICE_NAMES]
+        # Multiple choice needs an answer type ticked that each representation picked offers: the
+        # answer, or its own if it's in CHOICE_NAMES. The page shows only the answer types offered,
+        # and with multiple choice alone greys out the representations to mix that have none.
+        if self.response == "free_response":
+            return self
+        without = [
+            each
+            for each in self.representations
+            if "number" not in self.answer_types and each.value not in self.answer_types
+        ]
         if not without:
             return self
         names = _listed([REPRESENTATION_NAMES[each] for each in without])
-        if self.response != "free_response" and len(without) == len(self.representations):
-            raise ValueError(f"response: multiple choice not available with {names}")
-        if self.choices:
-            raise ValueError(f"representation_mix: multiple choice not available with {names}")
+        if len(without) == len(self.representations):
+            raise ValueError(f"answer_types: none ticked that {names} can have")
+        if self.response == "multiple_choice":
+            raise ValueError(f"representation_mix: multiple choice needs Number ticked for {names}")
         return self
 
     @model_validator(mode="after")
     def _title_follows_the_representation(self) -> Self:
         # The default is the default representation's title. A request that picks another, or
-        # multiple choice, and gives no title gets its title.
+        # multiple choice of its representation, and gives no title gets its title.
         if "title" not in self.model_fields_set:
             if self.representation == "mixed":
                 self.title = WORD_PROBLEMS_NAME
             else:
                 representation = Representation(self.representation)
-                self.title = word_problems_title(representation, self.choices)
+                chosen = (
+                    self.response == "multiple_choice"
+                    and representation in CHOICE_NAMES
+                    and representation.value in self.answer_types
+                )
+                self.title = word_problems_title(representation, chosen)
         return self
 
     @model_validator(mode="after")

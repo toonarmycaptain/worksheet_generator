@@ -63,6 +63,7 @@ from core.basic_operations.representation import (
     Representation,
     Response,
     WordProblemKind,
+    WordProblemQuestion,
     equation_choices,
     number_line_choices,
     strip_choices,
@@ -4842,6 +4843,10 @@ TWO_STEP_KINDS: list[WordProblemKind] = [
     (Representation.EQUATION, Response.FREE_RESPONSE),
     (Representation.EQUATION, Response.MULTIPLE_CHOICE),
 ]
+# each representation's answer chosen from numbers
+FIVE_NUMBER_CHOICES: list[WordProblemKind] = [
+    (representation, Response.NUMBER_CHOICE) for representation in Representation
+]
 
 
 @pytest.mark.parametrize(
@@ -4924,6 +4929,19 @@ TWO_STEP_KINDS: list[WordProblemKind] = [
             999,
             6,
         ),
+        # an answer chosen from numbers counts as a written one: blocks' 1,197 again
+        (
+            [Operation.ADD],
+            [
+                (Representation.BLOCKS, Response.NUMBER_CHOICE),
+                (Representation.STRIP, Response.NUMBER_CHOICE),
+            ],
+            False,
+            False,
+            999,
+            2000,
+            1197,
+        ),
         # Multiplication alone: c x (a x b) has the fewest, 340, every one with fair equations to
         # choose from.
         (
@@ -5002,6 +5020,34 @@ def test_count_possible_mixed_word_problems(
                 (Representation.EQUATION, Response.MULTIPLE_CHOICE): 2,
             },
         ),
+        # Half written, half chosen; the chosen split between the equation and the number.
+        (
+            [Operation.ADD],
+            [
+                (Representation.EQUATION, Response.FREE_RESPONSE),
+                (Representation.EQUATION, Response.MULTIPLE_CHOICE),
+                (Representation.EQUATION, Response.NUMBER_CHOICE),
+            ],
+            4,
+            {
+                (Representation.EQUATION, Response.FREE_RESPONSE): 2,
+                (Representation.EQUATION, Response.MULTIPLE_CHOICE): 1,
+                (Representation.EQUATION, Response.NUMBER_CHOICE): 1,
+            },
+        ),
+        # answers chosen from numbers, shared between the representations
+        (
+            [Operation.ADD],
+            [
+                (Representation.STRIP, Response.NUMBER_CHOICE),
+                (Representation.BLOCKS, Response.NUMBER_CHOICE),
+            ],
+            4,
+            {
+                (Representation.STRIP, Response.NUMBER_CHOICE): 2,
+                (Representation.BLOCKS, Response.NUMBER_CHOICE): 2,
+            },
+        ),
     ],
 )
 def test_mixed_word_problems_spread_evenly(
@@ -5017,15 +5063,7 @@ def test_mixed_word_problems_spread_evenly(
     """
     sheet = generate_mixed_word_problems(count, operations, kinds)
 
-    made = Counter(
-        (
-            representation,
-            Response.MULTIPLE_CHOICE
-            if isinstance(question.response, MultipleChoice)
-            else Response.FREE_RESPONSE,
-        )
-        for representation, question in sheet
-    )
+    made = Counter((representation, _response(question)) for representation, question in sheet)
     assert made == expected
 
 
@@ -5047,6 +5085,18 @@ def test_mixed_word_problems_spread_evenly(
             20,
         ),
         ([Operation.MULTIPLY], TWO_STEP_KINDS, True, 20),
+        (
+            [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
+            [*ALL_SEVEN, *FIVE_NUMBER_CHOICES],
+            False,
+            20,
+        ),
+        (
+            [Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE],
+            [*TWO_STEP_KINDS, *FIVE_NUMBER_CHOICES[:2], FIVE_NUMBER_CHOICES[4]],
+            True,
+            20,
+        ),
     ],
 )
 def test_random_mixed_word_problem_sheets_can_always_be_finished(
@@ -5064,6 +5114,36 @@ def test_random_mixed_word_problem_sheets_can_always_be_finished(
         <= REPRESENTATION_OPERATIONS[representation]
         for representation, question in sheet
     )
+
+
+@pytest.mark.parametrize(
+    ("operations", "two_steps"),
+    [
+        ([Operation.ADD, Operation.SUBTRACT], False),
+        ([Operation.MULTIPLY, Operation.DIVIDE], False),
+        ([Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE], False),
+        ([Operation.DIVIDE], False),
+        ([Operation.ADD, Operation.SUBTRACT, Operation.MULTIPLY, Operation.DIVIDE], True),
+        ([Operation.MULTIPLY], True),
+    ],
+)
+def test_random_number_choices(operations: list[Operation], two_steps: bool) -> None:
+    """
+    Each problem whose answer is chosen from numbers has four different whole numbers from 0 up,
+    its answer one of them, and the right one marked.
+    """
+    kinds = [(Representation.NONE, Response.NUMBER_CHOICE)]
+    sheet = generate_mixed_word_problems(20, operations, kinds, two_steps=two_steps)
+
+    for _, question in sheet:
+        assert isinstance(question.response, MultipleChoice)
+        options = question.response.options
+        assert len(set(options)) == 4 and all(
+            isinstance(option, int) and option >= 0 for option in options
+        )
+        assert [options[index] for index in question.response.correct_indexes] == [
+            question.data.answer
+        ]
 
 
 @pytest.mark.parametrize(
@@ -5138,6 +5218,14 @@ def test_mixed_word_problems_use_every_story_before_repeating_one(
             999,
             "Multiple choice answers are letters, so they can't be distinct answers.",
         ),
+        (
+            [Operation.ADD],
+            [(Representation.STRIP, Response.NUMBER_CHOICE)],
+            True,
+            4,
+            999,
+            "Multiple choice answers are letters, so they can't be distinct answers.",
+        ),
     ],
 )
 def test_mixed_word_problem_sheet_errors(
@@ -5168,3 +5256,15 @@ def _steps(
 ) -> tuple[BasicOperationQuestionData, ...]:
     """Return the problem's steps: its two for a two-step problem, or else the problem itself."""
     return data.steps if isinstance(data, TwoStepQuestionData) else (data,)
+
+
+def _response(question: WordProblemQuestion) -> Response:
+    """
+    Return how the problem is answered: in writing, by choosing its representation, or by
+    choosing its answer from numbers.
+    """
+    if not isinstance(question.response, MultipleChoice):
+        return Response.FREE_RESPONSE
+    if isinstance(question.response.options[0], int):
+        return Response.NUMBER_CHOICE
+    return Response.MULTIPLE_CHOICE
