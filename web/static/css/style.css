@@ -185,6 +185,10 @@ input[type=checkbox], input[type=radio] { width: 1rem; height: 1rem; margin: 0 0
 
 .choices { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1.5rem; }
 .group-label { flex-basis: 100%; font-weight: 600; }
+/* fraction style labels, each fraction drawn as it looks */
+.stacked-fraction { display: inline-flex; flex-direction: column; vertical-align: middle; line-height: 1; font-size: 0.85em; text-align: center; }
+.stacked-fraction > span:first-child { border-bottom: 1px solid currentColor; padding: 0 0.15em; }
+.slanted-fraction sup, .slanted-fraction sub { font-size: 0.7em; }
 
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; padding-top: 1.1rem; border-top: 1px solid var(--border); }
 .actions span { color: var(--muted); }

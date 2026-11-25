@@ -5,6 +5,7 @@ from fractions import Fraction
 
 import pytest
 
+from core.drawn_objects import DrawnObject
 from core.fraction_models.area_models import (
     EQUILATERAL_TRIANGLE,
     HALF_HEXAGON,
@@ -397,4 +398,42 @@ def test_area_model_errors(shaded: frozenset[int], removed: frozenset[int], mess
     """Shaded and left-out parts are the whole's, never both, and some part is left in."""
     with pytest.raises(ValueError) as error:
         AreaModel(HEXAGON, shaded, removed)
+    assert str(error.value) == message
+
+
+@pytest.mark.parametrize(
+    ("split", "look", "message"),
+    [
+        (
+            Strip(equal_sizes(4)),
+            DrawnObject.PIZZA,
+            "A pizza is drawn as a circle cut from its centre, not Strip.",
+        ),
+        (
+            RadialPartition(Circle(), equal_sizes(4)),
+            DrawnObject.ROUND_CAKE,
+            "A round cake is drawn as a circle, uncut, not RadialPartition.",
+        ),
+        (
+            RadialPartition(RegularPolygon(6), equal_sizes(6)),
+            DrawnObject.SANDWICH,
+            "A sandwich is drawn as a square cut from its centre, not RadialPartition.",
+        ),
+        (
+            Strip(equal_sizes(4)),
+            DrawnObject.SQUARE_CAKE,
+            "A square cake is drawn as a grid, not Strip.",
+        ),
+        (
+            RadialPartition(Circle(), equal_sizes(8)),
+            DrawnObject.CHOCOLATE_BAR,
+            "A chocolate bar is drawn as a grid, not RadialPartition.",
+        ),
+        (Grid(2, 4), DrawnObject.BOOK, "A book isn't drawn as a whole cut into parts."),
+    ],
+)
+def test_area_model_look_errors(split: Split, look: DrawnObject, message: str) -> None:
+    """A whole drawn as an object is one of those cut into parts, cut as that object is."""
+    with pytest.raises(ValueError) as error:
+        AreaModel(split, look=look)
     assert str(error.value) == message

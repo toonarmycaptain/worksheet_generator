@@ -26,17 +26,18 @@ SLOTS_PER_ROW = 6
 
 
 @dataclass(frozen=True)
-class TileQuestion:
+class TileQuestion[Answer = str]:
     """
     A question as displayed on the self-check tiles sheet, independent of its question type.
 
-    ``prompt`` is the text the student reads, ``answer`` is the text in the answer's bank box,
+    ``prompt`` is the text the student reads, ``answer`` is what the answer's bank box shows,
     and ``solution`` is the completed question for the answer key, such as "3 + 4 = 7". A
-    ``BLANK`` in the prompt is drawn as an empty square.
+    ``BLANK`` in the prompt is drawn as an empty square. The answer is text unless a sheet says
+    otherwise, such as written maths with fractions, or a picture.
     """
 
     prompt: str
-    answer: str
+    answer: Answer
     solution: str
 
 

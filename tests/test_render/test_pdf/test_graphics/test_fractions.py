@@ -283,6 +283,71 @@ def _drawn(draw: Callable[[Canvas], None]) -> str:
             100,
             COLOUR_FRACTIONS,
         ),
+        # wholes drawn as objects: a pepperoni on each slice, and the crust
+        (
+            "pizza_in_6_two_shaded",
+            AreaModel(
+                RadialPartition(Circle(), equal_sizes(6)), frozenset({0, 1}), look=DrawnObject.PIZZA
+            ),
+            120,
+            120,
+            COLOUR_FRACTIONS,
+        ),
+        (
+            "pizza_uncut",
+            AreaModel(RadialPartition(Circle(), equal_sizes(1)), look=DrawnObject.PIZZA),
+            120,
+            120,
+            COLOUR_FRACTIONS,
+        ),
+        (
+            # too many slices for pepperoni
+            "pizza_in_16",
+            AreaModel(RadialPartition(Circle(), equal_sizes(16)), look=DrawnObject.PIZZA),
+            120,
+            120,
+            GREY_FRACTIONS,
+        ),
+        (
+            "sandwich_in_4_squares",
+            AreaModel(
+                RadialPartition(RegularPolygon(4), equal_sizes(4), Fraction(1, 8)),
+                look=DrawnObject.SANDWICH,
+            ),
+            110,
+            110,
+            COLOUR_FRACTIONS,
+        ),
+        (
+            "square_cake_3_by_3",
+            AreaModel(Grid(3, 3), look=DrawnObject.SQUARE_CAKE),
+            110,
+            110,
+            COLOUR_FRACTIONS,
+        ),
+        (
+            # a square left out has no square drawn in it
+            "chocolate_bar_2_by_4_one_left_out",
+            AreaModel(Grid(2, 4), frozenset({0}), frozenset({7}), look=DrawnObject.CHOCOLATE_BAR),
+            200,
+            80,
+            COLOUR_FRACTIONS,
+        ),
+        (
+            "chocolate_bar_wrapped",
+            AreaModel(Grid(1, 1), look=DrawnObject.CHOCOLATE_BAR),
+            200,
+            64,
+            COLOUR_FRACTIONS,
+        ),
+        (
+            # in the middle of a box wider than it needs
+            "round_cake",
+            AreaModel(RadialPartition(Circle(), equal_sizes(1)), look=DrawnObject.ROUND_CAKE),
+            200,
+            91,
+            COLOUR_FRACTIONS,
+        ),
     ],
 )
 def test_area_model_draws_the_expected_text(

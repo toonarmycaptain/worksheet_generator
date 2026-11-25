@@ -104,6 +104,11 @@ from core.discrete_data.generator import (
     generate_discrete_data_problems,
     most_tile_problems,
 )
+from core.fraction_models.denominators import (
+    DEFAULT_DENOMINATORS,
+    DENOMINATORS_HINT,
+    parse_denominators,
+)
 from core.input_output_tables.data import Blanks, ChoiceType
 from core.input_output_tables.generator import (
     count_possible_answers,
@@ -147,6 +152,22 @@ from core.line_equations.representation import (
 from core.line_equations.representation import (
     FORM_NAMES as LINE_FORM_NAMES,
 )
+from core.naming_fractions.data import QuestionType as NamingFractionsType
+from core.naming_fractions.data import Representation as NamingFractionsRepresentation
+from core.naming_fractions.generator import (
+    count_possible_answers as count_possible_naming_fractions_answers,
+)
+from core.naming_fractions.generator import (
+    generate_naming_fractions_questions,
+    unaskable_types,
+)
+from core.naming_fractions.representation import NAMING_FRACTIONS_NAME
+from core.naming_fractions.representation import (
+    QUESTION_TYPE_NAMES as NAMING_FRACTIONS_TYPE_NAMES,
+)
+from core.naming_fractions.representation import (
+    REPRESENTATION_NAMES as NAMING_FRACTIONS_REPRESENTATION_NAMES,
+)
 from core.order_of_operations.data import TILE_TYPES as ORDER_OF_OPERATIONS_TILE_TYPES
 from core.order_of_operations.data import GroupSymbols, SheetSettings
 from core.order_of_operations.data import QuestionType as OrderOfOperationsType
@@ -185,7 +206,7 @@ from core.prime_composite.generator import (
 from core.prime_composite.generator import generate_prime_composite_questions
 from core.prime_composite.representation import PRIME_COMPOSITE_NAME, QUESTION_TYPE_NAMES
 from core.self_check_tiles import SLOTS, TileQuestion, conventional_slot_of, random_slot_of
-from core.written_numbers import NumberStyle
+from core.written_numbers import FractionStyle, NumberStyle
 from core.wrong_answers import WRONG_ANSWER_COUNT
 from render.pdf.base_ten_blocks_worksheet import render_base_ten_blocks_worksheet
 from render.pdf.basic_operations_worksheet import (
@@ -197,6 +218,7 @@ from render.pdf.graphics.data_displays import NumberListStyle
 from render.pdf.input_output_tables_worksheet import render_input_output_tables_worksheet
 from render.pdf.line_equations_worksheet import render_line_equations_worksheet
 from render.pdf.multiplication_models_worksheet import render_multiplication_models_worksheet
+from render.pdf.naming_fractions_worksheet import render_naming_fractions_worksheet
 from render.pdf.order_of_operations_worksheet import render_order_of_operations_worksheet
 from render.pdf.page import Header
 from render.pdf.place_value_worksheet import render_place_value_worksheet
@@ -352,6 +374,28 @@ PrimeCompositeTypeChoice = Literal[
 # The prime and composite question types checkbox labels: each type's name
 PRIME_COMPOSITE_TYPE_LABELS: dict[str, JsonValue] = {
     question_type.value: name for question_type, name in QUESTION_TYPE_NAMES.items()
+}
+# a naming fractions QuestionType value
+NamingFractionsTypeChoice = Literal["name", "shade", "share", "draw_shares"]
+NAMING_FRACTIONS_TYPE_LABELS: dict[str, JsonValue] = {
+    question_type.value: name for question_type, name in NAMING_FRACTIONS_TYPE_NAMES.items()
+}
+# a naming fractions Representation value
+NamingFractionsRepresentationChoice = Literal["strip", "grid", "circle", "other_shape", "group"]
+NAMING_FRACTIONS_REPRESENTATION_LABELS: dict[str, JsonValue] = {
+    representation.value: name
+    for representation, name in NAMING_FRACTIONS_REPRESENTATION_NAMES.items()
+}
+# a FractionStyle value
+FractionStyleChoice = Literal["stacked", "slash", "slanted"]
+# Fraction style checkbox labels: each style's fraction, drawn as it looks; the page shows them as
+# markup (see views._field)
+FRACTION_STYLE_LABELS: dict[str, JsonValue] = {
+    FractionStyle.STACKED.value: '<span class="stacked-fraction" aria-label="3 over 4">'
+    "<span>3</span><span>4</span></span>",
+    FractionStyle.SLASH.value: "3/4",
+    FractionStyle.SLANTED.value: '<span class="slanted-fraction" aria-label="3 slash 4">'
+    "<sup>3</sup>&frasl;<sub>4</sub></span>",
 }
 SMALLEST_PRIME_COMPOSITE_LARGEST = 20  # keeps a range of primes with odd composites to choose
 LARGEST_PRIME_COMPOSITE_LARGEST = 1_000
@@ -1667,6 +1711,115 @@ def _prime_composite_types(ticked: Sequence[str]) -> list[QuestionType]:
     return [question_type for question_type in QuestionType if question_type.value in ticked]
 
 
+class NamingFractionsOptions(HeaderOptions):
+    """
+    Options for the naming fractions kind, built on the core. There is no seed: every sheet is
+    new.
+    """
+
+    title: Title = NAMING_FRACTIONS_NAME
+    problems: Problems = 10
+    # The problems are shared evenly among the ticked types.
+    question_types: list[NamingFractionsTypeChoice] = Field(
+        [question_type.value for question_type in NamingFractionsType],
+        min_length=1,
+        title="Question types",
+        json_schema_extra={"labels": NAMING_FRACTIONS_TYPE_LABELS},
+    )
+    # The pictures named, shaded and shared; drawing the shares cuts a whole, never a group.
+    representations: list[NamingFractionsRepresentationChoice] = Field(
+        [representation.value for representation in NamingFractionsRepresentation],
+        min_length=1,
+        title="Representations",
+        json_schema_extra={"labels": NAMING_FRACTIONS_REPRESENTATION_LABELS},
+    )
+    denominators: str = Field(
+        DEFAULT_DENOMINATORS, max_length=200, title="Denominators", description=DENOMINATORS_HINT
+    )
+    fraction_styles: list[FractionStyleChoice] = Field(
+        [style.value for style in FractionStyle],
+        min_length=1,
+        title="Fraction style",
+        json_schema_extra={"labels": FRACTION_STYLE_LABELS, "markup": True},
+    )
+    black_and_white: bool = Field(False, title="Black and white pictures")  # for photocopying
+    multiple_choice: bool = Field(
+        False,
+        title="Multiple choice",
+        description="Lettered choices instead of answer lines, and four pictures to choose from "
+        "for shading. The wrong ones are common mistakes, such as the unshaded parts over the "
+        "whole.",
+    )
+    answer_key: AnswerKey = False
+    # Tiles add an answer bank page, where a shading question's answer is a picture.
+    self_check_tiles: SelfCheckTiles = False
+    tile_pattern: TilePattern = "simple"
+
+    @model_validator(mode="after")
+    def _tiles_are_available(self) -> Self:
+        # Not built for multiple choice: each choice's letter would need coding as a number. The
+        # page hides multiple choice while tiles are ticked, and greys out the tiles while it is.
+        # Runs first, so a request with both is told so before anything else.
+        if self.self_check_tiles and self.multiple_choice:
+            raise ValueError("self_check_tiles: not available with multiple choice")
+        return self
+
+    @model_validator(mode="after")
+    def _questions_can_be_made(self) -> Self:
+        try:
+            denominators = parse_denominators(self.denominators)
+        except ValueError as error:
+            raise ValueError(f"denominators: {error}") from None
+        types = self.ticked_types()
+        representations = self.ticked_representations()
+        stuck = unaskable_types(types, representations, denominators, self.self_check_tiles)
+        if stuck:
+            raise ValueError(f"question_types: {_naming_fractions_stuck(stuck[0])}")
+        if self.self_check_tiles:
+            _at_most_one_question_per_tile(self.problems)
+            possible = count_possible_naming_fractions_answers(types, representations, denominators)
+            if self.problems > possible:
+                raise _too_many_problems(
+                    possible,
+                    "repeated answers",
+                    "choice of question types, representations and denominators",
+                    {},
+                )
+        return self
+
+    def ticked_types(self) -> list[NamingFractionsType]:
+        """The ticked question types, each once, in the order of ``QuestionType``."""
+        return [each for each in NamingFractionsType if each.value in self.question_types]
+
+    def ticked_representations(self) -> list[NamingFractionsRepresentation]:
+        """The ticked representations, each once, in the order of ``Representation``."""
+        return [
+            each for each in NamingFractionsRepresentation if each.value in self.representations
+        ]
+
+
+def _naming_fractions_stuck(question_type: NamingFractionsType) -> str:
+    """Return why no question of ``question_type`` can be made, and what would allow one."""
+    name = NAMING_FRACTIONS_TYPE_NAMES[question_type]
+    match question_type:
+        case NamingFractionsType.SHARE:
+            return (
+                f"{name} needs a denominator with a factor from 2 to 8, and Groups of objects or "
+                "a representation that can show it. Change the denominators or representations, "
+                f"or untick {name}."
+            )
+        case NamingFractionsType.DRAW_SHARES:
+            return (
+                f"{name} needs a denominator from 2 to 8, and Strips, Grids, Circles or Other "
+                f"shapes ticked: a group of objects isn't cut. Change them, or untick {name}."
+            )
+        case _:
+            return (
+                f"{name} needs a ticked representation that can show one of the denominators. "
+                f"Change the denominators or representations, or untick {name}."
+            )
+
+
 class OrderOfOperationsOptions(HeaderOptions):
     """
     Options for the order of operations kind, built on the core. There is no seed: every sheet
@@ -2336,6 +2489,7 @@ def _tile_slots(
     | BaseTenBlocksOptions
     | InputOutputTableOptions
     | PrimeCompositeOptions
+    | NamingFractionsOptions
     | OrderOfOperationsOptions
     | SlopeAndInterceptsOptions
     | WritingLinearEquationsOptions
@@ -2549,6 +2703,25 @@ def _prime_composite(options: PrimeCompositeOptions, out: BinaryIO) -> None:
         header=options.header(),
         answer_key=options.answer_key,
         slot_of=_tile_slots(options) if options.self_check_tiles else None,
+    )
+
+
+def _naming_fractions(options: NamingFractionsOptions, out: BinaryIO) -> None:
+    render_naming_fractions_worksheet(
+        questions=generate_naming_fractions_questions(
+            options.problems,
+            options.ticked_types(),
+            options.ticked_representations(),
+            parse_denominators(options.denominators),
+            styles=[style for style in FractionStyle if style.value in options.fraction_styles],
+            multiple_choice=options.multiple_choice,
+            distinct_answers=options.self_check_tiles,
+        ),
+        path=out,
+        header=options.header(),
+        answer_key=options.answer_key,
+        slot_of=_tile_slots(options) if options.self_check_tiles else None,
+        black_and_white=options.black_and_white,
     )
 
 
@@ -2844,6 +3017,7 @@ CORE_KINDS: dict[str, CoreKind[Any]] = {
     "data_graphs": CoreKind(DataGraphsOptions, _data_graphs),
     "input_output_tables": CoreKind(InputOutputTableOptions, _input_output_tables),
     "prime_composite": CoreKind(PrimeCompositeOptions, _prime_composite),
+    "naming_fractions": CoreKind(NamingFractionsOptions, _naming_fractions),
     "order_of_operations": CoreKind(OrderOfOperationsOptions, _order_of_operations),
     "slope_and_intercepts": CoreKind(SlopeAndInterceptsOptions, _slope_and_intercepts),
     "writing_linear_equations": CoreKind(WritingLinearEquationsOptions, _writing_linear_equations),

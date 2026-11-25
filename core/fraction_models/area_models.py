@@ -4,7 +4,8 @@ Area models: a whole cut into parts, some of them shaded, and fraction walls.
 A model's parts are numbered, so a question can shade any of them, side by side or scattered.
 Some cuts make unequal parts, for a model that shows no fraction, such as one shaded part of 5
 unequal parts that someone claims is 1/5. A model can also leave some of its whole's parts out,
-showing part of a shape, such as 4 of a hexagon's 6 triangles.
+showing part of a shape, such as 4 of a hexagon's 6 triangles, or be drawn as an object cut into
+parts, such as a pizza cut into slices.
 """
 
 from collections.abc import Callable, Sequence
@@ -13,6 +14,7 @@ from enum import StrEnum
 from fractions import Fraction
 from itertools import pairwise
 
+from core.drawn_objects import DrawnObject
 from core.written_numbers import UnreducedFraction
 
 
@@ -33,6 +35,10 @@ CIRCLE_LIMITS = PartLimits(alone=24, in_a_choice=16)  # a circle cut from its ce
 SLICED_CIRCLE_LIMITS = PartLimits(alone=8, in_a_choice=6)
 TRIANGLE_GRID_LIMITS = PartLimits(alone=16, in_a_choice=9)
 WALL_LIMITS = PartLimits(alone=24, in_a_choice=12)  # the parts in one of a wall's rows
+# A rhombus or a parallelogram cut into stripes parallel to a side, which are narrower than a
+# strip's parts
+STRIPED_SHAPE_LIMITS = PartLimits(alone=12, in_a_choice=8)
+BANK_PICTURE_PARTS = 12  # the most parts of any picture small enough for a tiles answer bank
 
 
 @dataclass(frozen=True)
@@ -607,15 +613,28 @@ class AreaModel:
     where it would be in the whole and at its size, so that a part is as large as the same part
     of the whole drawn beside it. 4 of a hexagon's 6 triangles, 1 shaded, show 1/4.
 
+    With ``look``, the whole is drawn as that object, cut by ``split``: a pizza is a circle cut
+    into slices from its centre, a sandwich a square cut from its centre, a square cake or a
+    chocolate bar a grid, its pieces or squares, and a round cake, seen from the side, only
+    whole. Without, it's a plain shape.
+
     Raises ``ValueError`` for a shaded or left-out part the split doesn't have, a part both shaded
-    and left out, or every part left out.
+    and left out, every part left out, or a look that isn't one of those objects or doesn't suit
+    the split.
     """
 
     split: Split
     shaded: frozenset[int] = frozenset()
     removed: frozenset[int] = frozenset()
+    look: DrawnObject | None = None
 
     def __post_init__(self) -> None:
+        if self.look is not None and not _suits(self.look, self.split):
+            needs = _LOOK_SPLITS.get(self.look)
+            name = self.look.replace("_", " ")
+            if needs is None:
+                raise ValueError(f"A {name} isn't drawn as a whole cut into parts.")
+            raise ValueError(f"A {name} is drawn as {needs}, not {type(self.split).__name__}.")
         for part in self.shaded | self.removed:
             if not 0 <= part < self.split.parts:
                 raise ValueError(f"A whole of {self.split.parts} parts has no part {part}.")
@@ -630,6 +649,32 @@ class AreaModel:
     def parts(self) -> int:
         """How many parts the model shows: the whole's, less any left out."""
         return self.split.parts - len(self.removed)
+
+
+# What each object drawn as a whole is cut as
+_LOOK_SPLITS = {
+    DrawnObject.PIZZA: "a circle cut from its centre",
+    DrawnObject.ROUND_CAKE: "a circle, uncut",
+    DrawnObject.SANDWICH: "a square cut from its centre",
+    DrawnObject.SQUARE_CAKE: "a grid",
+    DrawnObject.CHOCOLATE_BAR: "a grid",
+}
+
+
+def _suits(look: DrawnObject, split: Split) -> bool:
+    """Return whether an area model can be drawn as ``look``, cut by ``split``."""
+    circle = isinstance(split, RadialPartition) and isinstance(split.outline, Circle)
+    match look:
+        case DrawnObject.PIZZA:
+            return circle
+        case DrawnObject.ROUND_CAKE:
+            return circle and split.parts == 1
+        case DrawnObject.SANDWICH:
+            return isinstance(split, RadialPartition) and split.outline == RegularPolygon(4)
+        case DrawnObject.SQUARE_CAKE | DrawnObject.CHOCOLATE_BAR:
+            return isinstance(split, Grid)
+        case _:
+            return False
 
 
 def shaded_fraction(model: AreaModel) -> UnreducedFraction:

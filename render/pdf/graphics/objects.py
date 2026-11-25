@@ -11,7 +11,7 @@ from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.pdfgen.canvas import Canvas
 
 from core.drawn_objects import DrawnObject
-from render.pdf.graphics.common import OUTLINE_COLOUR, Point, draw_polygon
+from render.pdf.graphics.common import OUTLINE_COLOUR, Point, draw_cake_from_the_side, draw_polygon
 from render.pdf.page import BOLD_FONT
 
 OBJECT_LINE_WIDTH = 1
@@ -24,7 +24,7 @@ _NUMBER_SPOTS: dict[DrawnObject, tuple[float, float, float, float]] = {
     DrawnObject.APPLE: (0.5, 0.42, 0.3, 0.5),
     DrawnObject.BAG: (0.5, 0.36, 0.3, 0.5),
     DrawnObject.BALLOON: (0.5, 0.64, 0.26, 0.4),
-    DrawnObject.BANANA: (0.5, 0.28, 0.1, 0.14),
+    DrawnObject.BANANA: (0.5, 0.27, 0.09, 0.14),
     DrawnObject.BASEBALL: (0.5, 0.5, 0.3, 0.3),
     DrawnObject.BELL: (0.5, 0.44, 0.2, 0.3),
     DrawnObject.BIRD: (0.46, 0.44, 0.16, 0.26),
@@ -708,18 +708,31 @@ def _draw_candy_bar(pdf: Canvas, fill: Color) -> None:
 
 
 def _draw_banana(pdf: Canvas, fill: Color) -> None:
-    """Draw a banana lying curved like a smile: its stem at the top right, a ridge along it, and
-    a dark tip at the left."""
-    draw_polygon(pdf, [(0.74, 0.74), (0.84, 0.7), (0.9, 0.86), (0.82, 0.88)])
+    """Draw a banana lying curved like a smile: a short dark stem at the right, a ridge along it,
+    and a dark tip capping its blunt left end."""
+    pdf.setFillColor(OUTLINE_COLOUR)
+    draw_polygon(pdf, [(0.77, 0.55), (0.83, 0.51), (0.873, 0.585), (0.833, 0.615)])
+    pdf.setFillColor(fill)
     _draw_curve(
         pdf,
-        (0.84, 0.7),
-        (0.84, 0.3, 0.42, 0.08, 0.08, 0.46),  # the outer edge, round to the tip
-        (0.4, 0.3, 0.7, 0.4, 0.74, 0.74),  # and the inner edge, back
+        (0.15, 0.565),
+        (0.135, 0.535, 0.13, 0.5, 0.135, 0.47),  # the blunt end
+        (0.2, 0.31, 0.36, 0.21, 0.52, 0.21),  # the outer edge
+        (0.68, 0.21, 0.8, 0.32, 0.83, 0.5),  # up to the stem
+        (0.81, 0.52, 0.79, 0.535, 0.77, 0.55),
+        (0.7, 0.43, 0.6, 0.39, 0.48, 0.39),  # the inner edge, back
+        (0.34, 0.39, 0.22, 0.48, 0.15, 0.565),
         closed=True,
     )
-    _draw_curve(pdf, (0.12, 0.45), (0.42, 0.22, 0.76, 0.34, 0.8, 0.72))
-    _draw_dark(pdf, (0.09, 0.46, 0.025))
+    _draw_curve(pdf, (0.16, 0.535), (0.3, 0.34, 0.6, 0.28, 0.79, 0.535))  # the ridge
+    pdf.setFillColor(OUTLINE_COLOUR)
+    _draw_curve(  # the tip
+        pdf,
+        (0.142, 0.545),
+        (0.11, 0.54, 0.105, 0.5, 0.135, 0.49),
+        (0.13, 0.51, 0.135, 0.53, 0.142, 0.545),
+        closed=True,
+    )
 
 
 def _draw_duck(pdf: Canvas, fill: Color) -> None:
@@ -871,6 +884,60 @@ def _draw_xylophone(pdf: Canvas, fill: Color) -> None:
     pdf.circle(0.89, 0.62, 0.06, stroke=1, fill=1)
 
 
+def _draw_pizza(pdf: Canvas, fill: Color) -> None:
+    """Draw a pizza from above: its crust round the edge, cut into 6 slices, with pepperoni."""
+    pdf.circle(0.5, 0.5, 0.44, stroke=1, fill=1)
+    pdf.circle(0.5, 0.5, 0.36, stroke=1, fill=0)
+    for turn in range(3):
+        angle = pi * turn / 3 + pi / 2
+        _draw_lines(
+            pdf,
+            (
+                0.5 + 0.44 * cos(angle),
+                0.5 + 0.44 * sin(angle),
+                0.5 - 0.44 * cos(angle),
+                0.5 - 0.44 * sin(angle),
+            ),
+        )
+    _draw_dark(
+        pdf,
+        *(
+            (0.5 + 0.22 * cos(angle), 0.5 + 0.22 * sin(angle), 0.045)
+            for angle in (pi * (turn / 3 + 1 / 6) + pi / 2 for turn in range(6))
+        ),
+    )
+
+
+def _draw_round_cake(pdf: Canvas, fill: Color) -> None:
+    """Draw a round cake from the side, as ``draw_cake_from_the_side`` draws it, with a candle."""
+    draw_cake_from_the_side(pdf, 0.1, 0.72, 0.8, 0.62)
+    pdf.rect(0.46, 0.6, 0.08, 0.2, stroke=1, fill=1)
+    _draw_curve(
+        pdf,
+        (0.5, 0.82),
+        (0.44, 0.88, 0.5, 0.94, 0.5, 0.97),
+        (0.5, 0.94, 0.56, 0.88, 0.5, 0.82),
+        closed=True,
+    )
+
+
+def _draw_sandwich(pdf: Canvas, fill: Color) -> None:
+    """Draw a square sandwich from above: its crust round the edge, cut corner to corner."""
+    pdf.rect(0.1, 0.1, 0.8, 0.8, stroke=1, fill=1)
+    pdf.rect(0.18, 0.18, 0.64, 0.64, stroke=1, fill=0)
+    _draw_lines(pdf, (0.1, 0.9, 0.9, 0.1))
+
+
+def _draw_square_cake(pdf: Canvas, fill: Color) -> None:
+    """Draw a square cake from above: a bead of icing round its edge and a cherry on top."""
+    pdf.rect(0.08, 0.08, 0.84, 0.84, stroke=1, fill=1)
+    beads = [0.17 + 0.0825 * step for step in range(9)]
+    for along in beads:
+        for bead_x, bead_y in ((along, 0.17), (along, 0.83), (0.17, along), (0.83, along)):
+            pdf.circle(bead_x, bead_y, 0.035, stroke=1, fill=0)
+    pdf.circle(0.5, 0.5, 0.08, stroke=1, fill=0)
+
+
 _OBJECT_DRAWERS: dict[DrawnObject, Callable[[Canvas, Color], None]] = {
     DrawnObject.AMERICAN_FOOTBALL: _draw_american_football,
     DrawnObject.ANT: _draw_ant,
@@ -913,7 +980,11 @@ _OBJECT_DRAWERS: dict[DrawnObject, Callable[[Canvas, Color], None]] = {
     DrawnObject.MARACA: _draw_maraca,
     DrawnObject.MUSICAL_TRIANGLE: _draw_musical_triangle,
     DrawnObject.PENCIL: _draw_pencil,
+    DrawnObject.PIZZA: _draw_pizza,
     DrawnObject.RABBIT: _draw_rabbit,
+    DrawnObject.ROUND_CAKE: _draw_round_cake,
+    DrawnObject.SANDWICH: _draw_sandwich,
+    DrawnObject.SQUARE_CAKE: _draw_square_cake,
     DrawnObject.SQUARE_GIFT: _draw_square_gift,
     DrawnObject.STAR: _draw_star,
     DrawnObject.TALL_GIFT: _draw_tall_gift,

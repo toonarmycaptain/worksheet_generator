@@ -59,6 +59,7 @@ from core.input_output_tables.data import (
     InputOutputRuleQuestionData,
 )
 from core.line_equations.data import LineAnswer, LineQuestionData, answer_of
+from core.naming_fractions.data import NamingFractionsQuestion
 from core.order_of_operations.data import OrderOfOperationsQuestion
 from core.placevalue.data import PlaceValueQuestionData
 from core.prime_composite.data import PrimeCompositeQuestion
@@ -74,6 +75,7 @@ from render.pdf.graphics.data_displays import NumberListStyle
 from render.pdf.input_output_tables_worksheet import render_input_output_tables_worksheet
 from render.pdf.line_equations_worksheet import render_line_equations_worksheet
 from render.pdf.multiplication_models_worksheet import render_multiplication_models_worksheet
+from render.pdf.naming_fractions_worksheet import render_naming_fractions_worksheet
 from render.pdf.order_of_operations_worksheet import render_order_of_operations_worksheet
 from render.pdf.page import Header
 from render.pdf.place_value_worksheet import render_place_value_worksheet
@@ -247,6 +249,12 @@ def random_returns(monkeypatch: pytest.MonkeyPatch, drawn: list[float]) -> None:
     """Make ``random.random`` return ``drawn`` in order."""
     values = iter(drawn)
     monkeypatch.setattr(random, "random", lambda: next(values))
+
+
+def random_always_returns(monkeypatch: pytest.MonkeyPatch, drawn: float) -> None:
+    """Make ``random.random`` always return ``drawn``: 0.0 makes every "one time in n" happen,
+    and 0.99 none of them."""
+    monkeypatch.setattr(random, "random", lambda: drawn)
 
 
 def randrange_returns(monkeypatch: pytest.MonkeyPatch, drawn: list[int]) -> None:
@@ -670,6 +678,28 @@ def render_prime_composite(
         header=Header(title=title, label=label, name_line=name_line),
         answer_key=answer_key,
         slot_of=slot_of,
+    )
+    return out.getvalue()
+
+
+def render_naming_fractions(
+    questions: Sequence[NamingFractionsQuestion],
+    slot_of: tuple[int, ...] | None,
+    answer_key: bool,
+    title: str,
+    label: str,
+    name_line: bool = True,
+    black_and_white: bool = False,
+) -> bytes:
+    """Render the naming fractions sheet, its questions given with their responses."""
+    out = BytesIO()
+    render_naming_fractions_worksheet(
+        questions=questions,
+        path=out,
+        header=Header(title=title, label=label, name_line=name_line),
+        answer_key=answer_key,
+        slot_of=slot_of,
+        black_and_white=black_and_white,
     )
     return out.getvalue()
 

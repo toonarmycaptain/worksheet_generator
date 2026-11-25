@@ -393,27 +393,43 @@ def draw_instruction(pdf: Canvas, text: str, y: float) -> float:
 
 
 def draw_answer_key(
-    pdf: Canvas, header: Header, solutions: Iterable[str], sums: bool = True
+    pdf: Canvas, header: Header, solutions: Iterable[str | Pieces], sums: bool = True
 ) -> None:
     """
-    Draw the answer key, starting on a new page, with each solution numbered and wrapped, as
-    ``wrap`` does with ``sums``.
+    Draw the answer key, starting on a new page, with each solution numbered and wrapped: text as
+    ``wrap`` does with ``sums``, and written maths as ``wrap_pieces`` does, each fraction in its
+    style, a line with a stacked fraction given room above and below.
 
-    A newline in a solution starts a new line. A solution that would run past the bottom margin
-    starts on the next page.
+    A newline in a text solution starts a new line. A solution that would run past the bottom
+    margin starts on the next page.
     """
     key_header = replace(header, title=f"{header.title}: Answer Key", name_line=False)
     pdf.showPage()
     y = start_page(pdf, key_header)
     for number, solution in enumerate(solutions, start=1):
-        lines = [
-            line for row in solution.split("\n") for line in wrap(row, TEXT_SIZE, TEXT_WIDTH, sums)
+        lines: list[str | Pieces]
+        if isinstance(solution, str):
+            lines = [
+                line
+                for row in solution.split("\n")
+                for line in wrap(row, TEXT_SIZE, TEXT_WIDTH, sums)
+            ]
+        else:
+            lines = list(wrap_pieces(solution, TEXT_SIZE, TEXT_WIDTH))
+        rooms = [
+            FRACTION_ROOM if not isinstance(line, str) and any(map(stacked, line)) else 0
+            for line in lines
         ]
-        if y - (len(lines) - 1) * LINE_HEIGHT < MARGIN + LINE_HEIGHT:
+        if y - (len(lines) - 1) * LINE_HEIGHT - 2 * sum(rooms) < MARGIN + LINE_HEIGHT:
             pdf.showPage()
             y = start_page(pdf, key_header)
         pdf.setFont(FONT, TEXT_SIZE)
-        pdf.drawString(MARGIN, y, f"{number}.")
-        for line in lines:
-            pdf.drawString(MARGIN + TEXT_INDENT, y, line)
-            y -= LINE_HEIGHT
+        for index, (line, room) in enumerate(zip(lines, rooms, strict=True)):
+            y -= room
+            if index == 0:
+                pdf.drawString(MARGIN, y, f"{number}.")
+            if isinstance(line, str):
+                pdf.drawString(MARGIN + TEXT_INDENT, y, line)
+            else:
+                draw_pieces(pdf, MARGIN + TEXT_INDENT, y, line, TEXT_SIZE)
+            y -= LINE_HEIGHT + room

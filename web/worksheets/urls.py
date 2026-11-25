@@ -77,6 +77,13 @@ urlpatterns = [
         {"kind": "prime_composite"},
         name="prime_composite",
     ),
+    path("fractions/", RedirectView.as_view(pattern_name="naming_fractions")),
+    path(
+        "fractions/naming-fractions/",
+        views.sheet,
+        {"kind": "naming_fractions"},
+        name="naming_fractions",
+    ),
     # where input-output tables were before they had a group of their own
     path("input-output-tables/", RedirectView.as_view(pattern_name="input_output_tables")),
     path("legacy/", views.legacy, name="legacy"),

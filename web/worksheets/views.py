@@ -12,6 +12,7 @@ from typing import Any
 
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
+from django.utils.safestring import mark_safe
 
 from core.basic_operations.data import Operation
 from core.basic_operations.generator import WORD_PROBLEM_STRIP_LARGEST_GROUPS
@@ -33,6 +34,7 @@ from core.line_equations.representation import (
     SLOPE_AND_INTERCEPTS_NAME,
     WRITING_LINEAR_EQUATIONS_NAME,
 )
+from core.naming_fractions.representation import NAMING_FRACTIONS_NAME
 from core.order_of_operations.data import TILE_TYPES as ORDER_OF_OPERATIONS_TILE_TYPES
 from core.order_of_operations.representation import ORDER_OF_OPERATIONS_NAME
 from core.prime_composite.data import TILE_TYPES
@@ -89,6 +91,11 @@ BUILDERS: list[dict[str, Any]] = [
         "description": "Tell prime numbers from composite numbers by their factors.",
         "sheets": ["prime_composite"],
     },
+    {
+        "title": "Fractions",
+        "description": "Name the fraction a picture shows, shade one, and share equally.",
+        "sheets": ["naming_fractions"],
+    },
 ]
 
 HEADINGS = {
@@ -101,6 +108,7 @@ HEADINGS = {
     "data_graphs": "Read, Complete, Solve",
     "input_output_tables": INPUT_OUTPUT_TABLES_NAME,
     "prime_composite": PRIME_COMPOSITE_NAME,
+    "naming_fractions": NAMING_FRACTIONS_NAME,
     "order_of_operations": ORDER_OF_OPERATIONS_NAME,
     "slope_and_intercepts": SLOPE_AND_INTERCEPTS_NAME,
     "writing_linear_equations": WRITING_LINEAR_EQUATIONS_NAME,
@@ -138,8 +146,11 @@ def _field(name: str, schema: dict[str, Any]) -> dict[str, Any]:
         "operations": schema.get("operations", []),
     }
     if schema.get("type") == "array":
-        # A list of choices renders as a checkbox for each, and the page sends those ticked.
+        # A list of choices renders as a checkbox for each, and the page sends those ticked. Labels
+        # marked as markup, written in the registry, show as drawn, such as a stacked fraction.
         labels = schema.get("labels", {})
+        if schema.get("markup"):
+            labels = {choice: mark_safe(label) for choice, label in labels.items()}
         choices = [(choice, labels.get(choice, choice)) for choice in schema["items"]["enum"]]
         return field | {"input": "checkboxes", "choices": choices}
     if "const" in schema:

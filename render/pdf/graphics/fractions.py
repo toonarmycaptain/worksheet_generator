@@ -42,7 +42,7 @@ from core.fraction_models.number_lines import (
 )
 from core.fraction_models.object_groups import ObjectGroup
 from core.written_numbers import UnreducedFraction
-from render.pdf.graphics.common import OUTLINE_COLOUR, draw_polygon
+from render.pdf.graphics.common import OUTLINE_COLOUR, draw_cake_from_the_side, draw_polygon
 from render.pdf.graphics.number_lines import (
     EQUAL_JUMP_MOST_PULL,
     EQUAL_JUMP_PULL,
@@ -74,6 +74,9 @@ COLOUR_FRACTIONS = FractionColours(shaded=HexColor("#7aaee0"), marks=HexColor("#
 GREY_FRACTIONS = FractionColours(shaded=HexColor("#a8a8a8"), marks=HexColor("#444444"))
 
 PART_LINE_WIDTH = 1.2
+CRUST = 0.84  # a pizza's or a sandwich's crust, its inner edge as a share of the way to its edge
+MOST_PEPPERONI_PARTS = 12  # a pizza cut into more slices has no pepperoni drawn
+ROUND_CAKE_HEIGHT = 0.62  # a round cake seen from the side, its height as a share of its width
 
 GROUP_MOST_SPACING = 40  # the most from one object's left edge to the next one's
 GROUP_GAP = 0.2  # the gap between two objects, as a share of the spacing
@@ -120,7 +123,9 @@ def draw_area_model(
 
     A strip, a grid or a rectangle cut from its centre fills the box. Every other model keeps its
     shape, as large as the box allows, in its middle. Parts left out aren't drawn, and the rest
-    stay where they would be in the whole, at its size.
+    stay where they would be in the whole, at its size. A model with a look is drawn as that
+    object, as ``_decorate`` describes: a round cake from the side, and a chocolate bar in one
+    piece in its wrapper, in place of their parts.
     """
     pdf.saveState()
     pdf.setStrokeColor(OUTLINE_COLOUR)
@@ -132,6 +137,14 @@ def draw_area_model(
         for part in range(model.split.parts)
     ]
     split = model.split
+    if model.look is DrawnObject.ROUND_CAKE:
+        _draw_round_cake(pdf, x, top, width, height, fills[0] or white)
+        pdf.restoreState()
+        return
+    if model.look is DrawnObject.CHOCOLATE_BAR and split.parts == 1:
+        _draw_wrapped_bar(pdf, x, top, width, height, fills[0] or white)
+        pdf.restoreState()
+        return
     match split:
         case Strip():
             _draw_strip(pdf, x, top, split, width, height, fills)
@@ -147,7 +160,125 @@ def draw_area_model(
             _draw_cut_shape(pdf, x, top, split, width, height, fills)
         case _:
             assert_never(split)
+    if model.look is not None:
+        _decorate(pdf, x, top, model, width, height)
     pdf.restoreState()
+
+
+def _decorate(
+    pdf: Canvas, x: float, top: float, model: AreaModel, width: float, height: float
+) -> None:
+    """
+    Draw what makes ``model``'s whole look like its object, over its parts: a pizza's crust and
+    a pepperoni slice on each part, a sandwich's crust, a bead of icing round a square cake, and a
+    chocolate bar's squares raised from their edges. Drawn as lines, so a part's shading shows.
+    """
+    pdf.setLineWidth(PART_LINE_WIDTH * 0.75)
+    split = model.split
+    match model.look:
+        case DrawnObject.PIZZA if isinstance(split, RadialPartition):
+            middle_x, middle_y = x + width / 2, top - height / 2
+            radius = min(width, height) / 2
+            pdf.circle(middle_x, middle_y, radius * CRUST, stroke=1, fill=0)
+            if split.parts == 1:
+                spots = [Fraction(turn, 5) for turn in range(5)]
+            elif split.parts <= MOST_PEPPERONI_PARTS:
+                spots = [(start + end) / 2 for start, end in _part_edges(split)]
+            else:
+                spots = []
+            size = radius * min(0.12, 1.4 / max(len(spots), 1))
+            for spot in spots:
+                angle = radians(90 - 360 * float(spot))
+                spot_x = middle_x + radius * 0.56 * cos(angle)
+                spot_y = middle_y + radius * 0.56 * sin(angle)
+                pdf.circle(spot_x, spot_y, size, stroke=1, fill=0)
+        case DrawnObject.SANDWICH if isinstance(split, RadialPartition) and isinstance(
+            split.outline, RegularPolygon
+        ):
+            corners, (centre_x, centre_y) = _corners(split.outline, x, top, width, height)
+            inner = [
+                (centre_x + (corner_x - centre_x) * CRUST, centre_y + (corner_y - centre_y) * CRUST)
+                for corner_x, corner_y in corners
+            ]
+            _stroke_polygon(pdf, inner)
+        case DrawnObject.SQUARE_CAKE:
+            inset = min(width, height) * 0.08
+            bead = min(width, height) * 0.025
+            across, down = width - 2 * inset, height - 2 * inset
+            beads_across = max(2, round(across / (bead * 3)))
+            beads_down = max(2, round(down / (bead * 3)))
+            left, right, upper, lower = (
+                x + inset,
+                x + width - inset,
+                top - inset,
+                top - height + inset,
+            )
+            for step in range(beads_across + 1):
+                bead_x = left + across * step / beads_across
+                for bead_y in (upper, lower):
+                    pdf.circle(bead_x, bead_y, bead, stroke=1, fill=0)
+            for step in range(1, beads_down):
+                bead_y = upper - down * step / beads_down
+                for bead_x in (left, right):
+                    pdf.circle(bead_x, bead_y, bead, stroke=1, fill=0)
+        case DrawnObject.CHOCOLATE_BAR if isinstance(split, Grid):
+            part_width, part_height = width / split.columns, height / split.rows
+            inset = min(part_width, part_height) * 0.18
+            for row in range(split.rows):
+                for column in range(split.columns):
+                    if row * split.columns + column in model.removed:
+                        continue
+                    left = x + column * part_width + inset
+                    bottom = top - (row + 1) * part_height + inset
+                    pdf.rect(
+                        left,
+                        bottom,
+                        part_width - 2 * inset,
+                        part_height - 2 * inset,
+                        stroke=1,
+                        fill=0,
+                    )
+
+
+def _stroke_polygon(pdf: Canvas, points: Sequence[Point]) -> None:
+    """Draw the closed outline through ``points``, unfilled."""
+    path = pdf.beginPath()
+    path.moveTo(*points[0])
+    for point in points[1:]:
+        path.lineTo(*point)
+    path.close()
+    pdf.drawPath(path, stroke=1, fill=0)
+
+
+def _draw_round_cake(
+    pdf: Canvas, x: float, top: float, width: float, height: float, fill: Color
+) -> None:
+    """Draw a round cake seen from the side, whole, as large as the box allows, in its middle, as
+    ``draw_cake_from_the_side`` draws it."""
+    cake_width = min(width, height / ROUND_CAKE_HEIGHT)
+    cake_height = cake_width * ROUND_CAKE_HEIGHT
+    pdf.setFillColor(fill)
+    draw_cake_from_the_side(
+        pdf, x + (width - cake_width) / 2, top - (height - cake_height) / 2, cake_width, cake_height
+    )
+
+
+def _draw_wrapped_bar(
+    pdf: Canvas, x: float, top: float, width: float, height: float, fill: Color
+) -> None:
+    """Draw a chocolate bar in its wrapper, filling the box: a band round its middle and crimped
+    ends."""
+    crimp = min(width * 0.08, height * 0.3)
+    pdf.setFillColor(fill)
+    pdf.rect(x + crimp, top - height, width - 2 * crimp, height, stroke=1, fill=1)
+    pdf.rect(x + width * 0.35, top - height, width * 0.3, height, stroke=1, fill=0)
+    teeth = max(3, round(height / crimp))
+    for side, edge in ((1, x + crimp), (-1, x + width - crimp)):
+        points = [(edge, top)]
+        for tooth in range(teeth):
+            points.append((edge - side * crimp, top - height * (tooth + 0.5) / teeth))
+            points.append((edge, top - height * (tooth + 1) / teeth))
+        draw_polygon(pdf, points)
 
 
 def row_height(height: float, labelled: bool) -> float:

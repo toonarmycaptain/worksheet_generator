@@ -3,14 +3,16 @@ The self-check tiles case as drawn on a PDF worksheet: the answer bank, laid out
 slots, and the pattern the tiles make on the back of the closed case.
 
 Any worksheet can draw these, below its questions or on a page of their own. Which answer goes in
-which slot, and the pattern itself, come from ``core.self_check_tiles``. Answers that are
-pictures, such as graphs, are too big for the slots' boxes, so they're drawn lettered, two to a
-row, as ``draw_picture_tiles_pages`` lays them out.
+which slot, and the pattern itself, come from ``core.self_check_tiles``. A small picture, such as
+a shaded shape, fits a slot's box beside written answers. Larger pictures, such as graphs, are
+too big for the boxes, so they're drawn lettered, two to a row, as ``draw_picture_tiles_pages``
+lays them out.
 """
 
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from string import ascii_uppercase
+from typing import Any
 
 from reportlab.lib.colors import HexColor, gray, white
 from reportlab.lib.utils import simpleSplit
@@ -59,9 +61,22 @@ INSTRUCTION = "Put each numbered tile in the slot whose letter matches the answe
 BLOCKED_NOTE = " Shaded boxes are not used."
 MISSING_NOTE = " Letters that aren't shown are not used."
 
-# An answer in the bank: text, wrapped to fit its box, or pieces drawn on one line, each fraction
-# stacked (see ``draw_pieces``)
-type BankAnswer = str | Pieces
+
+@dataclass(frozen=True)
+class BankPicture:
+    """
+    An answer in the bank drawn as a picture, ``width`` by ``height``, by ``draw``, which takes
+    the canvas and the picture's top-left corner.
+    """
+
+    width: float
+    height: float
+    draw: Callable[[Canvas, float, float], None]
+
+
+# An answer in the bank: text, wrapped to fit its box, pieces, each fraction drawn as
+# ``draw_pieces`` draws it and broken after a comma, or a picture, centred in its box
+type BankAnswer = str | Pieces | BankPicture
 
 COLORS = {"yellow": HexColor("#f0be00"), "red": HexColor("#d9262c"), "blue": HexColor("#003cc8")}
 BLOCKED = HexColor("#d9d9d9")  # fill for a slot that no question uses
@@ -76,7 +91,8 @@ def draw_tiles(
     ``slot_of[i]`` is the slot of ``answers[i]``, as in ``core.self_check_tiles``, and unused
     slots are blocked out. The answers must be distinct. Answers can be long, such as numbers in
     word form, so all are drawn at the largest size at which every one fits, on as many lines as
-    needed; at the smallest size, the boxes grow taller to fit, pushing the pattern down.
+    needed; at the smallest size, the boxes grow taller to fit, pushing the pattern down. They
+    grow too for a picture taller than the boxes leave room for.
     """
     box_height = _draw_answer_bank(pdf, answer_bank(answers, slot_of), top)
     _draw_pattern(pdf, pattern(slot_of), top - PATTERN_DROP - 2 * (box_height - BOX_HEIGHT))
@@ -91,18 +107,6 @@ def draw_tiles_page(
     """
     pdf.showPage()
     draw_tiles(pdf, answers, slot_of, start_page(pdf, header) - BANK_HEADING_HEIGHT)
-
-
-@dataclass(frozen=True)
-class BankPicture:
-    """
-    An answer in the bank drawn as a picture, ``width`` by ``height``, by ``draw``, which takes
-    the canvas and the picture's top-left corner.
-    """
-
-    width: float
-    height: float
-    draw: Callable[[Canvas, float, float], None]
 
 
 def draw_picture_tiles_pages(
@@ -139,7 +143,7 @@ def draw_picture_tiles_pages(
     _draw_pattern(pdf, pattern(slot_of), baseline)
 
 
-def tile_solutions(questions: Sequence[TileQuestion], slot_of: Sequence[int]) -> list[str]:
+def tile_solutions(questions: Sequence[TileQuestion[Any]], slot_of: Sequence[int]) -> list[str]:
     """Return each question's solution for the answer key, followed by its answer's slot letter."""
     return [
         f"{question.solution}    ({ascii_uppercase[slot]})"
@@ -149,18 +153,32 @@ def tile_solutions(questions: Sequence[TileQuestion], slot_of: Sequence[int]) ->
 
 def _bank_lines(
     answers: Sequence[BankAnswer],
-) -> tuple[int, dict[BankAnswer, list[BankAnswer]], float]:
+) -> tuple[int, dict[BankAnswer, list[str | Pieces]], float]:
     """
-    Return the font size for every answer, each answer's lines, and the box height. Text is
+    Return the font size for every written answer, each one's lines, and the box height. Text is
     wrapped as ``wrap`` does, and pieces after a comma.
 
     The size is the largest of ``BANK_SIZES`` at which every answer fits within its box's
     padding at ``BOX_HEIGHT``. If none does, the smallest size is used and the boxes grow to fit
-    the tallest answer. A line with a stacked fraction is taller, as ``_line_height`` says.
+    the tallest answer. A line with a stacked fraction is taller, as ``_line_height`` says. The
+    boxes also grow to fit the tallest picture within their padding.
     """
+    pictures = [answer.height for answer in answers if isinstance(answer, BankPicture)]
+    least_height = max([BOX_HEIGHT, *(height + 2 * BOX_PADDING for height in pictures)])
+    written = [answer for answer in answers if not isinstance(answer, BankPicture)]
+    if not written:
+        return BANK_SIZES[0], {}, least_height
+    size, lines, height = _written_lines(written)
+    return size, lines, max(height, least_height)
+
+
+def _written_lines(
+    answers: Sequence[str | Pieces],
+) -> tuple[int, dict[BankAnswer, list[str | Pieces]], float]:
+    """Return ``_bank_lines``'s size, lines and box height for written answers alone."""
     width = BOX_WIDTH - 2 * BOX_PADDING
     for size in BANK_SIZES:
-        lines: dict[BankAnswer, list[BankAnswer]] = {
+        lines: dict[BankAnswer, list[str | Pieces]] = {
             answer: list(wrap(answer, size, width))
             if isinstance(answer, str)
             else list(_wrap_pieces(answer, size, width))
@@ -173,7 +191,7 @@ def _bank_lines(
     return size, lines, max(BOX_HEIGHT, tallest + 2 * BOX_PADDING)
 
 
-def _line_height(line: BankAnswer, size: float) -> float:
+def _line_height(line: str | Pieces, size: float) -> float:
     """
     Return the height of a line of an answer in the bank: the size and a gap of 2, with room
     above and below for a stacked fraction, in proportion to ``FRACTION_ROOM`` at ``TEXT_SIZE``.
@@ -205,7 +223,7 @@ def _wrap_pieces(pieces: Pieces, size: float, width: float) -> list[Pieces]:
     return [tuple(line) for line in lines]
 
 
-def _width(line: BankAnswer, size: float) -> float:
+def _width(line: str | Pieces, size: float) -> float:
     """Return the width of a line of an answer in the bank: text, or pieces."""
     return stringWidth(line, FONT, size) if isinstance(line, str) else pieces_width(line, size)
 
@@ -214,7 +232,8 @@ def _draw_answer_bank(pdf: Canvas, bank: Sequence[BankAnswer | None], top: float
     """
     Draw the answer bank as the case's slots: two rows of boxes, lettered along the outer edges.
 
-    A slot with no answer is drawn as a shaded, empty box. Returns the box height.
+    A picture is centred in its box, and a slot with no answer is drawn as a shaded, empty box.
+    Returns the box height.
     """
     size, lines_of, height = _bank_lines([answer for answer in bank if answer is not None])
     _draw_bank_heading(pdf, top, BLOCKED_NOTE if None in bank else "")
@@ -227,7 +246,9 @@ def _draw_answer_bank(pdf: Canvas, bank: Sequence[BankAnswer | None], top: float
         pdf.setFillColor(BLOCKED)
         pdf.rect(x, y, BOX_WIDTH, height, stroke=1, fill=int(answer is None))
         pdf.restoreState()
-        if answer is not None:
+        if isinstance(answer, BankPicture):
+            answer.draw(pdf, x + (BOX_WIDTH - answer.width) / 2, y + (height + answer.height) / 2)
+        elif answer is not None:
             lines = lines_of[answer]
             pdf.setFont(FONT, size)
             # centre the block of lines vertically in the box, each line in the middle of its

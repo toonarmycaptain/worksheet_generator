@@ -1,6 +1,6 @@
 """
 Small objects that pictures show, to count, to make a set, or to go with a story: their kinds,
-and their names for a question's wording ("How many trucks?").
+their names for a question's wording ("How many trucks?"), and what stories they suit.
 """
 
 from enum import StrEnum
@@ -50,7 +50,11 @@ class DrawnObject(StrEnum):
     MARACA = "maraca"
     MUSICAL_TRIANGLE = "musical_triangle"  # hung from a string, with its beater
     PENCIL = "pencil"
+    PIZZA = "pizza"  # from above
     RABBIT = "rabbit"  # its face
+    ROUND_CAKE = "round_cake"  # from the side, its top an oval
+    SANDWICH = "sandwich"  # a square sandwich from above
+    SQUARE_CAKE = "square_cake"  # from above, with icing round its edge
     SQUARE_GIFT = "square_gift"  # a gift as high as it's wide
     STAR = "star"
     TALL_GIFT = "tall_gift"  # a gift higher than it's wide
@@ -107,7 +111,11 @@ OBJECT_NAMES: dict[DrawnObject, tuple[str, str]] = {
     DrawnObject.MARACA: ("maraca", "maracas"),
     DrawnObject.MUSICAL_TRIANGLE: ("triangle", "triangles"),
     DrawnObject.PENCIL: ("pencil", "pencils"),
+    DrawnObject.PIZZA: ("pizza", "pizzas"),
     DrawnObject.RABBIT: ("rabbit", "rabbits"),
+    DrawnObject.ROUND_CAKE: ("cake", "cakes"),
+    DrawnObject.SANDWICH: ("sandwich", "sandwiches"),
+    DrawnObject.SQUARE_CAKE: ("cake", "cakes"),
     DrawnObject.SQUARE_GIFT: ("gift", "gifts"),
     DrawnObject.STAR: ("star", "stars"),
     DrawnObject.TALL_GIFT: ("gift", "gifts"),
@@ -125,3 +133,47 @@ OBJECT_NAMES: dict[DrawnObject, tuple[str, str]] = {
 OTHER_NAMES: dict[DrawnObject, tuple[tuple[str, str], ...]] = {
     DrawnObject.HARD_CANDY: (("lolly", "lollies"),),
 }
+
+
+class ObjectUse(StrEnum):
+    """What a story can do with an object. Values are stable identifiers for the API and
+    storage."""
+
+    SHARING = "sharing"  # a group of them shared out among people
+    CUTTING = "cutting"  # one of them cut into equal parts and shared
+
+
+# What each object suits, for objects that stories use: houses and animals aren't shared out
+OBJECT_USES: dict[DrawnObject, frozenset[ObjectUse]] = {
+    DrawnObject.APPLE: frozenset({ObjectUse.SHARING}),
+    DrawnObject.BALL: frozenset({ObjectUse.SHARING}),
+    DrawnObject.BALLOON: frozenset({ObjectUse.SHARING}),
+    DrawnObject.BANANA: frozenset({ObjectUse.SHARING}),
+    DrawnObject.BASEBALL: frozenset({ObjectUse.SHARING}),
+    DrawnObject.BASKETBALL: frozenset({ObjectUse.SHARING}),
+    DrawnObject.BLOCK: frozenset({ObjectUse.SHARING}),
+    DrawnObject.BOOK: frozenset({ObjectUse.SHARING}),
+    DrawnObject.BUTTON: frozenset({ObjectUse.SHARING}),
+    DrawnObject.CANDY_BAR: frozenset({ObjectUse.SHARING}),
+    DrawnObject.CHOCOLATE_BAR: frozenset({ObjectUse.SHARING, ObjectUse.CUTTING}),
+    DrawnObject.COOKIE: frozenset({ObjectUse.SHARING}),
+    DrawnObject.CRAYON: frozenset({ObjectUse.SHARING}),
+    DrawnObject.CUPCAKE: frozenset({ObjectUse.SHARING}),
+    DrawnObject.FOOTBALL: frozenset({ObjectUse.SHARING}),
+    DrawnObject.GIFT: frozenset({ObjectUse.SHARING}),
+    DrawnObject.GRANOLA_BAR: frozenset({ObjectUse.SHARING}),
+    DrawnObject.HARD_CANDY: frozenset({ObjectUse.SHARING}),
+    DrawnObject.LOLLIPOP: frozenset({ObjectUse.SHARING}),
+    DrawnObject.PENCIL: frozenset({ObjectUse.SHARING}),
+    DrawnObject.PIZZA: frozenset({ObjectUse.CUTTING}),
+    DrawnObject.ROUND_CAKE: frozenset({ObjectUse.CUTTING}),
+    DrawnObject.SANDWICH: frozenset({ObjectUse.CUTTING}),
+    DrawnObject.SQUARE_CAKE: frozenset({ObjectUse.CUTTING}),
+    DrawnObject.TEDDY_BEAR: frozenset({ObjectUse.SHARING}),
+    DrawnObject.TROPHY: frozenset({ObjectUse.SHARING}),
+}
+
+
+def objects_for(use: ObjectUse) -> tuple[DrawnObject, ...]:
+    """Return the objects that suit ``use``, in the order of ``DrawnObject``."""
+    return tuple(kind for kind in DrawnObject if use in OBJECT_USES.get(kind, frozenset()))
