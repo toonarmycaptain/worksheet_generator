@@ -9,15 +9,21 @@ answer first, with each denominator equally likely, then a picture or story that
 """
 
 import random
-from collections import Counter, defaultdict
-from collections.abc import Mapping, Sequence, Set
+from collections import defaultdict
+from collections.abc import Collection, Mapping, Sequence
 from dataclasses import dataclass, replace
 from enum import Enum
 from fractions import Fraction
-from itertools import combinations
 from math import ceil
 
 from core.drawn_objects import DrawnObject, ObjectUse, objects_for
+from core.fraction_models.answers import (
+    WRONG_OPTIONS,
+    answer_capacity,
+    pick_answer,
+    pick_distinct_answers,
+    wrong_fractions,
+)
 from core.fraction_models.area_models import (
     BANK_PICTURE_PARTS,
     CIRCLE_LIMITS,
@@ -59,7 +65,6 @@ from core.naming_fractions.stories import GROUP_STORIES, WHOLE_STORIES, WholeSto
 from core.question import FreeResponse, Question, multiple_choice
 from core.written_numbers import FractionStyle, UnreducedFraction
 
-WRONG_OPTIONS = 3  # beside the correct option, in a multiple-choice question
 UNSHADED_SHARE = 0.2  # of name questions, those asking what fraction is NOT shaded
 # Of wrong-answer choices that can make the answer the choice built from the numbers the choices
 # repeat most, or not, those that do, for each kind of question: measured so that, over default
@@ -182,7 +187,13 @@ def generate_naming_fractions_questions(
     types = [question_types[index % len(question_types)] for index in range(count)]
     random.shuffle(types)
     if distinct_answers:
-        picked = _distinct_answers(types, question_types, tables)
+        picked = pick_distinct_answers(
+            types,
+            question_types,
+            _by_type(question_types, tables),
+            {QuestionType.SHADE},
+            WHOLE_SHARE,
+        )
     else:
         picked = _answers(types, tables)
     return [
@@ -226,12 +237,17 @@ def count_possible_answers(
     counts once for its value, in place of the written answers with that value.
     """
     tables = _tables(representations, denominators, distinct=True)
-    return _capacity(
-        _written_by_value(question_types, tables), _picture_values(question_types, tables)
-    )
+    return answer_capacity(question_types, _by_type(question_types, tables), {QuestionType.SHADE})
 
 
 # --- possible answers
+
+
+def _by_type(
+    question_types: Sequence[QuestionType], tables: _Tables
+) -> dict[QuestionType, Collection[UnreducedFraction]]:
+    """Return each of ``question_types`` with the answers it can have."""
+    return {question_type: tables.of(question_type) for question_type in question_types}
 
 
 def _tables(
@@ -381,115 +397,9 @@ def _answers(
 
 
 def _pick(answers: Sequence[UnreducedFraction]) -> UnreducedFraction:
-    """
-    Return one of ``answers``, its denominator drawn first, each with even chance, then a
-    numerator. A whole, such as 4/4, is drawn only one time in ``1 / WHOLE_SHARE`` while there are
-    others, so that a picture all shaded doesn't come up as often as one half shaded.
-    """
-    by_denominator: dict[int, list[UnreducedFraction]] = defaultdict(list)
-    for answer in answers:
-        by_denominator[answer.denominator].append(answer)
-    drawn = by_denominator[random.choice(sorted(by_denominator))]
-    wholes = [answer for answer in drawn if answer.numerator == answer.denominator]
-    parts = [answer for answer in drawn if answer.numerator != answer.denominator]
-    if wholes and parts:
-        return random.choice(wholes if random.random() < WHOLE_SHARE else parts)
-    return random.choice(drawn)
-
-
-def _written_by_value(
-    question_types: Sequence[QuestionType], tables: _Tables
-) -> dict[Fraction, set[UnreducedFraction]]:
-    """Return the written answers of ``question_types``, grouped by their values."""
-    found: dict[Fraction, set[UnreducedFraction]] = defaultdict(set)
-    for question_type in set(question_types) - {QuestionType.SHADE}:
-        for answer in tables.of(question_type):
-            found[answer.value].add(answer)
-    return found
-
-
-def _picture_values(question_types: Sequence[QuestionType], tables: _Tables) -> set[Fraction]:
-    """Return the values a picture to shade can have, if shading is among ``question_types``."""
-    if QuestionType.SHADE not in question_types:
-        return set()
-    return {answer.value for answer in tables.shade}
-
-
-def _capacity(
-    written: Mapping[Fraction, Set[UnreducedFraction]],
-    pictures: Set[Fraction],
-    used: Set[UnreducedFraction] = frozenset(),
-    taken: Set[Fraction] = frozenset(),
-) -> int:
-    """
-    Return how many more distinct answers a sheet can take, once it has used the written answers
-    ``used`` and the picture values ``taken``: for each value, its written answers left if it has
-    used one, none if a picture has it, else the more of its written answers and a picture.
-    """
-    values_used = {answer.value for answer in used}
-    total = 0
-    for value in written.keys() | pictures:
-        forms = written.get(value, frozenset())
-        if value in taken:
-            continue
-        if value in values_used:
-            total += len(forms - used)
-        else:
-            total += max(len(forms), int(value in pictures))
-    return total
-
-
-def _distinct_answers(
-    types: Sequence[QuestionType], question_types: Sequence[QuestionType], tables: _Tables
-) -> list[tuple[QuestionType, UnreducedFraction]]:
-    """
-    Return a distinct answer for each of ``types``, as ``generate_naming_fractions_questions``
-    describes, trying each slot's own type first, then the others in ``question_types`` order.
-
-    Every written answer lowers the sheet's capacity (see ``_capacity``) by one, but a picture's
-    value lowers it by all the written answers with that value, so a picture takes a value only
-    while enough capacity is left for the slots after it. That keeps a slot always fillable, so
-    the sheet is complete whenever ``count_possible_answers`` allows its length.
-    """
-    written = _written_by_value(question_types, tables)
-    pictures = _picture_values(question_types, tables)
-    if len(types) > _capacity(written, pictures):
-        raise ValueError(
-            f"At most {_capacity(written, pictures)} different answers, not {len(types)}."
-        )
-    used: set[UnreducedFraction] = set()
-    taken: set[Fraction] = set()
-    picked: list[tuple[QuestionType, UnreducedFraction]] = []
-    for slot, own in enumerate(types):
-        left_after = len(types) - slot - 1
-        start = question_types.index(own)
-        for question_type in (*question_types[start:], *question_types[:start]):
-            if question_type is QuestionType.SHADE:
-                capacity = _capacity(written, pictures, used, taken)
-                values_used = {answer.value for answer in used}
-                fitting = sorted(
-                    value
-                    for value in pictures - taken - values_used
-                    if capacity - max(len(written.get(value, ())), 1) >= left_after
-                )
-                if fitting:
-                    value = random.choice(fitting)
-                    taken.add(value)
-                    forms = [answer for answer in tables.shade if answer.value == value]
-                    picked.append((question_type, random.choice(forms)))
-                    break
-            else:
-                fitting_answers = [
-                    answer
-                    for answer in tables.of(question_type)
-                    if answer not in used and answer.value not in taken
-                ]
-                if fitting_answers:
-                    answer = _pick(fitting_answers)
-                    used.add(answer)
-                    picked.append((question_type, answer))
-                    break
-    return picked
+    """Return one of ``answers``, as ``pick_answer`` draws them, a whole one time in
+    ``1 / WHOLE_SHARE``."""
+    return pick_answer(answers, WHOLE_SHARE)
 
 
 # --- making the questions
@@ -531,7 +441,9 @@ def _name_question(
     # the other parts over the whole always, then two of: the other parts over the asked ones,
     # 1 over the asked parts, the asked over the others, a part too many or too few, and flipped
     rest = [(other, asked), (1, asked), (asked, other), (asked, parts + 1), (asked, parts - 1)]
-    wrong = _wrong_fractions(QuestionType.NAME, answer, [(other, parts)], [*rest, (parts, asked)])
+    wrong = wrong_fractions(
+        answer, [(other, parts)], [*rest, (parts, asked)], ANSWER_ON_TOP_SHARES[QuestionType.NAME]
+    )
     return Question(data, multiple_choice((answer,), wrong))
 
 
@@ -600,7 +512,11 @@ def _share_question(
             first = [(share, total)]  # the share, not what's left
             rest = [(count - 1, count), (1, count), (count - 1, total), (total - share, share)]
     return Question(
-        data, multiple_choice((answer,), _wrong_fractions(QuestionType.SHARE, answer, first, rest))
+        data,
+        multiple_choice(
+            (answer,),
+            wrong_fractions(answer, first, rest, ANSWER_ON_TOP_SHARES[QuestionType.SHARE]),
+        ),
     )
 
 
@@ -632,7 +548,7 @@ def _draw_question(
         # one share, what the others get, one part too many, flipped, and 1 over the people asked
         rest = [(1, count), (count - together, count), (together, count + 1), (count, together)]
         rest.append((1, together))
-    wrong = _wrong_fractions(QuestionType.DRAW_SHARES, answer, first, rest)
+    wrong = wrong_fractions(answer, first, rest, ANSWER_ON_TOP_SHARES[QuestionType.DRAW_SHARES])
     return Question(data, multiple_choice((answer,), wrong))
 
 
@@ -718,74 +634,6 @@ def _unequal_split(rep: Representation, parts: int) -> Split | None:
 
 
 # --- wrong answers
-
-
-def _wrong_fractions(
-    question_type: QuestionType,
-    answer: UnreducedFraction,
-    first: Sequence[tuple[int, int]],
-    rest: Sequence[tuple[int, int]],
-) -> tuple[UnreducedFraction, ...]:
-    """
-    Return ``WRONG_OPTIONS`` wrong fractions in ``answer``'s style: those of ``first`` that are
-    wrong, then a random choice of ``rest``'s, each value different from the answer's and from
-    the others'. If those run short, fractions over the answer's denominator fill in.
-
-    A wrong answer is often built from the answer's own numbers, which can make the answer the
-    one choice built from the numbers the choices repeat most, a guess that needs no maths. So
-    when the ways to choose from ``rest`` can put the answer alone at the top that way or not, it's
-    put there ``question_type``'s share of the time in ``ANSWER_ON_TOP_SHARES``, so that the guess
-    is right about as often as any guess. A whole, such as 4/4, has its denominator twice, so it's
-    always at the top.
-    """
-    forced = _valid_fractions(answer, first)[:WRONG_OPTIONS]
-    others = _valid_fractions(answer, rest, {each.value for each in forced})
-    needed = WRONG_OPTIONS - len(forced)
-    if len(others) < needed:
-        parts = answer.denominator
-        fill = [(numerator, parts) for numerator in range(1, parts + 2)]
-        fill += [(numerator, parts + 1) for numerator in range(1, parts + 2)]
-        taken = {each.value for each in (*forced, *others)}
-        others += _valid_fractions(answer, fill, taken)[: needed - len(others)]
-    ways = [(*forced, *chosen) for chosen in combinations(others, needed)]
-    tops = {way: _top(answer, way) for way in ways}
-    on_top = [way for way in ways if tops[way] == 0]  # the answer
-    wrong_top = [way for way in ways if tops[way] is not None and tops[way] != 0]
-    tied = [way for way in ways if tops[way] is None]
-    others_top = wrong_top + tied
-    if on_top and (not others_top or random.random() < ANSWER_ON_TOP_SHARES[question_type]):
-        return random.choice(on_top)
-    return random.choice(others_top)
-
-
-def _valid_fractions(
-    answer: UnreducedFraction,
-    candidates: Sequence[tuple[int, int]],
-    taken: Set[Fraction] = frozenset(),
-) -> list[UnreducedFraction]:
-    """Return ``candidates`` as fractions in ``answer``'s style, leaving out any with a number
-    below 1, or a value already among the answer's and ``taken``, and repeats."""
-    values = {answer.value, *taken}
-    found = []
-    for numerator, denominator in candidates:
-        if numerator < 1 or denominator < 1:
-            continue
-        fraction = UnreducedFraction(numerator, denominator, answer.style)
-        if fraction.value not in values:
-            found.append(fraction)
-            values.add(fraction.value)
-    return found
-
-
-def _top(answer: UnreducedFraction, wrong: Sequence[UnreducedFraction]) -> int | None:
-    """
-    Return which of the choices, the answer first and then ``wrong``, is alone the one built from
-    the numbers the choices repeat most, by its position, or ``None`` when two or more tie.
-    """
-    options = (answer, *wrong)
-    counts = Counter(number for each in options for number in (each.numerator, each.denominator))
-    scores = [counts[each.numerator] + counts[each.denominator] for each in options]
-    return scores.index(max(scores)) if scores.count(max(scores)) == 1 else None
 
 
 def _wrong_pictures(

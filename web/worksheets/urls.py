@@ -84,6 +84,12 @@ urlpatterns = [
         {"kind": "naming_fractions"},
         name="naming_fractions",
     ),
+    path(
+        "fractions/fractions-on-a-number-line/",
+        views.sheet,
+        {"kind": "fraction_number_lines"},
+        name="fraction_number_lines",
+    ),
     # where input-output tables were before they had a group of their own
     path("input-output-tables/", RedirectView.as_view(pattern_name="input_output_tables")),
     path("legacy/", views.legacy, name="legacy"),

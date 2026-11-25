@@ -39,6 +39,7 @@ class DrawnObject(StrEnum):
     FISH = "fish"
     FLOWER = "flower"
     FOOTBALL = "football"  # round, of pentagons and hexagons
+    FROG = "frog"  # from the side, facing right
     GIFT = "gift"  # a present, with a ribbon and bow, wider than it's high
     GRANOLA_BAR = "granola_bar"
     GUITAR = "guitar"
@@ -54,6 +55,7 @@ class DrawnObject(StrEnum):
     RABBIT = "rabbit"  # its face
     ROUND_CAKE = "round_cake"  # from the side, its top an oval
     SANDWICH = "sandwich"  # a square sandwich from above
+    SNAIL = "snail"  # from the side, facing right
     SQUARE_CAKE = "square_cake"  # from above, with icing round its edge
     SQUARE_GIFT = "square_gift"  # a gift as high as it's wide
     STAR = "star"
@@ -100,6 +102,7 @@ OBJECT_NAMES: dict[DrawnObject, tuple[str, str]] = {
     DrawnObject.FISH: ("fish", "fish"),
     DrawnObject.FLOWER: ("flower", "flowers"),
     DrawnObject.FOOTBALL: ("football", "footballs"),
+    DrawnObject.FROG: ("frog", "frogs"),
     DrawnObject.GIFT: ("gift", "gifts"),
     DrawnObject.GRANOLA_BAR: ("granola bar", "granola bars"),
     DrawnObject.GUITAR: ("guitar", "guitars"),
@@ -115,6 +118,7 @@ OBJECT_NAMES: dict[DrawnObject, tuple[str, str]] = {
     DrawnObject.RABBIT: ("rabbit", "rabbits"),
     DrawnObject.ROUND_CAKE: ("cake", "cakes"),
     DrawnObject.SANDWICH: ("sandwich", "sandwiches"),
+    DrawnObject.SNAIL: ("snail", "snails"),
     DrawnObject.SQUARE_CAKE: ("cake", "cakes"),
     DrawnObject.SQUARE_GIFT: ("gift", "gifts"),
     DrawnObject.STAR: ("star", "stars"),

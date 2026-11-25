@@ -193,22 +193,33 @@ def line_ticks(x: float, width: float, count: int) -> list[float]:
 
 
 def draw_ticked_line(
-    pdf: Canvas, x: float, width: float, line_y: float, ticks: Sequence[float]
+    pdf: Canvas,
+    x: float,
+    width: float,
+    line_y: float,
+    ticks: Sequence[float],
+    arrow_length: float = LINE_ARROW_LENGTH,
+    tick_half_height: float = TICK_HALF_HEIGHT,
 ) -> None:
-    """Draw a number line ``width`` wide from ``x``, with arrowheads at both ends, and ``ticks``."""
+    """
+    Draw a number line ``width`` wide from ``x``, with arrowheads ``arrow_length`` long at both
+    ends, and ``ticks`` reaching ``tick_half_height`` above and below it. Smaller arrowheads keep
+    the shape of full-size ones.
+    """
+    half_width = 4 * arrow_length / LINE_ARROW_LENGTH
     pdf.setStrokeColor(OUTLINE_COLOUR)
     pdf.setFillColor(OUTLINE_COLOUR)
     pdf.setLineWidth(1.2)
-    pdf.line(x + LINE_ARROW_LENGTH, line_y, x + width - LINE_ARROW_LENGTH, line_y)
-    for tip, back in ((x, LINE_ARROW_LENGTH), (x + width, -LINE_ARROW_LENGTH)):
+    pdf.line(x + arrow_length, line_y, x + width - arrow_length, line_y)
+    for tip, back in ((x, arrow_length), (x + width, -arrow_length)):
         arrowhead = pdf.beginPath()
         arrowhead.moveTo(tip, line_y)
-        arrowhead.lineTo(tip + back, line_y + 4)
-        arrowhead.lineTo(tip + back, line_y - 4)
+        arrowhead.lineTo(tip + back, line_y + half_width)
+        arrowhead.lineTo(tip + back, line_y - half_width)
         arrowhead.close()
         pdf.drawPath(arrowhead, stroke=0, fill=1)
     for tick in ticks:
-        pdf.line(tick, line_y - TICK_HALF_HEIGHT, tick, line_y + TICK_HALF_HEIGHT)
+        pdf.line(tick, line_y - tick_half_height, tick, line_y + tick_half_height)
 
 
 def _jump_label(jump: int) -> str:

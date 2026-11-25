@@ -109,6 +109,24 @@ from core.fraction_models.denominators import (
     DENOMINATORS_HINT,
     parse_denominators,
 )
+from core.fraction_number_lines.data import QuestionType as FractionNumberLinesType
+from core.fraction_number_lines.generator import (
+    BANK_LINE_PARTS,
+    COLUMN_LINE_PARTS,
+    DIVIDE_MOST_PARTS,
+    generate_fraction_number_lines_questions,
+)
+from core.fraction_number_lines.generator import TILE_TYPES as FRACTION_NUMBER_LINES_TILE_TYPES
+from core.fraction_number_lines.generator import (
+    count_possible_answers as count_possible_fraction_number_lines_answers,
+)
+from core.fraction_number_lines.generator import (
+    unaskable_types as unaskable_fraction_number_lines_types,
+)
+from core.fraction_number_lines.representation import FRACTION_NUMBER_LINES_NAME
+from core.fraction_number_lines.representation import (
+    QUESTION_TYPE_NAMES as FRACTION_NUMBER_LINES_TYPE_NAMES,
+)
 from core.input_output_tables.data import Blanks, ChoiceType
 from core.input_output_tables.generator import (
     count_possible_answers,
@@ -214,6 +232,7 @@ from render.pdf.basic_operations_worksheet import (
     render_missing_number_worksheet,
 )
 from render.pdf.data_graphs_worksheet import render_data_graphs_worksheet
+from render.pdf.fraction_number_lines_worksheet import render_fraction_number_lines_worksheet
 from render.pdf.graphics.data_displays import NumberListStyle
 from render.pdf.input_output_tables_worksheet import render_input_output_tables_worksheet
 from render.pdf.line_equations_worksheet import render_line_equations_worksheet
@@ -385,6 +404,11 @@ NamingFractionsRepresentationChoice = Literal["strip", "grid", "circle", "other_
 NAMING_FRACTIONS_REPRESENTATION_LABELS: dict[str, JsonValue] = {
     representation.value: name
     for representation, name in NAMING_FRACTIONS_REPRESENTATION_NAMES.items()
+}
+# a fractions on a number line QuestionType value
+FractionNumberLinesTypeChoice = Literal["name", "mark", "distance", "divide", "compare"]
+FRACTION_NUMBER_LINES_TYPE_LABELS: dict[str, JsonValue] = {
+    question_type.value: name for question_type, name in FRACTION_NUMBER_LINES_TYPE_NAMES.items()
 }
 # a FractionStyle value
 FractionStyleChoice = Literal["stacked", "slash", "slanted"]
@@ -1820,6 +1844,123 @@ def _naming_fractions_stuck(question_type: NamingFractionsType) -> str:
             )
 
 
+class FractionNumberLinesOptions(HeaderOptions):
+    """
+    Options for the fractions on a number line kind, built on the core. There is no seed: every
+    sheet is new.
+    """
+
+    title: Title = FRACTION_NUMBER_LINES_NAME
+    problems: Problems = 10
+    # The problems are shared evenly among the ticked types. A tiles sheet leaves out Divide the
+    # line, which has no single answer; the page greys it out while tiles are ticked.
+    question_types: list[FractionNumberLinesTypeChoice] = Field(
+        [question_type.value for question_type in FractionNumberLinesType],
+        min_length=1,
+        title="Question types",
+        json_schema_extra={"labels": FRACTION_NUMBER_LINES_TYPE_LABELS},
+    )
+    denominators: str = Field(
+        DEFAULT_DENOMINATORS, max_length=200, title="Denominators", description=DENOMINATORS_HINT
+    )
+    fraction_styles: list[FractionStyleChoice] = Field(
+        [style.value for style in FractionStyle],
+        min_length=1,
+        title="Fraction style",
+        json_schema_extra={"labels": FRACTION_STYLE_LABELS, "markup": True},
+    )
+    black_and_white: bool = Field(False, title="Black and white pictures")  # for photocopying
+    multiple_choice: bool = Field(
+        False,
+        title="Multiple choice",
+        description="Lettered choices instead of answer lines: fractions, points on the line, or "
+        "number lines to choose from. The wrong ones are common mistakes, such as counting the "
+        "ticks instead of the parts.",
+    )
+    answer_key: AnswerKey = False
+    # Tiles add an answer bank page, where a marking question's answer is a small number line.
+    self_check_tiles: SelfCheckTiles = False
+    tile_pattern: TilePattern = "simple"
+
+    @model_validator(mode="after")
+    def _tiles_are_available(self) -> Self:
+        # Not built for multiple choice: each choice's letter would need coding as a number. The
+        # page hides multiple choice while tiles are ticked, and greys out the tiles while it is.
+        # Runs first, so a request with both is told so before anything else.
+        if self.self_check_tiles and self.multiple_choice:
+            raise ValueError("self_check_tiles: not available with multiple choice")
+        return self
+
+    @model_validator(mode="after")
+    def _questions_can_be_made(self) -> Self:
+        try:
+            denominators = parse_denominators(self.denominators)
+        except ValueError as error:
+            raise ValueError(f"denominators: {error}") from None
+        types = self.ticked_types()
+        tiles = self.self_check_tiles
+        stuck = unaskable_fraction_number_lines_types(types, denominators, tiles)
+        if stuck:
+            raise ValueError(f"question_types: {_fraction_number_lines_stuck(stuck[0], tiles)}")
+        if tiles:
+            _at_most_one_question_per_tile(self.problems)
+            tile_types = [each for each in types if each in FRACTION_NUMBER_LINES_TILE_TYPES]
+            divide = FRACTION_NUMBER_LINES_TYPE_NAMES[FractionNumberLinesType.DIVIDE]
+            compare = FRACTION_NUMBER_LINES_TYPE_NAMES[FractionNumberLinesType.COMPARE]
+            if not tile_types:
+                raise ValueError(
+                    f"question_types: {divide} has no single answer for a tile. Tick another "
+                    "question type, or untick Self-check tile answers."
+                )
+            if tile_types == [FractionNumberLinesType.COMPARE] and self.problems < 2:
+                raise ValueError(
+                    f"problems: {compare} on a tiles sheet needs at least 2 problems, since its "
+                    "names come in pairs. Raise problems to 2, or tick another question type."
+                )
+            possible = count_possible_fraction_number_lines_answers(types, denominators)
+            if self.problems > possible:
+                raise _too_many_problems(
+                    possible, "repeated answers", "choice of question types and denominators", {}
+                )
+        return self
+
+    def ticked_types(self) -> list[FractionNumberLinesType]:
+        """The ticked question types, each once, in the order of ``QuestionType``."""
+        return [each for each in FractionNumberLinesType if each.value in self.question_types]
+
+
+def _fraction_number_lines_stuck(question_type: FractionNumberLinesType, tiles: bool) -> str:
+    """Return why no question of ``question_type`` can be made, and what would allow one."""
+    name = FRACTION_NUMBER_LINES_TYPE_NAMES[question_type]
+    match question_type:
+        case FractionNumberLinesType.DISTANCE:
+            return (
+                f"{name} needs halves, fourths or eighths: add 2, 4 or 8 to Denominators, or "
+                f"untick {name}."
+            )
+        case FractionNumberLinesType.COMPARE:
+            return (
+                f"{name} needs fourths or eighths, for two points on one line: add 4 or 8 to "
+                f"Denominators, or untick {name}."
+            )
+        case FractionNumberLinesType.DIVIDE:
+            return (
+                f"{name} needs a denominator from 2 to {DIVIDE_MOST_PARTS}: add one to "
+                f"Denominators, or untick {name}."
+            )
+        case FractionNumberLinesType.MARK if tiles:
+            return (
+                f"{name} needs a denominator from 2 to {BANK_LINE_PARTS}, for its number line to "
+                f"fit the answer bank: add one to Denominators, untick Self-check tile answers, "
+                f"or untick {name}."
+            )
+        case _:
+            return (
+                f"{name} needs a denominator from 2 to {COLUMN_LINE_PARTS}, for its number line "
+                f"to fit a column: add one to Denominators, or untick {name}."
+            )
+
+
 class OrderOfOperationsOptions(HeaderOptions):
     """
     Options for the order of operations kind, built on the core. There is no seed: every sheet
@@ -2490,6 +2631,7 @@ def _tile_slots(
     | InputOutputTableOptions
     | PrimeCompositeOptions
     | NamingFractionsOptions
+    | FractionNumberLinesOptions
     | OrderOfOperationsOptions
     | SlopeAndInterceptsOptions
     | WritingLinearEquationsOptions
@@ -2712,6 +2854,24 @@ def _naming_fractions(options: NamingFractionsOptions, out: BinaryIO) -> None:
             options.problems,
             options.ticked_types(),
             options.ticked_representations(),
+            parse_denominators(options.denominators),
+            styles=[style for style in FractionStyle if style.value in options.fraction_styles],
+            multiple_choice=options.multiple_choice,
+            distinct_answers=options.self_check_tiles,
+        ),
+        path=out,
+        header=options.header(),
+        answer_key=options.answer_key,
+        slot_of=_tile_slots(options) if options.self_check_tiles else None,
+        black_and_white=options.black_and_white,
+    )
+
+
+def _fraction_number_lines(options: FractionNumberLinesOptions, out: BinaryIO) -> None:
+    render_fraction_number_lines_worksheet(
+        questions=generate_fraction_number_lines_questions(
+            options.problems,
+            options.ticked_types(),
             parse_denominators(options.denominators),
             styles=[style for style in FractionStyle if style.value in options.fraction_styles],
             multiple_choice=options.multiple_choice,
@@ -3018,6 +3178,7 @@ CORE_KINDS: dict[str, CoreKind[Any]] = {
     "input_output_tables": CoreKind(InputOutputTableOptions, _input_output_tables),
     "prime_composite": CoreKind(PrimeCompositeOptions, _prime_composite),
     "naming_fractions": CoreKind(NamingFractionsOptions, _naming_fractions),
+    "fraction_number_lines": CoreKind(FractionNumberLinesOptions, _fraction_number_lines),
     "order_of_operations": CoreKind(OrderOfOperationsOptions, _order_of_operations),
     "slope_and_intercepts": CoreKind(SlopeAndInterceptsOptions, _slope_and_intercepts),
     "writing_linear_equations": CoreKind(WritingLinearEquationsOptions, _writing_linear_equations),

@@ -9,6 +9,7 @@ in ``COLOUR_FRACTIONS``, blue, or ``GREY_FRACTIONS``, for black-and-white copies
 from collections.abc import Sequence
 from dataclasses import dataclass
 from fractions import Fraction
+from itertools import combinations
 from math import acos, ceil, cos, degrees, floor, radians, sin, sqrt, tan
 from typing import assert_never
 
@@ -39,6 +40,7 @@ from core.fraction_models.number_lines import (
     Mark,
     TickLabels,
     tick_fraction,
+    tick_positions,
 )
 from core.fraction_models.object_groups import ObjectGroup
 from core.written_numbers import UnreducedFraction
@@ -53,9 +55,8 @@ from render.pdf.graphics.number_lines import (
     LINE_OVERHANG,
     draw_jump,
     draw_ticked_line,
-    line_ticks,
 )
-from render.pdf.graphics.objects import draw_object
+from render.pdf.graphics.objects import FACING_LEFT, draw_object
 from render.pdf.page import BOLD_FONT, FONT, draw_fraction, fraction_width
 
 type Point = tuple[float, float]
@@ -92,6 +93,15 @@ LINE_LETTER_GAP = 4  # from the top of what's on the line at a point up to its l
 LINE_ARROW_RAISE = 12  # from the line up to the arrow from 0
 LINE_ARROWHEAD_LENGTH = 7
 LINE_BAR_HEIGHT = 8  # a shaded bar along the line, centred on it
+LINE_PICTURE_SIZE = 24  # an object over a tick, unless it needs shrinking to fit beside another
+LINE_PICTURE_GAP = 3  # from the top of what's under an object over a tick up to the object
+# A compact number line, small enough for a tiles answer bank's box
+COMPACT_ARROW_LENGTH = 4
+COMPACT_OVERHANG = 2  # the line runs this far past the end ticks, then ends in an arrowhead
+COMPACT_TICK_HALF_HEIGHT = 3
+COMPACT_DOT_RADIUS = 2.2
+COMPACT_LABEL_SIZE = 9
+COMPACT_WHOLES_DROP = 12  # from the line down to the baseline of its whole numbers
 # How much of a fraction line is above the line: room for the stars, then for the jumps and the
 # arrow, if any, and then for letters, if any; and below it, for the ticks' numbers
 LINE_MARKS_ROOM = LINE_STAR_RADIUS + 1
@@ -99,6 +109,7 @@ LINE_ARCS_ROOM = LINE_ARROW_RAISE + 4
 LINE_LETTER_ROOM = LINE_LETTER_SIZE + LINE_LETTER_GAP
 LINE_WHOLES_ROOM = LINE_WHOLES_DROP + 3
 LINE_FRACTIONS_ROOM = LINE_FRACTIONS_DROP + 8
+LINE_PICTURE_ROOM = LINE_PICTURE_SIZE + LINE_PICTURE_GAP
 
 WALL_ROW_HEIGHT = 24
 WALL_LABEL_SIZE = 11  # each part's unit fraction, unless it needs shrinking to fit
@@ -651,39 +662,67 @@ def draw_object_group(
         )
 
 
-def fraction_line_height(line: FractionLine) -> float:
-    """Return how high ``draw_fraction_line`` draws ``line``."""
-    return _room_above(line) + _room_below(line)
+def fraction_line_height(line: FractionLine, compact: bool = False) -> float:
+    """Return how high ``draw_fraction_line`` draws ``line``, compact or not."""
+    return _room_above(line, compact) + _room_below(line, compact)
 
 
-def _room_above(line: FractionLine) -> float:
+def fraction_line_drop(line: FractionLine, compact: bool = False) -> float:
+    """Return how far below the top of ``draw_fraction_line``'s picture of ``line`` the line
+    itself is, compact or not."""
+    return _room_above(line, compact)
+
+
+def _room_above(line: FractionLine, compact: bool = False) -> float:
     """Return how much of ``line``'s picture is above the line."""
-    room = LINE_ARCS_ROOM if line.jumps or line.arrow_to is not None else LINE_MARKS_ROOM
+    return _room_under_pictures(line, compact) + (LINE_PICTURE_ROOM if line.pictures else 0)
+
+
+def _room_under_pictures(line: FractionLine, compact: bool) -> float:
+    """Return how much of ``line``'s picture above the line is under its pictures: its stars,
+    jumps and arrow, and the points' letters."""
+    if compact:
+        room = COMPACT_DOT_RADIUS + 1
+    elif line.jumps or line.arrow_to is not None:
+        room = LINE_ARCS_ROOM
+    else:
+        room = LINE_MARKS_ROOM
     if any(point.letter for point in line.points):
         room += LINE_LETTER_ROOM
     return room
 
 
-def _room_below(line: FractionLine) -> float:
+def _room_below(line: FractionLine, compact: bool = False) -> float:
     """Return how much of ``line``'s picture is below the line."""
+    if compact:
+        return COMPACT_WHOLES_DROP + 3
     return LINE_FRACTIONS_ROOM if line.labels is TickLabels.EVERY_TICK else LINE_WHOLES_ROOM
 
 
 def draw_fraction_line(
-    pdf: Canvas, x: float, top: float, line: FractionLine, width: float, colours: FractionColours
+    pdf: Canvas,
+    x: float,
+    top: float,
+    line: FractionLine,
+    width: float,
+    colours: FractionColours,
+    compact: bool = False,
 ) -> None:
     """
     Draw ``line`` with its top-left corner at (``x``, ``top``), ``width`` wide and
-    ``fraction_line_height(line)`` high, with arrowheads at both ends, and its jumps, arrow,
-    stars and bar in ``colours``.
+    ``fraction_line_height(line, compact)`` high, with arrowheads at both ends, and its jumps,
+    arrow, stars and bar in ``colours``. ``compact`` draws it small enough for a tiles answer
+    bank's box: smaller arrowheads, ticks, dots and numbers, closer to the line.
 
     The ticks' numbers are under them: whole numbers, and with every tick labelled, the rest as
     fractions, shrunk if they need to be to fit between the ticks. A unit's name follows the last
     whole number, "1 foot", with the ticks drawn closer if it needs the room. Each point's letter
-    is over everything else at the point.
+    is over everything else at the point but its picture. Pictures are above everything,
+    shrunk if two would touch, and an object drawn facing left is mirrored to face right, the way
+    a distance goes.
     """
-    line_y = top - _room_above(line)
-    ticks = _fraction_line_ticks(line, x, width)
+    line_y = top - _room_above(line, compact)
+    ticks = _fraction_line_ticks(line, x, width, compact)
     pdf.saveState()
     if line.bar_to is not None:
         pdf.setFillColor(colours.shaded)
@@ -691,8 +730,13 @@ def draw_fraction_line(
         pdf.rect(
             ticks[0], line_y - LINE_BAR_HEIGHT / 2, bar_width, LINE_BAR_HEIGHT, stroke=0, fill=1
         )
-    draw_ticked_line(pdf, x, width, line_y, ticks)
-    _draw_tick_labels(pdf, line, ticks, line_y)
+    if compact:
+        draw_ticked_line(
+            pdf, x, width, line_y, ticks, COMPACT_ARROW_LENGTH, COMPACT_TICK_HALF_HEIGHT
+        )
+    else:
+        draw_ticked_line(pdf, x, width, line_y, ticks)
+    _draw_tick_labels(pdf, line, ticks, line_y, compact)
 
     pdf.setStrokeColor(colours.marks)
     pdf.setFillColor(colours.marks)
@@ -705,15 +749,14 @@ def draw_fraction_line(
     if line.arrow_to is not None:
         _draw_arrow(pdf, ticks[0], ticks[line.arrow_to], line_y + LINE_ARROW_RAISE)
 
-    letters_y = line_y + LINE_MARKS_ROOM + LINE_LETTER_GAP - 2
-    if line.jumps or line.arrow_to is not None:
-        letters_y = line_y + LINE_ARCS_ROOM + LINE_LETTER_GAP - 2
+    letters_y = line_y + _room_under_pictures(line, compact) - LINE_LETTER_SIZE - 2
     for point in line.points:
-        point_x = ticks[point.tick]
+        point_x = _x_at(ticks, point.tick)
         match point.mark:
             case Mark.DOT:
                 pdf.setFillColor("black")
-                pdf.circle(point_x, line_y, LINE_DOT_RADIUS, stroke=0, fill=1)
+                radius = COMPACT_DOT_RADIUS if compact else LINE_DOT_RADIUS
+                pdf.circle(point_x, line_y, radius, stroke=0, fill=1)
             case Mark.STAR:  # a star's middle is 0.47 of the way up its square
                 size = 2 * LINE_STAR_RADIUS
                 star_top = line_y + 0.53 * size
@@ -726,24 +769,58 @@ def draw_fraction_line(
             pdf.setFillColor("black")
             pdf.setFont(BOLD_FONT, LINE_LETTER_SIZE)
             pdf.drawCentredString(point_x, letters_y, point.letter)
+    if line.pictures:
+        _draw_line_pictures(pdf, line, ticks, line_y + _room_under_pictures(line, compact))
     pdf.restoreState()
 
 
-def _fraction_line_ticks(line: FractionLine, x: float, width: float) -> list[float]:
+def _draw_line_pictures(
+    pdf: Canvas, line: FractionLine, ticks: Sequence[float], bottom: float
+) -> None:
+    """Draw ``line``'s pictures, each centred over its tick, standing ``LINE_PICTURE_GAP`` above
+    ``bottom``, ``LINE_PICTURE_SIZE`` wide or less, so that none touch."""
+    places = [ticks[picture.tick] for picture in line.pictures]
+    gaps = [abs(first - second) for first, second in combinations(places, 2)]
+    size = min([LINE_PICTURE_SIZE, *(gap - 2 for gap in gaps)])
+    picture_top = bottom + LINE_PICTURE_GAP + size
+    for picture, place in zip(line.pictures, places, strict=True):
+        draw_object(
+            pdf,
+            picture.kind,
+            place - size / 2,
+            picture_top,
+            size,
+            mirrored=picture.kind in FACING_LEFT,
+        )
+
+
+def _x_at(ticks: Sequence[float], tick: int | Fraction) -> float:
+    """Return the x of ``tick``, which may be between two ticks, in proportion."""
+    low = floor(tick)
+    if low == tick:
+        return ticks[low]
+    return ticks[low] + float(tick - low) * (ticks[low + 1] - ticks[low])
+
+
+def _fraction_line_ticks(
+    line: FractionLine, x: float, width: float, compact: bool = False
+) -> list[float]:
     """
-    Return the x of each of ``line``'s ticks, evenly spaced along a line ``width`` wide from
-    ``x``, closer together if the last whole's number and unit need more room than the line runs
-    past its last tick.
+    Return the x of each of ``line``'s ticks along a line ``width`` wide from ``x``, evenly
+    spaced unless its parts are unequal, closer together if the last whole's number and unit need
+    more room than the line runs past its last tick.
     """
-    count = line.last_tick + 1
-    if line.unit is None:
-        return line_ticks(x, width, count)
-    beyond = LINE_ARROW_LENGTH + LINE_OVERHANG  # how far the line runs past its last tick
-    number, unit = _last_whole_label(line)
-    needed = stringWidth(number, FONT, LINE_LABEL_SIZE) / 2 + stringWidth(
-        unit, FONT, LINE_LABEL_SIZE
+    beyond = (
+        COMPACT_ARROW_LENGTH + COMPACT_OVERHANG if compact else LINE_ARROW_LENGTH + LINE_OVERHANG
     )
-    return line_ticks(x, width - max(needed - beyond, 0), count)
+    first, last = x + beyond, x + width - beyond
+    if line.unit is not None:
+        number, unit = _last_whole_label(line)
+        needed = stringWidth(number, FONT, LINE_LABEL_SIZE) / 2 + stringWidth(
+            unit, FONT, LINE_LABEL_SIZE
+        )
+        last -= max(needed - beyond, 0)
+    return [first + float(place) / line.wholes * (last - first) for place in tick_positions(line)]
 
 
 def _last_whole_label(line: FractionLine) -> tuple[str, str]:
@@ -757,13 +834,16 @@ def _last_whole_label(line: FractionLine) -> tuple[str, str]:
 
 
 def _draw_tick_labels(
-    pdf: Canvas, line: FractionLine, ticks: Sequence[float], line_y: float
+    pdf: Canvas, line: FractionLine, ticks: Sequence[float], line_y: float, compact: bool = False
 ) -> None:
     """Draw the numbers under ``line``'s ticks: whole numbers, and with every tick labelled,
     fractions."""
     every_tick = line.labels is TickLabels.EVERY_TICK
-    baseline = line_y - (LINE_FRACTIONS_DROP if every_tick else LINE_WHOLES_DROP)
-    size: float = LINE_LABEL_SIZE
+    if compact:
+        baseline = line_y - COMPACT_WHOLES_DROP
+    else:
+        baseline = line_y - (LINE_FRACTIONS_DROP if every_tick else LINE_WHOLES_DROP)
+    size: float = COMPACT_LABEL_SIZE if compact else LINE_LABEL_SIZE
     if every_tick and line.parts > 1:
         widest = fraction_width(tick_fraction(line, line.last_tick - 1), LINE_LABEL_SIZE)
         size = min(LINE_LABEL_SIZE, LINE_LABEL_SIZE * (ticks[1] - ticks[0] - 2) / widest)

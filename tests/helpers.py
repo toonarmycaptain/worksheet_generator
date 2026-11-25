@@ -53,6 +53,7 @@ from core.discrete_data.data import (
     NumericalDataProblemData,
     SummarizeDataQuestionData,
 )
+from core.fraction_number_lines.data import FractionNumberLinesQuestion
 from core.input_output_tables.data import (
     InputOutputQuestion,
     InputOutputQuestionData,
@@ -71,6 +72,7 @@ from render.pdf.basic_operations_worksheet import (
     render_missing_number_worksheet,
 )
 from render.pdf.data_graphs_worksheet import render_data_graphs_worksheet
+from render.pdf.fraction_number_lines_worksheet import render_fraction_number_lines_worksheet
 from render.pdf.graphics.data_displays import NumberListStyle
 from render.pdf.input_output_tables_worksheet import render_input_output_tables_worksheet
 from render.pdf.line_equations_worksheet import render_line_equations_worksheet
@@ -678,6 +680,28 @@ def render_prime_composite(
         header=Header(title=title, label=label, name_line=name_line),
         answer_key=answer_key,
         slot_of=slot_of,
+    )
+    return out.getvalue()
+
+
+def render_fraction_number_lines(
+    questions: Sequence[FractionNumberLinesQuestion],
+    slot_of: tuple[int, ...] | None,
+    answer_key: bool,
+    title: str,
+    label: str,
+    name_line: bool = True,
+    black_and_white: bool = False,
+) -> bytes:
+    """Render the fractions on a number line sheet, its questions given with their responses."""
+    out = BytesIO()
+    render_fraction_number_lines_worksheet(
+        questions=questions,
+        path=out,
+        header=Header(title=title, label=label, name_line=name_line),
+        answer_key=answer_key,
+        slot_of=slot_of,
+        black_and_white=black_and_white,
     )
     return out.getvalue()
 

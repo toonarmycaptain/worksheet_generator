@@ -221,10 +221,11 @@
   {% if tile_types %}
   {{ tile_types|json_script:"tile-types" }}
   <script type="module">
-    // The prime and composite and order of operations forms: self-check tiles ask only the
-    // question types that have a form whose answer the question doesn't print, so the bank can't
-    // give it away. Ticking them greys out the other types, so they aren't sent; their ticks
-    // come back when tiles are unticked.
+    // Forms whose self-check tiles ask only some question types: on prime and composite and
+    // order of operations, those with a form whose answer the question doesn't print, so the
+    // bank can't give it away; on fractions on a number line, those with a single answer, which
+    // dividing a line hasn't. Ticking tiles greys out the other types, so they aren't sent;
+    // their ticks come back when tiles are unticked.
     const tileTypes = JSON.parse(document.getElementById("tile-types").textContent);
     const tiles = document.querySelector("input[name=self_check_tiles]");
     const types = [...tiles.form.querySelectorAll("input[name=question_types]")];

@@ -43,6 +43,7 @@ from core.fraction_models.area_models import (
 from core.fraction_models.number_lines import (
     FractionLine,
     LengthUnit,
+    LinePicture,
     LinePoint,
     Mark,
     TickLabels,
@@ -57,6 +58,7 @@ from render.pdf.graphics.fractions import (
     draw_fraction_wall,
     draw_models_in_a_row,
     draw_object_group,
+    fraction_line_drop,
     fraction_line_height,
     fraction_wall_height,
     row_height,
@@ -441,57 +443,127 @@ def test_object_group_draws_the_expected_text(
 
 
 @pytest.mark.parametrize(
-    ("case_name", "line", "width", "colours"),
+    ("case_name", "line", "width", "colours", "compact"),
     [
-        ("sixths_dot", FractionLine(6, points=(LinePoint(5),)), 400, COLOUR_FRACTIONS),
+        ("sixths_dot", FractionLine(6, points=(LinePoint(5),)), 400, COLOUR_FRACTIONS, False),
         (
             "eighths_lettered",
             FractionLine(8, points=(LinePoint(1, "A"), LinePoint(3, "B"), LinePoint(6, "D"))),
             400,
             COLOUR_FRACTIONS,
+            False,
         ),
         (
             "fourths_every_tick_star",
             FractionLine(4, labels=TickLabels.EVERY_TICK, points=(LinePoint(3, mark=Mark.STAR),)),
             400,
             COLOUR_FRACTIONS,
+            False,
         ),
         (
             "eighths_arrow_yard",
             FractionLine(8, unit=LengthUnit.YARD, points=(LinePoint(2, "A"),), arrow_to=2),
             400,
             COLOUR_FRACTIONS,
+            False,
         ),
         (
             "fourths_jumps_foot",
             FractionLine(4, unit=LengthUnit.FOOT, points=(LinePoint(2, "H"),), jumps=2),
             400,
             GREY_FRACTIONS,
+            False,
         ),
-        ("thirds_bar", FractionLine(3, bar_to=1), 400, COLOUR_FRACTIONS),
+        ("thirds_bar", FractionLine(3, bar_to=1), 400, COLOUR_FRACTIONS, False),
         # wholes past 1, every tick labelled, the unit plural
         (
             "halves_two_wholes_miles",
             FractionLine(2, wholes=2, labels=TickLabels.EVERY_TICK, unit=LengthUnit.MILE),
             400,
             COLOUR_FRACTIONS,
+            False,
         ),
         # one part: every tick is a whole
-        ("empty_line", FractionLine(1, labels=TickLabels.EVERY_TICK), 200, COLOUR_FRACTIONS),
+        ("empty_line", FractionLine(1, labels=TickLabels.EVERY_TICK), 200, COLOUR_FRACTIONS, False),
         # labels shrink to fit between close ticks
         (
             "twelfths_every_tick_narrow",
             FractionLine(12, labels=TickLabels.EVERY_TICK),
             200,
             COLOUR_FRACTIONS,
+            False,
+        ),
+        # the start over 0 and the mover over its point, an ant mirrored to face right
+        (
+            "eighths_ant_from_its_house",
+            FractionLine(
+                8,
+                unit=LengthUnit.YARD,
+                points=(LinePoint(2, "A"),),
+                arrow_to=2,
+                pictures=(LinePicture(0, DrawnObject.HOUSE), LinePicture(2, DrawnObject.ANT)),
+            ),
+            400,
+            COLOUR_FRACTIONS,
+            False,
+        ),
+        # pictures a tick apart shrink so they don't touch
+        (
+            "eighths_snail_shrunk",
+            FractionLine(
+                8,
+                unit=LengthUnit.CENTIMETER,
+                points=(LinePoint(1, "S", Mark.STAR),),
+                arrow_to=1,
+                pictures=(LinePicture(0, DrawnObject.LEAF), LinePicture(1, DrawnObject.SNAIL)),
+            ),
+            200,
+            COLOUR_FRACTIONS,
+            False,
+        ),
+        # lettered points between ticks, in proportion
+        (
+            "thirds_between_ticks",
+            FractionLine(
+                3,
+                points=(
+                    LinePoint(Fraction(3, 4), "A"),
+                    LinePoint(1, "B"),
+                    LinePoint(Fraction(3, 2), "C"),
+                    LinePoint(2, "D"),
+                ),
+            ),
+            205,
+            COLOUR_FRACTIONS,
+            False,
+        ),
+        (
+            "fourths_unequal",
+            FractionLine(
+                4,
+                sizes=(Fraction(1, 6), Fraction(2, 9), Fraction(5, 18), Fraction(1, 3)),
+                points=(LinePoint(3),),
+            ),
+            400,
+            COLOUR_FRACTIONS,
+            False,
+        ),
+        # small enough for a tiles answer bank's box
+        ("compact_eighths", FractionLine(8, points=(LinePoint(3),)), 73, COLOUR_FRACTIONS, True),
+        (
+            "compact_lettered",
+            FractionLine(4, points=(LinePoint(1, "A"),)),
+            73,
+            GREY_FRACTIONS,
+            True,
         ),
     ],
 )
 def test_fraction_line_draws_the_expected_text(
-    case_name: str, line: FractionLine, width: float, colours: FractionColours
+    case_name: str, line: FractionLine, width: float, colours: FractionColours, compact: bool
 ) -> None:
     """The decoded PDF matches this case's section of ``fractions_pdf_expecteds.txt``."""
-    actual = _drawn(lambda pdf: draw_fraction_line(pdf, 100, 700, line, width, colours))
+    actual = _drawn(lambda pdf: draw_fraction_line(pdf, 100, 700, line, width, colours, compact))
 
     # to regenerate, uncomment:
     # from tests.helpers import write_section
@@ -521,19 +593,35 @@ def test_fraction_wall_draws_the_expected_text(
 
 
 @pytest.mark.parametrize(
-    ("line", "height"),
+    ("line", "compact", "drop", "height"),
     [
         # stars' room above, whole numbers' below
-        (FractionLine(4), 26.5),
-        (FractionLine(4, points=(LinePoint(1, "A"),)), 41.5),
-        (FractionLine(4, arrow_to=1), 35),
+        (FractionLine(4), False, 7.5, 26.5),
+        (FractionLine(4, points=(LinePoint(1, "A"),)), False, 22.5, 41.5),
+        (FractionLine(4, arrow_to=1), False, 16, 35),
         # jumps and a letter above, fractions below
-        (FractionLine(4, labels=TickLabels.EVERY_TICK, points=(LinePoint(2, "H"),), jumps=2), 59),
+        (
+            FractionLine(4, labels=TickLabels.EVERY_TICK, points=(LinePoint(2, "H"),), jumps=2),
+            False,
+            31,
+            59,
+        ),
+        # a picture over everything
+        (FractionLine(4, pictures=(LinePicture(0, DrawnObject.HOUSE),)), False, 34.5, 53.5),
+        # a compact line: a dot's room above, small numbers below
+        (FractionLine(8, points=(LinePoint(3),)), True, 3.2, 18.2),
+        (FractionLine(8, points=(LinePoint(3, "A"),)), True, 18.2, 33.2),
     ],
 )
-def test_fraction_line_height(line: FractionLine, height: float) -> None:
-    """A line's picture has room for what's above the line and the numbers under it."""
-    assert fraction_line_height(line) == height
+def test_fraction_line_drop_and_height(
+    line: FractionLine, compact: bool, drop: float, height: float
+) -> None:
+    """A line's picture has room for what's above the line, where the line is, and the numbers
+    under it."""
+    assert (fraction_line_drop(line, compact), fraction_line_height(line, compact)) == (
+        drop,
+        height,
+    )
 
 
 def test_fraction_wall_and_row_heights() -> None:

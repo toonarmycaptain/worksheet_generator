@@ -434,6 +434,31 @@ def test_pages(client: Client) -> None:
                 b"tile_pattern",
             ],
         ),
+        (
+            "/worksheets/fractions/fractions-on-a-number-line/",
+            [b"/api/worksheets/fraction_number_lines.pdf"],
+            [
+                b"title",
+                b"label",
+                b"name_line",
+                b"problems",
+                b"question_types",  # a checkbox for each type
+                b"question_types",
+                b"question_types",
+                b"question_types",
+                b"question_types",
+                b"denominators",
+                b"fraction_styles",  # a checkbox for each style
+                b"fraction_styles",
+                b"fraction_styles",
+                b"black_and_white",
+                b"multiple_choice",
+                b"answer_key",
+                b"self_check_tiles",
+                b"tile_pattern",  # a radio button for each pattern
+                b"tile_pattern",
+            ],
+        ),
     ],
 )
 def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], client: Client) -> None:
@@ -468,6 +493,7 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
         "/worksheets/algebra-and-functions/order-of-operations/",
         "/worksheets/factors-and-primes/prime-and-composite-numbers/",
         "/worksheets/fractions/naming-fractions/",
+        "/worksheets/fractions/fractions-on-a-number-line/",
         # the footer
         f"/feedback/?from={url}",
         "https://toonarmycaptain.com",
@@ -541,6 +567,11 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
         ),
         (
             "/worksheets/fractions/naming-fractions/",
+            "tile_pattern",
+            [(b"simple", b" checked", b"simple"), (b"complex", b"", b"complex")],
+        ),
+        (
+            "/worksheets/fractions/fractions-on-a-number-line/",
             "tile_pattern",
             [(b"simple", b" checked", b"simple"), (b"complex", b"", b"complex")],
         ),
@@ -1005,6 +1036,20 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
             ],
             True,
         ),
+        # every type by default, with an All box
+        (
+            "/worksheets/fractions/fractions-on-a-number-line/",
+            b"/api/worksheets/fraction_number_lines.pdf",
+            "question_types",
+            [
+                (b"name", b" checked", b"Name the point"),
+                (b"mark", b" checked", b"Mark the point"),
+                (b"distance", b" checked", b"Distance stories"),
+                (b"divide", b" checked", b"Divide the line"),
+                (b"compare", b" checked", b"Compare distances"),
+            ],
+            True,
+        ),
         # every type of question by default, with an All box for the three
         (
             "/worksheets/basic-operations/base-ten-blocks/",
@@ -1094,6 +1139,7 @@ def test_a_checkbox_group_sends_each_ticked_choice_s_id_and_shows_its_name(
         ("/worksheets/algebra-and-functions/order-of-operations/", False),
         ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
         ("/worksheets/fractions/naming-fractions/", False),
+        ("/worksheets/fractions/fractions-on-a-number-line/", False),
         ("/worksheets/legacy/", False),
     ],
 )
@@ -1126,6 +1172,7 @@ def test_the_place_value_page_keeps_from_and_to_different(
         ("/worksheets/algebra-and-functions/order-of-operations/", False),
         ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
         ("/worksheets/fractions/naming-fractions/", False),
+        ("/worksheets/fractions/fractions-on-a-number-line/", False),
         ("/worksheets/legacy/", False),
     ],
 )
@@ -1160,6 +1207,7 @@ def test_the_input_output_tables_page_swaps_fields_for_multiple_choice(
         ("/worksheets/algebra-and-functions/order-of-operations/", False),
         ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
         ("/worksheets/fractions/naming-fractions/", False),
+        ("/worksheets/fractions/fractions-on-a-number-line/", False),
         ("/worksheets/legacy/", False),
     ],
 )
@@ -1193,6 +1241,7 @@ def test_the_slope_and_intercepts_page_shows_intercepts_as_only_for_an_intercept
         ("/worksheets/algebra-and-functions/order-of-operations/", False),
         ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
         ("/worksheets/fractions/naming-fractions/", False),
+        ("/worksheets/fractions/fractions-on-a-number-line/", False),
         ("/worksheets/legacy/", False),
     ],
 )
@@ -1226,6 +1275,7 @@ def test_the_line_pages_show_blank_grids_only_with_two_points(
         ("/worksheets/algebra-and-functions/order-of-operations/", False),
         ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
         ("/worksheets/fractions/naming-fractions/", False),
+        ("/worksheets/fractions/fractions-on-a-number-line/", False),
         ("/worksheets/legacy/", False),
     ],
 )
@@ -1270,6 +1320,12 @@ def test_the_writing_page_shows_statements_only_with_vertical_or_horizontal_line
             b'["factor_pairs", "count", "between", "each_number"]</script>',
         ),
         ("/worksheets/fractions/naming-fractions/", None),
+        (
+            # every type but dividing a line, which has no single answer
+            "/worksheets/fractions/fractions-on-a-number-line/",
+            b'<script id="tile-types" type="application/json">'
+            b'["name", "mark", "distance", "compare"]</script>',
+        ),
         ("/worksheets/legacy/", None),
     ],
 )
@@ -1277,9 +1333,10 @@ def test_the_tile_types_script_greys_out_types_tiles_cant_ask(
     client: Client, url: str, expected: bytes | None
 ) -> None:
     """
-    Only the prime and composite and order of operations pages include the script that greys
-    out, while self-check tiles are ticked, the question types with no form whose answer the
-    question doesn't print, with the data of those it keeps.
+    Only the prime and composite, order of operations and fractions on a number line pages
+    include the script that greys out, while self-check tiles are ticked, the question types a
+    tiles sheet can't ask, with the data of those it keeps: on the first two, those with no form
+    whose answer the question doesn't print; on the number lines page, dividing a line.
 
     Whether the script works is checked manually in a browser.
     """
@@ -1308,6 +1365,7 @@ def test_the_tile_types_script_greys_out_types_tiles_cant_ask(
         ("/worksheets/algebra-and-functions/order-of-operations/", True, False, False),
         ("/worksheets/factors-and-primes/prime-and-composite-numbers/", True, False, False),
         ("/worksheets/fractions/naming-fractions/", True, False, False),
+        ("/worksheets/fractions/fractions-on-a-number-line/", True, False, False),
         ("/worksheets/legacy/", False, False, False),
     ],
 )
@@ -1316,8 +1374,8 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
 ) -> None:
     """
     The arithmetic, word problems, base-ten blocks, place-value, input-output tables, the three
-    line pages, the order of operations page, the prime and composite page and the naming
-    fractions page include the script that sets problems to 12 for tiles.
+    line pages, the order of operations page, the prime and composite page and the two fractions
+    pages include the script that sets problems to 12 for tiles.
 
     The other pages have no self-check tiles box, and so no script. Whether the script works is
     checked manually in a browser. Only the arithmetic page has the operation names that its other
@@ -1403,6 +1461,8 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
         ("/worksheets/factors-and-primes/prime-and-composite-numbers/", "choice-titles", None),
         ("/worksheets/fractions/naming-fractions/", "representation-operations", None),
         ("/worksheets/fractions/naming-fractions/", "choice-titles", None),
+        ("/worksheets/fractions/fractions-on-a-number-line/", "representation-operations", None),
+        ("/worksheets/fractions/fractions-on-a-number-line/", "choice-titles", None),
     ],
 )
 def test_the_representation_script_s_data(
@@ -1475,6 +1535,10 @@ def test_the_representation_script_s_data(
         (
             "/worksheets/fractions/naming-fractions/",
             [(b"/api/worksheets/naming_fractions.pdf", b" data-check-first")],
+        ),
+        (
+            "/worksheets/fractions/fractions-on-a-number-line/",
+            [(b"/api/worksheets/fraction_number_lines.pdf", b" data-check-first")],
         ),
         (
             "/worksheets/legacy/",
@@ -1684,6 +1748,20 @@ def test_only_core_forms_check_their_options_before_opening_a_tab(
                 (b"self_check_tiles", b"Self-check tile answers"),
             ],
         ),
+        (
+            "/worksheets/fractions/fractions-on-a-number-line/",
+            [
+                (b"title", b"Title"),
+                (b"label", b"Label"),
+                (b"name_line", b"Add Name/Date blanks"),
+                (b"problems", b"Problems"),
+                (b"denominators", b"Denominators"),
+                (b"black_and_white", b"Black and white pictures"),
+                (b"multiple_choice", b"Multiple choice"),
+                (b"answer_key", b"Add an answer key page"),
+                (b"self_check_tiles", b"Self-check tile answers"),
+            ],
+        ),
     ],
 )
 def test_each_field_carries_its_label_for_the_check_first_messages(
@@ -1792,6 +1870,7 @@ def test_legacy_page(client: Client) -> None:
         "/worksheets/algebra-and-functions/order-of-operations/",
         "/worksheets/factors-and-primes/prime-and-composite-numbers/",
         "/worksheets/fractions/naming-fractions/",
+        "/worksheets/fractions/fractions-on-a-number-line/",
         # the footer
         "/feedback/?from=/worksheets/legacy/",
         "https://toonarmycaptain.com",
@@ -1808,12 +1887,12 @@ def test_legacy_page(client: Client) -> None:
             "/worksheets/algebra-and-functions/",
             "/worksheets/algebra-and-functions/input-output-tables/",
         ),
+        ("/worksheets/fractions/", "/worksheets/fractions/naming-fractions/"),
         # a group of one sheet, which others will join
         (
             "/worksheets/factors-and-primes/",
             "/worksheets/factors-and-primes/prime-and-composite-numbers/",
         ),
-        ("/worksheets/fractions/", "/worksheets/fractions/naming-fractions/"),
         # where input-output tables were before their group had a second sheet
         (
             "/worksheets/input-output-tables/",
@@ -1844,6 +1923,7 @@ def test_group_and_old_paths_redirect(client: Client, url: str, location: str) -
         ("/worksheets/algebra-and-functions/order-of-operations/", False),
         ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
         ("/worksheets/fractions/naming-fractions/", False),
+        ("/worksheets/fractions/fractions-on-a-number-line/", False),
         ("/worksheets/legacy/", False),
     ],
 )
@@ -1948,12 +2028,19 @@ def test_the_steps_radios_show_for_the_representations_with_two_steps(client: Cl
     assert shown == {representation.value.encode() for representation in TWO_STEP_REPRESENTATIONS}
 
 
-def test_fraction_style_labels_show_each_fraction_drawn(client: Client) -> None:
+@pytest.mark.parametrize(
+    "url",
+    [
+        "/worksheets/fractions/naming-fractions/",
+        "/worksheets/fractions/fractions-on-a-number-line/",
+    ],
+)
+def test_fraction_style_labels_show_each_fraction_drawn(client: Client, url: str) -> None:
     """
-    The naming fractions page's Fraction style checkboxes show each style's fraction as it looks,
-    as markup: stacked, with a slash, and slanted, each ticked by default.
+    A fractions page's Fraction style checkboxes show each style's fraction as it looks, as
+    markup: stacked, with a slash, and slanted, each ticked by default.
     """
-    content = client.get("/worksheets/fractions/naming-fractions/").content
+    content = client.get(url).content
     assert re.findall(
         rb'<input type="checkbox" name="fraction_styles" value="(\w+)"( checked)?> (.+?)</label>',
         content,

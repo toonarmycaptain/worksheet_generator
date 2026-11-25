@@ -28,6 +28,8 @@ from core.basic_operations.representation import (
 )
 from core.discrete_data.data import DataDisplay
 from core.discrete_data.generator import SHEET_DISPLAYS, available_parts
+from core.fraction_number_lines.generator import TILE_TYPES as FRACTION_NUMBER_LINES_TILE_TYPES
+from core.fraction_number_lines.representation import FRACTION_NUMBER_LINES_NAME
 from core.input_output_tables.representation import INPUT_OUTPUT_TABLES_NAME
 from core.line_equations.representation import (
     GRAPHING_LINEAR_EQUATIONS_NAME,
@@ -93,8 +95,9 @@ BUILDERS: list[dict[str, Any]] = [
     },
     {
         "title": "Fractions",
-        "description": "Name the fraction a picture shows, shade one, and share equally.",
-        "sheets": ["naming_fractions"],
+        "description": "Name the fraction a picture shows, shade one, and share equally. Find "
+        "fractions and distances on a number line.",
+        "sheets": ["naming_fractions", "fraction_number_lines"],
     },
 ]
 
@@ -109,6 +112,7 @@ HEADINGS = {
     "input_output_tables": INPUT_OUTPUT_TABLES_NAME,
     "prime_composite": PRIME_COMPOSITE_NAME,
     "naming_fractions": NAMING_FRACTIONS_NAME,
+    "fraction_number_lines": FRACTION_NUMBER_LINES_NAME,
     "order_of_operations": ORDER_OF_OPERATIONS_NAME,
     "slope_and_intercepts": SLOPE_AND_INTERCEPTS_NAME,
     "writing_linear_equations": WRITING_LINEAR_EQUATIONS_NAME,
@@ -263,6 +267,9 @@ SCRIPT_DATA: dict[str, dict[str, Any]] = {
     "prime_composite": {"tile_types": [question_type.value for question_type in TILE_TYPES]},
     "order_of_operations": {
         "tile_types": [question_type.value for question_type in ORDER_OF_OPERATIONS_TILE_TYPES]
+    },
+    "fraction_number_lines": {
+        "tile_types": [question_type.value for question_type in FRACTION_NUMBER_LINES_TILE_TYPES]
     },
     "slope_and_intercepts": {"intercept_answers": True, "blank_grids": True},
     "writing_linear_equations": {"blank_grids": True, "statements": True},

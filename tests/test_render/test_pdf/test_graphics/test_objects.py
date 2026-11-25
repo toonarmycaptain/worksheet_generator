@@ -54,6 +54,7 @@ BLUE, GREY = COLOUR_FRACTIONS.shaded, GREY_FRACTIONS.shaded
         ("fish", DrawnObject.FISH, None, None),
         ("flower", DrawnObject.FLOWER, None, None),
         ("football", DrawnObject.FOOTBALL, None, None),
+        ("frog", DrawnObject.FROG, None, None),
         ("gift", DrawnObject.GIFT, None, None),
         ("granola_bar", DrawnObject.GRANOLA_BAR, None, None),
         ("guitar", DrawnObject.GUITAR, None, None),
@@ -69,6 +70,7 @@ BLUE, GREY = COLOUR_FRACTIONS.shaded, GREY_FRACTIONS.shaded
         ("rabbit", DrawnObject.RABBIT, None, None),
         ("round_cake", DrawnObject.ROUND_CAKE, None, None),
         ("sandwich", DrawnObject.SANDWICH, None, None),
+        ("snail", DrawnObject.SNAIL, None, None),
         ("square_cake", DrawnObject.SQUARE_CAKE, None, None),
         ("square_gift", DrawnObject.SQUARE_GIFT, None, None),
         ("star", DrawnObject.STAR, None, None),
@@ -99,6 +101,29 @@ def test_object_draws_the_expected_text(
     out = BytesIO()
     pdf = Canvas(out)
     draw_object(pdf, kind, 100, 700, 40, number=number, fill=fill)
+    pdf.save()
+
+    actual = pdf_text(out.getvalue())
+
+    # to regenerate, uncomment:
+    # from tests.helpers import write_section
+    # write_section(EXPECTED, case_name, actual)
+    assert actual == read_sections(EXPECTED).get(case_name)
+
+
+@pytest.mark.parametrize(
+    ("case_name", "kind"),
+    [
+        # the objects drawn facing left, mirrored to face right
+        ("ant_mirrored", DrawnObject.ANT),
+        ("fish_mirrored", DrawnObject.FISH),
+    ],
+)
+def test_mirrored_object_draws_the_expected_text(case_name: str, kind: DrawnObject) -> None:
+    """The decoded PDF matches this case's section of ``objects_pdf_expecteds.txt``."""
+    out = BytesIO()
+    pdf = Canvas(out)
+    draw_object(pdf, kind, 100, 700, 40, mirrored=True)
     pdf.save()
 
     actual = pdf_text(out.getvalue())

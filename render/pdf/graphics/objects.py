@@ -15,6 +15,8 @@ from render.pdf.graphics.common import OUTLINE_COLOUR, Point, draw_cake_from_the
 from render.pdf.page import BOLD_FONT
 
 OBJECT_LINE_WIDTH = 1
+# Objects drawn facing left, which a picture of something going right draws mirrored
+FACING_LEFT = frozenset({DrawnObject.ANT, DrawnObject.FISH})
 # Where an object's number goes, in a square of side 1 from its bottom-left corner: the middle of
 # the number, and the most its digits' height and width can take. Objects not listed take the
 # square's middle.
@@ -42,6 +44,7 @@ _NUMBER_SPOTS: dict[DrawnObject, tuple[float, float, float, float]] = {
     DrawnObject.DUCK: (0.45, 0.35, 0.08, 0.16),
     DrawnObject.FISH: (0.5, 0.5, 0.24, 0.3),
     DrawnObject.FLOWER: (0.5, 0.68, 0.12, 0.15),
+    DrawnObject.FROG: (0.52, 0.44, 0.1, 0.16),
     DrawnObject.GIFT: (0.28, 0.34, 0.24, 0.22),
     DrawnObject.GRANOLA_BAR: (0.5, 0.5, 0.15, 0.32),
     DrawnObject.GUITAR: (0.27, 0.37, 0.1, 0.14),
@@ -50,6 +53,7 @@ _NUMBER_SPOTS: dict[DrawnObject, tuple[float, float, float, float]] = {
     DrawnObject.MARACA: (0.34, 0.4, 0.12, 0.16),
     DrawnObject.MUSICAL_TRIANGLE: (0.42, 0.42, 0.14, 0.2),
     DrawnObject.RABBIT: (0.5, 0.17, 0.09, 0.2),
+    DrawnObject.SNAIL: (0.4, 0.46, 0.14, 0.22),
     DrawnObject.SQUARE_GIFT: (0.33, 0.34, 0.2, 0.13),
     DrawnObject.STAR: (0.5, 0.45, 0.2, 0.22),
     DrawnObject.TALL_GIFT: (0.38, 0.34, 0.14, 0.07),
@@ -69,15 +73,21 @@ def draw_object(
     size: float,
     number: int | None = None,
     fill: Color | None = None,
+    mirrored: bool = False,
 ) -> None:
     """
     Draw an object of ``kind`` as an outline in a square ``size`` wide with its top-left corner at
     (``x``, ``top``), filled with ``fill``, or white, and with ``number`` written on it, if any.
-    Small details, such as eyes and wheels, are always dark.
+    Small details, such as eyes and wheels, are always dark. With ``mirrored``, it's drawn
+    flipped left to right, its number too, so a mirrored object takes no number.
     """
     pdf.saveState()
-    pdf.translate(x, top - size)
-    pdf.scale(size, size)  # draw in a square of side 1
+    if mirrored:
+        pdf.translate(x + size, top - size)
+        pdf.scale(-size, size)
+    else:
+        pdf.translate(x, top - size)
+        pdf.scale(size, size)  # draw in a square of side 1
     pdf.setLineWidth(OBJECT_LINE_WIDTH / size)
     pdf.setLineJoin(1)  # round
     pdf.setLineCap(1)  # round
@@ -764,6 +774,54 @@ def _draw_duck(pdf: Canvas, fill: Color) -> None:
     _draw_dark(pdf, (0.73, 0.68, 0.025))
 
 
+def _draw_frog(pdf: Canvas, fill: Color) -> None:
+    """Draw a frog sitting, from the side, facing right: a back foot, its body, its folded back
+    leg over it, a front leg, a bulging eye and a mouth."""
+    pdf.ellipse(0.1, 0.08, 0.46, 0.17, stroke=1, fill=1)
+    _draw_curve(
+        pdf,
+        (0.12, 0.2),  # the bottom of its back
+        (0.06, 0.42, 0.3, 0.62, 0.5, 0.62),  # up its back
+        (0.7, 0.64, 0.88, 0.56, 0.93, 0.42),  # over its head to its snout
+        (0.95, 0.3, 0.78, 0.18, 0.62, 0.18),  # under its chin
+        closed=True,
+    )
+    pdf.ellipse(0.14, 0.14, 0.5, 0.42, stroke=1, fill=1)
+    _draw_lines(pdf, (0.68, 0.24, 0.7, 0.1), (0.63, 0.1, 0.78, 0.1))
+    pdf.circle(0.72, 0.6, 0.09, stroke=1, fill=1)
+    _draw_curve(pdf, (0.93, 0.42), (0.86, 0.38, 0.78, 0.38, 0.72, 0.41))
+    _draw_dark(pdf, (0.74, 0.62, 0.035))
+
+
+def _draw_snail(pdf: Canvas, fill: Color) -> None:
+    """Draw a snail from the side, facing right: its body along the ground, rising to its head,
+    two eye stalks, and a round shell with a spiral on its back."""
+    body = pdf.beginPath()
+    body.moveTo(0.04, 0.12)
+    body.lineTo(0.8, 0.12)
+    body.curveTo(0.9, 0.12, 0.94, 0.2, 0.92, 0.32)  # the front of its head
+    body.curveTo(0.9, 0.46, 0.76, 0.48, 0.72, 0.38)  # over its head to its neck
+    body.lineTo(0.7, 0.24)
+    body.lineTo(0.14, 0.24)
+    body.curveTo(0.08, 0.24, 0.04, 0.18, 0.04, 0.12)  # its tail
+    body.close()
+    pdf.drawPath(body, stroke=1, fill=1)
+    _draw_lines(pdf, (0.82, 0.44, 0.79, 0.62), (0.88, 0.42, 0.92, 0.6))
+    pdf.circle(0.4, 0.46, 0.28, stroke=1, fill=1)
+    turns = 3.5 * pi  # a spiral of one and three quarter turns, out from the shell's middle
+    spiral = pdf.beginPath()
+    for step in range(57):
+        angle = turns * step / 56
+        radius = 0.025 + 0.2 * angle / turns
+        point = (0.4 + radius * cos(angle), 0.46 + radius * sin(angle))
+        if step == 0:
+            spiral.moveTo(*point)
+        else:
+            spiral.lineTo(*point)
+    pdf.drawPath(spiral, stroke=1, fill=0)
+    _draw_dark(pdf, (0.79, 0.63, 0.025), (0.92, 0.61, 0.025))
+
+
 def _draw_bell(pdf: Canvas, fill: Color) -> None:
     """Draw a hand bell: a handle with a knob, the bell flaring out to its rim, and the clapper
     under it."""
@@ -969,6 +1027,7 @@ _OBJECT_DRAWERS: dict[DrawnObject, Callable[[Canvas, Color], None]] = {
     DrawnObject.FISH: _draw_fish,
     DrawnObject.FLOWER: _draw_flower,
     DrawnObject.FOOTBALL: _draw_football,
+    DrawnObject.FROG: _draw_frog,
     DrawnObject.GIFT: _draw_gift,
     DrawnObject.GRANOLA_BAR: _draw_granola_bar,
     DrawnObject.GUITAR: _draw_guitar,
@@ -982,6 +1041,7 @@ _OBJECT_DRAWERS: dict[DrawnObject, Callable[[Canvas, Color], None]] = {
     DrawnObject.PENCIL: _draw_pencil,
     DrawnObject.PIZZA: _draw_pizza,
     DrawnObject.RABBIT: _draw_rabbit,
+    DrawnObject.SNAIL: _draw_snail,
     DrawnObject.ROUND_CAKE: _draw_round_cake,
     DrawnObject.SANDWICH: _draw_sandwich,
     DrawnObject.SQUARE_CAKE: _draw_square_cake,
