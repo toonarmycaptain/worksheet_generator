@@ -69,8 +69,8 @@ from render.pdf.basic_operations_worksheet import (
     render_basic_operations_worksheet,
     render_missing_number_worksheet,
 )
-from render.pdf.data_displays import NumberListStyle
 from render.pdf.data_graphs_worksheet import render_data_graphs_worksheet
+from render.pdf.graphics.data_displays import NumberListStyle
 from render.pdf.input_output_tables_worksheet import render_input_output_tables_worksheet
 from render.pdf.line_equations_worksheet import render_line_equations_worksheet
 from render.pdf.multiplication_models_worksheet import render_multiplication_models_worksheet

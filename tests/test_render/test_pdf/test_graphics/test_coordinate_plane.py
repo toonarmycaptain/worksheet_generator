@@ -13,7 +13,7 @@ from io import BytesIO
 import pytest
 from reportlab.pdfgen.canvas import Canvas
 
-from render.pdf.coordinate_plane import (
+from render.pdf.graphics.coordinate_plane import (
     Plane,
     draw_coordinate_plane,
     draw_line,

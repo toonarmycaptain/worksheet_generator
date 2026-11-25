@@ -21,6 +21,7 @@ from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.pdfgen.canvas import Canvas
 
 from core.question import BLANK, MultipleChoice
+from core.written_numbers import FractionStyle, Piece, Pieces, UnreducedFraction, merge_pieces
 
 PAGE_WIDTH, PAGE_HEIGHT = letter
 MARGIN = 54
@@ -39,6 +40,12 @@ INSTRUCTION_GAP = 10  # extra space between the instruction and the first proble
 SMALLEST_FIT_SIZE = 6  # fit_font shrinks text too wide for its space down to this size
 FRACTION_SCALE = 0.85  # a stacked fraction's numbers, as a share of the text's size
 FRACTION_ROOM = 6  # the extra space a line with a stacked fraction needs above and below
+# A slanted fraction, like ¾: its numbers' size, as a share of the text's, how far the numerator
+# is raised, and the slash's rise and run, as shares of the text's size
+SLANTED_SCALE = 0.62
+SLANTED_RAISE = 0.42
+SLASH_RISE = 0.8
+SLASH_RUN = 0.32
 
 # A word with its preceding whitespace. A bracketed term, such as (3 x 10,000), is one word.
 _WORD = re.compile(r"(\s*)(\([^)]*\)|\S+)")
@@ -66,13 +73,26 @@ def draw_text(
         x += stringWidth(piece, FONT, size)
 
 
-def draw_fraction(pdf: Canvas, x: float, y: float, fraction: Fraction, size: float) -> float:
+def draw_fraction(
+    pdf: Canvas, x: float, y: float, fraction: Fraction | UnreducedFraction, size: float
+) -> float:
     """
-    Draw ``fraction`` stacked, from ``x`` beside text on baseline ``y`` in ``FONT`` at ``size``,
-    and return the x after it. The numerator and denominator are centred over and under a bar at
-    the height of a minus sign, at ``FRACTION_SCALE`` of ``size``. The fraction is drawn as given,
-    so a sign goes in the text before it.
+    Draw ``fraction`` from ``x`` beside text on baseline ``y`` in ``FONT`` at ``size``, and
+    return the x after it. The fraction is drawn as given, so a sign goes in the text before it.
+
+    A ``Fraction`` is drawn stacked, and an ``UnreducedFraction`` in its style. Stacked, the
+    numerator and denominator are centred over and under a bar at the height of a minus sign, at
+    ``FRACTION_SCALE`` of ``size``. With a slash, it's text: 3/4. Slanted, like ¾, a small
+    numerator is raised before a slanting slash, and a small denominator sits on the baseline
+    after it.
     """
+    style = fraction.style if isinstance(fraction, UnreducedFraction) else FractionStyle.STACKED
+    if style is FractionStyle.SLASH:
+        text = _slash_text(fraction)
+        pdf.drawString(x, y, text)
+        return x + stringWidth(text, FONT, size)
+    if style is FractionStyle.SLANTED:
+        return _draw_slanted(pdf, x, y, fraction, size)
     small = size * FRACTION_SCALE
     numerator, denominator = f"{fraction.numerator:,}", f"{fraction.denominator:,}"
     width = fraction_width(fraction, size)
@@ -87,38 +107,122 @@ def draw_fraction(pdf: Canvas, x: float, y: float, fraction: Fraction, size: flo
     return x + width
 
 
-def fraction_width(fraction: Fraction, size: float) -> float:
+def fraction_width(fraction: Fraction | UnreducedFraction, size: float) -> float:
     """Return the width ``draw_fraction`` takes for ``fraction`` beside text at ``size``."""
+    style = fraction.style if isinstance(fraction, UnreducedFraction) else FractionStyle.STACKED
+    if style is FractionStyle.SLASH:
+        return float(stringWidth(_slash_text(fraction), FONT, size))
+    if style is FractionStyle.SLANTED:
+        return _slanted_layout(fraction, size)[3]
     small = size * FRACTION_SCALE
     numbers = (f"{fraction.numerator:,}", f"{fraction.denominator:,}")
     return max(stringWidth(number, FONT, small) for number in numbers) + size * 0.4
 
 
-def draw_pieces(
-    pdf: Canvas, x: float, y: float, pieces: Iterable[str | Fraction], size: float
+def stacked(piece: Piece) -> bool:
+    """Return whether ``piece`` is a fraction drawn stacked, which needs room above and below
+    its line."""
+    if isinstance(piece, UnreducedFraction):
+        return piece.style is FractionStyle.STACKED
+    return isinstance(piece, Fraction)
+
+
+def _slash_text(fraction: Fraction | UnreducedFraction) -> str:
+    """Return ``fraction`` written on the line with a slash: 3/4."""
+    return f"{fraction.numerator:,}/{fraction.denominator:,}"
+
+
+def _slanted_layout(
+    fraction: Fraction | UnreducedFraction, size: float
+) -> tuple[float, float, float, float]:
+    """
+    Return where a slanted fraction's parts go, from its left edge, beside text at ``size``: the
+    numerator's left, the slash's bottom, the denominator's left, and the whole width.
+
+    The numerator ends where it would touch the slash at its baseline's height, and the
+    denominator starts clear of the slash at its top's height, so each number tucks in beside it.
+    """
+    small = size * SLANTED_SCALE
+    numerator = stringWidth(f"{fraction.numerator:,}", FONT, small)
+    denominator = stringWidth(f"{fraction.denominator:,}", FONT, small)
+    margin = size * 0.05
+    run_per_rise = SLASH_RUN / SLASH_RISE
+    # where the slash is level with the numerator's baseline, and with the denominator's top
+    slash = margin + numerator - SLANTED_RAISE * size * run_per_rise + size * 0.06
+    denominator_left = slash + small * 0.72 * run_per_rise + size * 0.08
+    return margin, slash, denominator_left, denominator_left + denominator + margin
+
+
+def _draw_slanted(
+    pdf: Canvas, x: float, y: float, fraction: Fraction | UnreducedFraction, size: float
 ) -> float:
+    """Draw ``fraction`` slanted, like ¾, and return the x after it."""
+    numerator_left, slash, denominator_left, width = _slanted_layout(fraction, size)
+    small = size * SLANTED_SCALE
+    pdf.setFont(FONT, small)
+    pdf.drawString(x + numerator_left, y + size * SLANTED_RAISE, f"{fraction.numerator:,}")
+    pdf.drawString(x + denominator_left, y, f"{fraction.denominator:,}")
+    pdf.saveState()
+    pdf.setLineWidth(size / 16)
+    pdf.line(x + slash, y, x + slash + size * SLASH_RUN, y + size * SLASH_RISE)
+    pdf.restoreState()
+    pdf.setFont(FONT, size)
+    return x + width
+
+
+def draw_pieces(pdf: Canvas, x: float, y: float, pieces: Iterable[Piece], size: float) -> float:
     """
     Draw ``pieces`` one after another from ``x`` on baseline ``y`` in ``FONT`` at ``size``: each
-    string as text and each fraction stacked, by ``draw_fraction``. Return the x after them.
+    string as text, by ``draw_text``, so a ``BLANK`` is a square, and each fraction by
+    ``draw_fraction``. Return the x after them.
     """
     pdf.setFont(FONT, size)
     for piece in pieces:
-        if isinstance(piece, Fraction):
-            x = draw_fraction(pdf, x, y, piece, size)
+        if isinstance(piece, str):
+            draw_text(pdf, x, y, piece, size)
+            x += text_width(piece, size)
         else:
-            pdf.drawString(x, y, piece)
-            x += stringWidth(piece, FONT, size)
+            x = draw_fraction(pdf, x, y, piece, size)
     return x
 
 
-def pieces_width(pieces: Iterable[str | Fraction], size: float) -> float:
+def pieces_width(pieces: Iterable[Piece], size: float) -> float:
     """Return the width ``draw_pieces`` takes for ``pieces`` at ``size``."""
     return sum(
-        fraction_width(piece, size)
-        if isinstance(piece, Fraction)
-        else float(stringWidth(piece, FONT, size))
+        text_width(piece, size) if isinstance(piece, str) else fraction_width(piece, size)
         for piece in pieces
     )
+
+
+def wrap_pieces(pieces: Pieces, size: float, width: float) -> list[Pieces]:
+    """
+    Split ``pieces`` into lines no wider than ``width``, between words, as far as they allow,
+    measured as ``draw_pieces`` draws them. A fraction is a word, joined to any text it touches
+    without a space, so "of 3/8?" can break before "3/8?" but never inside it. Spacing within a
+    line is kept, and the space at a break is dropped.
+    """
+    words: list[tuple[str, list[Piece]]] = []  # each word, after the space before it
+    for piece in pieces:
+        parts = re.split(r"(\s+)", piece) if isinstance(piece, str) else [piece]
+        for part in parts:
+            if isinstance(part, str) and part.isspace():
+                if words and not words[-1][1]:  # spaces at the end of one piece and the next
+                    words[-1] = (words[-1][0] + part, [])
+                else:
+                    words.append((part, []))
+            elif part != "":
+                if not words:
+                    words.append(("", []))
+                words[-1][1].append(part)
+    lines: list[list[Piece]] = []
+    for space, word in words:
+        if not word:  # spaces at the very end
+            continue
+        if lines and pieces_width([*lines[-1], space, *word], size) <= width:
+            lines[-1] += [space, *word]
+        else:
+            lines.append(list(word))
+    return [merge_pieces(line) for line in lines]
 
 
 def text_width(text: str, size: float, blank_side: float | None = None) -> float:

@@ -4,11 +4,11 @@ a frequency table or an input-output table.
 """
 
 from collections.abc import Sequence
-from fractions import Fraction
 
 from reportlab.lib.colors import HexColor
 from reportlab.pdfgen.canvas import Canvas
 
+from core.written_numbers import Pieces
 from render.pdf.page import BOLD_FONT, FONT, draw_pieces, fit_font, pieces_width
 
 OUTLINE_COLOUR = HexColor("#2d3748")  # near black
@@ -24,7 +24,7 @@ def draw_table(
     top: float,
     column_widths: Sequence[float],
     row_heights: Sequence[float],
-    cells: Sequence[Sequence[str | tuple[str | Fraction, ...] | None]],
+    cells: Sequence[Sequence[str | Pieces | None]],
     *,
     heading_row: bool = False,
     heading_column: bool = False,

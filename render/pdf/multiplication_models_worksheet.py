@@ -23,14 +23,10 @@ from core.basic_operations.multiplication_models import (
     model_description,
 )
 from core.basic_operations.representation import EqualStripDiagram, StripDiagram, solved_equation
-from render.pdf.diagrams import (
-    EQUAL_JUMP_LINE_HEIGHT,
-    STRIP_HEIGHT,
-    UNKNOWN_LABEL,
-    draw_array,
-    draw_equal_jump_line,
-    draw_strip_diagram,
-)
+from render.pdf.graphics.arrays import draw_array
+from render.pdf.graphics.common import UNKNOWN_LABEL
+from render.pdf.graphics.number_lines import EQUAL_JUMP_LINE_HEIGHT, draw_equal_jump_line
+from render.pdf.graphics.strips import STRIP_HEIGHT, draw_strip_diagram
 from render.pdf.page import (
     BOLD_FONT,
     FONT,

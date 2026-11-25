@@ -25,7 +25,7 @@ from core.basic_operations.representation import (
     solved_equation,
     solved_steps,
 )
-from render.pdf.diagrams import STRIP_BAR_HEIGHT, STRIP_HEIGHT, draw_strip_diagram
+from render.pdf.graphics.strips import STRIP_BAR_HEIGHT, STRIP_HEIGHT, draw_strip_diagram
 from render.pdf.page import (
     BOLD_FONT,
     LINE_HEIGHT,

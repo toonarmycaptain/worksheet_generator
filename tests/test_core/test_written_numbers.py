@@ -4,7 +4,17 @@ from fractions import Fraction
 
 import pytest
 
-from core.written_numbers import NumberStyle, Pieces, format_number, number_pieces, terminates
+from core.written_numbers import (
+    FractionStyle,
+    NumberStyle,
+    Pieces,
+    UnreducedFraction,
+    format_number,
+    inline,
+    merge_pieces,
+    number_pieces,
+    terminates,
+)
 from tests.data import MINUS
 
 FRACTION, DECIMAL, MIXED_NUMBER = NumberStyle
@@ -60,3 +70,56 @@ def test_number_pieces_errors() -> None:
 def test_terminates(value: Fraction, expected: bool) -> None:
     """A decimal terminates when the denominator has no factor but 2 and 5."""
     assert terminates(value) == expected
+
+
+@pytest.mark.parametrize(
+    ("fraction", "value", "text"),
+    [
+        (UnreducedFraction(2, 8), Fraction(1, 4), "2/8"),
+        (UnreducedFraction(0, 4), Fraction(0), "0/4"),
+        (UnreducedFraction(8, 8), Fraction(1), "8/8"),
+        # above 1, as wrong answers can be
+        (UnreducedFraction(12, 8), Fraction(3, 2), "12/8"),
+        (UnreducedFraction(4, 1), Fraction(4), "4/1"),
+    ],
+)
+def test_unreduced_fraction(fraction: UnreducedFraction, value: Fraction, text: str) -> None:
+    """An unreduced fraction keeps its numbers as given, and its value is in lowest terms."""
+    assert (fraction.value, str(fraction), inline(("x = ", fraction))) == (
+        value,
+        text,
+        f"x = {text}",
+    )
+
+
+def test_unreduced_fractions_are_equal_only_when_both_numbers_are() -> None:
+    """2/8 and 1/4 are the same number but different answers, so a set keeps both."""
+    fractions = {UnreducedFraction(2, 8), UnreducedFraction(1, 4), UnreducedFraction(2, 8)}
+    assert len(fractions) == 2
+
+
+@pytest.mark.parametrize(("numerator", "denominator"), [(-1, 4), (1, 0), (1, -4)])
+def test_unreduced_fraction_errors(numerator: int, denominator: int) -> None:
+    """The numerator is 0 or more, and the denominator 1 or more."""
+    with pytest.raises(ValueError) as error:
+        UnreducedFraction(numerator, denominator)
+    assert str(error.value) == (
+        "An unreduced fraction needs a numerator of 0 or more and a denominator of 1 or more, not "
+        f"{numerator}/{denominator}."
+    )
+
+
+def test_merge_pieces_keeps_unreduced_fractions() -> None:
+    """Neighbouring strings join, empty ones go, and an unreduced fraction stays as it is."""
+    pieces = ("x", " = ", UnreducedFraction(2, 8), "", " + 1")
+    assert merge_pieces(pieces) == ("x = ", UnreducedFraction(2, 8), " + 1")
+
+
+def test_how_an_unreduced_fraction_is_drawn_takes_no_part_in_equality() -> None:
+    """2/8 stacked, with a slash, or slanted is one answer."""
+    fractions = {
+        UnreducedFraction(2, 8),
+        UnreducedFraction(2, 8, FractionStyle.SLASH),
+        UnreducedFraction(2, 8, FractionStyle.SLANTED),
+    }
+    assert len(fractions) == 1

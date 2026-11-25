@@ -28,7 +28,7 @@ from core.base_ten_blocks import (
 from core.basic_operations.data import BasicOperationQuestionData
 from core.placevalue.data import PlaceValueQuestionData
 from core.question import FreeResponse, Question
-from render.pdf.diagrams import (
+from render.pdf.graphics.base_ten_blocks import (
     BLOCKS_KEY_HEIGHT,
     COLOUR_BLOCKS,
     GREY_BLOCKS,

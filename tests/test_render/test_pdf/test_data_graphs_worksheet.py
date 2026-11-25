@@ -39,7 +39,7 @@ from core.discrete_data.data import (
 )
 from core.discrete_data.topics import NumberListTopic
 from core.question import FreeResponse, MultipleChoice, Question
-from render.pdf.data_displays import NumberListStyle, draw_display
+from render.pdf.graphics.data_displays import NumberListStyle, draw_display
 from render.pdf.page import new_pdf
 from tests.data import CANS, CLASSES, FRUIT
 from tests.helpers import (

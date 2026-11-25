@@ -2,12 +2,14 @@
 Writing numbers, whole or not, as fractions, decimals or mixed numbers, both inline and as pieces
 for a PDF to draw.
 
-A ``Fraction`` among the pieces is drawn as a stacked fraction, which an inline fraction such as
--3/4x can't show unambiguously; a string is drawn as text. Signs are written outside fractions,
-with the minus sign rather than a hyphen.
+A fraction among the pieces is drawn stacked, which an inline fraction such as -3/4x can't show
+unambiguously; a string is drawn as text. A ``Fraction`` is written in lowest terms, and a
+``UnreducedFraction`` as given, so a picture's 2 parts of 8 stay 2/8. Signs are written outside
+fractions, with the minus sign rather than a hyphen.
 """
 
 from collections.abc import Iterable
+from dataclasses import dataclass, field
 from decimal import Decimal
 from enum import StrEnum
 from fractions import Fraction
@@ -27,8 +29,50 @@ class NumberStyle(StrEnum):
     MIXED_NUMBER = "mixed_number"  # 2 1/2
 
 
-# A piece of written maths: text, or a positive fraction that isn't whole, drawn stacked
-type Piece = str | Fraction
+class FractionStyle(StrEnum):
+    """How a fraction is drawn. Values are stable identifiers for the API and storage."""
+
+    STACKED = "stacked"  # the numerator over a bar, over the denominator
+    SLASH = "slash"  # on the line, 3/4
+    SLANTED = "slanted"  # a small raised numerator, a slanting slash, a small lowered denominator
+
+
+@dataclass(frozen=True)
+class UnreducedFraction:
+    """
+    A fraction as written, not reduced: 2/8 stays 2/8, where ``Fraction(2, 8)`` becomes 1/4.
+
+    Two are equal only when their numerators and denominators are, so 2/8 and 1/4 are different
+    answers; ``value`` gives the number they stand for, to compare sizes. The numerator may be 0,
+    or more than the denominator (12/8, 4/1). ``style`` says how it's drawn, and takes no part in
+    equality, so 2/8 stacked and 2/8 with a slash are the same answer.
+
+    Raises ``ValueError`` for a negative numerator or a denominator below 1.
+    """
+
+    numerator: int
+    denominator: int
+    style: FractionStyle = field(default=FractionStyle.STACKED, compare=False)
+
+    def __post_init__(self) -> None:
+        if self.numerator < 0 or self.denominator < 1:
+            raise ValueError(
+                "An unreduced fraction needs a numerator of 0 or more and a denominator of 1 or "
+                f"more, not {self.numerator}/{self.denominator}."
+            )
+
+    @property
+    def value(self) -> Fraction:
+        """The number the fraction stands for, in lowest terms."""
+        return Fraction(self.numerator, self.denominator)
+
+    def __str__(self) -> str:
+        return f"{self.numerator}/{self.denominator}"
+
+
+# A piece of written maths: text, or a fraction: a ``Fraction``, positive and not whole, drawn
+# stacked, or an ``UnreducedFraction``, drawn in its style
+type Piece = str | Fraction | UnreducedFraction
 type Pieces = tuple[Piece, ...]
 
 

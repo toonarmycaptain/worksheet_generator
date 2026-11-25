@@ -34,7 +34,7 @@ from core.discrete_data.data import (
 )
 from core.discrete_data.generator import SHEET_DISPLAYS
 from core.question import FreeResponse, Question
-from render.pdf.data_displays import NumberListStyle
+from render.pdf.graphics.data_displays import NumberListStyle
 from tests.data import COINS, FRUIT, REAL_CASE_SLOTS
 from tests.helpers import (
     choose_last,

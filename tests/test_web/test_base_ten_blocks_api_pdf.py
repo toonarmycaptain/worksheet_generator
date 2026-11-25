@@ -39,7 +39,7 @@ from core.basic_operations.regrouping import Regrouping
 from core.basic_operations.representation import Prompt
 from core.input_output_tables.data import Blanks, ChoiceType
 from core.placevalue.data import PlaceValueQuestionData
-from render.pdf.data_displays import NumberListStyle
+from render.pdf.graphics.data_displays import NumberListStyle
 from tests.data import BLOCKS, REAL_CASE_SLOTS, STANDARD
 from tests.helpers import (
     conventional_slot_of_returns,

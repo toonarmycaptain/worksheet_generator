@@ -15,7 +15,6 @@ would run past the bottom margin starts on the next page.
 """
 
 from collections.abc import Sequence
-from fractions import Fraction
 from typing import BinaryIO
 
 from reportlab.pdfgen.canvas import Canvas
@@ -205,7 +204,7 @@ def _answer_lines(each: OrderOfOperationsQuestion) -> int:
 
 def _stacked(pieces: Pieces) -> bool:
     """Return whether ``pieces`` has a stacked fraction."""
-    return any(isinstance(piece, Fraction) for piece in pieces)
+    return not all(isinstance(piece, str) for piece in pieces)
 
 
 def _line_height(pieces: Pieces) -> float:
@@ -216,7 +215,7 @@ def _line_height(pieces: Pieces) -> float:
 def _pieces_width(pieces: Pieces, size: float) -> float:
     """Return the width ``_draw_pieces`` takes for ``pieces`` at ``size``."""
     return sum(
-        fraction_width(piece, size) if isinstance(piece, Fraction) else text_width(piece, size)
+        text_width(piece, size) if isinstance(piece, str) else fraction_width(piece, size)
         for piece in pieces
     )
 
@@ -228,11 +227,11 @@ def _draw_pieces(pdf: Canvas, x: float, y: float, pieces: Pieces, size: float) -
     """
     pdf.setFont(FONT, size)
     for piece in pieces:
-        if isinstance(piece, Fraction):
-            x = draw_fraction(pdf, x, y, piece, size)
-        else:
+        if isinstance(piece, str):
             draw_text(pdf, x, y, piece, size)
             x += text_width(piece, size)
+        else:
+            x = draw_fraction(pdf, x, y, piece, size)
     return x
 
 

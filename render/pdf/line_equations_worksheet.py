@@ -17,7 +17,6 @@ are drawn stacked, as STAAR prints them, since an inline fraction such as -3/4x 
 
 from collections.abc import Sequence
 from dataclasses import replace
-from fractions import Fraction
 from string import ascii_uppercase
 from typing import BinaryIO
 
@@ -46,7 +45,7 @@ from core.line_equations.representation import (
 )
 from core.question import MultipleChoice
 from core.written_numbers import Pieces, inline
-from render.pdf.coordinate_plane import (
+from render.pdf.graphics.coordinate_plane import (
     AXIS_OVERHANG,
     draw_coordinate_plane,
     draw_line,
@@ -417,7 +416,7 @@ def _choice_table_height(question: LineQuestion) -> float:
 def _has_fraction(cells: Sequence[Sequence[str | Pieces | None]]) -> bool:
     """Return whether any of a table's ``cells`` holds a stacked fraction."""
     return any(
-        isinstance(piece, Fraction)
+        not isinstance(piece, str)
         for line in cells
         for cell in line
         if isinstance(cell, tuple)
@@ -620,7 +619,7 @@ def _table_row_height(data: LineQuestionData) -> float:
     """Return the height of the rows of the question's table, filled in, that hold numbers."""
     xs, ys = table_cells(data, filled=True)
     fractions = any(
-        isinstance(piece, Fraction)
+        not isinstance(piece, str)
         for cell in (*xs, *ys)
         if isinstance(cell, tuple)
         for piece in cell
@@ -685,7 +684,7 @@ def _solution(question: LineQuestion) -> Pieces | LineQuestionData:
 
 def _room(pieces: Pieces) -> float:
     """Return the extra space a line of ``pieces`` needs above and below: some for a fraction."""
-    return FRACTION_ROOM if any(isinstance(piece, Fraction) for piece in pieces) else 0
+    return FRACTION_ROOM if not all(isinstance(piece, str) for piece in pieces) else 0
 
 
 def _draw_answer_key(

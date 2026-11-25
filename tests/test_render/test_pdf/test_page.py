@@ -1,21 +1,32 @@
 """Tests for the shared page layout: text measurement and wrapping, and answer key page breaks."""
 
+from fractions import Fraction
 from io import BytesIO
 from unittest.mock import call, create_autospec
 
 import pytest
+from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.pdfgen.canvas import Canvas
 
 from core.question import BLANK
+from core.written_numbers import FractionStyle, Piece, Pieces, UnreducedFraction
 from render.pdf.page import (
     BOLD_FONT,
+    FONT,
+    SLANTED_RAISE,
     TEXT_SIZE,
     TEXT_WIDTH,
     Header,
     draw_answer_key,
+    draw_fraction,
+    draw_pieces,
     fit_font,
+    fraction_width,
+    pieces_width,
+    stacked,
     text_width,
     wrap,
+    wrap_pieces,
 )
 from tests.data import TIMES
 
@@ -151,3 +162,101 @@ def test_an_answer_key_goes_on_to_another_page_when_one_is_full(
     pdf = Canvas(BytesIO())
     draw_answer_key(pdf, Header(title="Place Value", label="Sheet A", name_line=False), solutions)
     assert pdf.getPageNumber() == last_page
+
+
+def test_a_written_fraction_is_drawn_as_written() -> None:
+    """2/8 is drawn as 2 over 8, where Fraction(2, 8) would be drawn as 1/4."""
+    pdf = create_autospec(Canvas, instance=True)
+    draw_pieces(pdf, 0, 0, ("x = ", UnreducedFraction(2, 8)), TEXT_SIZE)
+    assert [each.args[2] for each in pdf.drawCentredString.call_args_list] == ["2", "8"]
+
+
+@pytest.mark.parametrize(
+    ("piece", "expected"),
+    [
+        (Fraction(1, 2), True),
+        (UnreducedFraction(2, 8), True),
+        (UnreducedFraction(2, 8, FractionStyle.SLASH), False),
+        (UnreducedFraction(2, 8, FractionStyle.SLANTED), False),
+        ("x = ", False),
+    ],
+)
+def test_stacked(piece: Piece, expected: bool) -> None:
+    """Only a stacked fraction needs room above and below its line."""
+    assert stacked(piece) == expected
+
+
+def test_a_fraction_with_a_slash_is_text() -> None:
+    """3/4 with a slash is drawn on the line, as text."""
+    pdf = create_autospec(Canvas, instance=True)
+    fraction = UnreducedFraction(3, 4, FractionStyle.SLASH)
+    end = draw_fraction(pdf, 10, 0, fraction, TEXT_SIZE)
+    width = stringWidth("3/4", FONT, TEXT_SIZE)
+    assert (pdf.drawString.call_args_list, end, fraction_width(fraction, TEXT_SIZE)) == (
+        [call(10, 0, "3/4")],
+        10 + width,
+        width,
+    )
+
+
+def test_a_slanted_fraction_raises_its_numerator_beside_a_slanting_slash() -> None:
+    """3/4 slanted: a small 3 raised, a slash, and a small 4 on the baseline."""
+    pdf = create_autospec(Canvas, instance=True)
+    fraction = UnreducedFraction(3, 4, FractionStyle.SLANTED)
+    end = draw_fraction(pdf, 0, 0, fraction, 10)
+    numerator, denominator = pdf.drawString.call_args_list
+    assert (numerator.args[1:], denominator.args[1:], pdf.line.call_count, end) == (
+        (10 * SLANTED_RAISE, "3"),
+        (0, "4"),
+        1,
+        fraction_width(fraction, 10),
+    )
+
+
+def test_draw_pieces_draws_a_blank_as_a_square() -> None:
+    """A blank in text beside a fraction is a square to write in."""
+    pdf = create_autospec(Canvas, instance=True)
+    draw_pieces(pdf, 0, 0, (f"{BLANK} = ", UnreducedFraction(1, 4)), TEXT_SIZE)
+    assert pdf.rect.call_count == 1
+
+
+QUESTION: Pieces = (
+    "Which is greater, ",
+    UnreducedFraction(3, 6),
+    " or ",
+    UnreducedFraction(3, 8),
+    "?",
+)
+
+
+@pytest.mark.parametrize(
+    ("width", "lines"),
+    [
+        (TEXT_WIDTH, [QUESTION]),
+        # a break between words; "3/8?" stays together
+        (
+            pieces_width(("Which is greater,",), TEXT_SIZE) + 1,
+            [
+                ("Which is greater,",),
+                (UnreducedFraction(3, 6), " or ", UnreducedFraction(3, 8), "?"),
+            ],
+        ),
+    ],
+)
+def test_wrap_pieces(width: float, lines: list[Pieces]) -> None:
+    """Pieces wrap between words, each fraction joined to the text it touches."""
+    assert wrap_pieces(QUESTION, TEXT_SIZE, width) == lines
+
+
+@pytest.mark.parametrize(
+    ("pieces", "lines"),
+    [
+        # spaces ending one piece and starting the next are all kept
+        (("Shade  ", " ", UnreducedFraction(3, 4)), [("Shade   ", UnreducedFraction(3, 4))]),
+        # spaces at the very end are dropped
+        (("Shade ", UnreducedFraction(3, 4), " "), [("Shade ", UnreducedFraction(3, 4))]),
+    ],
+)
+def test_wrap_pieces_spacing(pieces: Pieces, lines: list[Pieces]) -> None:
+    """Spacing within a line is kept, and the spaces at its end aren't drawn."""
+    assert wrap_pieces(pieces, TEXT_SIZE, TEXT_WIDTH) == lines

@@ -57,7 +57,7 @@ from core.discrete_data.representation import (
     work,
 )
 from core.question import MultipleChoice
-from render.pdf.data_displays import NumberListStyle, draw_display
+from render.pdf.graphics.data_displays import NumberListStyle, draw_display
 from render.pdf.page import (
     BOLD_FONT,
     FONT,

@@ -45,22 +45,23 @@ from core.basic_operations.representation import (
 )
 from core.question import MultipleChoice
 from core.self_check_tiles import TileQuestion
-from render.pdf.diagrams import (
+from render.pdf.graphics.base_ten_blocks import (
     BLOCKS_KEY_HEIGHT,
     COLOUR_BLOCKS,
     GREY_BLOCKS,
-    NUMBER_LINE_HEIGHT,
-    STRIP_HEIGHT,
-    TWO_JUMP_LINE_DROP,
-    TWO_JUMP_LINE_HEIGHT,
     BlockColours,
     blocks_height,
     draw_blocks,
     draw_blocks_key,
+)
+from render.pdf.graphics.number_lines import (
+    NUMBER_LINE_HEIGHT,
+    TWO_JUMP_LINE_DROP,
+    TWO_JUMP_LINE_HEIGHT,
     draw_number_line,
-    draw_strip_diagram,
     draw_two_jump_line,
 )
+from render.pdf.graphics.strips import STRIP_HEIGHT, draw_strip_diagram
 from render.pdf.page import (
     BOLD_FONT,
     FONT,

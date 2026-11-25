@@ -10,7 +10,6 @@ row, as ``draw_picture_tiles_pages`` lays them out.
 
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
-from fractions import Fraction
 from string import ascii_uppercase
 
 from reportlab.lib.colors import HexColor, gray, white
@@ -26,6 +25,7 @@ from core.self_check_tiles import (
     pattern,
     tile_outline,
 )
+from core.written_numbers import Piece, Pieces
 from render.pdf.page import (
     BOLD_FONT,
     CONTENT_WIDTH,
@@ -37,6 +37,7 @@ from render.pdf.page import (
     Header,
     draw_pieces,
     pieces_width,
+    stacked,
     start_page,
     wrap,
 )
@@ -60,7 +61,7 @@ MISSING_NOTE = " Letters that aren't shown are not used."
 
 # An answer in the bank: text, wrapped to fit its box, or pieces drawn on one line, each fraction
 # stacked (see ``draw_pieces``)
-type BankAnswer = str | tuple[str | Fraction, ...]
+type BankAnswer = str | Pieces
 
 COLORS = {"yellow": HexColor("#f0be00"), "red": HexColor("#d9262c"), "blue": HexColor("#003cc8")}
 BLOCKED = HexColor("#d9d9d9")  # fill for a slot that no question uses
@@ -177,19 +178,17 @@ def _line_height(line: BankAnswer, size: float) -> float:
     Return the height of a line of an answer in the bank: the size and a gap of 2, with room
     above and below for a stacked fraction, in proportion to ``FRACTION_ROOM`` at ``TEXT_SIZE``.
     """
-    if isinstance(line, str) or not any(isinstance(piece, Fraction) for piece in line):
+    if isinstance(line, str) or not any(stacked(piece) for piece in line):
         return size + 2
     return size + 2 + 2 * FRACTION_ROOM * size / TEXT_SIZE
 
 
-def _wrap_pieces(
-    pieces: tuple[str | Fraction, ...], size: float, width: float
-) -> list[tuple[str | Fraction, ...]]:
+def _wrap_pieces(pieces: Pieces, size: float, width: float) -> list[Pieces]:
     """
     Split ``pieces`` after each comma into lines no wider than ``width``, as far as those breaks
     allow: "m = -3/4, b = 2" can become "m = -3/4," over "b = 2".
     """
-    segments: list[list[str | Fraction]] = [[]]
+    segments: list[list[Piece]] = [[]]
     for piece in pieces:
         if isinstance(piece, str) and ", " in piece:
             first, *rest = piece.split(", ")
@@ -197,7 +196,7 @@ def _wrap_pieces(
             segments += [[part] for part in rest]
         else:
             segments[-1].append(piece)
-    lines: list[list[str | Fraction]] = []
+    lines: list[list[Piece]] = []
     for segment in segments:
         if lines and pieces_width([*lines[-1], " ", *segment], size) <= width:
             lines[-1] += [" ", *segment]
