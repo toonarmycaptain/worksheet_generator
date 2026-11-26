@@ -693,9 +693,9 @@ def shaded_fraction(model: AreaModel) -> UnreducedFraction:
 @dataclass(frozen=True)
 class FractionWall:
     """
-    Bars of the same width one under another, each cut into equal parts: one row for each of
-    ``denominators``, from the top, where 1 is the whole. With ``labelled``, each part shows its
-    unit fraction, and the whole shows 1.
+    A fraction wall, called a fraction strip chart in the US: bars of the same width one under
+    another, each cut into equal parts: one row for each of ``denominators``, from the top, where
+    1 is the whole. With ``labelled``, each part shows its unit fraction, and the whole shows 1.
 
     Raises ``ValueError`` for no rows, or a denominator below 1.
     """

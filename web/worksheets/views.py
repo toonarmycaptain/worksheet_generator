@@ -26,6 +26,8 @@ from core.basic_operations.representation import (
     operations_name,
     word_problems_title,
 )
+from core.comparing_fractions.generator import TILE_TYPES as COMPARING_FRACTIONS_TILE_TYPES
+from core.comparing_fractions.representation import COMPARING_FRACTIONS_NAME
 from core.discrete_data.data import DataDisplay
 from core.discrete_data.generator import SHEET_DISPLAYS, available_parts
 from core.fraction_number_lines.generator import TILE_TYPES as FRACTION_NUMBER_LINES_TILE_TYPES
@@ -96,8 +98,8 @@ BUILDERS: list[dict[str, Any]] = [
     {
         "title": "Fractions",
         "description": "Name the fraction a picture shows, shade one, and share equally. Find "
-        "fractions and distances on a number line.",
-        "sheets": ["naming_fractions", "fraction_number_lines"],
+        "fractions and distances on a number line. Compare fractions.",
+        "sheets": ["naming_fractions", "fraction_number_lines", "comparing_fractions"],
     },
 ]
 
@@ -113,6 +115,7 @@ HEADINGS = {
     "prime_composite": PRIME_COMPOSITE_NAME,
     "naming_fractions": NAMING_FRACTIONS_NAME,
     "fraction_number_lines": FRACTION_NUMBER_LINES_NAME,
+    "comparing_fractions": COMPARING_FRACTIONS_NAME,
     "order_of_operations": ORDER_OF_OPERATIONS_NAME,
     "slope_and_intercepts": SLOPE_AND_INTERCEPTS_NAME,
     "writing_linear_equations": WRITING_LINEAR_EQUATIONS_NAME,
@@ -270,6 +273,9 @@ SCRIPT_DATA: dict[str, dict[str, Any]] = {
     },
     "fraction_number_lines": {
         "tile_types": [question_type.value for question_type in FRACTION_NUMBER_LINES_TILE_TYPES]
+    },
+    "comparing_fractions": {
+        "tile_types": [question_type.value for question_type in COMPARING_FRACTIONS_TILE_TYPES]
     },
     "slope_and_intercepts": {"intercept_answers": True, "blank_grids": True},
     "writing_linear_equations": {"blank_grids": True, "statements": True},

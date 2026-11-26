@@ -90,6 +90,12 @@ urlpatterns = [
         {"kind": "fraction_number_lines"},
         name="fraction_number_lines",
     ),
+    path(
+        "fractions/comparing-fractions/",
+        views.sheet,
+        {"kind": "comparing_fractions"},
+        name="comparing_fractions",
+    ),
     # where input-output tables were before they had a group of their own
     path("input-output-tables/", RedirectView.as_view(pattern_name="input_output_tables")),
     path("legacy/", views.legacy, name="legacy"),

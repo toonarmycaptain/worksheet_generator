@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from typing import Any
 
 BLANK = "\N{WHITE SQUARE}"  # in a question's text, where an empty square is drawn to write in
+CIRCLE = "\N{WHITE CIRCLE}"  # in a question's text, where an empty circle is drawn to write in
 
 
 class QuestionData[Answer]:

@@ -97,6 +97,29 @@ from core.basic_operations.representation import (
     word_problem_kinds,
     word_problems_title,
 )
+from core.comparing_fractions.data import QuestionType as ComparingFractionsType
+from core.comparing_fractions.data import Representation as ComparingFractionsRepresentation
+from core.comparing_fractions.data import Shared as ComparingFractionsShared
+from core.comparing_fractions.generator import DRAW_MOST_PARTS as COMPARING_DRAW_MOST_PARTS
+from core.comparing_fractions.generator import TILE_TYPES as COMPARING_FRACTIONS_TILE_TYPES
+from core.comparing_fractions.generator import (
+    count_possible_answers as count_possible_comparing_fractions_answers,
+)
+from core.comparing_fractions.generator import generate_comparing_fractions_questions
+from core.comparing_fractions.generator import (
+    tile_count_fits as comparing_fractions_tile_count_fits,
+)
+from core.comparing_fractions.generator import (
+    unaskable_types as unaskable_comparing_fractions_types,
+)
+from core.comparing_fractions.representation import COMPARING_FRACTIONS_NAME
+from core.comparing_fractions.representation import (
+    QUESTION_TYPE_NAMES as COMPARING_FRACTIONS_TYPE_NAMES,
+)
+from core.comparing_fractions.representation import (
+    REPRESENTATION_NAMES as COMPARING_FRACTIONS_REPRESENTATION_NAMES,
+)
+from core.comparing_fractions.representation import SHARED_NAMES as COMPARING_FRACTIONS_SHARED_NAMES
 from core.discrete_data.data import DataDisplay, DiscreteDataPart
 from core.discrete_data.generator import (
     TILE_PARTS,
@@ -231,6 +254,7 @@ from render.pdf.basic_operations_worksheet import (
     render_basic_operations_worksheet,
     render_missing_number_worksheet,
 )
+from render.pdf.comparing_fractions_worksheet import render_comparing_fractions_worksheet
 from render.pdf.data_graphs_worksheet import render_data_graphs_worksheet
 from render.pdf.fraction_number_lines_worksheet import render_fraction_number_lines_worksheet
 from render.pdf.graphics.data_displays import NumberListStyle
@@ -409,6 +433,26 @@ NAMING_FRACTIONS_REPRESENTATION_LABELS: dict[str, JsonValue] = {
 FractionNumberLinesTypeChoice = Literal["name", "mark", "distance", "divide", "compare"]
 FRACTION_NUMBER_LINES_TYPE_LABELS: dict[str, JsonValue] = {
     question_type.value: name for question_type, name in FRACTION_NUMBER_LINES_TYPE_NAMES.items()
+}
+# a comparing fractions QuestionType value
+ComparingFractionsTypeChoice = Literal[
+    "compare", "explain", "word", "less_greater", "draw", "greatest"
+]
+COMPARING_FRACTIONS_TYPE_LABELS: dict[str, JsonValue] = {
+    question_type.value: name for question_type, name in COMPARING_FRACTIONS_TYPE_NAMES.items()
+}
+# a comparing fractions Representation value
+ComparingFractionsRepresentationChoice = Literal[
+    "strip", "grid", "circle", "other_shape", "group", "line", "wall", "none"
+]
+COMPARING_FRACTIONS_REPRESENTATION_LABELS: dict[str, JsonValue] = {
+    representation.value: name
+    for representation, name in COMPARING_FRACTIONS_REPRESENTATION_NAMES.items()
+}
+# a comparing fractions Shared value: what two compared fractions have the same
+ComparingFractionsSharedChoice = Literal["numerator", "denominator"]
+COMPARING_FRACTIONS_SHARED_LABELS: dict[str, JsonValue] = {
+    shared.value: name for shared, name in COMPARING_FRACTIONS_SHARED_NAMES.items()
 }
 # a FractionStyle value
 FractionStyleChoice = Literal["stacked", "slash", "slanted"]
@@ -1961,6 +2005,199 @@ def _fraction_number_lines_stuck(question_type: FractionNumberLinesType, tiles: 
             )
 
 
+class ComparingFractionsOptions(HeaderOptions):
+    """
+    Options for the comparing fractions kind, built on the core. There is no seed: every sheet
+    is new.
+    """
+
+    title: Title = COMPARING_FRACTIONS_NAME
+    problems: Problems = 10
+    # The problems are shared evenly among the ticked types. A tiles sheet leaves out the types
+    # with no single answer; the page greys them out while tiles are ticked.
+    question_types: list[ComparingFractionsTypeChoice] = Field(
+        [question_type.value for question_type in ComparingFractionsType],
+        min_length=1,
+        title="Question types",
+        json_schema_extra={"labels": COMPARING_FRACTIONS_TYPE_LABELS},
+    )
+    # The pictures each question's fractions are shown with; No picture writes them alone.
+    representations: list[ComparingFractionsRepresentationChoice] = Field(
+        [representation.value for representation in ComparingFractionsRepresentation],
+        min_length=1,
+        title="Representations",
+        json_schema_extra={"labels": COMPARING_FRACTIONS_REPRESENTATION_LABELS},
+    )
+    # Half the questions compare fractions with the same numerator, half the same denominator.
+    shared: list[ComparingFractionsSharedChoice] = Field(
+        [shared.value for shared in ComparingFractionsShared],
+        min_length=1,
+        title="Fractions compared",
+        json_schema_extra={"labels": COMPARING_FRACTIONS_SHARED_LABELS},
+    )
+    denominators: str = Field(
+        DEFAULT_DENOMINATORS, max_length=200, title="Denominators", description=DENOMINATORS_HINT
+    )
+    fraction_styles: list[FractionStyleChoice] = Field(
+        [style.value for style in FractionStyle],
+        min_length=1,
+        title="Fraction style",
+        json_schema_extra={"labels": FRACTION_STYLE_LABELS, "markup": True},
+    )
+    black_and_white: bool = Field(False, title="Black and white pictures")  # for photocopying
+    multiple_choice: bool = Field(
+        False,
+        title="Multiple choice",
+        description="Lettered choices instead of answer lines: comparisons, statements, "
+        "fractions or pictures to choose from. The wrong ones are common mistakes, such as "
+        "taking the larger denominator for the larger fraction.",
+    )
+    answer_key: AnswerKey = False
+    self_check_tiles: SelfCheckTiles = False
+    tile_pattern: TilePattern = "simple"
+
+    @model_validator(mode="after")
+    def _tiles_are_available(self) -> Self:
+        # Not built for multiple choice: each choice's letter would need coding as a number. The
+        # page hides multiple choice while tiles are ticked, and greys out the tiles while it is.
+        # Runs first, so a request with both is told so before anything else.
+        if self.self_check_tiles and self.multiple_choice:
+            raise ValueError("self_check_tiles: not available with multiple choice")
+        return self
+
+    @model_validator(mode="after")
+    def _questions_can_be_made(self) -> Self:
+        try:
+            denominators = parse_denominators(self.denominators)
+        except ValueError as error:
+            raise ValueError(f"denominators: {error}") from None
+        types = self.ticked_types()
+        representations = self.ticked_representations()
+        shared = self.ticked_shared()
+        tiles = self.self_check_tiles
+        stuck = unaskable_comparing_fractions_types(
+            types,
+            representations,
+            shared,
+            denominators,
+            multiple_choice=self.multiple_choice,
+            distinct_answers=tiles,
+        )
+        if stuck:
+            raise ValueError(
+                f"question_types: {_comparing_fractions_stuck(stuck[0], types, tiles)}"
+            )
+        if tiles:
+            _at_most_one_question_per_tile(self.problems)
+            tile_types = [each for each in types if each in COMPARING_FRACTIONS_TILE_TYPES]
+            if not tile_types:
+                left_out = [COMPARING_FRACTIONS_TYPE_NAMES[each] for each in types]
+                raise ValueError(
+                    f"question_types: {_listed(left_out)} {'has' if len(left_out) == 1 else 'have'}"
+                    " no single answer for a tile. Tick another question type, or untick "
+                    "Self-check tile answers."
+                )
+            possible = count_possible_comparing_fractions_answers(
+                types, representations, shared, denominators
+            )
+            if self.problems > possible:
+                raise _too_many_problems(
+                    possible,
+                    "repeated answers",
+                    "choice of question types, representations and denominators",
+                    {},
+                )
+            if not comparing_fractions_tile_count_fits(
+                self.problems, types, representations, shared, denominators
+            ):
+                raise ValueError(f"problems: {_comparing_fractions_tile_count(tile_types)}")
+        return self
+
+    def ticked_types(self) -> list[ComparingFractionsType]:
+        """The ticked question types, each once, in the order of ``QuestionType``."""
+        return [each for each in ComparingFractionsType if each.value in self.question_types]
+
+    def ticked_representations(self) -> list[ComparingFractionsRepresentation]:
+        """The ticked representations, each once, in the order of ``Representation``."""
+        return [
+            each for each in ComparingFractionsRepresentation if each.value in self.representations
+        ]
+
+    def ticked_shared(self) -> list[ComparingFractionsShared]:
+        """The ticked kinds of fractions compared, each once, in the order of ``Shared``."""
+        return [each for each in ComparingFractionsShared if each.value in self.shared]
+
+
+def _comparing_fractions_stuck(
+    question_type: ComparingFractionsType, types: Sequence[ComparingFractionsType], tiles: bool
+) -> str:
+    """Return why no question of ``question_type`` can be made, and what would allow one."""
+    name = COMPARING_FRACTIONS_TYPE_NAMES[question_type]
+    compare = COMPARING_FRACTIONS_TYPE_NAMES[ComparingFractionsType.COMPARE]
+    match question_type:
+        case ComparingFractionsType.WORD:
+            return (
+                f"{name} needs a story the ticked representations can draw: tick No picture, or "
+                f"a representation that can show the denominators, or untick {name}."
+            )
+        case ComparingFractionsType.LESS_GREATER:
+            return (
+                f"{name} needs Strips, Grids, Circles or Other shapes ticked, with a denominator "
+                f"they can show. Change the representations or denominators, or untick {name}."
+            )
+        case ComparingFractionsType.DRAW:
+            return (
+                f"{name} needs Strips, Grids, Circles, Other shapes or Number lines ticked, with "
+                f"a denominator from 2 to {COMPARING_DRAW_MOST_PARTS}. Change them, or untick "
+                f"{name}."
+            )
+        case ComparingFractionsType.GREATEST if tiles and ComparingFractionsType.COMPARE in types:
+            return (
+                f"{name} on a tiles sheet with {compare} needs three fractions that share a "
+                "numerator or a denominator, which a ticked representation can show. Change the "
+                f"representations, denominators or Fractions compared, or untick {name}."
+            )
+        case ComparingFractionsType.GREATEST if tiles:
+            return (
+                f"{name} on a tiles sheet needs four fractions that share a numerator or a "
+                "denominator, which a ticked representation can show. Change the "
+                f"representations, denominators or Fractions compared, or untick {name}."
+            )
+        case ComparingFractionsType.GREATEST:
+            return (
+                f"{name} needs a ticked representation that can show three fractions sharing a "
+                "ticked numerator or denominator. Change the representations, denominators or "
+                f"Fractions compared, or untick {name}."
+            )
+        case _:
+            return (
+                f"{name} needs a ticked representation that can show two fractions sharing a "
+                "ticked numerator or denominator. Change the representations, denominators or "
+                f"Fractions compared, or untick {name}."
+            )
+
+
+def _comparing_fractions_tile_count(tile_types: Sequence[ComparingFractionsType]) -> str:
+    """Return why a tiles sheet can't have the requested number of problems, and the fix."""
+    word = COMPARING_FRACTIONS_TYPE_NAMES[ComparingFractionsType.WORD]
+    greatest = COMPARING_FRACTIONS_TYPE_NAMES[ComparingFractionsType.GREATEST]
+    if tile_types == [ComparingFractionsType.WORD]:
+        return (
+            f"{word} on a tiles sheet needs at least 2 problems, since its names come in pairs. "
+            "Raise problems to 2, or tick another question type."
+        )
+    if tile_types == [ComparingFractionsType.GREATEST]:
+        return (
+            f"{greatest} on a tiles sheet needs at least 4 problems, since its fractions come in "
+            "groups of four or more. Raise problems, or tick another question type."
+        )
+    return (
+        "On a tiles sheet, the fractions come in groups that share a numerator or a "
+        "denominator, and this many problems can't be split into them. Change problems, "
+        f"Denominators or Representations, or tick {word}."
+    )
+
+
 class OrderOfOperationsOptions(HeaderOptions):
     """
     Options for the order of operations kind, built on the core. There is no seed: every sheet
@@ -2632,6 +2869,7 @@ def _tile_slots(
     | PrimeCompositeOptions
     | NamingFractionsOptions
     | FractionNumberLinesOptions
+    | ComparingFractionsOptions
     | OrderOfOperationsOptions
     | SlopeAndInterceptsOptions
     | WritingLinearEquationsOptions
@@ -2854,6 +3092,26 @@ def _naming_fractions(options: NamingFractionsOptions, out: BinaryIO) -> None:
             options.problems,
             options.ticked_types(),
             options.ticked_representations(),
+            parse_denominators(options.denominators),
+            styles=[style for style in FractionStyle if style.value in options.fraction_styles],
+            multiple_choice=options.multiple_choice,
+            distinct_answers=options.self_check_tiles,
+        ),
+        path=out,
+        header=options.header(),
+        answer_key=options.answer_key,
+        slot_of=_tile_slots(options) if options.self_check_tiles else None,
+        black_and_white=options.black_and_white,
+    )
+
+
+def _comparing_fractions(options: ComparingFractionsOptions, out: BinaryIO) -> None:
+    render_comparing_fractions_worksheet(
+        questions=generate_comparing_fractions_questions(
+            options.problems,
+            options.ticked_types(),
+            options.ticked_representations(),
+            options.ticked_shared(),
             parse_denominators(options.denominators),
             styles=[style for style in FractionStyle if style.value in options.fraction_styles],
             multiple_choice=options.multiple_choice,
@@ -3179,6 +3437,7 @@ CORE_KINDS: dict[str, CoreKind[Any]] = {
     "prime_composite": CoreKind(PrimeCompositeOptions, _prime_composite),
     "naming_fractions": CoreKind(NamingFractionsOptions, _naming_fractions),
     "fraction_number_lines": CoreKind(FractionNumberLinesOptions, _fraction_number_lines),
+    "comparing_fractions": CoreKind(ComparingFractionsOptions, _comparing_fractions),
     "order_of_operations": CoreKind(OrderOfOperationsOptions, _order_of_operations),
     "slope_and_intercepts": CoreKind(SlopeAndInterceptsOptions, _slope_and_intercepts),
     "writing_linear_equations": CoreKind(WritingLinearEquationsOptions, _writing_linear_equations),

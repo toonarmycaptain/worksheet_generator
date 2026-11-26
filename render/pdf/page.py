@@ -20,7 +20,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.pdfgen.canvas import Canvas
 
-from core.question import BLANK, MultipleChoice
+from core.question import BLANK, CIRCLE, MultipleChoice
 from core.written_numbers import FractionStyle, Piece, Pieces, UnreducedFraction, merge_pieces
 
 PAGE_WIDTH, PAGE_HEIGHT = letter
@@ -49,28 +49,32 @@ SLASH_RUN = 0.32
 
 # A word with its preceding whitespace. A bracketed term, such as (3 x 10,000), is one word.
 _WORD = re.compile(r"(\s*)(\([^)]*\)|\S+)")
+_BLANKS = re.compile(f"({BLANK}|{CIRCLE})")  # an empty square or circle to write in
 
 
 def draw_text(
     pdf: Canvas, x: float, y: float, text: str, size: float, blank_side: float | None = None
 ) -> None:
     """
-    Draw ``text`` from ``x`` along baseline ``y``, rendering each ``BLANK`` as an empty square.
+    Draw ``text`` from ``x`` along baseline ``y``, rendering each ``BLANK`` as an empty square
+    and each ``CIRCLE`` as an empty circle.
 
     Like ``drawString``, it uses the current font, which must be ``FONT`` at ``size``.
-    Helvetica has no square glyph, so each square is drawn as a box ``blank_side`` wide and high
-    (1.4 times ``size`` by default), centred on the middle of a digit.
+    Helvetica has neither glyph, so each square is drawn as a box ``blank_side`` wide and high
+    (1.4 times ``size`` by default), centred on the middle of a digit, and each circle as wide.
     """
     side = _square_side(size, blank_side)
     middle = y + size * 0.35  # about halfway up a digit
-    first, *rest = text.split(BLANK)
-    pdf.drawString(x, y, first)
-    x += stringWidth(first, FONT, size)
-    for piece in rest:
-        pdf.rect(x, middle - side / 2, side, side, stroke=1, fill=0)
-        x += side
-        pdf.drawString(x, y, piece)
-        x += stringWidth(piece, FONT, size)
+    for piece in _BLANKS.split(text):
+        if piece == BLANK:
+            pdf.rect(x, middle - side / 2, side, side, stroke=1, fill=0)
+            x += side
+        elif piece == CIRCLE:
+            pdf.circle(x + side / 2, middle, side / 2, stroke=1, fill=0)
+            x += side
+        else:
+            pdf.drawString(x, y, piece)
+            x += stringWidth(piece, FONT, size)
 
 
 def draw_fraction(
@@ -229,12 +233,13 @@ def text_width(text: str, size: float, blank_side: float | None = None) -> float
     """
     Return the width of ``text`` as ``draw_text`` draws it, in ``FONT`` at ``size``.
 
-    Each ``BLANK`` counts as the width of its square rather than of the narrower □ glyph that
-    ``stringWidth`` would measure.
+    Each ``BLANK`` and ``CIRCLE`` counts as the width of its square or circle rather than of the
+    narrower □ or ○ glyph that ``stringWidth`` would measure.
     """
-    pieces = text.split(BLANK)
-    widths = sum(stringWidth(piece, FONT, size) for piece in pieces)
-    return float(widths) + (len(pieces) - 1) * _square_side(size, blank_side)
+    pieces = _BLANKS.split(text)
+    blanks = sum(1 for piece in pieces if piece in (BLANK, CIRCLE))
+    widths = sum(stringWidth(piece, FONT, size) for piece in pieces if piece not in (BLANK, CIRCLE))
+    return float(widths) + blanks * _square_side(size, blank_side)
 
 
 def fit_font(pdf: Canvas, text: str, font: str, size: float, width: float) -> None:

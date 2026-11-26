@@ -16,8 +16,13 @@ from fractions import Fraction
 from itertools import combinations
 
 from core.fraction_models.answers import (
+    LESS,
+    MORE,
     WRONG_OPTIONS,
+    Asked,
+    NameAnswer,
     answer_capacity,
+    name_answers,
     pick_answer,
     pick_distinct_answers,
     wrong_fractions,
@@ -32,9 +37,7 @@ from core.fraction_models.number_lines import (
 )
 from core.fraction_number_lines.data import (
     GREATER_THAN,
-    LESS,
     LESS_THAN,
-    MORE,
     NONE_OF_THESE,
     Compared,
     CompareQuestion,
@@ -53,7 +56,7 @@ from core.fraction_number_lines.data import (
     QuestionType,
 )
 from core.fraction_number_lines.stories import DISTANCE_STORIES, DistanceStory
-from core.names import NAMES
+from core.names import NAMES, NameDealer
 from core.question import FreeResponse, MultipleChoice, Question, multiple_choice
 from core.written_numbers import FractionStyle, UnreducedFraction
 
@@ -91,11 +94,18 @@ DISTANCE_ON_TOP_SHARE = 0.0
 # Of tiles sheets with only two compare questions, those where they ask "more or less", not who
 MORE_LESS_PAIR_SHARE = 0.5
 
+# What a compare question asks, for each thing a question about two people can ask
+_COMPARED = {
+    Asked.GREATER: Compared.FARTHER,
+    Asked.SMALLER: Compared.SHORTER,
+    Asked.MORE_OR_LESS: Compared.MORE_OR_LESS,
+}
+
 # Two distances on one line, as written, the shorter first
 type _Pair = tuple[UnreducedFraction, UnreducedFraction]
 # A question's type and answer: a fraction, or a compare question's distances, with what it must
 # ask on a tiles sheet
-type _Picked = tuple[QuestionType, UnreducedFraction | tuple[_Pair, "_CompareSpec | None"]]
+type _Picked = tuple[QuestionType, UnreducedFraction | tuple[_Pair, NameAnswer | None]]
 
 
 @dataclass(frozen=True)
@@ -126,38 +136,6 @@ class _Tables:
         if question_type is QuestionType.COMPARE:
             return bool(self.compare)
         return bool(self.of(question_type))
-
-
-@dataclass(frozen=True)
-class _CompareSpec:
-    """What a compare question on a tiles sheet must be: ``names`` in the story's order, asking
-    ``compared``, answered by ``answer``."""
-
-    names: tuple[str, str]
-    compared: Compared
-    answer: str
-
-
-class _Names:
-    """Hands out names from ``NAMES``, none twice on a sheet while any are left."""
-
-    def __init__(self) -> None:
-        self._left = random.sample(NAMES, len(NAMES))
-
-    def take(self, count: int) -> tuple[str, ...]:
-        """Return ``count`` names with different first letters, as their points' letters need."""
-        taken: list[str] = []
-        for name in [*self._left, *NAMES]:
-            if len(taken) == count:
-                break
-            if name[0] not in {each[0] for each in taken}:
-                taken.append(name)
-        for name in taken:
-            if name in self._left:
-                self._left.remove(name)
-        if not self._left:
-            self._left = random.sample(NAMES, len(NAMES))
-        return tuple(taken)
 
 
 def generate_fraction_number_lines_questions(
@@ -207,7 +185,7 @@ def generate_fraction_number_lines_questions(
     stuck = [each for each in kinds if not tables.has(each)]
     if stuck:
         raise ValueError(f"No question of type {', '.join(stuck)} fits these settings.")
-    names = _Names()
+    names = NameDealer(NAMES)
     if distinct_answers:
         picked = _distinct_answers(count, kinds, tables, names)
     else:
@@ -349,7 +327,7 @@ def _pick_pair(pairs: Sequence[_Pair], used: set[_Pair]) -> _Pair:
 
 
 def _distinct_answers(
-    count: int, kinds: Sequence[QuestionType], tables: _Tables, names: _Names
+    count: int, kinds: Sequence[QuestionType], tables: _Tables, names: NameDealer
 ) -> list[_Picked]:
     """
     Return the question types and answers of a tiles sheet, as
@@ -396,31 +374,10 @@ def _distinct_answers(
     return picked
 
 
-def _compare_specs(count: int, names: _Names) -> list[_CompareSpec]:
-    """
-    Return what each of ``count`` compare questions on a tiles sheet asks, in a random order: a
-    pair asking "more or less" with four or more, or with two, half the time; then the rest in
-    pairs about the same two names, one answered by each, the last three in a trio round three
-    names if there's an odd number. ``count`` is 0 or at least 2.
-    """
-    specs: list[_CompareSpec] = []
-    if count >= 4 or (count == 2 and random.random() < MORE_LESS_PAIR_SHARE):
-        for word in (MORE, LESS):
-            first, second = names.take(2)
-            specs.append(_CompareSpec((first, second), Compared.MORE_OR_LESS, word))
-        count -= 2
-    rings = [2] * (count // 2)
-    if count % 2:
-        rings[-1] = 3
-    for size in rings:
-        ring = names.take(size)
-        for index in range(size):
-            pair = (ring[index], ring[(index + 1) % size])
-            order = pair if random.random() < 0.5 else (pair[1], pair[0])
-            compared = random.choice((Compared.FARTHER, Compared.SHORTER))
-            specs.append(_CompareSpec(order, compared, pair[1]))
-    random.shuffle(specs)
-    return specs
+def _compare_specs(count: int, names: NameDealer) -> list[NameAnswer]:
+    """Return what each of ``count`` compare questions on a tiles sheet asks, as
+    ``name_answers`` pairs them: "farther" asks for the greater distance."""
+    return name_answers(count, names, MORE_LESS_PAIR_SHARE)
 
 
 # --- making the questions
@@ -429,7 +386,7 @@ def _compare_specs(count: int, names: _Names) -> list[_CompareSpec]:
 def _question(
     question_type: QuestionType,
     answer: UnreducedFraction,
-    names: _Names,
+    names: NameDealer,
     choices: bool,
     tiles: bool,
 ) -> FractionNumberLinesQuestion:
@@ -685,7 +642,7 @@ def _divide_question(answer: UnreducedFraction, choices: bool) -> DivideQuestion
 
 
 def _compare_question(
-    pair: _Pair, spec: _CompareSpec | None, names: _Names, choices: bool
+    pair: _Pair, spec: NameAnswer | None, names: NameDealer, choices: bool
 ) -> CompareQuestion:
     """
     Make a story of two people going the distances ``pair``, on one line, asking who went
@@ -702,7 +659,8 @@ def _compare_question(
         distances = (shorter, longer) if random.random() < 0.5 else (longer, shorter)
         answer = _compare_answer((first, second), distances, compared)
     else:
-        (first, second), compared, answer = spec.names, spec.compared, spec.answer
+        (first, second), answer = spec.names, spec.answer
+        compared = _COMPARED[spec.asked]
         first_longer = (compared is Compared.FARTHER and answer == first) or (
             compared is Compared.SHORTER and answer == second
         )

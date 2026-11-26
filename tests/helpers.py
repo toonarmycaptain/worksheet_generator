@@ -47,6 +47,7 @@ from core.basic_operations.representation import (
     two_step_strip_choices,
 )
 from core.basic_operations.word_problems import unknown_letter
+from core.comparing_fractions.data import ComparingFractionsQuestion
 from core.discrete_data.data import (
     CategoricalDataProblemData,
     DiscreteDataProblem,
@@ -71,6 +72,7 @@ from render.pdf.basic_operations_worksheet import (
     render_basic_operations_worksheet,
     render_missing_number_worksheet,
 )
+from render.pdf.comparing_fractions_worksheet import render_comparing_fractions_worksheet
 from render.pdf.data_graphs_worksheet import render_data_graphs_worksheet
 from render.pdf.fraction_number_lines_worksheet import render_fraction_number_lines_worksheet
 from render.pdf.graphics.data_displays import NumberListStyle
@@ -696,6 +698,28 @@ def render_fraction_number_lines(
     """Render the fractions on a number line sheet, its questions given with their responses."""
     out = BytesIO()
     render_fraction_number_lines_worksheet(
+        questions=questions,
+        path=out,
+        header=Header(title=title, label=label, name_line=name_line),
+        answer_key=answer_key,
+        slot_of=slot_of,
+        black_and_white=black_and_white,
+    )
+    return out.getvalue()
+
+
+def render_comparing_fractions(
+    questions: Sequence[ComparingFractionsQuestion],
+    slot_of: tuple[int, ...] | None,
+    answer_key: bool,
+    title: str,
+    label: str,
+    name_line: bool = True,
+    black_and_white: bool = False,
+) -> bytes:
+    """Render the comparing fractions sheet, its questions given with their responses."""
+    out = BytesIO()
+    render_comparing_fractions_worksheet(
         questions=questions,
         path=out,
         header=Header(title=title, label=label, name_line=name_line),

@@ -7,12 +7,13 @@ from dataclasses import dataclass
 from enum import StrEnum
 from fractions import Fraction
 
+from core.fraction_models import answers
 from core.fraction_models.number_lines import FractionLine, LengthUnit
 from core.question import FreeResponse, MultipleChoice, Question, QuestionData
 from core.written_numbers import UnreducedFraction
 
 NONE_OF_THESE = "None of these"  # a choice, right when no other choice is
-MORE, LESS = "more", "less"  # the answers to "did one go more or less than the other?"
+MORE, LESS = answers.MORE, answers.LESS  # the answers to "did one go more or less than the other?"
 GREATER_THAN, LESS_THAN = ">", "<"
 
 

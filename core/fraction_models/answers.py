@@ -1,18 +1,23 @@
 """
 Choosing a fraction sheet's answers: drawing one from those a question can have, keeping a
-self-check tiles sheet's answers distinct when some of them are pictures, and wrong fractions for
-multiple choice built from the answer's own numbers.
+self-check tiles sheet's answers distinct when some of them are pictures, pairing the questions
+a tiles sheet answers with names, and wrong fractions for multiple choice built from the
+answer's own numbers.
 """
 
 import random
 from collections import Counter, defaultdict
 from collections.abc import Collection, Mapping, Sequence, Set
+from dataclasses import dataclass
+from enum import StrEnum
 from fractions import Fraction
 from itertools import combinations
 
+from core.names import NameDealer
 from core.written_numbers import UnreducedFraction
 
 WRONG_OPTIONS = 3  # beside the correct option, in a multiple-choice question
+MORE, LESS = "more", "less"  # the answers to "did one have more or less than the other?"
 
 
 def pick_answer(answers: Sequence[UnreducedFraction], whole_share: float) -> UnreducedFraction:
@@ -160,6 +165,58 @@ def _capacity(
         else:
             total += max(len(forms), int(value in pictures))
     return total
+
+
+# --- questions answered by names on a self-check tiles sheet
+
+
+class Asked(StrEnum):
+    """What a question about two people asks. Values are stable identifiers for the API and
+    storage."""
+
+    GREATER = "greater"  # whose is greater: who went farther, who ate more
+    SMALLER = "smaller"  # whose is smaller: who went a shorter distance, who ate less
+    MORE_OR_LESS = "more_or_less"  # did the first have more or less than the second
+
+
+@dataclass(frozen=True)
+class NameAnswer:
+    """What a question about two people must be on a tiles sheet: about ``names`` in the story's
+    order, asking ``asked``, answered by ``answer``, one of the names, or "more" or "less"."""
+
+    names: tuple[str, str]
+    asked: Asked
+    answer: str
+
+
+def name_answers(
+    count: int, names: NameDealer, more_less_share: float, more_or_less: bool = True
+) -> list[NameAnswer]:
+    """
+    Return what each of ``count`` questions about two people on a tiles sheet asks, in a random
+    order, so that no name or word tile can be found by its name alone: a pair asking "more or
+    less" with four or more, or with two, ``more_less_share`` of the time, unless ``more_or_less``
+    is false; then the rest in pairs about the same two names, one answered by each, the last
+    three in a trio round three names if there's an odd number. ``count`` is 0 or at least 2.
+    """
+    specs: list[NameAnswer] = []
+    if more_or_less and (count >= 4 or (count == 2 and random.random() < more_less_share)):
+        for word in (MORE, LESS):
+            first, second = names.take(2)
+            specs.append(NameAnswer((first, second), Asked.MORE_OR_LESS, word))
+        count -= 2
+    rings = [2] * (count // 2)
+    if count % 2:
+        rings[-1] = 3
+    for size in rings:
+        ring = names.take(size)
+        for index in range(size):
+            pair = (ring[index], ring[(index + 1) % size])
+            order = pair if random.random() < 0.5 else (pair[1], pair[0])
+            asked = random.choice((Asked.GREATER, Asked.SMALLER))
+            specs.append(NameAnswer(order, asked, pair[1]))
+    random.shuffle(specs)
+    return specs
 
 
 # --- wrong fractions for multiple choice

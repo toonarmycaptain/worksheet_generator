@@ -459,6 +459,30 @@ def test_pages(client: Client) -> None:
                 b"tile_pattern",
             ],
         ),
+        (
+            "/worksheets/fractions/comparing-fractions/",
+            [b"/api/worksheets/comparing_fractions.pdf"],
+            [
+                b"title",
+                b"label",
+                b"name_line",
+                b"problems",
+                *[b"question_types"] * 6,  # a checkbox for each type
+                *[b"representations"] * 8,  # and each representation
+                b"shared",  # the same numerator, the same denominator
+                b"shared",
+                b"denominators",
+                b"fraction_styles",  # a checkbox for each style
+                b"fraction_styles",
+                b"fraction_styles",
+                b"black_and_white",
+                b"multiple_choice",
+                b"answer_key",
+                b"self_check_tiles",
+                b"tile_pattern",  # a radio button for each pattern
+                b"tile_pattern",
+            ],
+        ),
     ],
 )
 def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], client: Client) -> None:
@@ -494,6 +518,7 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
         "/worksheets/factors-and-primes/prime-and-composite-numbers/",
         "/worksheets/fractions/naming-fractions/",
         "/worksheets/fractions/fractions-on-a-number-line/",
+        "/worksheets/fractions/comparing-fractions/",
         # the footer
         f"/feedback/?from={url}",
         "https://toonarmycaptain.com",
@@ -572,6 +597,11 @@ def test_builder_page(url: str, actions: list[bytes], fields: list[bytes], clien
         ),
         (
             "/worksheets/fractions/fractions-on-a-number-line/",
+            "tile_pattern",
+            [(b"simple", b" checked", b"simple"), (b"complex", b"", b"complex")],
+        ),
+        (
+            "/worksheets/fractions/comparing-fractions/",
             "tile_pattern",
             [(b"simple", b" checked", b"simple"), (b"complex", b"", b"complex")],
         ),
@@ -1050,6 +1080,47 @@ def test_a_dropdown_sends_each_choice_s_id_and_shows_its_name(
             ],
             True,
         ),
+        # every type, representation and kind of sharing by default, each with an All box
+        (
+            "/worksheets/fractions/comparing-fractions/",
+            b"/api/worksheets/comparing_fractions.pdf",
+            "question_types",
+            [
+                (b"compare", b" checked", b"Compare"),
+                (b"explain", b" checked", b"Compare and explain"),
+                (b"word", b" checked", b"Word problems"),
+                (b"less_greater", b" checked", b"Less or greater than a model"),
+                (b"draw", b" checked", b"Draw and compare"),
+                (b"greatest", b" checked", b"Greatest and least"),
+            ],
+            True,
+        ),
+        (
+            "/worksheets/fractions/comparing-fractions/",
+            b"/api/worksheets/comparing_fractions.pdf",
+            "representations",
+            [
+                (b"strip", b" checked", b"Strips"),
+                (b"grid", b" checked", b"Grids"),
+                (b"circle", b" checked", b"Circles"),
+                (b"other_shape", b" checked", b"Other shapes"),
+                (b"group", b" checked", b"Groups of objects"),
+                (b"line", b" checked", b"Number lines"),
+                (b"wall", b" checked", b"Fraction strip charts"),
+                (b"none", b" checked", b"No picture"),
+            ],
+            True,
+        ),
+        (
+            "/worksheets/fractions/comparing-fractions/",
+            b"/api/worksheets/comparing_fractions.pdf",
+            "shared",
+            [
+                (b"numerator", b" checked", b"Same numerator"),
+                (b"denominator", b" checked", b"Same denominator"),
+            ],
+            True,
+        ),
         # every type of question by default, with an All box for the three
         (
             "/worksheets/basic-operations/base-ten-blocks/",
@@ -1140,6 +1211,7 @@ def test_a_checkbox_group_sends_each_ticked_choice_s_id_and_shows_its_name(
         ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
         ("/worksheets/fractions/naming-fractions/", False),
         ("/worksheets/fractions/fractions-on-a-number-line/", False),
+        ("/worksheets/fractions/comparing-fractions/", False),
         ("/worksheets/legacy/", False),
     ],
 )
@@ -1173,6 +1245,7 @@ def test_the_place_value_page_keeps_from_and_to_different(
         ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
         ("/worksheets/fractions/naming-fractions/", False),
         ("/worksheets/fractions/fractions-on-a-number-line/", False),
+        ("/worksheets/fractions/comparing-fractions/", False),
         ("/worksheets/legacy/", False),
     ],
 )
@@ -1208,6 +1281,7 @@ def test_the_input_output_tables_page_swaps_fields_for_multiple_choice(
         ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
         ("/worksheets/fractions/naming-fractions/", False),
         ("/worksheets/fractions/fractions-on-a-number-line/", False),
+        ("/worksheets/fractions/comparing-fractions/", False),
         ("/worksheets/legacy/", False),
     ],
 )
@@ -1242,6 +1316,7 @@ def test_the_slope_and_intercepts_page_shows_intercepts_as_only_for_an_intercept
         ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
         ("/worksheets/fractions/naming-fractions/", False),
         ("/worksheets/fractions/fractions-on-a-number-line/", False),
+        ("/worksheets/fractions/comparing-fractions/", False),
         ("/worksheets/legacy/", False),
     ],
 )
@@ -1276,6 +1351,7 @@ def test_the_line_pages_show_blank_grids_only_with_two_points(
         ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
         ("/worksheets/fractions/naming-fractions/", False),
         ("/worksheets/fractions/fractions-on-a-number-line/", False),
+        ("/worksheets/fractions/comparing-fractions/", False),
         ("/worksheets/legacy/", False),
     ],
 )
@@ -1326,6 +1402,12 @@ def test_the_writing_page_shows_statements_only_with_vertical_or_horizontal_line
             b'<script id="tile-types" type="application/json">'
             b'["name", "mark", "distance", "compare"]</script>',
         ),
+        (
+            # comparing, word problems, and the greatest and least: the types with one answer
+            "/worksheets/fractions/comparing-fractions/",
+            b'<script id="tile-types" type="application/json">'
+            b'["compare", "word", "greatest"]</script>',
+        ),
         ("/worksheets/legacy/", None),
     ],
 )
@@ -1366,6 +1448,7 @@ def test_the_tile_types_script_greys_out_types_tiles_cant_ask(
         ("/worksheets/factors-and-primes/prime-and-composite-numbers/", True, False, False),
         ("/worksheets/fractions/naming-fractions/", True, False, False),
         ("/worksheets/fractions/fractions-on-a-number-line/", True, False, False),
+        ("/worksheets/fractions/comparing-fractions/", True, False, False),
         ("/worksheets/legacy/", False, False, False),
     ],
 )
@@ -1374,7 +1457,7 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
 ) -> None:
     """
     The arithmetic, word problems, base-ten blocks, place-value, input-output tables, the three
-    line pages, the order of operations page, the prime and composite page and the two fractions
+    line pages, the order of operations page, the prime and composite page and the three fractions
     pages include the script that sets problems to 12 for tiles.
 
     The other pages have no self-check tiles box, and so no script. Whether the script works is
@@ -1463,6 +1546,8 @@ def test_ticking_self_check_tiles_asks_for_12_questions(
         ("/worksheets/fractions/naming-fractions/", "choice-titles", None),
         ("/worksheets/fractions/fractions-on-a-number-line/", "representation-operations", None),
         ("/worksheets/fractions/fractions-on-a-number-line/", "choice-titles", None),
+        ("/worksheets/fractions/comparing-fractions/", "representation-operations", None),
+        ("/worksheets/fractions/comparing-fractions/", "choice-titles", None),
     ],
 )
 def test_the_representation_script_s_data(
@@ -1539,6 +1624,10 @@ def test_the_representation_script_s_data(
         (
             "/worksheets/fractions/fractions-on-a-number-line/",
             [(b"/api/worksheets/fraction_number_lines.pdf", b" data-check-first")],
+        ),
+        (
+            "/worksheets/fractions/comparing-fractions/",
+            [(b"/api/worksheets/comparing_fractions.pdf", b" data-check-first")],
         ),
         (
             "/worksheets/legacy/",
@@ -1871,6 +1960,7 @@ def test_legacy_page(client: Client) -> None:
         "/worksheets/factors-and-primes/prime-and-composite-numbers/",
         "/worksheets/fractions/naming-fractions/",
         "/worksheets/fractions/fractions-on-a-number-line/",
+        "/worksheets/fractions/comparing-fractions/",
         # the footer
         "/feedback/?from=/worksheets/legacy/",
         "https://toonarmycaptain.com",
@@ -1924,6 +2014,7 @@ def test_group_and_old_paths_redirect(client: Client, url: str, location: str) -
         ("/worksheets/factors-and-primes/prime-and-composite-numbers/", False),
         ("/worksheets/fractions/naming-fractions/", False),
         ("/worksheets/fractions/fractions-on-a-number-line/", False),
+        ("/worksheets/fractions/comparing-fractions/", False),
         ("/worksheets/legacy/", False),
     ],
 )
@@ -2033,6 +2124,7 @@ def test_the_steps_radios_show_for_the_representations_with_two_steps(client: Cl
     [
         "/worksheets/fractions/naming-fractions/",
         "/worksheets/fractions/fractions-on-a-number-line/",
+        "/worksheets/fractions/comparing-fractions/",
     ],
 )
 def test_fraction_style_labels_show_each_fraction_drawn(client: Client, url: str) -> None:

@@ -1,8 +1,8 @@
-"""Tests for reading the denominators a teacher types."""
+"""Tests for reading the denominators a teacher types, and naming the parts they make."""
 
 import pytest
 
-from core.fraction_models.denominators import parse_denominators
+from core.fraction_models.denominators import parse_denominators, part_name
 
 
 @pytest.mark.parametrize(
@@ -42,4 +42,42 @@ def test_parse_denominators(text: str, expected: tuple[int, ...]) -> None:
 def test_parse_denominators_errors(text: str, message: str) -> None:
     with pytest.raises(ValueError) as error:
         parse_denominators(text)
+    assert str(error.value) == message
+
+
+@pytest.mark.parametrize(
+    ("parts", "expected"),
+    [
+        (2, "halves"),
+        (3, "thirds"),  # an ordinal that isn't the word with "th" added
+        (4, "fourths"),
+        (5, "fifths"),
+        (8, "eighths"),
+        (9, "ninths"),
+        (10, "tenths"),
+        (12, "twelfths"),
+        (13, "thirteenths"),
+        (20, "twentieths"),  # a ten's "y" becomes "ieth"
+        (21, "twenty-firsts"),  # the last part of a hyphenated word is made ordinal
+        (100, "hundredths"),
+        (101, "one hundred firsts"),
+        (120, "one hundred twentieths"),
+        (999, "nine hundred ninety-ninths"),
+        (1_000, "thousandths"),
+    ],
+)
+def test_part_name(parts: int, expected: str) -> None:
+    assert part_name(parts) == expected
+
+
+@pytest.mark.parametrize(
+    ("parts", "message"),
+    [
+        (1, "Parts go from 2 to 1,000, not 1."),
+        (1_001, "Parts go from 2 to 1,000, not 1001."),
+    ],
+)
+def test_part_name_errors(parts: int, message: str) -> None:
+    with pytest.raises(ValueError) as error:
+        part_name(parts)
     assert str(error.value) == message

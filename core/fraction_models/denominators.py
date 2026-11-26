@@ -1,6 +1,6 @@
 """
 The denominators a fraction sheet may use, as a teacher types them: numbers and ranges, such as
-"2, 3, 4, 6, 8", "2-20" or "10, 100".
+"2, 3, 4, 6, 8", "2-20" or "10, 100", and what the parts of a whole cut into that many are called.
 """
 
 import re
@@ -50,3 +50,75 @@ def parse_denominators(text: str) -> tuple[int, ...]:
                 )
         found.update(range(low, high + 1))
     return tuple(sorted(found))
+
+
+_ONES = ("", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
+_TEENS = (
+    "ten",
+    "eleven",
+    "twelve",
+    "thirteen",
+    "fourteen",
+    "fifteen",
+    "sixteen",
+    "seventeen",
+    "eighteen",
+    "nineteen",
+)
+_TENS = ("", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety")
+# Ordinal words that aren't the number's word with "th" added
+_ORDINALS = {
+    "one": "first",
+    "two": "second",
+    "three": "third",
+    "five": "fifth",
+    "eight": "eighth",
+    "nine": "ninth",
+    "twelve": "twelfth",
+}
+
+
+def part_name(parts: int) -> str:
+    """
+    Return what the parts of a whole cut into ``parts`` equal parts are called, as in "sixths are
+    larger than eighths": "halves", "thirds", "fourths", "twelfths", "twenty-firsts",
+    "hundredths", "one hundred twentieths", "thousandths".
+
+    Raises ``ValueError`` outside ``SMALLEST_DENOMINATOR`` to ``LARGEST_DENOMINATOR``.
+    """
+    if not SMALLEST_DENOMINATOR <= parts <= LARGEST_DENOMINATOR:
+        raise ValueError(
+            f"Parts go from {SMALLEST_DENOMINATOR} to {LARGEST_DENOMINATOR:,}, not {parts}."
+        )
+    if parts == 2:
+        return "halves"
+    if parts in (100, 1_000):
+        return "hundredths" if parts == 100 else "thousandths"
+    words = _number_words(parts)
+    return f"{' '.join([*words[:-1], _ordinal(words[-1])])}s"
+
+
+def _number_words(number: int) -> list[str]:
+    """Return a number from 1 to 999 in words, the last of them hyphenated: 121 is "one",
+    "hundred", "twenty-one"."""
+    hundreds, rest = divmod(number, 100)
+    words = [_ONES[hundreds], "hundred"] if hundreds else []
+    if 10 <= rest < 20:
+        words.append(_TEENS[rest - 10])
+    elif rest:
+        tens, ones = divmod(rest, 10)
+        words.append("-".join(filter(None, (_TENS[tens], _ONES[ones]))))
+    return words
+
+
+def _ordinal(word: str) -> str:
+    """Return the ordinal of a number word, its last part made ordinal: "twenty-one" is
+    "twenty-first", "twenty" "twentieth"."""
+    *start, last = word.split("-")
+    if last in _ORDINALS:
+        last = _ORDINALS[last]
+    elif last.endswith("y"):
+        last = f"{last[:-1]}ieth"
+    else:
+        last = f"{last}th"
+    return "-".join([*start, last])

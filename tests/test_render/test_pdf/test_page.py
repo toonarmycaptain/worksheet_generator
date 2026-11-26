@@ -8,7 +8,7 @@ import pytest
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.pdfgen.canvas import Canvas
 
-from core.question import BLANK
+from core.question import BLANK, CIRCLE
 from core.written_numbers import FractionStyle, Piece, Pieces, UnreducedFraction
 from render.pdf.page import (
     BOLD_FONT,
@@ -54,6 +54,9 @@ UNIT_TO_WORD = (
         (f"{BLANK} + {BLANK} = 7", 14, None, 78.904),  # each square counts
         # the missing-number sheet's square, 36 wide at 20
         (f"{BLANK} ÷ 4 = 7", 20, 36, 103.84),
+        # a circle to write a symbol in is as wide as a square, 19.6 at 14
+        (f"2 {CIRCLE} 3", 14, None, 42.952),
+        (f"{BLANK} {CIRCLE} 7", 14, None, 54.768),
     ],
 )
 def test_text_width(text: str, size: float, blank_side: float | None, width: float) -> None:
@@ -218,6 +221,14 @@ def test_draw_pieces_draws_a_blank_as_a_square() -> None:
     pdf = create_autospec(Canvas, instance=True)
     draw_pieces(pdf, 0, 0, (f"{BLANK} = ", UnreducedFraction(1, 4)), TEXT_SIZE)
     assert pdf.rect.call_count == 1
+
+
+def test_draw_pieces_draws_a_circle_after_a_square() -> None:
+    """A circle in text is an empty circle to write a symbol in, as wide as a square, centred
+    halfway up a digit: here after a square and a space."""
+    pdf = create_autospec(Canvas, instance=True)
+    draw_pieces(pdf, 0, 0, (f"{BLANK} {CIRCLE}",), 10)
+    assert pdf.circle.call_args_list == [call(14 + 2.78 + 7, 3.5, 7, stroke=1, fill=0)]
 
 
 QUESTION: Pieces = (
